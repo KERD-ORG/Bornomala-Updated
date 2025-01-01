@@ -9,18 +9,50 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-// Optional translation hook; replace or remove as needed
+// Optional translation hook; replace or remove if you don't need i18n
 const useTranslation = () => ({ t: (x) => x });
 
 const MAX_QUESTIONS = 10;
 const MAX_OPTIONS = 8;
 
-// -------------------------------
-// 1. Yup Validation Schemas
-// -------------------------------
-
-// For each question
+/* 
+  1. MASTER YUP SCHEMA
+  We define "question_type" plus all possible fields, and 
+  conditionally require or skip them depending on the question_type.
+*/
 const questionSchema = yup.object().shape({
+  // The type of question
+  question_type: yup
+    .string()
+    .oneOf(
+      [
+        "descriptive",
+        "short-answer",
+        "single-select",
+        "multiple-select",
+        "fill-blanks",
+        "true-false",
+      ],
+      "Invalid question type"
+    )
+    .required("Question Type is required"),
+
+  // For all questions, we keep a text prompt
+  question_text: yup.string().when("question_type", {
+    is: (val) =>
+      [
+        "descriptive",
+        "short-answer",
+        "single-select",
+        "multiple-select",
+        "fill-blanks",
+        "true-false",
+      ].includes(val),
+    then: (schema) => schema.required("Question Text is required"),
+    otherwise: (schema) => schema.notRequired().nullable(),
+  }),
+
+  // Difficulty, status, subtopics, etc. remain the same
   question_difficulty: yup
     .string()
     .oneOf(
@@ -38,11 +70,8 @@ const questionSchema = yup.object().shape({
   question_subtopic: yup.string().nullable(),
   question_subsubtopic: yup.string().nullable(),
 
-  question_text: yup.string().required("Question Text is required"),
-
   explanation: yup.string().nullable(),
 
-  // *** Conditional Validation for exam_references ***
   // Only required if question_status is "Reused"
   exam_references: yup.string().when("question_status", {
     is: "Reused",
@@ -52,28 +81,81 @@ const questionSchema = yup.object().shape({
     otherwise: yup.string().nullable(),
   }),
 
+  // 2. MCQ-Related fields
+  // If question_type = single/multiple select, we require option_count, question_options, correct answer(s)
   option_count: yup
     .number()
     .typeError("Option Count must be a number")
-    .min(2, "Minimum 2 options")
-    .max(MAX_OPTIONS, `Maximum ${MAX_OPTIONS} options`)
-    .required("Option Count is required"),
+    .when("question_type", {
+      is: (val) => val === "single-select" || val === "multiple-select",
+      then: (schema) =>
+        schema
+          .min(2, "Minimum 2 options")
+          .max(MAX_OPTIONS, `Maximum ${MAX_OPTIONS} options`)
+          .required("Option Count is required for MCQ"),
+      otherwise: (schema) => schema.notRequired().nullable(),
+    }),
 
   question_options: yup
     .array()
     .of(yup.string().required("Option cannot be empty"))
-    .min(2, "At least 2 options are required")
-    .max(MAX_OPTIONS, `No more than ${MAX_OPTIONS} options allowed`),
+    .when("question_type", {
+      is: (val) => val === "single-select" || val === "multiple-select",
+      then: (schema) =>
+        schema
+          .min(2, "At least 2 options are required")
+          .max(MAX_OPTIONS, `No more than ${MAX_OPTIONS} options allowed`)
+          .required("Options are required for MCQ"),
+      otherwise: (schema) => schema.notRequired().nullable(),
+    }),
 
+  // For "single-select", correct_answer is a single integer
+  // For "multiple-select", we might store an array of correct indices.
+  // But in this example, we keep it simple and reuse correct_answer as a single number,
+  // or you can expand logic for multiple if needed.
   correct_answer: yup
-    .number()
-    .typeError("Correct answer must be a number")
-    .required("Correct answer is required")
-    .min(1, "Must be at least 1")
-    .max(MAX_OPTIONS, `Cannot exceed ${MAX_OPTIONS}`),
+    .mixed()
+    .when("question_type", {
+      // For single-select, we expect a number (1..option_count)
+      is: "single-select",
+      then: yup
+        .number()
+        .typeError("Correct answer must be a number")
+        .required("Correct answer is required for single-select MCQ")
+        .min(1, "Must be at least 1")
+        .max(MAX_OPTIONS, `Cannot exceed ${MAX_OPTIONS}`),
+    })
+    .when("question_type", {
+      // For multiple-select, you might store an array of selected indices or booleans
+      // Here, let's assume we store a single string "1,3" if multiple.
+      // Or you skip this if you prefer a separate field. This is up to your data structure.
+      is: "multiple-select",
+      then: yup
+        .string()
+        .required("Correct answers are required for multiple-select MCQ"),
+    })
+    .when("question_type", {
+      // For True/False, we might store a boolean or a string "true"/"false"
+      is: "true-false",
+      then: yup.boolean().required("Correct answer is required for True/False"),
+    })
+    .when("question_type", {
+      // For descriptive, short-answer, fill-blanks,
+      // we might not require correct_answer.
+      is: (val) => ["descriptive", "short-answer", "fill-blanks"].includes(val),
+      then: (schema) => schema.notRequired().nullable(),
+    }),
+
+  // 3. For fill-blanks, we might store an `answer` field.
+  // If question_type = fill-blanks, require it. Otherwise not required
+  fill_blank_answer: yup.string().when("question_type", {
+    is: "fill-blanks",
+    then: (schema) => schema.required("Fill-in-the-blanks answer is required"),
+    otherwise: (schema) => schema.notRequired().nullable(),
+  }),
 });
 
-// For the overall form
+// Overall form schema
 const mainSchema = yup.object().shape({
   question_level: yup.string().required("Question Level is required"),
   target_organization: yup.string().required("Target Organization is required"),
@@ -87,36 +169,42 @@ const mainSchema = yup.object().shape({
     .max(MAX_QUESTIONS, `No more than ${MAX_QUESTIONS} questions`)
     .required("Number of questions is required"),
 
+  // Each item in questions must obey the questionSchema
   questions: yup.array().of(questionSchema),
 });
 
-// -------------------------------
-// 2. Default Question
-// -------------------------------
+/**
+ * Default question object. We initialize with question_type = "descriptive"
+ * for demonstration, and minimal fields.
+ */
 const defaultQuestion = {
-  question_difficulty: "Very Easy", // pick one as default
+  question_type: "descriptive", // "short-answer", "single-select", "multiple-select", "fill-blanks", "true-false"
+  question_text: "",
+  question_difficulty: "Very Easy",
   question_status: "New",
   question_topic: "",
   question_subtopic: "",
   question_subsubtopic: "",
-  question_text: "",
   explanation: "",
-  // exam_references will be shown only if question_status == "Reused"
   exam_references: "",
+
+  // For MCQ
   option_count: 2,
   question_options: ["", ""],
-  correct_answer: 1,
+  // For single-select: a single integer
+  // For multiple-select: a string like "1,3" or etc.
+  correct_answer: null,
+
+  // For fill-blanks
+  fill_blank_answer: "",
 };
 
-// -------------------------------
-// 3. Main Form Component
-// -------------------------------
 const UniversityForm = forwardRef(
   ({ initialData, onSubmit, onCancel, formMode, loading }, ref) => {
     const { t } = useTranslation();
     const [globalError, setGlobalError] = useState("");
 
-    // We use react-hook-form to run final validation
+    // Initialize react-hook-form to run final validation
     const {
       handleSubmit,
       formState: { errors },
@@ -125,7 +213,7 @@ const UniversityForm = forwardRef(
       mode: "onSubmit",
     });
 
-    // Local state for all fields
+    // Our local state for the entire form
     const [formData, setFormData] = useState(() => ({
       question_level: "",
       target_organization: "",
@@ -136,49 +224,57 @@ const UniversityForm = forwardRef(
       ...initialData,
     }));
 
-    // Sync the number of questions with question_count
+    // Synchronize # of questions with question_count
     useEffect(() => {
       const currentCount = formData.questions.length;
       const desiredCount = formData.question_count;
 
       if (desiredCount > currentCount) {
+        // add new
         const newQuestions = [...formData.questions];
         for (let i = currentCount; i < desiredCount; i++) {
           newQuestions.push(JSON.parse(JSON.stringify(defaultQuestion)));
         }
         setFormData((prev) => ({ ...prev, questions: newQuestions }));
       } else if (desiredCount < currentCount) {
+        // remove from end
         const newQuestions = [...formData.questions].slice(0, desiredCount);
         setFormData((prev) => ({ ...prev, questions: newQuestions }));
       }
     }, [formData.question_count]);
 
-    // Keep question_options array in sync with option_count
+    // Also keep question_options array length in sync with option_count
+    // Only if question_type is single-select or multiple-select
     useEffect(() => {
       let changed = false;
       const newQuestions = formData.questions.map((q) => {
-        const currentOptionLength = q.question_options.length;
-        const desiredLength = q.option_count;
-        if (desiredLength === currentOptionLength) {
-          return q;
-        }
-        changed = true;
-        const newQ = { ...q, question_options: [...q.question_options] };
-        if (desiredLength > currentOptionLength) {
-          for (let k = currentOptionLength; k < desiredLength; k++) {
-            newQ.question_options.push("");
+        if (
+          q.question_type === "single-select" ||
+          q.question_type === "multiple-select"
+        ) {
+          const currentOptionLength = q.question_options.length;
+          const desiredLength = q.option_count || 2;
+          if (desiredLength !== currentOptionLength) {
+            changed = true;
+            const newQ = { ...q, question_options: [...q.question_options] };
+            if (desiredLength > currentOptionLength) {
+              for (let k = currentOptionLength; k < desiredLength; k++) {
+                newQ.question_options.push("");
+              }
+            } else {
+              newQ.question_options.splice(desiredLength);
+            }
+            return newQ;
           }
-        } else {
-          newQ.question_options.splice(desiredLength);
         }
-        return newQ;
+        return q;
       });
       if (changed) {
         setFormData((prev) => ({ ...prev, questions: newQuestions }));
       }
     }, [formData.questions]);
 
-    // Input change handlers
+    // Generic handler for top-level or question-level changes
     const handleInputChange = (e, qIndex, fieldName) => {
       let { name, value } = e.target;
       if (e.target.type === "number") {
@@ -187,18 +283,19 @@ const UniversityForm = forwardRef(
 
       if (typeof qIndex === "number" && fieldName) {
         // question-level field
-        const newQuestions = [...formData.questions];
-        newQuestions[qIndex] = {
-          ...newQuestions[qIndex],
+        const updated = [...formData.questions];
+        updated[qIndex] = {
+          ...updated[qIndex],
           [fieldName]: value,
         };
-        setFormData((prev) => ({ ...prev, questions: newQuestions }));
+        setFormData((prev) => ({ ...prev, questions: updated }));
       } else {
         // top-level field
         setFormData((prev) => ({ ...prev, [name]: value }));
       }
     };
 
+    // For changing an individual option
     const handleOptionChange = (e, qIndex, optIndex) => {
       const value = e.target.value;
       const newQuestions = [...formData.questions];
@@ -208,16 +305,27 @@ const UniversityForm = forwardRef(
       setFormData((prev) => ({ ...prev, questions: newQuestions }));
     };
 
-    // On submit
+    // For changing question_type
+    // We reset some fields to defaults
+    const handleQuestionTypeChange = (qIndex, newType) => {
+      const updated = [...formData.questions];
+      updated[qIndex] = {
+        ...JSON.parse(JSON.stringify(defaultQuestion)), // fresh blank
+        question_type: newType, // override type
+      };
+      setFormData((prev) => ({ ...prev, questions: updated }));
+    };
+
+    // On final form submission
     const onSubmitForm = async () => {
       setGlobalError("");
       try {
-        // Validate entire formData
+        // Validate entire formData using our mainSchema
         await mainSchema.validate(formData, { abortEarly: false });
-        // If ok, call parent's onSubmit
+        // If no errors, call parent's onSubmit
         await onSubmit(formData);
 
-        // Reset if create/clone
+        // Reset if needed
         if (formMode === "create" || formMode === "clone") {
           setFormData({
             question_level: "",
@@ -230,16 +338,14 @@ const UniversityForm = forwardRef(
         }
       } catch (err) {
         if (err?.inner?.length) {
-          // Show the first error
+          // Show the first error message found
           setGlobalError(err.inner[0].message);
         } else {
-          // Single or unknown error
           setGlobalError(err?.message || "Submission error");
         }
       }
     };
 
-    // Cancel
     const handleCancelClick = () => {
       setFormData({
         question_level: "",
@@ -256,7 +362,6 @@ const UniversityForm = forwardRef(
       handleCancelClick,
     }));
 
-    // Render
     return (
       <form onSubmit={handleSubmit(onSubmitForm)}>
         {globalError && (
@@ -278,6 +383,10 @@ const UniversityForm = forwardRef(
               onChange={handleInputChange}
             >
               <option value="">{t("-- Select --")}</option>
+              {/* Example options if you have them:
+              <option value="school">School Level</option>
+              <option value="college">College Level</option>
+              */}
             </select>
           </div>
           <div className="col-md-6 mb-3">
@@ -343,12 +452,33 @@ const UniversityForm = forwardRef(
           </div>
         </div>
 
-        {/* Render the questions */}
+        {/* Render each question */}
         {formData.questions.map((q, qIndex) => (
           <div key={qIndex} className="border p-2 mb-4">
             <h5>
               {t("Question")} #{qIndex + 1}
             </h5>
+
+            {/* Question Type */}
+            <div className="mb-3">
+              <label>{t("Question Type")}</label>
+              <select
+                className="form-control"
+                value={q.question_type}
+                onChange={(e) =>
+                  handleQuestionTypeChange(qIndex, e.target.value)
+                }
+              >
+                <option value="descriptive">{t("Descriptive/Essay")}</option>
+                <option value="short-answer">{t("Short Answer")}</option>
+                <option value="single-select">{t("Single-Select MCQ")}</option>
+                <option value="multiple-select">
+                  {t("Multiple-Select MCQ")}
+                </option>
+                <option value="fill-blanks">{t("Fill-in-the-Blanks")}</option>
+                <option value="true-false">{t("True/False")}</option>
+              </select>
+            </div>
 
             {/* Difficulty & Status */}
             <div className="row">
@@ -385,54 +515,139 @@ const UniversityForm = forwardRef(
             </div>
 
             {/* question_text */}
-            <div className="mb-3">
-              <label>{t("Question Text")}</label>
-              <textarea
-                rows={2}
-                className="form-control"
-                value={q.question_text}
-                onChange={(e) => handleInputChange(e, qIndex, "question_text")}
-              />
-            </div>
-
-            {/* option_count */}
-            <div className="mb-3">
-              <label>{t("How many options? (2-8)")}</label>
-              <input
-                type="number"
-                className="form-control"
-                value={q.option_count}
-                min={2}
-                max={MAX_OPTIONS}
-                onChange={(e) => handleInputChange(e, qIndex, "option_count")}
-              />
-            </div>
-
-            {/* question_options */}
-            <div className="mb-3">
-              <label>{t("Options")}</label>
-              {q.question_options.map((optVal, optIndex) => (
-                <input
-                  key={optIndex}
-                  type="text"
-                  className="form-control mt-1"
-                  value={optVal}
-                  placeholder={`Option #${optIndex + 1}`}
-                  onChange={(e) => handleOptionChange(e, qIndex, optIndex)}
+            {q.question_type !== "true-false" && (
+              <div className="mb-3">
+                <label>{t("Question Text")}</label>
+                <textarea
+                  rows={2}
+                  className="form-control"
+                  value={q.question_text}
+                  onChange={(e) =>
+                    handleInputChange(e, qIndex, "question_text")
+                  }
                 />
-              ))}
-            </div>
+              </div>
+            )}
+            {q.question_type === "true-false" && (
+              <div className="mb-3">
+                <label>{t("Statement (True/False)")}</label>
+                <textarea
+                  rows={2}
+                  className="form-control"
+                  value={q.question_text}
+                  onChange={(e) =>
+                    handleInputChange(e, qIndex, "question_text")
+                  }
+                />
+              </div>
+            )}
 
-            {/* correct_answer */}
-            <div className="mb-3">
-              <label>{t("Correct Answer (option #)")}</label>
-              <input
-                type="number"
-                className="form-control"
-                value={q.correct_answer}
-                onChange={(e) => handleInputChange(e, qIndex, "correct_answer")}
-              />
-            </div>
+            {/* For fill-blanks */}
+            {q.question_type === "fill-blanks" && (
+              <div className="mb-3">
+                <label>{t("Correct Answer for Blank")}</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={q.fill_blank_answer}
+                  onChange={(e) =>
+                    handleInputChange(e, qIndex, "fill_blank_answer")
+                  }
+                />
+              </div>
+            )}
+
+            {/* If single-select or multiple-select, show options, correct_answer */}
+            {(q.question_type === "single-select" ||
+              q.question_type === "multiple-select") && (
+              <>
+                <div className="mb-3">
+                  <label>{t("How many options? (2-8)")}</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    value={q.option_count}
+                    min={2}
+                    max={MAX_OPTIONS}
+                    onChange={(e) =>
+                      handleInputChange(e, qIndex, "option_count")
+                    }
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label>{t("Options")}</label>
+                  {q.question_options.map((optVal, optIndex) => (
+                    <input
+                      key={optIndex}
+                      type="text"
+                      className="form-control mt-1"
+                      value={optVal}
+                      placeholder={`Option #${optIndex + 1}`}
+                      onChange={(e) => handleOptionChange(e, qIndex, optIndex)}
+                    />
+                  ))}
+                </div>
+
+                {q.question_type === "single-select" && (
+                  <div className="mb-3">
+                    <label>{t("Correct Answer (option #)")}</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      value={q.correct_answer || ""}
+                      onChange={(e) =>
+                        handleInputChange(e, qIndex, "correct_answer")
+                      }
+                    />
+                    <small>
+                      {t("For single-select, enter the option number (1..N).")}
+                    </small>
+                  </div>
+                )}
+
+                {q.question_type === "multiple-select" && (
+                  <div className="mb-3">
+                    <label>{t("Correct Answers (e.g. 1,3)")}</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={q.correct_answer || ""}
+                      onChange={(e) =>
+                        handleInputChange(e, qIndex, "correct_answer")
+                      }
+                    />
+                    <small>
+                      {t(
+                        "For multiple-select, specify indices separated by commas."
+                      )}
+                    </small>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* True/False correct answer */}
+            {q.question_type === "true-false" && (
+              <div className="mb-3">
+                <label>{t("Correct Answer")}: </label>
+                <select
+                  className="form-control"
+                  value={q.correct_answer === true ? "true" : "false"}
+                  onChange={(e) =>
+                    handleInputChange(
+                      e,
+                      qIndex,
+                      "correct_answer",
+                      e.target.value === "true"
+                    )
+                  }
+                >
+                  <option value="true">{t("True")}</option>
+                  <option value="false">{t("False")}</option>
+                </select>
+              </div>
+            )}
 
             {/* explanation */}
             <div className="mb-3">
@@ -462,7 +677,6 @@ const UniversityForm = forwardRef(
           </div>
         ))}
 
-        {/* Action buttons */}
         <div className="d-flex justify-content-end">
           <button
             type="button"
@@ -472,7 +686,6 @@ const UniversityForm = forwardRef(
           >
             {t("Cancel")}
           </button>
-          {/* We use a manual onClick + handleSubmit for final validation */}
           <button
             type="button"
             className="btn btn-primary"
@@ -496,17 +709,27 @@ UniversityForm.propTypes = {
     question_count: PropTypes.number,
     questions: PropTypes.arrayOf(
       PropTypes.shape({
+        // The newly added question_type
+        question_type: PropTypes.oneOf([
+          "descriptive",
+          "short-answer",
+          "single-select",
+          "multiple-select",
+          "fill-blanks",
+          "true-false",
+        ]).isRequired,
+        question_text: PropTypes.string,
         question_difficulty: PropTypes.string,
         question_status: PropTypes.string,
         question_topic: PropTypes.string,
         question_subtopic: PropTypes.string,
         question_subsubtopic: PropTypes.string,
-        question_text: PropTypes.string,
         explanation: PropTypes.string,
         exam_references: PropTypes.string,
         option_count: PropTypes.number,
         question_options: PropTypes.arrayOf(PropTypes.string),
-        correct_answer: PropTypes.number,
+        correct_answer: PropTypes.any, // can be number, string, or boolean
+        fill_blank_answer: PropTypes.string,
       })
     ),
   }),
