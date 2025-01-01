@@ -1,0 +1,53 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% trans "Contact Request on Eduket Platform" %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #008080;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        .message {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .footer {
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>{% trans "Hi," %}</h2>
+        <p class="message">
+            <b>{{ full_name }}</b> {% blocktrans %}wants to contact you.{% endblocktrans %}
+        </p>
+        <p class="message">
+            <span>{% blocktrans %}Email:{% endblocktrans %} {{ email }}</span>
+        </p>
+        <p class="message">
+            <span>{% blocktrans %}Message:{% endblocktrans %}</span><br>
+            {{ message }}
+        </p>
+        <div class="footer">
+            <p>{% blocktrans %}This message was sent to Admin.{% endblocktrans %}</p>
+        </div>
+    </div>
+</body>
+</html>

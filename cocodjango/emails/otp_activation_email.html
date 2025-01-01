@@ -1,0 +1,41 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "OTP Activation" %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #008080;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        .activation-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>{% trans "OTP Activation Successful" %}</h1>
+    <p>{% blocktrans %}Hello{% endblocktrans %} {{ user.username }},</p>
+    <p>{% trans "Your OTP setup was successful. You can now use OTP for secure login." %}</p>
+    <p>{% trans "If you did not perform this action, please contact support immediately." %}</p>
+    <p>{% blocktrans %}Best regards,{% endblocktrans %}<br>{% trans "The Eduket Platform Team" %}</p>
+</body>
+</html>

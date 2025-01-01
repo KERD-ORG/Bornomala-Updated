@@ -1,0 +1,2262 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#: fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-07-27 02:29+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+#: auth_app/messages.py:4
+msgid "Email or password is wrong."
+msgstr "L'e-mail ou le mot de passe sont erronés."
+
+#: auth_app/messages.py:5
+msgid "Username or password is wrong."
+msgstr "Le nom d'utilisateur ou le mot de passe est erroné."
+
+#: auth_app/messages.py:6 auth_app/otp_views.py:104
+msgid "The OTP code you entered is incorrect. Please try again."
+msgstr "Le code OTP que vous avez saisi est incorrect. "
+
+#: auth_app/messages.py:7
+msgid "User not found."
+msgstr "Utilisateur introuvable."
+
+#: auth_app/messages.py:9 contact_app/messages.py:8
+msgid "Missing reCAPTCHA token."
+msgstr "Jeton reCAPTCHA manquant."
+
+#: auth_app/messages.py:10 contact_app/messages.py:9
+msgid "Failed reCAPTCHA verification. Please try again."
+msgstr "Échec de la vérification reCAPTCHA. "
+
+#: auth_app/messages.py:12 auth_app/serializers.py:41
+#: auth_app/serializers.py:55 auth_app/serializers.py:61
+#: auth_app/serializers.py:71 auth_app/serializers.py:73
+#: campus_app/serializers.py:15 campus_app/serializers.py:23
+#: campus_app/serializers.py:52 college_app/serializers.py:48
+#: college_app/serializers.py:63 college_app/serializers.py:79
+#: college_app/serializers.py:87 department_app/serializers.py:63
+#: department_app/serializers.py:78 department_app/serializers.py:94
+#: department_app/serializers.py:102 faculty_members_app/serializers.py:118
+#: faculty_members_app/serializers.py:133
+#: faculty_members_app/serializers.py:149
+#: faculty_members_app/serializers.py:157
+msgid "This field is required."
+msgstr "Ce champ est obligatoire."
+
+#: auth_app/messages.py:13
+msgid "This field may not be blank."
+msgstr "Ce champ ne peut pas être vide."
+
+#: auth_app/messages.py:14 auth_app/serializers.py:46 contact_app/messages.py:5
+msgid "Enter a valid email address."
+msgstr "Entrez une adresse e-mail valide."
+
+#: auth_app/messages.py:15 auth_app/serializers.py:49
+msgid "A user with that email already exists."
+msgstr "Un utilisateur avec cette adresse e-mail existe déjà."
+
+#: auth_app/messages.py:17
+msgid "This password is too short."
+msgstr "Ce mot de passe est trop court."
+
+#: auth_app/messages.py:18
+msgid "It must contain at least 8 characters."
+msgstr "Il doit contenir au moins 8 caractères."
+
+#: auth_app/messages.py:19
+msgid "This password is entirely numeric."
+msgstr "Ce mot de passe est entièrement numérique."
+
+#: auth_app/messages.py:20
+msgid "This password is too common."
+msgstr "Ce mot de passe est trop courant."
+
+#: auth_app/messages.py:21 emails/lockout_email.html:7
+msgid "Account locked due to too many failed login attempts."
+msgstr "Compte verrouillé en raison d'un trop grand nombre de tentatives de connexion infructueuses."
+
+#: auth_app/messages.py:27
+msgid "Login successful."
+msgstr "Connexion réussie."
+
+#: auth_app/messages.py:28
+msgid "Registration successful."
+msgstr "enregistrement réussi."
+
+#: auth_app/messages.py:30
+msgid "User created successfully."
+msgstr "Utilisateur créé avec succès."
+
+#: auth_app/messages.py:31
+msgid "User created successfully but failed to send welcome email."
+msgstr "L'utilisateur a été créé avec succès mais n'a pas réussi à envoyer l'e-mail de bienvenue."
+
+#: auth_app/otp_views.py:65
+msgid "OTP setup is successful! You can now set up OTP again."
+msgstr "La configuration OTP est réussie ! "
+
+#: auth_app/otp_views.py:67
+msgid "OTP is already set up and verified for this user"
+msgstr "OTP est déjà configuré et vérifié pour cet utilisateur"
+
+#: auth_app/otp_views.py:103
+msgid "OTP verification successful! You can now use your OTP for secure login."
+msgstr "Vérification OTP réussie ! "
+
+#: auth_app/otp_views.py:127
+msgid ""
+"OTP has been successfully disabled. Your account no longer requires two-"
+"factor authentication for login."
+msgstr "OTP a été désactivé avec succès. "
+
+#: auth_app/otp_views.py:130
+msgid "No OTP record found for the user."
+msgstr "Aucun enregistrement OTP trouvé pour l'utilisateur."
+
+#: auth_app/serializers.py:16 auth_app/serializers.py:19
+#: auth_app/serializers.py:22
+msgid "Ensure this field has no more than 150 characters."
+msgstr "Assurez-vous que ce champ ne contient pas plus de 150 caractères."
+
+#: auth_app/serializers.py:25 auth_app/serializers.py:145
+msgid "Ensure this field has no more than 254 characters."
+msgstr "Assurez-vous que ce champ ne contient pas plus de 254 caractères."
+
+#: auth_app/serializers.py:120
+msgid "Passwords do not match."
+msgstr "Les mots de passe ne correspondent pas."
+
+#: auth_app/serializers.py:124 auth_app/serializers.py:134
+msgid "Invalid or expired token."
+msgstr "Jeton invalide ou expiré."
+
+#: auth_app/serializers.py:159
+msgid "Email should not exceed 254 characters."
+msgstr "L'e-mail ne doit pas dépasser 254 caractères."
+
+#: auth_app/serializers.py:161
+msgid "Username should not exceed 150 characters."
+msgstr "Le nom d'utilisateur ne doit pas dépasser 150 caractères."
+
+#: auth_app/serializers.py:173
+#: python-brace-format
+msgid "Role '{value}' does not exist."
+msgstr "Le rôle '{value}' n'existe pas."
+
+#: auth_app/signals.py:35
+msgid "Account locked for unusual Login Attempt"
+msgstr "Compte verrouillé pour tentative de connexion inhabituelle"
+
+#: auth_app/views.py:160
+msgid "User created successfully but failed to send welcome email"
+msgstr "Utilisateur créé avec succès mais n'a pas réussi à envoyer l'e-mail de bienvenue"
+
+#: auth_app/views.py:162
+msgid "User created successfully"
+msgstr "Utilisateur créé avec succès"
+
+#: auth_app/views.py:214
+msgid "Your account has been activated successfully."
+msgstr "Votre compte a été activé avec succès."
+
+#: auth_app/views.py:216
+msgid "Activation link is invalid or expired."
+msgstr "Le lien d'activation est invalide ou a expiré."
+
+#: auth_app/views.py:354
+msgid ""
+"Data too long for field. Please ensure your username or email is within the "
+"valid length."
+msgstr "Données trop longues pour le champ. "
+
+#: auth_app/views.py:572 common/messages.py:13
+msgid "Password Reset Requested"
+msgstr "Réinitialisation du mot de passe demandée"
+
+#: campus_app/messages.py:4 educational_organizations_app/messages.py:4
+#: profile_app/messages.py:4
+msgid "Failed to update profile details."
+msgstr "Échec de la mise à jour des détails du profil."
+
+#: campus_app/messages.py:5 educational_organizations_app/messages.py:5
+#: profile_app/messages.py:5 profile_app/views.py:621 profile_app/views.py:1207
+#: profile_app/views.py:1274 profile_app/views.py:1415
+msgid "User details not found."
+msgstr "Détails utilisateur introuvables."
+
+#: campus_app/messages.py:6 educational_organizations_app/messages.py:6
+#: profile_app/messages.py:6
+msgid "User not authenticated."
+msgstr "Utilisateur non authentifié."
+
+#: campus_app/messages.py:7 educational_organizations_app/messages.py:7
+msgid "Organization data not found."
+msgstr "Données de l'organisation introuvables."
+
+#: campus_app/messages.py:8
+msgid "Campus data not found."
+msgstr "Données du campus introuvables."
+
+#: campus_app/messages.py:12 educational_organizations_app/messages.py:11
+msgid "Educational organization saved successfully."
+msgstr "Organisation éducative enregistrée avec succès."
+
+#: campus_app/messages.py:13 educational_organizations_app/messages.py:12
+msgid "Educational organization updated successfully."
+msgstr "Organisation éducative mise à jour avec succès."
+
+#: campus_app/messages.py:14 educational_organizations_app/messages.py:13
+#: profile_app/messages.py:12
+msgid "User details retrieved successfully."
+msgstr "Détails de l'utilisateur récupérés avec succès."
+
+#: campus_app/messages.py:15 educational_organizations_app/messages.py:14
+msgid "Organization data found successfully."
+msgstr "Données d’organisation trouvées avec succès."
+
+#: campus_app/messages.py:16
+msgid "Campus saved successfully."
+msgstr "Campus enregistré avec succès."
+
+#: campus_app/messages.py:17
+msgid "Campus data found successfully."
+msgstr "Données du campus trouvées avec succès."
+
+#: campus_app/messages.py:18
+msgid "Campus updated successfully."
+msgstr "Campus mis à jour avec succès."
+
+#: campus_app/serializers.py:14 campus_app/serializers.py:36
+#: campus_app/serializers.py:45 campus_app/serializers.py:51
+#: college_app/serializers.py:14 college_app/serializers.py:47
+#: college_app/serializers.py:55 college_app/serializers.py:62
+#: department_app/serializers.py:16 department_app/serializers.py:52
+#: department_app/serializers.py:62 department_app/serializers.py:70
+#: department_app/serializers.py:77 department_app/serializers.py:124
+#: department_app/serializers.py:135
+#: educational_organizations_app/serializers.py:13
+#: educational_organizations_app/serializers.py:43
+#: educational_organizations_app/serializers.py:64
+#: educational_organizations_app/serializers.py:72
+#: educational_organizations_app/serializers.py:80
+#: faculty_members_app/serializers.py:117
+#: faculty_members_app/serializers.py:125
+#: faculty_members_app/serializers.py:132
+#: profile_app/reference_info_serializer.py:43 profile_app/serializers.py:174
+#: profile_app/serializers.py:182 profile_app/serializers.py:190
+#: profile_app/serializers.py:228 profile_app/serializers.py:236
+#: profile_app/serializers.py:244 profile_app/serializers.py:708
+#: profile_app/serializers.py:714 profile_app/serializers.py:787
+#: profile_app/serializers.py:790 profile_app/serializers.py:793
+#: profile_app/serializers.py:852 profile_app/serializers.py:859
+#: profile_app/serializers.py:862 profile_app/serializers.py:917
+#: profile_app/serializers.py:920 profile_app/serializers.py:923
+#: profile_app/serializers.py:1013 profile_app/serializers.py:1016
+#: profile_app/serializers.py:1019 profile_app/serializers.py:1087
+#: profile_app/serializers.py:1090 profile_app/serializers.py:1135
+msgid "Ensure this field has no more than 255 characters."
+msgstr "assurez-vous que ce champ ne contient pas plus de 255 caractères."
+
+#: campus_app/serializers.py:24
+msgid "Invalid educational organization."
+msgstr "Organisation éducative invalide."
+
+#: campus_app/serializers.py:60
+msgid "Invalid state or province."
+msgstr "État ou province invalide."
+
+#: campus_app/serializers.py:72 college_app/serializers.py:78
+#: department_app/serializers.py:93
+#: educational_organizations_app/serializers.py:104
+#: faculty_members_app/serializers.py:148 profile_app/serializers.py:206
+#: profile_app/serializers.py:261 profile_app/serializers.py:855
+msgid "Ensure this field has no more than 20 characters."
+msgstr "Assurez-vous que ce champ ne comporte pas plus de 20 caractères."
+
+#: campus_app/serializers.py:81 college_app/serializers.py:86
+#: department_app/serializers.py:101
+#: educational_organizations_app/serializers.py:112
+#: faculty_members_app/serializers.py:156 profile_app/serializers.py:214
+#: profile_app/serializers.py:269
+msgid "Ensure this field has no more than 2 characters."
+msgstr "Assurez-vous que ce champ ne comporte pas plus de 2 caractères."
+
+#: campus_app/serializers.py:126
+msgid ""
+"A duplicate entry with the same campus name, educational organization, "
+"country code, city, and state or province already exists."
+msgstr "une entrée en double avec le même nom de campus, le même établissement d'enseignement, le même code de pays, la même ville et le même état ou province existe déjà."
+
+#: campus_app/views.py:28
+msgid "You do not have permission to view campus data"
+msgstr "Vous n'êtes pas autorisé à afficher les données du campus"
+
+#: campus_app/views.py:95
+msgid "You do not have permission to add a campus"
+msgstr "Vous n'êtes pas autorisé à ajouter un campus"
+
+#: campus_app/views.py:121 campus_app/views.py:173 department_app/messages.py:7
+#: department_app/views.py:124 department_app/views.py:173
+#: educational_organizations_app/views.py:248
+#: educational_organizations_app/views.py:357
+#: profile_app/educational_background_views.py:63
+#: profile_app/educational_background_views.py:96
+#: profile_app/reference_info_views.py:70
+#: profile_app/reference_info_views.py:101 profile_app/views.py:642
+#: profile_app/views.py:667 profile_app/views.py:1436 profile_app/views.py:1460
+#: profile_app/views.py:1538 profile_app/views.py:1569
+msgid "Validation error occurred."
+msgstr "Une erreur de validation s'est produite."
+
+#: campus_app/views.py:132
+msgid "You do not have permission to update this campus"
+msgstr "Vous n'êtes pas autorisé à mettre à jour ce campus"
+
+#: campus_app/views.py:166
+msgid "Campus not found."
+msgstr "Campus introuvable."
+
+#: campus_app/views.py:184
+msgid "You do not have permission to delete this campus"
+msgstr "Vous n'êtes pas autorisé à supprimer ce campus"
+
+#: campus_app/views.py:193
+msgid "Campus deleted successfully."
+msgstr "Campus supprimé avec succès."
+
+#: campus_app/views.py:200
+msgid "An error occurred while deleting the campus."
+msgstr "Une erreur s'est produite lors de la suppression du campus."
+
+#: coco/settings.py:148
+msgid "English"
+msgstr "anglais"
+
+#: coco/settings.py:149
+msgid "Bengali"
+msgstr "bengali"
+
+#: coco/settings.py:150
+msgid "French"
+msgstr "français"
+
+#: college_app/messages.py:4 faculty_members_app/messages.py:4
+#: global_messages.py:7
+msgid "An error has occurred. Please try again later."
+msgstr "Une erreur s'est produite. "
+
+#: college_app/messages.py:5 faculty_members_app/messages.py:5
+#: global_messages.py:8
+#: python-brace-format
+msgid ""
+"Please upload a file with one of the following extensions: {extensions}."
+msgstr "Veuillez télécharger un fichier avec l'une des extensions suivantes : {extensions}."
+
+#: college_app/messages.py:6 faculty_members_app/messages.py:6
+#: global_messages.py:9
+msgid "File size exceeds the maximum limit."
+msgstr "la taille du fichier dépasse la limite maximale."
+
+#: college_app/messages.py:7 faculty_members_app/messages.py:7
+#: global_messages.py:10
+msgid "Please upload either a Resume or a SOP file."
+msgstr "Veuillez télécharger un CV ou un fichier SOP."
+
+#: college_app/messages.py:8 faculty_members_app/messages.py:8
+#: global_messages.py:11
+msgid "Please upload a PDF file for Resume."
+msgstr "Veuillez télécharger un fichier PDF pour votre CV."
+
+#: college_app/messages.py:9 faculty_members_app/messages.py:9
+#: global_messages.py:12
+msgid "Please upload a JPG/PNG/JPEG/SVG/EPS file for Image."
+msgstr "Veuillez télécharger un fichier JPG/PNG/JPEG/SVG/EPS pour l'image."
+
+#: college_app/messages.py:10 faculty_members_app/messages.py:10
+#: global_messages.py:13
+msgid "Please upload a PDF file for SOP."
+msgstr "Veuillez télécharger un fichier PDF pour la SOP."
+
+#: college_app/messages.py:11 faculty_members_app/messages.py:11
+#: global_messages.py:14 global_messages.py:20
+msgid "Please fix the following error."
+msgstr "Veuillez corriger l'erreur suivante."
+
+#: college_app/messages.py:12 faculty_members_app/messages.py:12
+#: global_messages.py:15
+#: python-format
+msgid "Image size should be less than %(max_size)d mb"
+msgstr "la taille de l'image doit être inférieure à %(max_size)d Mo"
+
+#: college_app/messages.py:13
+msgid "College data not found."
+msgstr "Données universitaires introuvables."
+
+#: college_app/messages.py:17 faculty_members_app/messages.py:17
+#: global_messages.py:19
+msgid "Operation completed successfully."
+msgstr "Opération terminée avec succès."
+
+#: college_app/messages.py:18 faculty_members_app/messages.py:18
+#: global_messages.py:21
+msgid "Files uploaded successfully."
+msgstr "Fichiers téléchargés avec succès."
+
+#: college_app/messages.py:19
+msgid "College data found."
+msgstr "Données universitaires trouvées."
+
+#: college_app/messages.py:20
+msgid "College data saved successfully."
+msgstr "Données universitaires enregistrées avec succès."
+
+#: college_app/messages.py:21
+msgid "College data updated successfully."
+msgstr "Les données de l'université ont été mises à jour avec succès."
+
+#: college_app/serializers.py:15 college_app/serializers.py:16
+#: department_app/serializers.py:17
+msgid "Name cannot be blank."
+msgstr "Le nom ne peut pas être vide."
+
+#: college_app/serializers.py:17 department_app/serializers.py:19
+#: profile_app/serializers.py:1037 profile_app/serializers.py:1104
+msgid "Name is required."
+msgstr "Le nom est requis."
+
+#: college_app/serializers.py:24 faculty_members_app/serializers.py:55
+msgid "Campus is required."
+msgstr "Le campus est requis."
+
+#: college_app/serializers.py:25 faculty_members_app/serializers.py:56
+msgid "Campus cannot be blank."
+msgstr "Le campus ne peut pas être vide."
+
+#: college_app/serializers.py:26 faculty_members_app/serializers.py:57
+msgid "Specified campus does not exist or is not active."
+msgstr "le campus spécifié n'existe pas ou n'est pas actif."
+
+#: college_app/serializers.py:39 department_app/serializers.py:53
+#: department_app/serializers.py:133
+#: educational_organizations_app/serializers.py:50
+#: profile_app/serializers.py:756 profile_app/serializers.py:895
+msgid "Enter a valid URL."
+msgstr "Entrez une URL valide."
+
+#: college_app/serializers.py:104 department_app/serializers.py:120
+msgid "Name cannot be empty."
+msgstr "Le nom ne peut pas être vide."
+
+#: college_app/views.py:21
+msgid "You do not have permission to view college data"
+msgstr "Vous n'êtes pas autorisé à consulter les données du collège"
+
+#: college_app/views.py:89
+msgid "You do not have permission to add a college"
+msgstr "Vous n'êtes pas autorisé à ajouter un collège"
+
+#: college_app/views.py:116
+msgid "You do not have permission to update this college"
+msgstr "Vous n'êtes pas autorisé à mettre à jour ce collège"
+
+#: college_app/views.py:143
+msgid "You do not have permission to delete this college"
+msgstr "Vous n'êtes pas autorisé à supprimer ce collège"
+
+#: college_app/views.py:153
+msgid "College deleted successfully."
+msgstr "Collège supprimé avec succès."
+
+#: common/messages.py:12 emails/welcome_email.html:5
+msgid "Welcome to Coco Platform!"
+msgstr "Bienvenue sur la plateforme Coco !"
+
+#: common/messages.py:14
+msgid "New Contact Request"
+msgstr "Nouvelle demande de contact"
+
+#: common/messages.py:15 emails/otp_activation_email.html:35
+msgid "OTP Activation Successful"
+msgstr "Activation OTP réussie"
+
+#: common/serializers.py:36
+msgid "Country name must contain only letters and spaces."
+msgstr "Le nom du pays ne doit contenir que des lettres et des espaces."
+
+#: common/serializers.py:44
+msgid "Country code must be alphanumeric."
+msgstr "le code du pays doit être alphanumérique."
+
+#: common/serializers.py:48 common/serializers.py:57
+msgid "This country code has already been registered."
+msgstr "ce code de pays a déjà été enregistré."
+
+#: common/serializers.py:71
+msgid "Geo-admin 1 code must be alphanumeric."
+msgstr "Le code Géo-admin 1 doit être alphanumérique."
+
+#: common/serializers.py:75
+msgid "This administrative code is already in use."
+msgstr "Ce code administratif est déjà utilisé."
+
+#: common/serializers.py:82
+msgid "Geo-admin 1 name must contain only letters and spaces."
+msgstr "Le nom du géo-administrateur 1 doit contenir uniquement des lettres et des espaces."
+
+#: common/serializers.py:89 common/serializers.py:124
+msgid "The selected country is not active."
+msgstr "Le pays sélectionné n'est pas actif."
+
+#: common/serializers.py:93
+msgid "This Geo-admin 1 code has already been registered."
+msgstr "Ce code Geo-admin 1 a déjà été enregistré."
+
+#: common/serializers.py:109
+msgid "Geo-admin 2 code must be alphanumeric."
+msgstr "Le code Geo-admin 2 doit être alphanumérique."
+
+#: common/serializers.py:117
+msgid "Geo-admin 2 name must contain only letters and spaces."
+msgstr "Le nom du géo-administrateur 2 doit contenir uniquement des lettres et des espaces."
+
+#: common/serializers.py:129
+msgid "The selected geo admin 1 is not active."
+msgstr "L'administrateur géographique 1 sélectionné n'est pas actif."
+
+#: common/serializers.py:134
+msgid "This Geo-admin 2 code has already been registered."
+msgstr "Ce code Geo-admin 2 a déjà été enregistré."
+
+#: common/views.py:77 common/views.py:141 common/views.py:201
+#: common/views.py:244 common/views.py:313 common/views.py:675
+#: profile_app/publication_view.py:204
+msgid "Request processed successfully."
+msgstr "Demande traitée avec succès."
+
+#: common/views.py:87
+msgid "An error occurred while fetching the research interests."
+msgstr "Une erreur s'est produite lors de la récupération des intérêts de recherche."
+
+#: common/views.py:151
+msgid "An error occurred while fetching the skills."
+msgstr "Une erreur s'est produite lors de la récupération des compétences."
+
+#: common/views.py:210
+msgid "An error occurred while fetching the country list."
+msgstr "Une erreur s'est produite lors de la récupération de la liste des pays."
+
+#: common/views.py:229
+msgid "Invalid country code length. Expected 2 characters."
+msgstr "Longueur du code de pays invalide. "
+
+#: common/views.py:262 common/views.py:290 common/views.py:331
+msgid "An error occurred while fetching the state list."
+msgstr "Une erreur s'est produite lors de la récupération de la liste d'états."
+
+#: common/views.py:280
+msgid "Ethnicity options fetched successfully."
+msgstr "options d'origine ethnique récupérées avec succès."
+
+#: common/views.py:345
+msgid "You do not have permission to view countries"
+msgstr "Vous n'êtes pas autorisé à afficher les pays"
+
+#: common/views.py:352
+msgid "You do not have permission to add a country"
+msgstr "Vous n'êtes pas autorisé à ajouter un pays"
+
+#: common/views.py:370
+msgid "You do not have permission to view this country"
+msgstr "Vous n'êtes pas autorisé à afficher ce pays"
+
+#: common/views.py:376
+msgid "You do not have permission to update this country"
+msgstr "Vous n'êtes pas autorisé à mettre à jour ce pays"
+
+#: common/views.py:388
+msgid "You do not have permission to delete this country"
+msgstr "Vous n'êtes pas autorisé à supprimer ce pays"
+
+#: common/views.py:400
+msgid "You do not have permission to view geo-administrative areas"
+msgstr "Vous n'êtes pas autorisé à afficher les zones géo-administratives"
+
+#: common/views.py:414
+msgid "You do not have permission to add geo-administrative areas"
+msgstr "Vous n'êtes pas autorisé à ajouter des zones géo-administratives"
+
+#: common/views.py:434
+msgid "You do not have permission to view this geo-administrative area"
+msgstr "Vous n'êtes pas autorisé à visualiser cette zone géo-administrative"
+
+#: common/views.py:440
+msgid "You do not have permission to update this geo-administrative area"
+msgstr "Vous n'êtes pas autorisé à mettre à jour cette zone géo-administrative"
+
+#: common/views.py:452
+msgid "You do not have permission to delete this geo-administrative area"
+msgstr "Vous n'êtes pas autorisé à supprimer cette zone géo-administrative"
+
+#: common/views.py:464
+msgid "You do not have permission to view geo-administrative areas level 2"
+msgstr "Vous n'avez pas la permission de visualiser les zones géo-administratives niveau 2"
+
+#: common/views.py:481
+msgid "You do not have permission to add geo-administrative areas level 2"
+msgstr "Vous n'êtes pas autorisé à ajouter des zones géo-administratives niveau 2"
+
+#: common/views.py:500
+msgid "You do not have permission to view this geo-administrative area level 2"
+msgstr "Vous n'avez pas la permission de visualiser cette zone géo-administrative niveau 2"
+
+#: common/views.py:506
+msgid ""
+"You do not have permission to update this geo-administrative area level 2"
+msgstr "Vous n'avez pas la permission de mettre à jour cette zone géo-administrative niveau 2"
+
+#: common/views.py:518
+msgid ""
+"You do not have permission to delete this geo-administrative area level 2"
+msgstr "Vous n'avez pas la permission de supprimer cette zone géo-administrative niveau 2"
+
+#: common/views.py:691
+msgid "An error occurred while fetching the organization category list."
+msgstr "Une erreur s’est produite lors de la récupération de la liste des catégories d’organisation."
+
+#: contact_app/messages.py:4
+msgid "Failed to save data from form."
+msgstr "Échec de l'enregistrement des données du formulaire."
+
+#: contact_app/messages.py:6
+msgid "Full name is required."
+msgstr "Le nom complet est requis."
+
+#: contact_app/messages.py:7
+msgid "Message is required."
+msgstr "Un message est requis."
+
+#: contact_app/messages.py:13
+msgid ""
+"Thank you! Your message has been submitted successfully. We will get back to "
+"you soon."
+msgstr "Merci ! "
+
+#: department_app/messages.py:5
+msgid "Department data not found."
+msgstr "Données du département introuvables."
+
+#: department_app/messages.py:6
+msgid "Please fix the following errors:"
+msgstr "Veuillez corriger les erreurs suivantes :"
+
+#: department_app/messages.py:8 department_app/views.py:166
+msgid "Department not found."
+msgstr "Département introuvable."
+
+#: department_app/messages.py:9 department_app/views.py:198
+msgid "An error occurred while deleting the department."
+msgstr "Une erreur s'est produite lors de la suppression du département."
+
+#: department_app/messages.py:13
+msgid "Department data found successfully."
+msgstr "Données du département trouvées avec succès."
+
+#: department_app/messages.py:14
+msgid "Department saved successfully."
+msgstr "Département enregistré avec succès."
+
+#: department_app/messages.py:15
+msgid "Department updated successfully."
+msgstr "Département mis à jour avec succès."
+
+#: department_app/messages.py:16 department_app/views.py:191
+msgid "Department deleted successfully."
+msgstr "Département supprimé avec succès."
+
+#: department_app/serializers.py:18
+msgid "Name cannot be null."
+msgstr "Le nom ne peut pas être nul."
+
+#: department_app/serializers.py:28
+msgid "The selected campus does not exist."
+msgstr "Le campus sélectionné n'existe pas."
+
+#: department_app/serializers.py:29
+msgid "Invalid type. Expected a campus instance."
+msgstr "Type invalide. "
+
+#: department_app/serializers.py:40
+msgid "The selected college does not exist."
+msgstr "Le collège sélectionné n'existe pas."
+
+#: department_app/serializers.py:41
+msgid "Invalid type. Expected a college instance."
+msgstr "Type invalide. "
+
+#: department_app/serializers.py:122
+msgid "Name should not contain special characters or numbers."
+msgstr "Le nom ne doit pas contenir de caractères spéciaux ni de chiffres."
+
+#: department_app/serializers.py:145
+msgid "The linked college must be active."
+msgstr "Le collège lié doit être actif."
+
+#: department_app/serializers.py:147
+msgid "The linked campus must be active."
+msgstr "Le campus lié doit être actif."
+
+#: educational_organizations_app/messages.py:15
+msgid "Organization data deleted successfully."
+msgstr "Données de l'organisation supprimées avec succès."
+
+#: educational_organizations_app/serializers.py:27
+msgid "Unsupported file extension. Please upload a JPG, JPEG, or PNG file."
+msgstr "Extension de fichier non prise en charge. "
+
+#: educational_organizations_app/serializers.py:133
+msgid "Category is required."
+msgstr "La catégorie est obligatoire."
+
+#: educational_organizations_app/serializers.py:134
+msgid "Invalid category."
+msgstr "Catégorie invalide."
+
+#: educational_organizations_app/views.py:37
+#: educational_organizations_app/views.py:66
+#: educational_organizations_app/views.py:81
+msgid "Educational organization category not found."
+msgstr "Catégorie d'établissement d'enseignement introuvable."
+
+#: educational_organizations_app/views.py:40
+msgid ""
+"You do not have permission to view this educational organization category"
+msgstr "Vous n'êtes pas autorisé à afficher cette catégorie d'établissement d'enseignement"
+
+#: educational_organizations_app/views.py:45
+msgid "You do not have permission to view educational organization categories"
+msgstr "Vous n'êtes pas autorisé à afficher les catégories d'établissements d'enseignement."
+
+#: educational_organizations_app/views.py:54
+msgid "You do not have permission to add an educational organization category"
+msgstr "Vous n'êtes pas autorisé à ajouter une catégorie d'établissement d'enseignement"
+
+#: educational_organizations_app/views.py:69
+msgid ""
+"You do not have permission to update this educational organization category"
+msgstr "Vous n'êtes pas autorisé à mettre à jour cette catégorie d'établissement d'enseignement"
+
+#: educational_organizations_app/views.py:84
+msgid ""
+"You do not have permission to delete this educational organization category"
+msgstr "Vous n'êtes pas autorisé à supprimer cette catégorie d'établissement d'enseignement"
+
+#: educational_organizations_app/views.py:88
+msgid "Educational organization category deleted successfully."
+msgstr "Catégorie d'établissement d'enseignement supprimée avec succès."
+
+#: educational_organizations_app/views.py:187
+#: educational_organizations_app/views.py:271
+msgid "Only JPG, PNG, GIF image files are allowed."
+msgstr "Seuls les fichiers image JPG, PNG et GIF sont autorisés."
+
+#: educational_organizations_app/views.py:206
+#: educational_organizations_app/views.py:296
+#: educational_organizations_app/views.py:318
+msgid "File upload failed."
+msgstr "échec du téléchargement du fichier."
+
+#: educational_organizations_app/views.py:349
+msgid "Educational organization not found."
+msgstr "Organisme éducatif introuvable."
+
+#: educational_organizations_app/views.py:377
+msgid "Educational organization deleted successfully."
+msgstr "Organisation éducative supprimée avec succès."
+
+#: emails/contact_request.html:5
+msgid "Contact Request on Coco Platform"
+msgstr "Demande de contact sur la plateforme Coco"
+
+#: emails/contact_request.html:37
+msgid "Hi,"
+msgstr "Bonjour,"
+
+#: emails/contact_request.html:39
+msgid "wants to contact you."
+msgstr "souhaite vous contacter."
+
+#: emails/contact_request.html:42
+msgid "Email:"
+msgstr "E-mail :"
+
+#: emails/contact_request.html:45
+msgid "Message:"
+msgstr "Message :"
+
+#: emails/contact_request.html:49
+msgid "This message was sent to Admin."
+msgstr "Ce message a été envoyé à l'administrateur."
+
+#: emails/lockout_email.html:35
+msgid "Dear"
+msgstr "Cher"
+
+#: emails/lockout_email.html:37
+#: python-format
+msgid ""
+"Your account has been locked for %(locked_time)s minute(s) due to an unusual "
+"login attempt on your account. Please contact support immediately to unlock "
+"your account."
+msgstr "Votre compte a été verrouillé pendant %(locked_time)s minute(s) en raison d'une tentative de connexion inhabituelle sur votre compte. "
+
+#: emails/lockout_email.html:40 emails/otp_activation_email.html:39
+#: emails/password_reset_email.html:38 emails/welcome_email.html:36
+msgid "Best regards,"
+msgstr "Meilleures salutations,"
+
+#: emails/lockout_email.html:40 emails/otp_activation_email.html:39
+#: emails/password_reset_email.html:38 emails/welcome_email.html:36
+msgid "The Coco Platform Team"
+msgstr "L’équipe de la plateforme Coco"
+
+#: emails/otp_activation_email.html:8
+msgid "OTP Activation"
+msgstr "Activation OTP"
+
+#: emails/otp_activation_email.html:36 emails/password_reset_email.html:34
+#: emails/welcome_email.html:33
+msgid "Hello"
+msgstr "Bonjour"
+
+#: emails/otp_activation_email.html:37
+msgid "Your OTP setup was successful. You can now use OTP for secure login."
+msgstr "Votre configuration OTP a réussi. "
+
+#: emails/otp_activation_email.html:38
+msgid "If you did not perform this action, please contact support immediately."
+msgstr "Si vous n’avez pas effectué cette action, veuillez contacter immédiatement l’assistance."
+
+#: emails/password_reset_email.html:7
+msgid "Password Reset"
+msgstr "Réinitialisation du mot de passe"
+
+#: emails/password_reset_email.html:35
+msgid ""
+"You requested a password reset. Click the link below to reset your password:"
+msgstr "Vous avez demandé une réinitialisation du mot de passe. "
+
+#: emails/password_reset_email.html:36
+msgid "Reset Password"
+msgstr "Réinitialiser le mot de passe"
+
+#: emails/password_reset_email.html:37
+msgid "If you did not request a password reset, please ignore this email."
+msgstr "Si vous n'avez pas demandé de réinitialisation de mot de passe, veuillez ignorer cet e-mail."
+
+#: emails/welcome_email.html:34
+msgid ""
+"Thank you for registering on Coco Platform. To activate your account, please "
+"click the link below:"
+msgstr "Merci de votre inscription sur Coco Platform. "
+
+#: faculty_members_app/messages.py:13
+msgid "Faculty member data not found."
+msgstr "Données sur les membres du corps enseignant introuvables."
+
+#: faculty_members_app/messages.py:19
+msgid "Faculty member data found."
+msgstr "Données sur les membres du corps enseignant trouvées."
+
+#: faculty_members_app/messages.py:20
+msgid "Faculty member data saved successfully."
+msgstr "Les données des membres du corps enseignant ont été enregistrées avec succès."
+
+#: faculty_members_app/messages.py:21
+msgid "Faculty member data updated successfully."
+msgstr "Les données des membres du corps enseignant ont été mises à jour avec succès."
+
+#: faculty_members_app/serializers.py:19
+msgid "User is required."
+msgstr "L'utilisateur est requis."
+
+#: faculty_members_app/serializers.py:20
+msgid "User cannot be blank."
+msgstr "L'utilisateur ne peut pas être vide."
+
+#: faculty_members_app/serializers.py:21
+msgid "Specified user does not exist."
+msgstr "L'utilisateur spécifié n'existe pas."
+
+#: faculty_members_app/serializers.py:31
+msgid "Educational organization is required."
+msgstr "Une organisation pédagogique est requise."
+
+#: faculty_members_app/serializers.py:32
+msgid "Educational organization cannot be blank."
+msgstr "L’organisation éducative ne peut pas être vide."
+
+#: faculty_members_app/serializers.py:33
+msgid "Specified educational organization does not exist or is not active."
+msgstr "L’organisme éducatif spécifié n’existe pas ou n’est pas actif."
+
+#: faculty_members_app/serializers.py:43
+msgid "Department is required."
+msgstr "Le département est requis."
+
+#: faculty_members_app/serializers.py:44
+msgid "Department cannot be blank."
+msgstr "Le département ne peut pas être vide."
+
+#: faculty_members_app/serializers.py:45
+msgid "Specified department does not exist or is not active."
+msgstr "Le service spécifié n'existe pas ou n'est pas actif."
+
+#: faculty_members_app/serializers.py:67
+msgid "College is required."
+msgstr "L’université est requise."
+
+#: faculty_members_app/serializers.py:68
+msgid "College cannot be blank."
+msgstr "Le Collège ne peut pas être vide."
+
+#: faculty_members_app/serializers.py:69
+msgid "Specified college does not exist or is not active."
+msgstr "Le collège spécifié n'existe pas ou n'est pas actif."
+
+#: faculty_members_app/serializers.py:79
+msgid "Enter a valid URL for the personal web address."
+msgstr "saisissez une URL valide pour l'adresse Web personnelle."
+
+#: faculty_members_app/serializers.py:86
+msgid "Enter a valid URL for the research profile address."
+msgstr "Entrez une URL valide pour l'adresse du profil de recherche."
+
+#: faculty_members_app/serializers.py:91
+msgid "Enter a valid ORCID identifier."
+msgstr "Entrez un identifiant ORCID valide."
+
+#: faculty_members_app/serializers.py:99
+msgid "Ensure the faculty type has no more than 100 characters."
+msgstr "Assurez-vous que le type de professeur ne comporte pas plus de 100 caractères."
+
+#: faculty_members_app/serializers.py:100
+msgid "Faculty type cannot be blank."
+msgstr "Le type de faculté ne peut pas être vide."
+
+#: faculty_members_app/serializers.py:101
+msgid "Faculty type cannot be null."
+msgstr "Le type de faculté ne peut pas être nul."
+
+#: faculty_members_app/serializers.py:108
+#: faculty_members_app/serializers.py:109
+msgid "Statement cannot be blank."
+msgstr "La déclaration ne peut pas être vide."
+
+#: faculty_members_app/serializers.py:197
+msgid "A faculty member with these details already exists."
+msgstr "Un membre du corps professoral avec ces informations existe déjà."
+
+#: faculty_members_app/views.py:184
+msgid "Faculty member deleted successfully."
+msgstr "membre du corps enseignant supprimé avec succès."
+
+#: profile_app/academic_history_view.py:11
+msgid "Get academic history"
+msgstr "Obtenir l'histoire académique"
+
+#: profile_app/academic_history_view.py:12
+msgid "Retrieve user's academic history."
+msgstr "Récupérer les antécédents académiques de l'utilisateur."
+
+#: profile_app/academic_history_view.py:31
+msgid "academic history retrieved successfully."
+msgstr "histoire académique récupérée avec succès."
+
+#: profile_app/academic_history_view.py:46
+#: profile_app/academic_history_view.py:103
+#: profile_app/academic_history_view.py:163
+#: profile_app/award_grant_scholarship_view.py:46
+#: profile_app/award_grant_scholarship_view.py:103
+#: profile_app/award_grant_scholarship_view.py:163
+#: profile_app/dissertation_view.py:46 profile_app/dissertation_view.py:103
+#: profile_app/dissertation_view.py:163 profile_app/publication_view.py:46
+#: profile_app/publication_view.py:103 profile_app/publication_view.py:163
+#: profile_app/research_experience_view.py:46
+#: profile_app/research_experience_view.py:103
+#: profile_app/research_experience_view.py:163
+#: profile_app/training_workshop_view.py:46
+#: profile_app/training_workshop_view.py:103
+#: profile_app/training_workshop_view.py:163 profile_app/views.py:694
+#: profile_app/views.py:962 profile_app/views.py:1030 profile_app/views.py:1089
+#: profile_app/views.py:1156 profile_app/views.py:1215
+#: profile_app/views.py:1282 profile_app/views.py:1485
+#: profile_app/work_experience_view.py:46
+#: profile_app/work_experience_view.py:103
+#: profile_app/work_experience_view.py:163
+msgid "An error occurred while processing the request"
+msgstr "Une erreur s'est produite lors du traitement de la demande"
+
+#: profile_app/academic_history_view.py:53
+msgid "Add Academic history"
+msgstr "Ajouter un historique académique"
+
+#: profile_app/academic_history_view.py:54
+msgid "Add a new Academic history."
+msgstr "Ajouter un nouvel historique académique."
+
+#: profile_app/academic_history_view.py:78
+msgid "Academic history added successfully."
+msgstr "Histoire académique ajoutée avec succès."
+
+#: profile_app/academic_history_view.py:86
+#: profile_app/academic_history_view.py:146
+#: profile_app/award_grant_scholarship_view.py:86
+#: profile_app/award_grant_scholarship_view.py:146
+#: profile_app/dissertation_view.py:86 profile_app/dissertation_view.py:146
+#: profile_app/publication_view.py:86 profile_app/publication_view.py:146
+#: profile_app/research_experience_view.py:86
+#: profile_app/research_experience_view.py:146
+#: profile_app/training_workshop_view.py:86
+#: profile_app/training_workshop_view.py:146 profile_app/views.py:439
+#: profile_app/views.py:1013 profile_app/views.py:1139
+#: profile_app/views.py:1265 profile_app/work_experience_view.py:86
+#: profile_app/work_experience_view.py:146
+msgid "Validation error"
+msgstr "Erreur de validation"
+
+#: profile_app/academic_history_view.py:111
+msgid "Update Academic history"
+msgstr "Mettre à jour l'historique académique"
+
+#: profile_app/academic_history_view.py:112
+msgid "Update an existing Academic history."
+msgstr "Mettre à jour un historique académique existant."
+
+#: profile_app/academic_history_view.py:138
+msgid "Academic history updated successfully."
+msgstr "Historique académique mis à jour avec succès."
+
+#: profile_app/academic_history_view.py:171
+msgid "Delete Academic history"
+msgstr "Supprimer l'historique académique"
+
+#: profile_app/academic_history_view.py:172
+msgid "Delete an existing Academic history."
+msgstr "Supprimer un historique académique existant."
+
+#: profile_app/academic_history_view.py:187
+msgid "Academic history deleted successfully."
+msgstr "Historique académique supprimé avec succès."
+
+#: profile_app/award_grant_scholarship_view.py:11
+msgid "Get awards, grants, and scholarships"
+msgstr "Obtenez des prix, des subventions et des bourses"
+
+#: profile_app/award_grant_scholarship_view.py:12
+msgid "Retrieve user's awards, grants, and scholarships."
+msgstr "Récupérez les récompenses, les subventions et les bourses des utilisateurs."
+
+#: profile_app/award_grant_scholarship_view.py:31
+msgid "Awards, grants, and scholarships retrieved successfully."
+msgstr "récompenses, subventions et bourses récupérées avec succès."
+
+#: profile_app/award_grant_scholarship_view.py:53
+msgid "Add AwardGrantScholarship"
+msgstr "Ajouter une bourse d'études"
+
+#: profile_app/award_grant_scholarship_view.py:54
+msgid "Add a new award grant scholarship."
+msgstr "Ajouter une nouvelle bourse d'études."
+
+#: profile_app/award_grant_scholarship_view.py:78
+msgid "Award grant scholarship added successfully."
+msgstr "Bourse d'attribution ajoutée avec succès."
+
+#: profile_app/award_grant_scholarship_view.py:111
+msgid "Update award grant scholarship"
+msgstr "Mise à jour de la bourse d'études"
+
+#: profile_app/award_grant_scholarship_view.py:112
+msgid "Update an existing award grant scholarship."
+msgstr "Mettre à jour une bourse d’études existante."
+
+#: profile_app/award_grant_scholarship_view.py:138
+msgid "Award grant scholarship updated successfully."
+msgstr "Bourse d'attribution mise à jour avec succès."
+
+#: profile_app/award_grant_scholarship_view.py:171
+msgid "Delete award grant scholarship"
+msgstr "Supprimer la bourse d'études"
+
+#: profile_app/award_grant_scholarship_view.py:172
+msgid "Delete an existing award grant scholarship."
+msgstr "Supprimer une bourse d'études existante."
+
+#: profile_app/award_grant_scholarship_view.py:188
+msgid "Award grant scholarship deleted successfully."
+msgstr "Bourse d'attribution supprimée avec succès."
+
+#: profile_app/dissertation_view.py:11
+msgid "Get Dissertations"
+msgstr "Obtenir des thèses"
+
+#: profile_app/dissertation_view.py:12
+msgid "Retrieve user's Dissertations."
+msgstr "Récupérer les mémoires de l'utilisateur."
+
+#: profile_app/dissertation_view.py:31
+msgid "Dissertations retrieved successfully."
+msgstr "Mémoires récupérés avec succès."
+
+#: profile_app/dissertation_view.py:53
+msgid "Add dissertation"
+msgstr "Ajouter une thèse"
+
+#: profile_app/dissertation_view.py:54
+msgid "Add a new dissertation."
+msgstr "Ajouter une nouvelle thèse."
+
+#: profile_app/dissertation_view.py:78
+msgid "Dissertation added successfully."
+msgstr "Thèse ajoutée avec succès."
+
+#: profile_app/dissertation_view.py:111
+msgid "Update dissertation"
+msgstr "Mettre à jour la thèse"
+
+#: profile_app/dissertation_view.py:112
+msgid "Update an existing dissertation."
+msgstr "Mettre à jour une thèse existante."
+
+#: profile_app/dissertation_view.py:138
+msgid "Dissertation updated successfully."
+msgstr "Thèse mise à jour avec succès."
+
+#: profile_app/dissertation_view.py:171
+msgid "Delete dissertation"
+msgstr "Supprimer la thèse"
+
+#: profile_app/dissertation_view.py:172
+msgid "Delete an existing dissertation."
+msgstr "Supprimer une thèse existante."
+
+#: profile_app/dissertation_view.py:187
+msgid "Dissertation deleted successfully."
+msgstr "Thèse supprimée avec succès."
+
+#: profile_app/educational_background_views.py:18
+msgid "Get Educational Background"
+msgstr "Obtenir une formation"
+
+#: profile_app/educational_background_views.py:19
+msgid "Retrieve user's educational background."
+msgstr "Récupérer la formation de l'utilisateur."
+
+#: profile_app/educational_background_views.py:34
+msgid "Educational backgrounds retrieved successfully."
+msgstr "Parcours scolaires récupérés avec succès."
+
+#: profile_app/educational_background_views.py:39
+msgid "Add Educational Background"
+msgstr "Ajouter une formation"
+
+#: profile_app/educational_background_views.py:40
+msgid "Add a new educational background."
+msgstr "Ajouter une nouvelle formation."
+
+#: profile_app/educational_background_views.py:56
+msgid "Educational background added successfully."
+msgstr "Formation ajoutée avec succès."
+
+#: profile_app/educational_background_views.py:68
+msgid "Update Educational Background"
+msgstr "Mettre à jour la formation"
+
+#: profile_app/educational_background_views.py:69
+msgid "Update an existing educational background."
+msgstr "Mettre à jour un bagage scolaire existant."
+
+#: profile_app/educational_background_views.py:89
+msgid "Educational background updated successfully."
+msgstr "Formation mise à jour avec succès."
+
+#: profile_app/educational_background_views.py:101
+msgid "Delete Educational Background"
+msgstr "Supprimer la formation"
+
+#: profile_app/educational_background_views.py:102
+msgid "Delete an existing educational background."
+msgstr "Supprimer une formation existante."
+
+#: profile_app/educational_background_views.py:117
+msgid "Educational background deleted successfully."
+msgstr "Formation supprimée avec succès."
+
+#: profile_app/educational_background_views.py:125
+msgid "Update Ranks"
+msgstr "Mettre à jour les classements"
+
+#: profile_app/educational_background_views.py:126
+msgid "Update the ranks of educational backgrounds."
+msgstr "Mettre à jour les classements des formations."
+
+#: profile_app/educational_background_views.py:157
+msgid "Ranks updated successfully."
+msgstr "Les classements ont été mis à jour avec succès."
+
+#: profile_app/educational_background_views.py:165
+msgid "An error occurred while updating ranks."
+msgstr "Une erreur s'est produite lors de la mise à jour des classements."
+
+#: profile_app/messages.py:10
+msgid "Profile details data saved successfully."
+msgstr "Les données détaillées du profil ont été enregistrées avec succès."
+
+#: profile_app/messages.py:11
+msgid "Profile details data updated successfully."
+msgstr "Les données détaillées du profil ont été mises à jour avec succès."
+
+#: profile_app/publication_view.py:11
+msgid "Get Publications"
+msgstr "Obtenir des publications"
+
+#: profile_app/publication_view.py:12
+msgid "Retrieve user's publications."
+msgstr "Récupérer les publications de l'utilisateur."
+
+#: profile_app/publication_view.py:31
+msgid "Publications retrieved successfully."
+msgstr "Publications récupérées avec succès."
+
+#: profile_app/publication_view.py:53
+msgid "Add Publication"
+msgstr "Ajouter une publication"
+
+#: profile_app/publication_view.py:54
+msgid "Add a new publication."
+msgstr "Ajouter une nouvelle publication."
+
+#: profile_app/publication_view.py:78
+msgid "Publication added successfully."
+msgstr "Publication ajoutée avec succès."
+
+#: profile_app/publication_view.py:111
+msgid "Update Publication"
+msgstr "Mise à jour de la publication"
+
+#: profile_app/publication_view.py:112
+msgid "Update an existing publication."
+msgstr "Mettre à jour une publication existante."
+
+#: profile_app/publication_view.py:138
+msgid "Publication updated successfully."
+msgstr "publication mise à jour avec succès."
+
+#: profile_app/publication_view.py:171
+msgid "Delete Publication"
+msgstr "Supprimer la publication"
+
+#: profile_app/publication_view.py:172
+msgid "Delete an existing publication."
+msgstr "Supprimer une publication existante."
+
+#: profile_app/publication_view.py:187
+msgid "Publication deleted successfully."
+msgstr "Publication supprimée avec succès."
+
+#: profile_app/publication_view.py:214
+msgid "An error occurred while fetching the publication types list."
+msgstr "Une erreur s'est produite lors de la récupération de la liste des types de publication."
+
+#: profile_app/reference_info_serializer.py:32
+msgid "Invalid title. Choose from Dr., Mr., Mrs., Ms., or Prof."
+msgstr "Titre invalide. "
+
+#: profile_app/reference_info_serializer.py:36
+#: profile_app/reference_info_serializer.py:40
+#: profile_app/reference_info_serializer.py:46
+#: profile_app/reference_info_serializer.py:49
+#: profile_app/reference_info_serializer.py:52 profile_app/serializers.py:47
+#: profile_app/serializers.py:69 profile_app/serializers.py:87
+#: profile_app/serializers.py:92 profile_app/serializers.py:636
+#: profile_app/serializers.py:639 profile_app/serializers.py:642
+#: profile_app/serializers.py:1138
+msgid "Ensure this field has no more than 100 characters."
+msgstr "Assurez-vous que ce champ ne contient pas plus de 100 caractères."
+
+#: profile_app/reference_info_serializer.py:62
+msgid "First name is required."
+msgstr "Le prénom est requis."
+
+#: profile_app/reference_info_serializer.py:67
+msgid "Last name is required."
+msgstr "Le nom de famille est requis."
+
+#: profile_app/reference_info_serializer.py:72
+msgid "Email address is required."
+msgstr "Une adresse e-mail est requise."
+
+#: profile_app/reference_info_serializer.py:79
+msgid "The phone number entered is not valid."
+msgstr "Le numéro de téléphone saisi n'est pas valide."
+
+#: profile_app/reference_info_serializer.py:81
+msgid "The phone number entered is not valid. exception"
+msgstr "Le numéro de téléphone saisi n'est pas valide. "
+
+#: profile_app/reference_info_views.py:28
+msgid "Get References"
+msgstr "Obtenir des références"
+
+#: profile_app/reference_info_views.py:29
+msgid "Retrieve user's references."
+msgstr "Récupérer les références de l'utilisateur."
+
+#: profile_app/reference_info_views.py:43
+msgid "References retrieved successfully."
+msgstr "Références récupérées avec succès."
+
+#: profile_app/reference_info_views.py:48
+msgid "Add Reference"
+msgstr "Ajouter une référence"
+
+#: profile_app/reference_info_views.py:49
+msgid "Add a new reference."
+msgstr "Ajouter une nouvelle référence."
+
+#: profile_app/reference_info_views.py:64
+msgid "Reference added successfully."
+msgstr "Référence ajoutée avec succès."
+
+#: profile_app/reference_info_views.py:75
+msgid "Update Reference"
+msgstr "Mettre à jour la référence"
+
+#: profile_app/reference_info_views.py:76
+msgid "Update an existing reference."
+msgstr "Mettre à jour une référence existante."
+
+#: profile_app/reference_info_views.py:95
+msgid "Reference updated successfully."
+msgstr "Référence mise à jour avec succès."
+
+#: profile_app/reference_info_views.py:106
+msgid "Delete Reference"
+msgstr "Supprimer la référence"
+
+#: profile_app/reference_info_views.py:107
+msgid "Delete an existing reference."
+msgstr "Supprimer une référence existante."
+
+#: profile_app/reference_info_views.py:121
+msgid "Reference deleted successfully."
+msgstr "Référence supprimée avec succès."
+
+#: profile_app/research_experience_view.py:11
+msgid "Get research experiences"
+msgstr "Obtenez des expériences de recherche"
+
+#: profile_app/research_experience_view.py:12
+msgid "Retrieve user's research experiences."
+msgstr "Récupérer les expériences de recherche des utilisateurs."
+
+#: profile_app/research_experience_view.py:31
+msgid "Research experiences retrieved successfully."
+msgstr "Expériences de recherche récupérées avec succès."
+
+#: profile_app/research_experience_view.py:53
+msgid "Add research experience"
+msgstr "Ajouter une expérience de recherche"
+
+#: profile_app/research_experience_view.py:54
+msgid "Add a new research experience."
+msgstr "Ajoutez une nouvelle expérience de recherche."
+
+#: profile_app/research_experience_view.py:78
+msgid "Research experience added successfully."
+msgstr "Expérience de recherche ajoutée avec succès."
+
+#: profile_app/research_experience_view.py:111
+msgid "Update research experience"
+msgstr "Mettre à jour l’expérience de recherche"
+
+#: profile_app/research_experience_view.py:112
+msgid "Update an existing research experience."
+msgstr "Mettre à jour une expérience de recherche existante."
+
+#: profile_app/research_experience_view.py:138
+msgid "Research experience updated successfully."
+msgstr "Expérience de recherche mise à jour avec succès."
+
+#: profile_app/research_experience_view.py:171
+msgid "Delete research experience"
+msgstr "Supprimer l'expérience de recherche"
+
+#: profile_app/research_experience_view.py:172
+msgid "Delete an existing research experience."
+msgstr "Supprimer une expérience de recherche existante."
+
+#: profile_app/research_experience_view.py:187
+msgid "Research experience deleted successfully."
+msgstr "Expérience de recherche supprimée avec succès."
+
+#: profile_app/serializers.py:58
+msgid "Ensure this field has no more than 30 characters."
+msgstr "Assurez-vous que ce champ ne contient pas plus de 30 caractères."
+
+#: profile_app/serializers.py:77 profile_app/serializers.py:866
+#: profile_app/serializers.py:927 profile_app/serializers.py:931
+#: profile_app/serializers.py:1023 profile_app/serializers.py:1027
+#: profile_app/serializers.py:1094
+msgid "Enter a valid date."
+msgstr "Entrez une date valide."
+
+#: profile_app/serializers.py:107
+#: python-brace-format
+msgid "You must be at least {min_age} years old."
+msgstr "Vous devez avoir au moins {min_age} ans."
+
+#: profile_app/serializers.py:330
+msgid "Country is required."
+msgstr "Le pays est requis."
+
+#: profile_app/serializers.py:333
+msgid "Country cannot be longer than 100 characters."
+msgstr "Le pays ne peut pas comporter plus de 100 caractères."
+
+#: profile_app/serializers.py:339
+msgid "Legal state of residence is required."
+msgstr "L'état de résidence légal est requis."
+
+#: profile_app/serializers.py:342
+msgid "Legal state of residence cannot be longer than 100 characters."
+msgstr "L'État de résidence légal ne peut pas dépasser 100 caractères."
+
+#: profile_app/serializers.py:357
+msgid "Visa type is required."
+msgstr "Le type de visa est requis."
+
+#: profile_app/serializers.py:360
+msgid "Visa type cannot be longer than 100 characters."
+msgstr "Le type de visa ne peut pas comporter plus de 100 caractères."
+
+#: profile_app/serializers.py:366
+msgid "Issuing country is required."
+msgstr "Le pays émetteur est requis."
+
+#: profile_app/serializers.py:369
+msgid "Issuing country cannot be longer than 100 characters."
+msgstr "Le pays émetteur ne peut pas comporter plus de 100 caractères."
+
+#: profile_app/serializers.py:379
+msgid "Date has wrong format. Use one of these formats instead: YYYY-MM-DD."
+msgstr "Le format de la date est incorrect. "
+
+#: profile_app/serializers.py:382
+msgid "Expiration date cannot be in the past."
+msgstr "La date d'expiration ne peut pas être située dans le passé."
+
+#: profile_app/serializers.py:421 profile_app/serializers.py:422
+#: profile_app/serializers.py:474 profile_app/serializers.py:475
+#: profile_app/test_score_serializer.py:37
+#: profile_app/test_score_serializer.py:38
+msgid "Please upload a file."
+msgstr "Veuillez télécharger un fichier."
+
+#: profile_app/serializers.py:423 profile_app/serializers.py:435
+#: profile_app/serializers.py:476 profile_app/serializers.py:488
+#: profile_app/test_score_serializer.py:39
+#: profile_app/test_score_serializer.py:57
+msgid "Please upload a valid file."
+msgstr "Veuillez télécharger un fichier valide."
+
+#: profile_app/serializers.py:431 profile_app/serializers.py:484
+#: profile_app/test_score_serializer.py:55
+msgid "No file uploaded."
+msgstr "Aucun fichier téléchargé."
+
+#: profile_app/serializers.py:439 profile_app/serializers.py:492
+#: profile_app/test_score_serializer.py:59
+msgid "Invalid file type. Only PDF files are allowed."
+msgstr "Type de fichier invalide. "
+
+#: profile_app/serializers.py:524
+msgid "Ethnicity is required."
+msgstr "L’origine ethnique est requise."
+
+#: profile_app/serializers.py:529
+msgid "Ethnicity origin field is required."
+msgstr "Le champ d’origine ethnique est obligatoire."
+
+#: profile_app/serializers.py:532
+msgid "Preference on Ethnicity Reporting is required."
+msgstr "Une préférence pour les rapports sur l'origine ethnique est requise."
+
+#: profile_app/serializers.py:543
+msgid "Ethnicity origin must be either true or false."
+msgstr "L’origine ethnique doit être vraie ou fausse."
+
+#: profile_app/serializers.py:551
+msgid "Preference on Ethnicity Reporting must be either true or false."
+msgstr "Les préférences concernant l'origine ethnique doivent être vraies ou fausses."
+
+#: profile_app/serializers.py:573
+msgid "First language is required."
+msgstr "La première langue est requise."
+
+#: profile_app/serializers.py:574
+msgid "First language cannot be null."
+msgstr "La première langue ne peut pas être nulle."
+
+#: profile_app/serializers.py:575
+msgid "Invalid language ID."
+msgstr "ID de langue invalide."
+
+#: profile_app/serializers.py:576
+msgid "Language with this ID does not exist."
+msgstr "La langue avec cet ID n'existe pas."
+
+#: profile_app/serializers.py:577
+#: python-brace-format
+msgid "Incorrect type. Expected pk value, received {data_type}."
+msgstr "Type incorrect. "
+
+#: profile_app/serializers.py:586
+msgid "Parental college graduation status is required."
+msgstr "Le statut d’obtention d’un diplôme d’études collégiales parentales est requis."
+
+#: profile_app/serializers.py:602
+msgid "Languages is/are not valid."
+msgstr "Les langues ne sont pas valides."
+
+#: profile_app/serializers.py:621
+msgid "Acknowledgement is required."
+msgstr "Un accusé de réception est requis."
+
+#: profile_app/serializers.py:622
+msgid "Invalid acknowledgement value."
+msgstr "Valeur d'accusé de réception invalide."
+
+#: profile_app/serializers.py:653
+msgid "Institution name is required."
+msgstr "Le nom de l'établissement est requis."
+
+#: profile_app/serializers.py:659 profile_app/serializers.py:741
+#: profile_app/serializers.py:822 profile_app/serializers.py:951
+#: profile_app/serializers.py:1057 profile_app/serializers.py:1153
+msgid "Start date is required."
+msgstr "La date de début est requise."
+
+#: profile_app/serializers.py:665
+msgid "Major is required."
+msgstr "Le majeur est requis."
+
+#: profile_app/serializers.py:675 profile_app/serializers.py:765
+#: profile_app/serializers.py:831 profile_app/serializers.py:965
+#: profile_app/serializers.py:1162
+msgid "End date must be greater than start date."
+msgstr "La date de fin doit être supérieure à la date de début."
+
+#: profile_app/serializers.py:681
+msgid "Degree date must be greater than start date."
+msgstr "La date du diplôme doit être supérieure à la date de début."
+
+#: profile_app/serializers.py:685
+msgid "Degree date must be greater than end date."
+msgstr "La date du diplôme doit être supérieure à la date de fin."
+
+#: profile_app/serializers.py:711
+msgid "Ensure this field has no more than 50 characters."
+msgstr "assurez-vous que ce champ ne contient pas plus de 50 caractères."
+
+#: profile_app/serializers.py:725 profile_app/serializers.py:804
+#: profile_app/serializers.py:877
+msgid "Title is required."
+msgstr "Le titre est requis."
+
+#: profile_app/serializers.py:731
+msgid "Academic Level is required."
+msgstr "Un niveau académique est requis."
+
+#: profile_app/serializers.py:736
+msgid "Full Dissertation Link is required."
+msgstr "Un lien complet pour la thèse est requis."
+
+#: profile_app/serializers.py:810
+msgid "Supervisor is required."
+msgstr "Un superviseur est requis."
+
+#: profile_app/serializers.py:816
+msgid "Organization is required."
+msgstr "Il faut de l'organisation."
+
+#: profile_app/serializers.py:856
+msgid "Invalid publication type."
+msgstr "Type de publication invalide."
+
+#: profile_app/serializers.py:882
+msgid "Authors are required."
+msgstr "Les auteurs sont requis."
+
+#: profile_app/serializers.py:887
+msgid "Publication date is required."
+msgstr "La date de publication est requise."
+
+#: profile_app/serializers.py:941
+msgid "Position title is required."
+msgstr "Le titre du poste est requis."
+
+#: profile_app/serializers.py:946
+msgid "Company name is required."
+msgstr "Le nom de l'entreprise est requis."
+
+#: profile_app/serializers.py:996
+msgid "Skill Option is required"
+msgstr "L'option de compétence est requise"
+
+#: profile_app/serializers.py:1000
+msgid "Invalid Skill Option ID"
+msgstr "ID d'option de compétence invalide"
+
+#: profile_app/serializers.py:1042
+msgid "Organizer is required."
+msgstr "L'organisateur est requis."
+
+#: profile_app/serializers.py:1047
+msgid "Location is required."
+msgstr "L'emplacement est requis."
+
+#: profile_app/serializers.py:1052
+msgid "Certificate is required."
+msgstr "Un certificat est requis."
+
+#: profile_app/serializers.py:1066
+msgid "Completion date must be greater than start date."
+msgstr "La date d'achèvement doit être supérieure à la date de début."
+
+#: profile_app/serializers.py:1109
+msgid "Awarding organization is required."
+msgstr "Un organisme d'attribution est requis."
+
+#: profile_app/serializers.py:1114
+msgid "Date received is required."
+msgstr "La date de réception est requise."
+
+#: profile_app/serializers.py:1148
+msgid "Organization name is required."
+msgstr "Le nom de l’organisation est requis."
+
+#: profile_app/test_score_serializer.py:23
+msgid "Invalid test name. Choose from IELTS, TOEFL, SAT, GRE, DUOLINGO, PTE."
+msgstr "Nom de test invalide. "
+
+#: profile_app/test_score_serializer.py:26
+msgid "Score is required."
+msgstr "Un score est requis."
+
+#: profile_app/test_score_serializer.py:27
+msgid "Invalid score."
+msgstr "Score invalide."
+
+#: profile_app/test_score_serializer.py:30
+msgid "Date taken is required."
+msgstr "La date de prise est requise."
+
+#: profile_app/test_score_serializer.py:31
+msgid "Invalid date."
+msgstr "Date invalide."
+
+#: profile_app/test_score_serializer.py:49
+#: python-brace-format
+msgid ""
+"Invalid score for {test_name}. Score should be between {min_score} and "
+"{max_score}."
+msgstr "Score non valide pour {test_name}. "
+
+#: profile_app/test_score_view.py:21
+msgid "Upload Test Score"
+msgstr "Télécharger le résultat du test"
+
+#: profile_app/test_score_view.py:22
+msgid "Allows authenticated users to upload their test scores."
+msgstr "permet aux utilisateurs authentifiés de télécharger leurs résultats aux tests."
+
+#: profile_app/test_score_view.py:25 profile_app/test_score_view.py:61
+#: profile_app/test_score_view.py:105 profile_app/views.py:715
+#: profile_app/views.py:752 profile_app/views.py:819 profile_app/views.py:857
+#: profile_app/views.py:919 profile_app/views.py:983 profile_app/views.py:1047
+#: profile_app/views.py:1109 profile_app/views.py:1173
+#: profile_app/views.py:1235
+msgid "Success"
+msgstr "Succès"
+
+#: profile_app/test_score_view.py:26 profile_app/test_score_view.py:106
+#: profile_app/views.py:716 profile_app/views.py:820 profile_app/views.py:984
+#: profile_app/views.py:1110 profile_app/views.py:1236
+msgid "Bad Request"
+msgstr "Demande incorrecte"
+
+#: profile_app/test_score_view.py:27 profile_app/test_score_view.py:87
+#: profile_app/test_score_view.py:108 profile_app/views.py:717
+#: profile_app/views.py:765 profile_app/views.py:821 profile_app/views.py:870
+#: profile_app/views.py:933 profile_app/views.py:985 profile_app/views.py:1060
+#: profile_app/views.py:1111 profile_app/views.py:1186
+#: profile_app/views.py:1237
+msgid "Internal Server Error"
+msgstr "Erreur interne du serveur"
+
+#: profile_app/test_score_view.py:38
+msgid "Test score uploaded successfully."
+msgstr "Le résultat du test a été téléchargé avec succès."
+
+#: profile_app/test_score_view.py:44
+msgid "Test score upload operation failed."
+msgstr "L'opération de téléchargement du résultat du test a échoué."
+
+#: profile_app/test_score_view.py:51 profile_app/views.py:741
+#: profile_app/views.py:846
+msgid "Internal Server Error."
+msgstr "Erreur interne du serveur."
+
+#: profile_app/test_score_view.py:57
+msgid "Get Test Scores"
+msgstr "Obtenir les résultats des tests"
+
+#: profile_app/test_score_view.py:58
+msgid "Allows authenticated users to fetch their test scores."
+msgstr "permet aux utilisateurs authentifiés de récupérer leurs résultats aux tests."
+
+#: profile_app/test_score_view.py:96
+msgid "Test scores retrieved successfully."
+msgstr "Résultats des tests récupérés avec succès."
+
+#: profile_app/test_score_view.py:101
+msgid "Update Test Score"
+msgstr "Mettre à jour le résultat du test"
+
+#: profile_app/test_score_view.py:102
+msgid "Allows authenticated users to update their test scores."
+msgstr "permet aux utilisateurs authentifiés de mettre à jour leurs résultats aux tests."
+
+#: profile_app/test_score_view.py:107 profile_app/test_score_view.py:157
+msgid "Not Found"
+msgstr "Introuvable"
+
+#: profile_app/test_score_view.py:141
+msgid "Test score updated successfully."
+msgstr "Le résultat du test a été mis à jour avec succès."
+
+#: profile_app/test_score_view.py:147
+msgid "Test score update operation failed."
+msgstr "L'opération de mise à jour du score de test a échoué."
+
+#: profile_app/test_score_view.py:153
+msgid "Delete Test Score"
+msgstr "Supprimer le résultat du test"
+
+#: profile_app/test_score_view.py:154
+msgid "Allows authenticated users to delete their test scores."
+msgstr "permet aux utilisateurs authentifiés de supprimer leurs résultats aux tests."
+
+#: profile_app/test_score_view.py:156
+msgid "No Content"
+msgstr "Aucun contenu"
+
+#: profile_app/training_workshop_view.py:11
+msgid "Get training workshops"
+msgstr "Bénéficiez d'ateliers de formation"
+
+#: profile_app/training_workshop_view.py:12
+msgid "Retrieve user's training workshops."
+msgstr "Récupérer les ateliers de formation des utilisateurs."
+
+#: profile_app/training_workshop_view.py:31
+msgid "Training Workshops retrieved successfully."
+msgstr "Ateliers de formation récupérés avec succès."
+
+#: profile_app/training_workshop_view.py:53
+msgid "Add TrainingWorkshop"
+msgstr "Ajouter un atelier de formation"
+
+#: profile_app/training_workshop_view.py:54
+msgid "Add a new training workshop."
+msgstr "Ajouter un nouvel atelier de formation."
+
+#: profile_app/training_workshop_view.py:78
+msgid "Training workshop added successfully."
+msgstr "Atelier de formation ajouté avec succès."
+
+#: profile_app/training_workshop_view.py:111
+msgid "Update Training Workshop"
+msgstr "Atelier de formation de mise à jour"
+
+#: profile_app/training_workshop_view.py:112
+msgid "Update an existing training workshop."
+msgstr "Mettre à jour un atelier de formation existant."
+
+#: profile_app/training_workshop_view.py:138
+msgid "Training workshop updated successfully."
+msgstr "Atelier de formation mis à jour avec succès."
+
+#: profile_app/training_workshop_view.py:171
+msgid "Delete Training Workshop"
+msgstr "Supprimer l'atelier de formation"
+
+#: profile_app/training_workshop_view.py:172
+msgid "Delete an existing training workshop."
+msgstr "Supprimer un atelier de formation existant."
+
+#: profile_app/training_workshop_view.py:187
+msgid "Training workshop deleted successfully."
+msgstr "Atelier de formation supprimé avec succès."
+
+#: profile_app/views.py:363
+msgid "Get citizenship and visa information"
+msgstr "Obtenir des informations sur la citoyenneté et les visas"
+
+#: profile_app/views.py:365
+msgid "Get citizenship and visa information for a user."
+msgstr "Obtenir des informations sur la citoyenneté et les visas d'un utilisateur."
+
+#: profile_app/views.py:368
+msgid "A list of citizenships and visas."
+msgstr "Une liste des citoyennetés et des visas."
+
+#: profile_app/views.py:377 profile_app/views.py:405 profile_app/views.py:454
+msgid "UserDetails not found"
+msgstr "Détails utilisateur introuvables"
+
+#: profile_app/views.py:409
+msgid "Create or update citizenship and visa information"
+msgstr "Créer ou mettre à jour les informations sur la citoyenneté et les visas"
+
+#: profile_app/views.py:411
+msgid "Create or update citizenship and visa information for a user."
+msgstr "Créer ou mettre à jour les informations de citoyenneté et de visa pour un utilisateur."
+
+#: profile_app/views.py:418
+msgid "List of citizenships"
+msgstr "Liste des citoyennetés"
+
+#: profile_app/views.py:423
+msgid "List of visas"
+msgstr "Liste des visas"
+
+#: profile_app/views.py:430
+msgid "Citizenships and visas created successfully."
+msgstr "Citoyennetés et visas créés avec succès."
+
+#: profile_app/views.py:493
+msgid "Retrieve user's research interests"
+msgstr "Récupérer les intérêts de recherche de l'utilisateur"
+
+#: profile_app/views.py:494
+msgid ""
+"Retrieves the research interests associated with the authenticated user."
+msgstr "Récupère les intérêts de recherche associés à l’utilisateur authentifié."
+
+#: profile_app/views.py:497
+msgid "Successful retrieval of research interests"
+msgstr "Récupération réussie des intérêts de recherche"
+
+#: profile_app/views.py:507
+msgid "Research interests not found for the user"
+msgstr "Intérêts de recherche introuvables pour l'utilisateur"
+
+#: profile_app/views.py:530
+msgid "Research interests retrieved successfully."
+msgstr "Intérêts de recherche récupérés avec succès."
+
+#: profile_app/views.py:537
+msgid "Research interests not found for this user."
+msgstr "Intérêts de recherche introuvables pour cet utilisateur."
+
+#: profile_app/views.py:544
+msgid "Save user's research interests"
+msgstr "Enregistrer les intérêts de recherche de l'utilisateur"
+
+#: profile_app/views.py:545
+msgid ""
+"Saves the user's research interests based on the provided data. Expects a "
+"JSON array of research interests."
+msgstr "Enregistre les intérêts de recherche de l'utilisateur sur la base des données fournies. "
+
+#: profile_app/views.py:559
+msgid "Successful saving of research interests"
+msgstr "Sauvegarde réussie des intérêts de la recherche"
+
+#: profile_app/views.py:570 profile_app/views.py:1365
+msgid "Validation error occurred"
+msgstr "Une erreur de validation s'est produite"
+
+#: profile_app/views.py:582 profile_app/views.py:932 profile_app/views.py:1059
+#: profile_app/views.py:1185 profile_app/views.py:1377
+msgid "User details not found"
+msgstr "Détails utilisateur introuvables"
+
+#: profile_app/views.py:594 profile_app/views.py:1389
+msgid "Internal server error occurred"
+msgstr "Une erreur de serveur interne s'est produite"
+
+#: profile_app/views.py:632 profile_app/views.py:1426
+msgid "Invalid data format. Expected a list."
+msgstr "Format de données invalide. "
+
+#: profile_app/views.py:637
+msgid "At least one research interest is required."
+msgstr "Au moins un intérêt de recherche est requis."
+
+#: profile_app/views.py:684
+msgid "Research interests saved successfully."
+msgstr "Intérêts de recherche enregistrés avec succès."
+
+#: profile_app/views.py:704
+msgid "Upload Resume"
+msgstr "Télécharger le CV"
+
+#: profile_app/views.py:706
+msgid "Allows authenticated users to upload their resume file in PDF format."
+msgstr "Permet aux utilisateurs authentifiés de télécharger leur fichier de CV au format PDF."
+
+#: profile_app/views.py:711
+msgid "Resume file in PDF format."
+msgstr "Reprendre le fichier au format PDF."
+
+#: profile_app/views.py:728
+msgid "Resume uploaded successfully."
+msgstr "Reprise téléchargée avec succès."
+
+#: profile_app/views.py:734
+msgid "Resume upload operation is failed."
+msgstr "L'opération de reprise du téléchargement a échoué."
+
+#: profile_app/views.py:747
+msgid "Get Resume"
+msgstr "Obtenir un CV"
+
+#: profile_app/views.py:749
+msgid "Allows authenticated users to fetch their uploaded resume file."
+msgstr "permet aux utilisateurs authentifiés de récupérer leur fichier de CV téléchargé."
+
+#: profile_app/views.py:784
+msgid "Resume file is retrieved successfully."
+msgstr "Le fichier de reprise a été récupéré avec succès."
+
+#: profile_app/views.py:791
+msgid "No resume file found."
+msgstr "Aucun fichier de CV trouvé."
+
+#: profile_app/views.py:808
+msgid "Upload SOP"
+msgstr "Télécharger la SOP"
+
+#: profile_app/views.py:810
+msgid ""
+"Allows authenticated users to upload their statement of purpose (SOP) file "
+"in PDF format."
+msgstr "permet aux utilisateurs authentifiés de télécharger leur fichier de déclaration d'intention (SOP) au format PDF."
+
+#: profile_app/views.py:815
+msgid "SOP file in PDF format."
+msgstr "Fichier SOP au format PDF."
+
+#: profile_app/views.py:833
+msgid "SOP uploaded successfully."
+msgstr "SOP téléchargée avec succès."
+
+#: profile_app/views.py:839
+msgid "SOP upload operation is failed."
+msgstr "L’opération de téléchargement SOP a échoué."
+
+#: profile_app/views.py:852
+msgid "Get SOP"
+msgstr "Obtenir la SOP"
+
+#: profile_app/views.py:854
+msgid ""
+"Allows authenticated users to fetch their uploaded statement of purpose "
+"(SOP) file."
+msgstr "permet aux utilisateurs authentifiés de récupérer leur fichier de déclaration d'intention (SOP) téléchargé."
+
+#: profile_app/views.py:890
+msgid "SOP file is retrieved successfully."
+msgstr "Le fichier SOP a été récupéré avec succès."
+
+#: profile_app/views.py:897
+msgid "No SOP file found."
+msgstr "Aucun fichier SOP trouvé."
+
+#: profile_app/views.py:914
+msgid "Get Ethnicity Info"
+msgstr "Obtenir des informations sur l'origine ethnique"
+
+#: profile_app/views.py:916
+msgid "Allows authenticated users to fetch their ethnicity information."
+msgstr "permet aux utilisateurs authentifiés de récupérer leurs informations d'origine ethnique."
+
+#: profile_app/views.py:969
+msgid "Update Ethnicity Info"
+msgstr "Mettre à jour les informations sur l'origine ethnique"
+
+#: profile_app/views.py:971
+msgid "Allows authenticated users to update their ethnicity information."
+msgstr "permet aux utilisateurs authentifiés de mettre à jour leurs informations d'origine ethnique."
+
+#: profile_app/views.py:976
+msgid "Ethnicity"
+msgstr "ethnicité"
+
+#: profile_app/views.py:977
+msgid "Ethnicity details"
+msgstr "Détails sur l'origine ethnique"
+
+#: profile_app/views.py:978
+msgid "Ethnicity origin"
+msgstr "Origine ethnique"
+
+#: profile_app/views.py:979
+msgid "Preference on Ethnicity Reporting"
+msgstr "Préférence concernant les rapports sur l'origine ethnique"
+
+#: profile_app/views.py:1005
+msgid "Ethnicity details updated successfully"
+msgstr "Détails sur l'origine ethnique mis à jour avec succès"
+
+#: profile_app/views.py:1042
+msgid "Get Other Info"
+msgstr "Obtenir d'autres informations"
+
+#: profile_app/views.py:1044
+msgid "Allows authenticated users to fetch their other information."
+msgstr "permet aux utilisateurs authentifiés de récupérer leurs autres informations."
+
+#: profile_app/views.py:1096
+msgid "Update Other Info"
+msgstr "Mettre à jour les autres informations"
+
+#: profile_app/views.py:1098
+msgid "Allows authenticated users to update their other information."
+msgstr "permet aux utilisateurs authentifiés de mettre à jour leurs autres informations."
+
+#: profile_app/views.py:1103 profile_app/views.py:1229
+msgid "Field 1"
+msgstr "Champ 1"
+
+#: profile_app/views.py:1104 profile_app/views.py:1230
+msgid "Field 2"
+msgstr "Champ 2"
+
+#: profile_app/views.py:1105 profile_app/views.py:1231
+msgid "Field 3"
+msgstr "Champ 3"
+
+#: profile_app/views.py:1131
+msgid "Other info updated successfully"
+msgstr "Autres informations mises à jour avec succès"
+
+#: profile_app/views.py:1168
+msgid "Get Acknowledgement Info"
+msgstr "Obtenir des informations d'accusé de réception"
+
+#: profile_app/views.py:1170
+msgid "Allows authenticated users to fetch their acknowledgement information."
+msgstr "permet aux utilisateurs authentifiés de récupérer leurs informations d'accusé de réception."
+
+#: profile_app/views.py:1200
+msgid "User details found."
+msgstr "Détails utilisateur trouvés."
+
+#: profile_app/views.py:1222
+msgid "Update Acknowledgement Info"
+msgstr "Mettre à jour les informations d'accusé de réception"
+
+#: profile_app/views.py:1224
+msgid "Allows authenticated users to update their acknowledgement information."
+msgstr "permet aux utilisateurs authentifiés de mettre à jour leurs informations d'accusé de réception."
+
+#: profile_app/views.py:1257
+msgid "Acknowledgement updated successfully"
+msgstr "Acquittement mis à jour avec succès"
+
+#: profile_app/views.py:1293
+msgid "Retrieve user's skills"
+msgstr "Récupérer les compétences de l'utilisateur"
+
+#: profile_app/views.py:1294
+msgid "Retrieves the skills associated with the authenticated user."
+msgstr "Récupère les compétences associées à l'utilisateur authentifié."
+
+#: profile_app/views.py:1297
+msgid "Successful retrieval of skills"
+msgstr "Récupération réussie des compétences"
+
+#: profile_app/views.py:1307
+msgid "Skills not found for the user"
+msgstr "Compétences introuvables pour l'utilisateur"
+
+#: profile_app/views.py:1328
+msgid "Skills retrieved successfully."
+msgstr "Compétences récupérées avec succès."
+
+#: profile_app/views.py:1335
+msgid "Skills not found for this user."
+msgstr "Compétences introuvables pour cet utilisateur."
+
+#: profile_app/views.py:1340
+msgid "Save user's skills"
+msgstr "Enregistrer les compétences de l'utilisateur"
+
+#: profile_app/views.py:1341
+msgid ""
+"Saves the user's skills based on the provided data. Expects a JSON array of "
+"skills."
+msgstr "Enregistre les compétences de l'utilisateur en fonction des données fournies. "
+
+#: profile_app/views.py:1355
+msgid "Successful saving of skills"
+msgstr "Sauvegarde réussie des compétences"
+
+#: profile_app/views.py:1431
+msgid "At least one skill is required."
+msgstr "Au moins une compétence est requise."
+
+#: profile_app/views.py:1476
+msgid "Skills saved successfully."
+msgstr "Compétences enregistrées avec succès."
+
+#: profile_app/views.py:1496
+msgid "Get Volunteer Activities"
+msgstr "Obtenez des activités bénévoles"
+
+#: profile_app/views.py:1497
+msgid "Retrieve user's volunteer activities."
+msgstr "Récupérer les activités bénévoles des utilisateurs."
+
+#: profile_app/views.py:1511
+msgid "Volunteer activities retrieved successfully."
+msgstr "Activités bénévoles récupérées avec succès."
+
+#: profile_app/views.py:1516
+msgid "Add Volunteer Activity"
+msgstr "Ajouter une activité bénévole"
+
+#: profile_app/views.py:1517
+msgid "Add a new volunteer activity."
+msgstr "Ajout d'une nouvelle activité bénévole."
+
+#: profile_app/views.py:1532
+msgid "Volunteer activity added successfully."
+msgstr "Activité bénévole ajoutée avec succès."
+
+#: profile_app/views.py:1543
+msgid "Update Volunteer Activity"
+msgstr "Mise à jour de l'activité bénévole"
+
+#: profile_app/views.py:1544
+msgid "Update an existing volunteer activity."
+msgstr "Actualisation d'une activité bénévole existante."
+
+#: profile_app/views.py:1563
+msgid "Volunteer activity updated successfully."
+msgstr "Activité bénévole mise à jour avec succès."
+
+#: profile_app/views.py:1574
+msgid "Delete Volunteer Activity"
+msgstr "Supprimer l'activité bénévole"
+
+#: profile_app/views.py:1575
+msgid "Delete an existing volunteer activity."
+msgstr "Supprimer une activité bénévole existante."
+
+#: profile_app/views.py:1589
+msgid "Volunteer activity deleted successfully."
+msgstr "Activité bénévole supprimée avec succès."
+
+#: profile_app/work_experience_view.py:11
+msgid "Get Work experiences"
+msgstr "Obtenez des expériences professionnelles"
+
+#: profile_app/work_experience_view.py:12
+msgid "Retrieve user's work experiences."
+msgstr "Récupérer les expériences professionnelles des utilisateurs."
+
+#: profile_app/work_experience_view.py:31
+msgid "Work experiences retrieved successfully."
+msgstr "Expériences professionnelles récupérées avec succès."
+
+#: profile_app/work_experience_view.py:53
+msgid "Add work experience"
+msgstr "Ajouter une expérience de travail"
+
+#: profile_app/work_experience_view.py:54
+msgid "Add a new work experience."
+msgstr "Ajoutez une nouvelle expérience de travail."
+
+#: profile_app/work_experience_view.py:78
+msgid "Work experience added successfully."
+msgstr "Expérience professionnelle ajoutée avec succès."
+
+#: profile_app/work_experience_view.py:111
+msgid "Update work experience"
+msgstr "Mettre à jour l'expérience de travail"
+
+#: profile_app/work_experience_view.py:112
+msgid "Update an existing work experience."
+msgstr "Mettre à jour une expérience de travail existante."
+
+#: profile_app/work_experience_view.py:138
+msgid "Work experience updated successfully."
+msgstr "Expérience professionnelle mise à jour avec succès."
+
+#: profile_app/work_experience_view.py:171
+msgid "Delete work experience"
+msgstr "Supprimer l'expérience professionnelle"
+
+#: profile_app/work_experience_view.py:172
+msgid "Delete an existing work experience."
+msgstr "Supprimer une expérience professionnelle existante."
+
+#: profile_app/work_experience_view.py:187
+msgid "Work experience deleted successfully."
+msgstr "Expérience professionnelle supprimée avec succès."
+
+msgid "Unsupported file type" 
+msgstr "Type de fichier non pris en charge"
+
+msgid "Data uploaded successfully"
+msgstr "Données téléchargées avec succès"
+
+msgid "Unsupported entity type"
+msgstr "Type d'entité non pris en charge"
+
+msgid "A duplicate entry with the same name, category, country, and city already exists."
+msgstr "Une entrée en double avec le même nom, catégorie, pays et ville existe déjà."
+
+msgid "Record Clone Successfully"
+msgstr "Enregistrement cloné avec succès"
+
+msgid "Error in row %(index)s: %(error_message_str)s"
+msgstr "Erreur dans la ligne %(index)s : %(error_message_str)s"
+
+msgid "Invalid columns. Expected columns are %(expected_columns)s. Also optionally 'logo_file' for logo name."
+msgstr "Colonnes invalides. Les colonnes attendues sont %(expected_columns)s. Également facultativement 'logo_file' pour le nom du logo."
+
+msgid "Row count exceeds the limit of %(max_row_limit)s."
+msgstr "Le nombre de lignes dépasse la limite de %(max_row_limit)s."
+
+msgid "%(document_filename)s of Logo file not found"
+msgstr "%(document_filename)s লোগো ফাইল পাওয়া যায়নি।"
+msgstr "%(document_filename)s লোগো ফাইল পাওয়া যায়নি।"

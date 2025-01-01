@@ -1,0 +1,53 @@
+@token = {{dev.token}}
+@host = {{dev.host}}
+
+### Retrieve all Faculty Members
+GET {{host}}/api/faculty_members/
+Authorization: Token {{token}}
+
+### Retrieve a single Faculty Member by ID
+GET {{host}}/api/faculty_members/1/
+Authorization: Token {{token}}
+
+### Create a new Faculty Member
+POST {{host}}/api/faculty_members/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+    "educational_organization": 1,
+    "department": 1,
+    "campus": 1,
+    "college": 1,
+    "personal_web_address": "http://example.com/personal",
+    "research_profile_address": "http://example.com/research",
+    "orcid": 12345678,
+    "faculty_type": "Professor",
+    "address": "123 Main St, University Town",
+    "statement": "Dedicated to advancing education.",
+    "status": "Active"
+}
+
+
+### Update a Faculty Member
+PUT {{host}}/api/faculty_members/1/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+    "educational_organization": 1,
+    "department": 1,
+    "campus": 1,
+    "college": 1,
+    "personal_web_address": "http://example.com/personal_updated",
+    "research_profile_address": "http://example.com/research_updated",
+    "orcid": 87654321,
+    "faculty_type": "Associate Professor",
+    "address": "456 Main St, University City",
+    "statement": "Committed to research and development.",
+    "status": "Inactive"
+}
+
+### Delete a Faculty Member
+DELETE {{host}}/api/faculty_members/1/
+Authorization: Token {{token}}

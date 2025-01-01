@@ -1,0 +1,5 @@
+name,under_category,web_address,statement,logo_file,status,address_line1,address_line2,city,state_province,postal_code,country_code
+Organization 26d2,2,http://www.organization26.com,This is the statement for organization 26,photo1.jpg,FALSE,123 Main St Apt 26,Suite 26,City 26,1,92385,GB
+Organization 27d2,1,http://www.organization27.com,This is the statement for organization 27,photo2.jpg,TRUE,123 Main St Apt 27,,City 27,1,12114,AU
+Organization 28d2,5,http://www.organization28.com,This is the statement for organization 28,photo3.jpg,FALSE,123 Main St Apt 28,Suite 28,City 28,1,30261,US
+Organization 29d2,1,http://www.organization29.com,This is the statement for organization 29,photo4.jpg,FALSE,123 Main St Apt 29,,City 29,1,26479,US

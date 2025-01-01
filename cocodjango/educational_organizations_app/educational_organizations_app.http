@@ -1,0 +1,150 @@
+@token = {{dev.token}}
+@host = {{dev.host}}
+
+### Register User
+POST {{host}}/api/register/
+Content-Type: application/json
+
+{
+  "username": "newuser",
+  "password": "SecurePassword123!",
+  "email": "newuser@example.com",
+  "first_name": "New",
+  "last_name": "User",
+  "role": "user"
+}
+
+### Login User
+POST {{host}}/api/login/
+Content-Type: application/json
+
+{
+  "username": "mehedi",
+  "password": "mehedi"
+}
+
+### Get list of Educational Organization Categories
+GET {{host}}/api/categories/
+Authorization: Token {{token}}
+
+### Get a specific Educational Organization Category by ID
+GET {{host}}/api/categories/1
+Authorization: Token {{token}}
+
+### Create a new Educational Organization Category
+POST {{host}}/api/categories/
+Content-Type: application/json
+Authorization: Token {{token}}
+
+{
+  "name": "New Category",
+  "description": "Description of the new category"
+}
+
+### Update an existing Educational Organization Category
+PUT {{host}}/api/categories/1
+Content-Type: application/json
+Authorization: Token {{token}}
+
+{
+  "name": "Updated Category Name",
+  "description": "Updated description"
+}
+
+### Delete an Educational Organization Category
+DELETE {{host}}/api/categories/1
+Authorization: Token {{token}}
+
+### Get Educational Organizations with filtering and pagination
+GET {{host}}/api/organizations/?offset=0&limit=10&searchTerm=University&sortColumns=[name]
+Authorization: Token {{token}}
+
+### Create Educational Organization
+POST {{host}}/api/organizations/
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: Token {{token}}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="name"
+
+Example University
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="web_address"
+
+http://www.example.edu
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="statement"
+
+An example statement for the university.
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="address_line1"
+
+123 Example Street
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="address_line2"
+
+Suite 456
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="city"
+
+Example City
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="state_province"
+
+1
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="under_category"
+
+1
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="postal_code"
+
+12345
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="country_code"
+
+BD
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="document_file"; filename="icpc22.jpg"
+Content-Type: image/jpeg
+
+D:\cp_memories\icpc22.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Update Educational Organization
+PUT {{host}}/api/organizations/1
+Content-Type: application/json
+Authorization: Token {{token}}
+
+{
+  "name": "Updated University Name",
+  "web_address": "http://www.updated-example.edu",
+  "statement": "Updated example statement for the university.",
+  "address_line1": "456 Updated Street",
+  "address_line2": "Apt 789",
+  "city": "Updated City",
+  "state_province": 2,
+  "under_category": 2,
+  "postal_code": "67890",
+  "country_code": "CA"
+}
+
+### Delete Educational Organization
+DELETE {{host}}/api/organizations/1
+Authorization: Token {{token}}
+
+
+curl -X POST "http://localhost:8000/api/organizations/" \
+-H "Authorization: Token 076aeffb4b5f5851d78072ba24f6880e00481798" \
+-H "Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW" \
+-F "name=Example University" \
+-F "web_address=http://www.example.edu" \
+-F "statement=An example statement for the university." \
+-F "address_line1=123 Example Street" \
+-F "address_line2=Suite 456" \
+-F "city=Example City" \
+-F "state_province=1" \
+-F "under_category=1" \
+-F "postal_code=12345" \
+-F "country_code=BD" \
+-F "document_file=/home/ahnaf/Downloads/icons8-node-js-144.png"

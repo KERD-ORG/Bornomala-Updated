@@ -1,0 +1,42 @@
+@token = {{dev.token}}
+@host = {{dev.host}}
+
+### List all Departments
+GET {{host}}/api/departments/
+Authorization: Token {{token}}
+
+### Get Details of a Specific Department
+GET {{host}}/api/departments/1/
+Authorization: Token {{token}}
+
+### Create a New Department
+POST {{host}}/api/departments/
+Content-Type: application/json
+Authorization: Token {{token}}
+
+{
+  "name": "Computer Science",
+  "college": 3,
+  "web_address": "http://cs.example.com",
+  "address": "123 Tech Lane",
+  "statement": "Leading the way in computing and information technology.",
+  "status": "Active"
+}
+
+### Update an Existing Department
+PUT {{host}}/api/departments/1/
+Content-Type: application/json
+Authorization: Token {{token}}
+
+{
+  "name": "Updated Computer Science",
+  "college": 1,
+  "web_address": "http://updatedcs.example.com",
+  "address": "123 Updated Tech Lane",
+  "statement": "Updated leading the way in computing and IT education.",
+  "status": "Active"
+}
+
+### Delete a Department
+DELETE {{host}}/api/departments/1/
+Authorization: Token {{token}}

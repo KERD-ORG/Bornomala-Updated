@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+
+# Ignore all files in the media directory
+/media/*
+
+# Except for .gitkeep
+!/media/.gitkeep
+
+# Static files
+staticfiles/
+
+# Django migrations
+*.py[cod]
+
+# SQL
+*.sql
+
+# Coverage reports
+htmlcov/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# IDE files
+.vscode/
+.idea/
+
+# macOS files
+.DS_Store

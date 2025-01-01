@@ -1,0 +1,42 @@
+@token = {{dev.token}}
+@host = {{dev.host}}
+
+### Get Colleges List
+GET {{host}}/api/colleges/
+Authorization: Token {{token}}
+
+### Create College
+POST {{host}}/api/colleges/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+  "name": "New College",
+  "campus": 1,
+  "web_address": "http://www.newcollege.edu",
+  "address": "123 New College St, Education City",
+  "statement": "Our mission is to educate leaders.",
+  "status": "Active"
+}
+
+### Get Single College Detail
+GET {{host}}/api/colleges/1/
+Authorization: Token {{token}}
+
+### Update College
+PUT {{host}}/api/colleges/1/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+  "name": "Updated College Name",
+  "campus": 1,
+  "web_address": "http://www.updatedcollege.edu",
+  "address": "123 Updated College St, Education City",
+  "statement": "Updated mission statement.",
+  "status": "Active"
+}
+
+### Delete College
+DELETE {{host}}/api/colleges/2/
+Authorization: Token {{token}}

@@ -1,0 +1,116 @@
+{
+
+    "profile_app_educationalbackground": [
+      {
+        "institution_name": "",
+        "institution_address": "",
+        "start_date": "",
+        "end_date": "",
+        "degree_expected": "",
+        "degree_date": "",
+        "major": "",
+        "rank": ""
+      }
+    ],
+  
+   
+    "profile_app_researchexperience": [
+      {
+        "title": "",
+        "description": "",
+        "supervisor": "",
+        "organization": "",
+        "start_date": "",
+        "end_date": ""
+      }
+    ],
+  
+    "profile_app_skill": [
+      {
+        "skill_option": ""
+      }
+    ],
+    "profile_app_testscore": [
+      {
+        "test_name": "",
+        "score": "",
+        "date_taken": "",
+        "verified": ""
+      }
+    ],
+    "profile_app_trainingworkshop": [
+      {
+        "name": "",
+        "organizer": "",
+        "location": "",
+        "start_date": "",
+        "completion_date": "",
+        "certificate": ""
+      }
+    ],
+    "profile_app_userdetails": {
+      "date_of_birth": "",
+      "city_of_birth": "",
+      "country_of_birth": "",
+      "first_language_id": "",
+      "military_status": "",
+      "parental_college_graduation_status": "",
+      "hispanic_latino_origin": "",
+      "citizenship_status": "",
+      "country_of_citizenship": "",
+      "dual_citizenship": "",
+      "legal_state_of_residence": "",
+      "visa_status": "",
+      "current_address_line1": "",
+      "current_address_line2": "",
+      "current_city": "",
+      "current_state_province_id": "",
+      "current_postal_code": "",
+      "current_country": "",
+      "permanent_address_status": "",
+      "permanent_address_line1": "",
+      "permanent_address_line2": "",
+      "permanent_city": "",
+      "permanent_state_province_id": "",
+      "permanent_postal_code": "",
+      "permanent_country": "",
+      "ethnicity": "",
+      "currently_enrolled": "",
+      "emergency_fname": "",
+      "emergency_lname": "",
+      "emergency_address_line1": "",
+      "emergency_address_line2": "",
+      "emergency_city": "",
+      "emergency_state": "",
+      "emergency_postal_code": "",
+      "emergency_country": "",
+      "emergency_phone_number": "",
+      "emergency_email": "",
+      "emergency_relation": "",
+      "acknowledgement": "",
+      "ethnicity_details": "",
+      "ethnicity_origin": "",
+      "ethnicity_reporting": "",
+      "other_languages": ""
+    },
+  
+    "profile_app_volunteeractivity": [
+      {
+        "organization_name": "",
+        "designation": "",
+        "start_date": "",
+        "end_date": "",
+        "role_description": ""
+      }
+    ],
+    "profile_app_workexperience": [
+      {
+        "position_title": "",
+        "company_name": "",
+        "location": "",
+        "start_date": "",
+        "end_date": ""
+      }
+    ]
+  }
+  

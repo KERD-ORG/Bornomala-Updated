@@ -1,0 +1,1637 @@
+[
+  {
+    "model": "educational_organizations_app.educationalorganizationscategory",
+    "pk": 1,
+    "fields": {
+      "name": "Public University",
+      "description": "State-funded institutions offering higher education."
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizationscategory",
+    "pk": 2,
+    "fields": {
+      "name": "Private University",
+      "description": "Privately funded institutions offering higher education."
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizationscategory",
+    "pk": 3,
+    "fields": {
+      "name": "Community College",
+      "description": "Two-year institutions offering associate degrees and certificates."
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizationscategory",
+    "pk": 4,
+    "fields": {
+      "name": "Technical Institute",
+      "description": "Institutions focused on vocational and technical training."
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizationscategory",
+    "pk": 5,
+    "fields": {
+      "name": "Online University",
+      "description": "Institutions offering degrees primarily through online courses."
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizationscategory",
+    "pk": 6,
+    "fields": {
+      "name": "Research University",
+      "description": "Institutions emphasizing research and graduate education."
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizationscategory",
+    "pk": 7,
+    "fields": {
+      "name": "Liberal Arts College",
+      "description": "Institutions focusing on undergraduate education in the liberal arts."
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizationscategory",
+    "pk": 8,
+    "fields": {
+      "name": "Specialized Institution",
+      "description": "Institutions offering specialized education in specific fields such as art, music, or business."
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizationscategory",
+    "pk": 9,
+    "fields": {
+      "name": "Medical School",
+      "description": "Institutions offering education and training in medicine."
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizationscategory",
+    "pk": 10,
+    "fields": {
+      "name": "Business School",
+      "description": "Institutions offering education in business and management."
+    }
+  },
+  {
+    "model": "common.Countries",
+    "pk": 1,
+    "fields": {
+      "country_name": "United States",
+      "country_code": "US"
+    }
+  },
+  {
+    "model": "common.Countries",
+    "pk": 2,
+    "fields": {
+      "country_name": "Canada",
+      "country_code": "CA"
+    }
+  },
+  {
+    "model": "common.Countries",
+    "pk": 3,
+    "fields": {
+      "country_name": "United Kingdom",
+      "country_code": "GB"
+    }
+  },
+  {
+    "model": "common.Countries",
+    "pk": 4,
+    "fields": {
+      "country_name": "Germany",
+      "country_code": "DE"
+    }
+  },
+  {
+    "model": "common.Countries",
+    "pk": 5,
+    "fields": {
+      "country_name": "France",
+      "country_code": "FR"
+    }
+  },
+  {
+    "model": "common.Countries",
+    "pk": 6,
+    "fields": {
+      "country_name": "Japan",
+      "country_code": "JP"
+    }
+  },
+  {
+    "model": "common.Countries",
+    "pk": 7,
+    "fields": {
+      "country_name": "Australia",
+      "country_code": "AU"
+    }
+  },
+  {
+    "model": "common.Countries",
+    "pk": 8,
+    "fields": {
+      "country_name": "India",
+      "country_code": "IN"
+    }
+  },
+  {
+    "model": "common.Countries",
+    "pk": 9,
+    "fields": {
+      "country_name": "China",
+      "country_code": "CN"
+    }
+  },
+  {
+    "model": "common.Countries",
+    "pk": 10,
+    "fields": {
+      "country_name": "Brazil",
+      "country_code": "BR"
+    }
+  },
+  {
+    "model": "common.GeoAdmin1",
+    "pk": 1,
+    "fields": {
+      "country": 1,
+      "geo_admin_1_code": "GEO-1",
+      "geo_admin_1_name": "Geo Admin 1"
+    }
+  },
+  {
+    "model": "common.GeoAdmin2",
+    "pk": 1,
+    "fields": {
+      "country": 1,
+      "geo_admin_1": 1,
+      "geo_admin_2_code": "GEO-2",
+      "geo_admin_2_name": "Geo Admin 2"
+    }
+  },
+  {
+    "model": "auth.Group",
+    "pk": 1,
+    "fields": {
+      "name": "is_student"
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 1,
+    "fields": {
+      "username": "admin",
+      "email": "admin@admin.com",
+      "password": "1234"
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 1,
+    "fields": {
+      "username": "admin_1",
+      "email": "admin_1@admin.com",
+      "password": "1234"
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 2,
+    "fields": {
+      "username": "admin_2",
+      "email": "admin_2@admin.com",
+      "password": "1234"
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 3,
+    "fields": {
+      "username": "admin_3",
+      "email": "admin_3@admin.com",
+      "password": "1234"
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 4,
+    "fields": {
+      "username": "admin_4",
+      "email": "admin_4@admin.com",
+      "password": "1234"
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 5,
+    "fields": {
+      "username": "admin_5",
+      "email": "admin_5@admin.com",
+      "password": "1234"
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 6,
+    "fields": {
+      "username": "admin_6",
+      "email": "admin_6@admin.com",
+      "password": "1234"
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 7,
+    "fields": {
+      "username": "admin_7",
+      "email": "admin_7@admin.com",
+      "password": "1234"
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 8,
+    "fields": {
+      "username": "admin_8",
+      "email": "admin_8@admin.com",
+      "password": "1234"
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 9,
+    "fields": {
+      "username": "admin_9",
+      "email": "admin_9@admin.com",
+      "password": "1234"
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 10,
+    "fields": {
+      "username": "admin_10",
+      "email": "admin_10@admin.com",
+      "password": "1234"
+    }
+  },
+  {
+    "model": "common.Document",
+    "pk": 1,
+    "fields": {
+      "image": "./media/documents/logo.png",
+      "type": "image",
+      "user": 1,
+      "file_name": "logo.pdf",
+      "file_name_system": "logo.pdf"
+    }
+  },
+  {
+    "model": "common.state",
+    "pk": 1,
+    "fields": {
+      "name": "State 1",
+      "country_id": 1,
+      "country_code": "BD",
+      "fips_code": "GEO-1",
+      "iso2": "BD-01",
+      "type": "State",
+      "latitude": 1,
+      "longitude": 1,
+      "created_at": "2022-01-01T00:00:00Z",
+      "updated_at": "2022-01-01T00:00:00Z",
+      "flag": true,
+      "wikiDataId": "GEO-1"
+    }
+  },
+  {
+    "model": "common.state",
+    "pk": 2,
+    "fields": {
+      "name": "State 2",
+      "country_id": 1,
+      "country_code": "BD",
+      "fips_code": "GEO-2",
+      "iso2": "BD-02",
+      "type": "State",
+      "latitude": 2,
+      "longitude": 2,
+      "created_at": "2022-01-01T00:00:00Z",
+      "updated_at": "2022-01-01T00:00:00Z",
+      "flag": true,
+      "wikiDataId": "GEO-2"
+    }
+  },
+  {
+    "model": "common.state",
+    "pk": 3,
+    "fields": {
+      "name": "State 3",
+      "country_id": 1,
+      "country_code": "BD",
+      "fips_code": "GEO-3",
+      "iso2": "BD-03",
+      "type": "State",
+      "latitude": 3,
+      "longitude": 3,
+      "created_at": "2022-01-01T00:00:00Z",
+      "updated_at": "2022-01-01T00:00:00Z",
+      "flag": true,
+      "wikiDataId": "GEO-3"
+    }
+  },
+  {
+    "model": "common.state",
+    "pk": 4,
+    "fields": {
+      "name": "State 4",
+      "country_id": 1,
+      "country_code": "BD",
+      "fips_code": "GEO-4",
+      "iso2": "BD-04",
+      "type": "State",
+      "latitude": 4,
+      "longitude": 4,
+      "created_at": "2022-01-01T00:00:00Z",
+      "updated_at": "2022-01-01T00:00:00Z",
+      "flag": true,
+      "wikiDataId": "GEO-4"
+    }
+  },
+  {
+    "model": "common.state",
+    "pk": 5,
+    "fields": {
+      "name": "State 5",
+      "country_id": 1,
+      "country_code": "BD",
+      "fips_code": "GEO-5",
+      "iso2": "BD-05",
+      "type": "State",
+      "latitude": 5,
+      "longitude": 5,
+      "created_at": "2022-01-01T00:00:00Z",
+      "updated_at": "2022-01-01T00:00:00Z",
+      "flag": true,
+      "wikiDataId": "GEO-5"
+    }
+  },
+  {
+    "model": "common.state",
+    "pk": 6,
+    "fields": {
+      "name": "State 6",
+      "country_id": 1,
+      "country_code": "BD",
+      "fips_code": "GEO-6",
+      "iso2": "BD-06",
+      "type": "State",
+      "latitude": 6,
+      "longitude": 6,
+      "created_at": "2022-01-01T00:00:00Z",
+      "updated_at": "2022-01-01T00:00:00Z",
+      "flag": true,
+      "wikiDataId": "GEO-6"
+    }
+  },
+  {
+    "model": "common.state",
+    "pk": 7,
+    "fields": {
+      "name": "State 7",
+      "country_id": 1,
+      "country_code": "BD",
+      "fips_code": "GEO-7",
+      "iso2": "BD-07",
+      "type": "State",
+      "latitude": 7,
+      "longitude": 7,
+      "created_at": "2022-01-01T00:00:00Z",
+      "updated_at": "2022-01-01T00:00:00Z",
+      "flag": true,
+      "wikiDataId": "GEO-7"
+    }
+  },
+  {
+    "model": "common.state",
+    "pk": 8,
+    "fields": {
+      "name": "State 8",
+      "country_id": 1,
+      "country_code": "BD",
+      "fips_code": "GEO-8",
+      "iso2": "BD-08",
+      "type": "State",
+      "latitude": 8,
+      "longitude": 8,
+      "created_at": "2022-01-01T00:00:00Z",
+      "updated_at": "2022-01-01T00:00:00Z",
+      "flag": true,
+      "wikiDataId": "GEO-8"
+    }
+  },
+  {
+    "model": "common.state",
+    "pk": 9,
+    "fields": {
+      "name": "State 9",
+      "country_id": 1,
+      "country_code": "BD",
+      "fips_code": "GEO-9",
+      "iso2": "BD-09",
+      "type": "State",
+      "latitude": 9,
+      "longitude": 9,
+      "created_at": "2022-01-01T00:00:00Z",
+      "updated_at": "2022-01-01T00:00:00Z",
+      "flag": true,
+      "wikiDataId": "GEO-9"
+    }
+  },
+  {
+    "model": "common.state",
+    "pk": 10,
+    "fields": {
+      "name": "State 10",
+      "country_id": 1,
+      "country_code": "BD",
+      "fips_code": "GEO-10",
+      "iso2": "BD-10",
+      "type": "State",
+      "latitude": 10,
+      "longitude": 10,
+      "created_at": "2022-01-01T00:00:00Z",
+      "updated_at": "2022-01-01T00:00:00Z",
+      "flag": true,
+      "wikiDataId": "GEO-10"
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizations",
+    "pk": 1,
+    "fields": {
+      "name": "Harborview University",
+      "under_category": 1,
+      "web_address": "https://www.harborviewuniversity.edu",
+      "statement": "A place where innovation meets excellence.",
+      "document": 1,
+      "status": "True",
+      "address_line1": "456 University Ave",
+      "address_line2": "",
+      "city": "San Francisco",
+      "state_province": 1,
+      "postal_code": "94132",
+      "country_code": "US"
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizations",
+    "pk": 2,
+    "fields": {
+      "name": "Maplewood College",
+      "under_category": 1,
+      "web_address": "https://www.maplewoodcollege.edu",
+      "statement": "Empowering students for a brighter future.",
+      "document": 1,
+      "status": "True",
+      "address_line1": "789 College Rd",
+      "address_line2": "",
+      "city": "Boston",
+      "state_province": 2,
+      "postal_code": "02118",
+      "country_code": "US"
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizations",
+    "pk": 3,
+    "fields": {
+      "name": "Riverside Institute of Technology",
+      "under_category": 1,
+      "web_address": "https://www.riversideinstitute.edu",
+      "statement": "Leading the way in technological advancements.",
+     "document": 1,
+      "status": "True",
+      "address_line1": "101 Academic Dr",
+      "address_line2": "",
+      "city": "Austin",
+      "state_province": 3,
+      "postal_code": "73301",
+      "country_code": "US"
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizations",
+    "pk": 4,
+    "fields": {
+      "name": "Greenfield University",
+      "under_category": 1,
+      "web_address": "https://www.greenfielduniversity.edu",
+      "statement": "Nurturing minds, transforming lives.",
+     "document": 1,
+      "status": "True",
+      "address_line1": "202 Learning Ln",
+      "address_line2": "",
+      "city": "Seattle",
+      "state_province": 4,
+      "postal_code": "98101",
+      "country_code": "US"
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizations",
+    "pk": 5,
+    "fields": {
+      "name": "Sunrise Community College",
+      "under_category": 1,
+      "web_address": "https://www.sunrisecc.edu",
+      "statement": "Creating pathways to success.",
+     "document": 1,
+      "status": "True",
+      "address_line1": "303 Knowledge Pkwy",
+      "address_line2": "",
+      "city": "Miami",
+      "state_province": 5,
+      "postal_code": "33101",
+      "country_code": "US"
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizations",
+    "pk": 6,
+    "fields": {
+      "name": "Lakeside University",
+      "under_category": 1,
+      "web_address": "https://www.lakesideuniversity.edu",
+      "statement": "Where education meets the future.",
+    "document": 1,
+      "status": "True",
+      "address_line1": "404 Scholar St",
+      "address_line2": "",
+      "city": "Chicago",
+      "state_province": 6,
+      "postal_code": "60601",
+      "country_code": "US"
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizations",
+    "pk": 7,
+    "fields": {
+      "name": "Pinehill College",
+      "under_category": 1,
+      "web_address": "https://www.pinehillcollege.edu",
+      "statement": "Excellence in education and beyond.",
+     "document": 1,
+      "status": "True",
+      "address_line1": "505 Study Blvd",
+      "address_line2": "",
+      "city": "Denver",
+      "state_province": 7,
+      "postal_code": "80201",
+      "country_code": "US"
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizations",
+    "pk": 8,
+    "fields": {
+      "name": "Silverlake Technical Institute",
+      "under_category": 1,
+      "web_address": "https://www.silverlaketechnical.edu",
+      "statement": "Innovating the future of technology.",
+    "document": 1,
+      "status": "True",
+      "address_line1": "606 Tutor Trl",
+      "address_line2": "",
+      "city": "Los Angeles",
+      "state_province": 8,
+      "postal_code": "90001",
+      "country_code": "US"
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizations",
+    "pk": 9,
+    "fields": {
+      "name": "Hilltop University",
+      "under_category": 1,
+      "web_address": "https://www.hilltopuniversity.edu",
+      "statement": "A tradition of excellence.",
+     "document": 1,
+      "status": "True",
+      "address_line1": "707 Academic Cir",
+      "address_line2": "",
+      "city": "New York",
+      "state_province": 9,
+      "postal_code": "10001",
+      "country_code": "US"
+    }
+  },
+  {
+    "model": "educational_organizations_app.educationalorganizations",
+    "pk": 10,
+    "fields": {
+      "name": "Crestwood University",
+      "under_category": 1,
+      "web_address": "https://www.crestwooduniversity.edu",
+      "statement": "Fostering knowledge and growth.",
+     "document": 1,
+      "status": "True",
+      "address_line1": "808 School Rd",
+      "address_line2": "",
+      "city": "San Diego",
+      "state_province": 10,
+      "postal_code": "92101",
+      "country_code": "US"
+    }
+  },
+  {
+    "model": "campus_app.campus",
+    "pk": 1,
+    "fields": {
+      "campus_name": "North Harbor Campus",
+      "educational_organization": 2,
+      "address_line1": "456 Campus Dr",
+      "address_line2": "",
+      "city": "San Francisco",
+      "state_province": 1,
+      "postal_code": "94132",
+      "country_code": "US",
+      "statement": "A hub of innovation and learning.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "campus_app.campus",
+    "pk": 2,
+    "fields": {
+      "campus_name": "Maplewood Central Campus",
+      "educational_organization": 3,
+      "address_line1": "789 Campus Blvd",
+      "address_line2": "",
+      "city": "Boston",
+      "state_province": 2,
+      "postal_code": "02118",
+      "country_code": "US",
+      "statement": "Empowering students with central facilities.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "campus_app.campus",
+    "pk": 3,
+    "fields": {
+      "campus_name": "Riverside Tech Campus",
+      "educational_organization": 4,
+      "address_line1": "101 Tech Ave",
+      "address_line2": "",
+      "city": "Austin",
+      "state_province": 3,
+      "postal_code": "73301",
+      "country_code": "US",
+      "statement": "Leading in technological research and development.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "campus_app.campus",
+    "pk": 4,
+    "fields": {
+      "campus_name": "Greenfield East Campus",
+      "educational_organization": 5,
+      "address_line1": "202 East Rd",
+      "address_line2": "",
+      "city": "Seattle",
+      "state_province": 4,
+      "postal_code": "98101",
+      "country_code": "US",
+      "statement": "Expanding horizons with new perspectives.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "campus_app.campus",
+    "pk": 5,
+    "fields": {
+      "campus_name": "Sunrise Downtown Campus",
+      "educational_organization": 6,
+      "address_line1": "303 Downtown Blvd",
+      "address_line2": "",
+      "city": "Miami",
+      "state_province": 5,
+      "postal_code": "33101",
+      "country_code": "US",
+      "statement": "Creating urban pathways to success.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "campus_app.campus",
+    "pk": 6,
+    "fields": {
+      "campus_name": "Lakeside West Campus",
+      "educational_organization": 7,
+      "address_line1": "404 West St",
+      "address_line2": "",
+      "city": "Chicago",
+      "state_province": 6,
+      "postal_code": "60601",
+      "country_code": "US",
+      "statement": "Where the west meets academic excellence.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "campus_app.campus",
+    "pk": 7,
+    "fields": {
+      "campus_name": "Pinehill North Campus",
+      "educational_organization": 8,
+      "address_line1": "505 North Ave",
+      "address_line2": "",
+      "city": "Denver",
+      "state_province": 7,
+      "postal_code": "80201",
+      "country_code": "US",
+      "statement": "Pioneering education in the northern region.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "campus_app.campus",
+    "pk": 8,
+    "fields": {
+      "campus_name": "Silverlake Innovation Campus",
+      "educational_organization": 9,
+      "address_line1": "606 Innovation Dr",
+      "address_line2": "",
+      "city": "Los Angeles",
+      "state_province": 8,
+      "postal_code": "90001",
+      "country_code": "US",
+      "statement": "Fostering creativity and technological advancement.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "campus_app.campus",
+    "pk": 9,
+    "fields": {
+      "campus_name": "Hilltop Heights Campus",
+      "educational_organization": 10,
+      "address_line1": "707 Heights Blvd",
+      "address_line2": "",
+      "city": "New York",
+      "state_province": 9,
+      "postal_code": "10001",
+      "country_code": "US",
+      "statement": "A tradition of excellence at new heights.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "campus_app.campus",
+    "pk": 10,
+    "fields": {
+      "campus_name": "Crestwood Valley Campus",
+      "educational_organization": 10,
+      "address_line1": "808 Valley Rd",
+      "address_line2": "",
+      "city": "San Diego",
+      "state_province": 10,
+      "postal_code": "92101",
+      "country_code": "US",
+      "statement": "Nurturing minds in a picturesque valley setting.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "college_app.college",
+    "pk": 1,
+    "fields": {
+      "name": "North Harbor College",
+      "campus": 1,
+      "web_address": "https://www.northharborcollege.edu",
+      "address_line1": "456 College Dr",
+      "address_line2": "",
+      "city": "San Francisco",
+      "state_province": 1,
+      "postal_code": "94132",
+      "country_code": "US",
+      "statement": "Empowering students at the harbor.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "college_app.college",
+    "pk": 2,
+    "fields": {
+      "name": "Maplewood Central College",
+      "campus": 2,
+      "web_address": "https://www.maplewoodcentralcollege.edu",
+      "address_line1": "789 College Blvd",
+      "address_line2": "",
+      "city": "Boston",
+      "state_province": 2,
+      "postal_code": "02118",
+      "country_code": "US",
+      "statement": "Central hub of education.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "college_app.college",
+    "pk": 3,
+    "fields": {
+      "name": "Riverside Technical College",
+      "campus": 3,
+      "web_address": "https://www.riversidetechnicalcollege.edu",
+      "address_line1": "101 Tech Ave",
+      "address_line2": "",
+      "city": "Austin",
+      "state_province": 3,
+      "postal_code": "73301",
+      "country_code": "US",
+      "statement": "Leading technical education.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "college_app.college",
+    "pk": 4,
+    "fields": {
+      "name": "Greenfield East College",
+      "campus": 4,
+      "web_address": "https://www.greenfieldeastcollege.edu",
+      "address_line1": "202 East Rd",
+      "address_line2": "",
+      "city": "Seattle",
+      "state_province": 4,
+      "postal_code": "98101",
+      "country_code": "US",
+      "statement": "Expanding educational horizons.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "college_app.college",
+    "pk": 5,
+    "fields": {
+      "name": "Sunrise Downtown College",
+      "campus": 5,
+      "web_address": "https://www.sunrisedowntowncollege.edu",
+      "address_line1": "303 Downtown Blvd",
+      "address_line2": "",
+      "city": "Miami",
+      "state_province": 5,
+      "postal_code": "33101",
+      "country_code": "US",
+      "statement": "Urban pathways to success.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "college_app.college",
+    "pk": 6,
+    "fields": {
+      "name": "Lakeside West College",
+      "campus": 6,
+      "web_address": "https://www.lakesidewestcollege.edu",
+      "address_line1": "404 West St",
+      "address_line2": "",
+      "city": "Chicago",
+      "state_province": 6,
+      "postal_code": "60601",
+      "country_code": "US",
+      "statement": "Education in the west.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "college_app.college",
+    "pk": 7,
+    "fields": {
+      "name": "Pinehill North College",
+      "campus": 7,
+      "web_address": "https://www.pinehillnorthcollege.edu",
+      "address_line1": "505 North Ave",
+      "address_line2": "",
+      "city": "Denver",
+      "state_province": 7,
+      "postal_code": "80201",
+      "country_code": "US",
+      "statement": "Northern education excellence.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "college_app.college",
+    "pk": 8,
+    "fields": {
+      "name": "Silverlake Innovation College",
+      "campus": 8,
+      "web_address": "https://www.silverlakeinnovationcollege.edu",
+      "address_line1": "606 Innovation Dr",
+      "address_line2": "",
+      "city": "Los Angeles",
+      "state_province": 8,
+      "postal_code": "90001",
+      "country_code": "US",
+      "statement": "Fostering innovation and creativity.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "college_app.college",
+    "pk": 9,
+    "fields": {
+      "name": "Hilltop Heights College",
+      "campus": 9,
+      "web_address": "https://www.hilltopheightscollege.edu",
+      "address_line1": "707 Heights Blvd",
+      "address_line2": "",
+      "city": "New York",
+      "state_province": 9,
+      "postal_code": "10001",
+      "country_code": "US",
+      "statement": "Educational excellence at new heights.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "college_app.college",
+    "pk": 10,
+    "fields": {
+      "name": "Crestwood Valley College",
+      "campus": 10,
+      "web_address": "https://www.crestwoodvalleycollege.edu",
+      "address_line1": "808 Valley Rd",
+      "address_line2": "",
+      "city": "San Diego",
+      "state_province": 10,
+      "postal_code": "92101",
+      "country_code": "US",
+      "statement": "Nurturing minds in a picturesque valley.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "department_app.department",
+    "pk": 1,
+    "fields": {
+      "name": "Computer Science Department",
+      "college": 1,
+      "campus": 1,
+      "web_address": "https://www.csdepartment.northharbor.edu",
+      "address_line1": "456 College Dr",
+      "address_line2": "",
+      "city": "San Francisco",
+      "state_province": 1,
+      "postal_code": "94132",
+      "country_code": "US",
+      "statement": "Innovating the future of technology.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "department_app.department",
+    "pk": 2,
+    "fields": {
+      "name": "Business Administration Department",
+      "college": 2,
+      "campus": 2,
+      "web_address": "https://www.bad.department.maplewood.edu",
+      "address_line1": "789 College Blvd",
+      "address_line2": "",
+      "city": "Boston",
+      "state_province": 2,
+      "postal_code": "02118",
+      "country_code": "US",
+      "statement": "Preparing future business leaders.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "department_app.department",
+    "pk": 3,
+    "fields": {
+      "name": "Engineering Department",
+      "college": 3,
+      "campus": 3,
+      "web_address": "https://www.eng.department.riverside.edu",
+      "address_line1": "101 Tech Ave",
+      "address_line2": "",
+      "city": "Austin",
+      "state_province": 3,
+      "postal_code": "73301",
+      "country_code": "US",
+      "statement": "Leading innovations in engineering.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "department_app.department",
+    "pk": 4,
+    "fields": {
+      "name": "Biology Department",
+      "college": 4,
+      "campus": 4,
+      "web_address": "https://www.bio.department.greenfield.edu",
+      "address_line1": "202 East Rd",
+      "address_line2": "",
+      "city": "Seattle",
+      "state_province": 4,
+      "postal_code": "98101",
+      "country_code": "US",
+      "statement": "Exploring the science of life.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "department_app.department",
+    "pk": 5,
+    "fields": {
+      "name": "Mathematics Department",
+      "college": 5,
+      "campus": 5,
+      "web_address": "https://www.math.department.sunrise.edu",
+      "address_line1": "303 Downtown Blvd",
+      "address_line2": "",
+      "city": "Miami",
+      "state_province": 5,
+      "postal_code": "33101",
+      "country_code": "US",
+      "statement": "Unlocking the mysteries of numbers.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "department_app.department",
+    "pk": 6,
+    "fields": {
+      "name": "Physics Department",
+      "college": 6,
+      "campus": 6,
+      "web_address": "https://www.physics.department.lakeside.edu",
+      "address_line1": "404 West St",
+      "address_line2": "",
+      "city": "Chicago",
+      "state_province": 6,
+      "postal_code": "60601",
+      "country_code": "US",
+      "statement": "Exploring the fundamental forces of nature.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "department_app.department",
+    "pk": 7,
+    "fields": {
+      "name": "Chemistry Department",
+      "college": 7,
+      "campus": 7,
+      "web_address": "https://www.chem.department.pinehill.edu",
+      "address_line1": "505 North Ave",
+      "address_line2": "",
+      "city": "Denver",
+      "state_province": 7,
+      "postal_code": "80201",
+      "country_code": "US",
+      "statement": "Breaking down the elements of matter.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "department_app.department",
+    "pk": 8,
+    "fields": {
+      "name": "Art and Design Department",
+      "college": 8,
+      "campus": 8,
+      "web_address": "https://www.artdesign.department.silverlake.edu",
+      "address_line1": "606 Innovation Dr",
+      "address_line2": "",
+      "city": "Los Angeles",
+      "state_province": 8,
+      "postal_code": "90001",
+      "country_code": "US",
+      "statement": "Fostering creativity and design thinking.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "department_app.department",
+    "pk": 9,
+    "fields": {
+      "name": "History Department",
+      "college": 9,
+      "campus": 9,
+      "web_address": "https://www.history.department.hilltop.edu",
+      "address_line1": "707 Heights Blvd",
+      "address_line2": "",
+      "city": "New York",
+      "state_province": 9,
+      "postal_code": "10001",
+      "country_code": "US",
+      "statement": "Understanding the past to shape the future.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "department_app.department",
+    "pk": 10,
+    "fields": {
+      "name": "Environmental Science Department",
+      "college": 10,
+      "campus": 10,
+      "web_address": "https://www.envsci.department.crestwood.edu",
+      "address_line1": "808 Valley Rd",
+      "address_line2": "",
+      "city": "San Diego",
+      "state_province": 10,
+      "postal_code": "92101",
+      "country_code": "US",
+      "statement": "Promoting sustainable environmental practices.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "faculty_members_app.facultymembers",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "educational_organization": 1,
+      "department": 1,
+      "campus": 1,
+      "college": 1,
+      "personal_web_address": "https://www.personalweba.com",
+      "research_profile_address": "https://www.researchprofilea.com",
+      "orcid": 1234567890,
+      "faculty_type": "Faculty",
+      "address_line1": "123 Department St, City, Country",
+      "address_line2": "123 Department St, City, Country",
+      "city": "City",
+      "state_province": 1,
+      "postal_code": "12345",
+      "country_code": "BD",
+      "statement": "Statement for Faculty A",
+      "status": "True"
+    }
+  },{
+    "model": "faculty_members_app.facultymembers",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "educational_organization": 2,
+      "department": 2,
+      "campus": 2,
+      "college": 2,
+      "personal_web_address": "https://www.personalwebb.com",
+      "research_profile_address": "https://www.researchprofileb.com",
+      "orcid": 1234567891,
+      "faculty_type": "Faculty",
+      "address_line1": "789 College Blvd, Boston, MA",
+      "address_line2": "",
+      "city": "Boston",
+      "state_province": 2,
+      "postal_code": "02118",
+      "country_code": "US",
+      "statement": "Preparing future business leaders.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "faculty_members_app.facultymembers",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "educational_organization": 3,
+      "department": 3,
+      "campus": 3,
+      "college": 3,
+      "personal_web_address": "https://www.personalwebc.com",
+      "research_profile_address": "https://www.researchprofilec.com",
+      "orcid": 1234567892,
+      "faculty_type": "Faculty",
+      "address_line1": "101 Tech Ave, Austin, TX",
+      "address_line2": "",
+      "city": "Austin",
+      "state_province": 3,
+      "postal_code": "73301",
+      "country_code": "US",
+      "statement": "Leading innovations in engineering.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "faculty_members_app.facultymembers",
+    "pk": 4,
+    "fields": {
+      "user": 1,
+      "educational_organization": 4,
+      "department": 4,
+      "campus": 4,
+      "college": 4,
+      "personal_web_address": "https://www.personalwebd.com",
+      "research_profile_address": "https://www.researchprofiled.com",
+      "orcid": 1234567893,
+      "faculty_type": "Faculty",
+      "address_line1": "202 East Rd, Seattle, WA",
+      "address_line2": "",
+      "city": "Seattle",
+      "state_province": 4,
+      "postal_code": "98101",
+      "country_code": "US",
+      "statement": "Exploring the science of life.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "faculty_members_app.facultymembers",
+    "pk": 5,
+    "fields": {
+      "user": 1,
+      "educational_organization": 5,
+      "department": 5,
+      "campus": 5,
+      "college": 5,
+      "personal_web_address": "https://www.personalwebe.com",
+      "research_profile_address": "https://www.researchprofilee.com",
+      "orcid": 1234567894,
+      "faculty_type": "Faculty",
+      "address_line1": "303 Downtown Blvd, Miami, FL",
+      "address_line2": "",
+      "city": "Miami",
+      "state_province": 5,
+      "postal_code": "33101",
+      "country_code": "US",
+      "statement": "Unlocking the mysteries of numbers.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "faculty_members_app.facultymembers",
+    "pk": 6,
+    "fields": {
+     "user": 1,
+      "educational_organization": 6,
+      "department": 6,
+      "campus": 6,
+      "college": 6,
+      "personal_web_address": "https://www.personalwebf.com",
+      "research_profile_address": "https://www.researchprofilef.com",
+      "orcid": 1234567895,
+      "faculty_type": "Faculty",
+      "address_line1": "404 West St, Chicago, IL",
+      "address_line2": "",
+      "city": "Chicago",
+      "state_province": 6,
+      "postal_code": "60601",
+      "country_code": "US",
+      "statement": "Exploring the fundamental forces of nature.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "faculty_members_app.facultymembers",
+    "pk": 7,
+    "fields": {
+      "user": 1,
+      "educational_organization": 7,
+      "department": 7,
+      "campus": 7,
+      "college": 7,
+      "personal_web_address": "https://www.personalwebg.com",
+      "research_profile_address": "https://www.researchprofileg.com",
+      "orcid": 1234567896,
+      "faculty_type": "Faculty",
+      "address_line1": "505 North Ave, Denver, CO",
+      "address_line2": "",
+      "city": "Denver",
+      "state_province": 7,
+      "postal_code": "80201",
+      "country_code": "US",
+      "statement": "Breaking down the elements of matter.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "faculty_members_app.facultymembers",
+    "pk": 8,
+    "fields": {
+     "user": 1,
+      "educational_organization": 8,
+      "department": 8,
+      "campus": 8,
+      "college": 8,
+      "personal_web_address": "https://www.personalwebh.com",
+      "research_profile_address": "https://www.researchprofileh.com",
+      "orcid": 1234567897,
+      "faculty_type": "Faculty",
+      "address_line1": "606 Innovation Dr, Los Angeles, CA",
+      "address_line2": "",
+      "city": "Los Angeles",
+      "state_province": 8,
+      "postal_code": "90001",
+      "country_code": "US",
+      "statement": "Fostering creativity and design thinking.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "faculty_members_app.facultymembers",
+    "pk": 9,
+    "fields": {
+     "user": 1,
+      "educational_organization": 9,
+      "department": 9,
+      "campus": 9,
+      "college": 9,
+      "personal_web_address": "https://www.personalwebi.com",
+      "research_profile_address": "https://www.researchprofilei.com",
+      "orcid": 1234567898,
+      "faculty_type": "Faculty",
+      "address_line1": "707 Heights Blvd, New York, NY",
+      "address_line2": "",
+      "city": "New York",
+      "state_province": 9,
+      "postal_code": "10001",
+      "country_code": "US",
+      "statement": "Understanding the past to shape the future.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "faculty_members_app.facultymembers",
+    "pk": 10,
+    "fields": {
+      "user": 1,
+      "educational_organization": 10,
+      "department": 10,
+      "campus": 10,
+      "college": 10,
+      "personal_web_address": "https://www.personalwebj.com",
+      "research_profile_address": "https://www.researchprofilej.com",
+      "orcid": 1234567899,
+      "faculty_type": "Faculty",
+      "address_line1": "808 Valley Rd, San Diego, CA",
+      "address_line2": "",
+      "city": "San Diego",
+      "state_province": 10,
+      "postal_code": "92101",
+      "country_code": "US",
+      "statement": "Promoting sustainable environmental practices.",
+      "status": "True"
+    }
+  },
+  {
+    "model": "funding_app.benefit",
+    "pk": 1,
+    "fields": {
+      "name": "Health Insurance",
+      "details": "Comprehensive health coverage for all faculty members."
+    }
+  },
+  {
+    "model": "funding_app.benefit",
+    "pk": 2,
+    "fields": {
+      "name": "Retirement Plan",
+      "details": "A robust retirement savings plan with employer contributions."
+    }
+  },
+  {
+    "model": "funding_app.benefit",
+    "pk": 3,
+    "fields": {
+      "name": "Paid Leave",
+      "details": "Generous paid time off including vacation, sick leave, and holidays."
+    }
+  },
+  {
+    "model": "funding_app.benefit",
+    "pk": 4,
+    "fields": {
+      "name": "Professional Development",
+      "details": "Funding and support for continuing education and training."
+    }
+  },
+  {
+    "model": "funding_app.benefit",
+    "pk": 5,
+    "fields": {
+      "name": "Research Grants",
+      "details": "Access to grants and funding for research projects."
+    }
+  },
+  {
+    "model": "funding_app.benefit",
+    "pk": 6,
+    "fields": {
+      "name": "Tuition Reimbursement",
+      "details": "Reimbursement for tuition fees for courses taken to advance professional skills."
+    }
+  },
+  {
+    "model": "funding_app.benefit",
+    "pk": 7,
+    "fields": {
+      "name": "Childcare Support",
+      "details": "Subsidies and support for childcare services."
+    }
+  },
+  {
+    "model": "funding_app.benefit",
+    "pk": 8,
+    "fields": {
+      "name": "Flexible Working Hours",
+      "details": "Options for flexible schedules and remote working."
+    }
+  },
+  {
+    "model": "funding_app.benefit",
+    "pk": 9,
+    "fields": {
+      "name": "Travel Allowance",
+      "details": "Allowance for travel expenses related to professional duties."
+    }
+  },
+  {
+    "model": "funding_app.benefit",
+    "pk": 10,
+    "fields": {
+      "name": "Housing Assistance",
+      "details": "Support and subsidies for housing near the campus."
+    }
+  },
+    {
+      "model": "funding_app.funding",
+      "pk": 1,
+      "fields": {
+        "originator": "EDU_ORG",
+        "originator_edu_org": 1,
+        "funding_type": "TA",
+        "amount": 1000.0,
+        "amount_type": "Monthly",
+        "benefits": [1, 2],
+        "funding_for": "Department",
+        "funding_for_department": 1,
+        "funding_open_date": "2020-01-01",
+        "funding_end_date": "2020-12-31"
+      }
+    },
+    {
+      "model": "funding_app.funding",
+      "pk": 2,
+      "fields": {
+        "originator": "EDU_ORG",
+        "originator_edu_org": 2,
+        "funding_type": "TA",
+        "amount": 2000.0,
+        "amount_type": "Monthly",
+        "benefits": [3, 4],
+        "funding_for": "Department",
+        "funding_for_department": 2,
+        "funding_open_date": "2021-01-01",
+        "funding_end_date": "2021-12-31"
+      }
+    },
+    {
+      "model": "funding_app.funding",
+      "pk": 3,
+      "fields": {
+        "originator": "EDU_ORG",
+        "originator_edu_org": 3,
+        "funding_type": "TA",
+        "amount": 3000.0,
+        "amount_type": "Yearly",
+        "benefits": [5, 6],
+        "funding_for": "Department",
+        "funding_for_department": 3,
+        "funding_open_date": "2022-01-01",
+        "funding_end_date": "2022-12-31"
+      }
+    },
+    {
+      "model": "funding_app.funding",
+      "pk": 4,
+      "fields": {
+        "originator": "EDU_ORG",
+        "originator_edu_org": 4,
+        "funding_type": "TA",
+        "amount": 4000.0,
+        "amount_type": "Yearly",
+        "benefits": [7, 8],
+        "funding_for": "Department",
+        "funding_for_department": 4,
+        "funding_open_date": "2023-01-01",
+        "funding_end_date": "2023-12-31"
+      }
+    },
+    {
+      "model": "funding_app.funding",
+      "pk": 5,
+      "fields": {
+        "originator": "EDU_ORG",
+        "originator_edu_org": 5,
+        "funding_type": "Scholarship",
+        "amount": 5000.0,
+        "amount_type": "Monthly",
+        "benefits": [9, 10],
+        "funding_for": "Department",
+        "funding_for_department": 5,
+        "funding_open_date": "2024-01-01",
+        "funding_end_date": "2024-12-31"
+      }
+    },
+    {
+      "model": "funding_app.funding",
+      "pk": 6,
+      "fields": {
+        "originator": "EDU_ORG",
+        "originator_edu_org": 6,
+        "funding_type": "Scholarship",
+        "amount": 6000.0,
+        "amount_type": "Yearly",
+        "benefits": [1, 2],
+        "funding_for": "Department",
+        "funding_for_department": 6,
+        "funding_open_date": "2025-01-01",
+        "funding_end_date": "2025-12-31"
+      }
+    },
+    {
+      "model": "funding_app.funding",
+      "pk": 7,
+      "fields": {
+        "originator": "EDU_ORG",
+        "originator_edu_org": 7,
+        "funding_type": "Grant",
+        "amount": 7000.0,
+        "amount_type": "Monthly",
+        "benefits": [3, 4],
+        "funding_for": "Department",
+        "funding_for_department": 7,
+        "funding_open_date": "2026-01-01",
+        "funding_end_date": "2026-12-31"
+      }
+    },
+    {
+      "model": "funding_app.funding",
+      "pk": 8,
+      "fields": {
+        "originator": "EDU_ORG",
+        "originator_edu_org": 8,
+        "funding_type": "Grant",
+        "amount": 8000.0,
+        "amount_type": "Yearly",
+        "benefits": [5, 6],
+        "funding_for": "Department",
+        "funding_for_department": 8,
+        "funding_open_date": "2027-01-01",
+        "funding_end_date": "2027-12-31"
+      }
+    },
+    {
+      "model": "funding_app.funding",
+      "pk": 9,
+      "fields": {
+        "originator": "EDU_ORG",
+        "originator_edu_org": 9,
+        "funding_type": "Fellowship",
+        "amount": 9000.0,
+        "amount_type": "Monthly",
+        "benefits": [7, 8],
+        "funding_for": "Department",
+        "funding_for_department": 9,
+        "funding_open_date": "2028-01-01",
+        "funding_end_date": "2028-12-31"
+      }
+    },
+    {
+      "model": "funding_app.funding",
+      "pk": 10,
+      "fields": {
+        "originator": "EDU_ORG",
+        "originator_edu_org": 10,
+        "funding_type": "Fellowship",
+        "amount": 10000.0,
+        "amount_type": "Yearly",
+        "benefits": [9, 10],
+        "funding_for": "Department",
+        "funding_for_department": 10,
+        "funding_open_date": "2029-01-01",
+        "funding_end_date": "2029-12-31"
+      }
+    }
+]

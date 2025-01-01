@@ -1,0 +1,80 @@
+@token = {{dev.token}}
+@host = {{dev.host}}
+
+### List GeoAdmin2
+GET {{host}}/api/geo_admin2/
+Authorization: Token {{token}}
+
+### Get Specific GeoAdmin2
+GET {{host}}/api/geo_admin2/1/
+Authorization: Token {{token}}
+
+### Create GeoAdmin2
+POST {{host}}/api/geo_admin2/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+    "geo_admin_2_name": "New GeoAdmin two",
+    "geo_admin_1": 1,
+    "country": 1,
+    "geo_admin_2_code": "G202"
+}
+
+### Update GeoAdmin2
+PUT {{host}}/api/geo_admin2/1/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+    "geo_admin_2_name": "Updated GeoAdmin three",
+    "geo_admin_1": 1,
+    "country": 1,
+    "geo_admin_2_code": "G202"
+}
+
+### Soft Delete GeoAdmin2
+DELETE {{host}}/api/geo_admin2/1/
+Authorization: Token {{token}}
+
+### List Campuses
+GET {{host}}/api/campus/
+Authorization: Token {{token}}
+
+### Get Specific Campus
+GET {{host}}/api/campus/1/
+Authorization: Token {{token}}
+
+### Create Campus
+POST {{host}}/api/campus/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+    "campus_name": "New Campus new",
+    "educational_organization": 1,
+    "country": 1,
+    "geo_admin_1": 1,
+    "geo_admin_2": 1,
+    "statement": "This is a new campus.",
+    "status": "active"
+}
+
+### Update Campus
+PUT {{host}}/api/campus/1/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+    "campus_name": "Updated Campus",
+    "educational_organization": 1,
+    "country": 1,
+    "geo_admin_1": 1,
+    "geo_admin_2": 1,
+    "statement": "Updated statement for this campus.",
+    "status": "Inactive"
+}
+
+### Soft Delete Campus
+DELETE {{host}}/api/campus/1/
+Authorization: Token {{token}}

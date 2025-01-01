@@ -1,0 +1,2297 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#: fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-07-27 02:29+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: auth_app/messages.py:4
+msgid "Email or password is wrong."
+msgstr "ইমেল বা পাসওয়ার্ড ভুল।"
+
+#: auth_app/messages.py:5
+msgid "Username or password is wrong."
+msgstr "ব্যবহারকারীর নাম বা পাসওয়ার্ড ভুল।"
+
+#: auth_app/messages.py:6 auth_app/otp_views.py:104
+msgid "The OTP code you entered is incorrect. Please try again."
+msgstr "আপনি যে OTP কোডটি লিখেছেন সেটি ভুল। "
+
+#: auth_app/messages.py:7
+msgid "User not found."
+msgstr "ব্যবহারকারী পাওয়া যায়নি।"
+
+#: auth_app/messages.py:9 contact_app/messages.py:8
+msgid "Missing reCAPTCHA token."
+msgstr "অনুপস্থিত reCAPTCHA টোকেন।"
+
+#: auth_app/messages.py:10 contact_app/messages.py:9
+msgid "Failed reCAPTCHA verification. Please try again."
+msgstr "ব্যর্থ reCAPTCHA যাচাইকরণ। "
+
+#: auth_app/messages.py:12 auth_app/serializers.py:41
+#: auth_app/serializers.py:55 auth_app/serializers.py:61
+#: auth_app/serializers.py:71 auth_app/serializers.py:73
+#: campus_app/serializers.py:15 campus_app/serializers.py:23
+#: campus_app/serializers.py:52 college_app/serializers.py:48
+#: college_app/serializers.py:63 college_app/serializers.py:79
+#: college_app/serializers.py:87 department_app/serializers.py:63
+#: department_app/serializers.py:78 department_app/serializers.py:94
+#: department_app/serializers.py:102 faculty_members_app/serializers.py:118
+#: faculty_members_app/serializers.py:133
+#: faculty_members_app/serializers.py:149
+#: faculty_members_app/serializers.py:157
+msgid "This field is required."
+msgstr "এই ক্ষেত্রটি প্রয়োজন।"
+
+#: auth_app/messages.py:13
+msgid "This field may not be blank."
+msgstr "এই ক্ষেত্রটি ফাঁকা নাও হতে পারে।"
+
+#: auth_app/messages.py:14 auth_app/serializers.py:46 contact_app/messages.py:5
+msgid "Enter a valid email address."
+msgstr "একটি বৈধ ইমেল ঠিকানা লিখুন।"
+
+#: auth_app/messages.py:15 auth_app/serializers.py:49
+msgid "A user with that email already exists."
+msgstr "সেই ইমেলের সাথে একজন ব্যবহারকারী ইতিমধ্যেই বিদ্যমান।"
+
+#: auth_app/messages.py:17
+msgid "This password is too short."
+msgstr "এই পাসওয়ার্ডটি খুব ছোট।"
+
+#: auth_app/messages.py:18
+msgid "It must contain at least 8 characters."
+msgstr "এটিতে কমপক্ষে 8টি অক্ষর থাকতে হবে।"
+
+#: auth_app/messages.py:19
+msgid "This password is entirely numeric."
+msgstr "এই পাসওয়ার্ডটি সম্পূর্ণরূপে সংখ্যাসূচক।"
+
+#: auth_app/messages.py:20
+msgid "This password is too common."
+msgstr "এই পাসওয়ার্ডটি খুবই সাধারণ।"
+
+#: auth_app/messages.py:21 emails/lockout_email.html:7
+msgid "Account locked due to too many failed login attempts."
+msgstr "অত্যধিক ব্যর্থ লগইন প্রচেষ্টার কারণে অ্যাকাউন্ট লক করা হয়েছে।"
+
+#: auth_app/messages.py:27
+msgid "Login successful."
+msgstr "লগইন সফল।"
+
+#: auth_app/messages.py:28
+msgid "Registration successful."
+msgstr "নিবন্ধন সফল।"
+
+#: auth_app/messages.py:30
+msgid "User created successfully."
+msgstr "ব্যবহারকারী সফলভাবে তৈরি করা হয়েছে।"
+
+#: auth_app/messages.py:31
+msgid "User created successfully but failed to send welcome email."
+msgstr "ব্যবহারকারী সফলভাবে তৈরি করা হয়েছে কিন্তু স্বাগত ইমেল পাঠাতে ব্যর্থ হয়েছে।"
+
+#: auth_app/otp_views.py:65
+msgid "OTP setup is successful! You can now set up OTP again."
+msgstr "OTP সেটআপ সফল! "
+
+#: auth_app/otp_views.py:67
+msgid "OTP is already set up and verified for this user"
+msgstr "OTP ইতিমধ্যেই এই ব্যবহারকারীর জন্য সেট আপ এবং যাচাই করা হয়েছে৷"
+
+#: auth_app/otp_views.py:103
+msgid "OTP verification successful! You can now use your OTP for secure login."
+msgstr "OTP যাচাইকরণ সফল! "
+
+#: auth_app/otp_views.py:127
+msgid ""
+"OTP has been successfully disabled. Your account no longer requires two-"
+"factor authentication for login."
+msgstr "OTP সফলভাবে নিষ্ক্রিয় করা হয়েছে। "
+
+#: auth_app/otp_views.py:130
+msgid "No OTP record found for the user."
+msgstr "ব্যবহারকারীর জন্য কোন OTP রেকর্ড পাওয়া যায়নি।"
+
+#: auth_app/serializers.py:16 auth_app/serializers.py:19
+#: auth_app/serializers.py:22
+msgid "Ensure this field has no more than 150 characters."
+msgstr "নিশ্চিত করুন যে এই ক্ষেত্রটিতে 150টির বেশি অক্ষর নেই।"
+
+#: auth_app/serializers.py:25 auth_app/serializers.py:145
+msgid "Ensure this field has no more than 254 characters."
+msgstr "নিশ্চিত করুন যে এই ক্ষেত্রটিতে 254টির বেশি অক্ষর নেই।"
+
+#: auth_app/serializers.py:120
+msgid "Passwords do not match."
+msgstr "পাসওয়ার্ড মেলে না।"
+
+#: auth_app/serializers.py:124 auth_app/serializers.py:134
+msgid "Invalid or expired token."
+msgstr "অবৈধ বা মেয়াদোত্তীর্ণ টোকেন।"
+
+#: auth_app/serializers.py:159
+msgid "Email should not exceed 254 characters."
+msgstr "ইমেল 254 অক্ষরের বেশি হওয়া উচিত নয়।"
+
+#: auth_app/serializers.py:161
+msgid "Username should not exceed 150 characters."
+msgstr "ব্যবহারকারীর নাম 150 অক্ষরের বেশি হওয়া উচিত নয়।"
+
+#: auth_app/serializers.py:173
+#: python-brace-format
+msgid "Role '{value}' does not exist."
+msgstr "ভূমিকা '{মান}' বিদ্যমান নেই।"
+
+#: auth_app/signals.py:35
+msgid "Account locked for unusual Login Attempt"
+msgstr "অস্বাভাবিক লগইন প্রচেষ্টার জন্য অ্যাকাউন্ট লক করা হয়েছে"
+
+#: auth_app/views.py:160
+msgid "User created successfully but failed to send welcome email"
+msgstr "ব্যবহারকারী সফলভাবে তৈরি করা হয়েছে কিন্তু স্বাগত ইমেল পাঠাতে ব্যর্থ হয়েছে"
+
+#: auth_app/views.py:162
+msgid "User created successfully"
+msgstr "ব্যবহারকারী সফলভাবে তৈরি করা হয়েছে"
+
+#: auth_app/views.py:214
+msgid "Your account has been activated successfully."
+msgstr "আপনার অ্যাকাউন্ট সফলভাবে সক্রিয় করা হয়েছে।"
+
+#: auth_app/views.py:216
+msgid "Activation link is invalid or expired."
+msgstr "অ্যাক্টিভেশন লিঙ্কটি অবৈধ বা মেয়াদোত্তীর্ণ।"
+
+#: auth_app/views.py:354
+msgid ""
+"Data too long for field. Please ensure your username or email is within the "
+"valid length."
+msgstr "ক্ষেত্রের জন্য ডেটা খুব দীর্ঘ। "
+
+#: auth_app/views.py:572 common/messages.py:13
+msgid "Password Reset Requested"
+msgstr "পাসওয়ার্ড রিসেট অনুরোধ করা হয়েছে"
+
+#: campus_app/messages.py:4 educational_organizations_app/messages.py:4
+#: profile_app/messages.py:4
+msgid "Failed to update profile details."
+msgstr "প্রোফাইল বিশদ আপডেট করতে ব্যর্থ।"
+
+#: campus_app/messages.py:5 educational_organizations_app/messages.py:5
+#: profile_app/messages.py:5 profile_app/views.py:621 profile_app/views.py:1207
+#: profile_app/views.py:1274 profile_app/views.py:1415
+msgid "User details not found."
+msgstr "ব্যবহারকারীর বিবরণ পাওয়া যায়নি।"
+
+#: campus_app/messages.py:6 educational_organizations_app/messages.py:6
+#: profile_app/messages.py:6
+msgid "User not authenticated."
+msgstr "ব্যবহারকারী প্রমাণীকৃত নয়।"
+
+#: campus_app/messages.py:7 educational_organizations_app/messages.py:7
+msgid "Organization data not found."
+msgstr "সংস্থার তথ্য পাওয়া যায়নি।"
+
+#: campus_app/messages.py:8
+msgid "Campus data not found."
+msgstr "ক্যাম্পাস ডেটা পাওয়া যায়নি।"
+
+#: campus_app/messages.py:12 educational_organizations_app/messages.py:11
+msgid "Educational organization saved successfully."
+msgstr "শিক্ষা প্রতিষ্ঠান সফলভাবে সংরক্ষিত।"
+
+#: campus_app/messages.py:13 educational_organizations_app/messages.py:12
+msgid "Educational organization updated successfully."
+msgstr "শিক্ষা প্রতিষ্ঠান সফলভাবে আপডেট হয়েছে।"
+
+#: campus_app/messages.py:14 educational_organizations_app/messages.py:13
+#: profile_app/messages.py:12
+msgid "User details retrieved successfully."
+msgstr "ব্যবহারকারীর বিবরণ সফলভাবে পুনরুদ্ধার করা হয়েছে।"
+
+#: campus_app/messages.py:15 educational_organizations_app/messages.py:14
+msgid "Organization data found successfully."
+msgstr "প্রতিষ্ঠানের তথ্য সফলভাবে পাওয়া গেছে।"
+
+#: campus_app/messages.py:16
+msgid "Campus saved successfully."
+msgstr "ক্যাম্পাস সফলভাবে সংরক্ষণ করা হয়েছে।"
+
+#: campus_app/messages.py:17
+msgid "Campus data found successfully."
+msgstr "ক্যাম্পাস ডেটা সফলভাবে পাওয়া গেছে।"
+
+#: campus_app/messages.py:18
+msgid "Campus updated successfully."
+msgstr "ক্যাম্পাস সফলভাবে আপডেট করা হয়েছে।"
+
+#: campus_app/serializers.py:14 campus_app/serializers.py:36
+#: campus_app/serializers.py:45 campus_app/serializers.py:51
+#: college_app/serializers.py:14 college_app/serializers.py:47
+#: college_app/serializers.py:55 college_app/serializers.py:62
+#: department_app/serializers.py:16 department_app/serializers.py:52
+#: department_app/serializers.py:62 department_app/serializers.py:70
+#: department_app/serializers.py:77 department_app/serializers.py:124
+#: department_app/serializers.py:135
+#: educational_organizations_app/serializers.py:13
+#: educational_organizations_app/serializers.py:43
+#: educational_organizations_app/serializers.py:64
+#: educational_organizations_app/serializers.py:72
+#: educational_organizations_app/serializers.py:80
+#: faculty_members_app/serializers.py:117
+#: faculty_members_app/serializers.py:125
+#: faculty_members_app/serializers.py:132
+#: profile_app/reference_info_serializer.py:43 profile_app/serializers.py:174
+#: profile_app/serializers.py:182 profile_app/serializers.py:190
+#: profile_app/serializers.py:228 profile_app/serializers.py:236
+#: profile_app/serializers.py:244 profile_app/serializers.py:708
+#: profile_app/serializers.py:714 profile_app/serializers.py:787
+#: profile_app/serializers.py:790 profile_app/serializers.py:793
+#: profile_app/serializers.py:852 profile_app/serializers.py:859
+#: profile_app/serializers.py:862 profile_app/serializers.py:917
+#: profile_app/serializers.py:920 profile_app/serializers.py:923
+#: profile_app/serializers.py:1013 profile_app/serializers.py:1016
+#: profile_app/serializers.py:1019 profile_app/serializers.py:1087
+#: profile_app/serializers.py:1090 profile_app/serializers.py:1135
+msgid "Ensure this field has no more than 255 characters."
+msgstr "নিশ্চিত করুন যে এই ক্ষেত্রটিতে 255টির বেশি অক্ষর নেই।"
+
+#: campus_app/serializers.py:24
+msgid "Invalid educational organization."
+msgstr "অবৈধ শিক্ষা প্রতিষ্ঠান।"
+
+#: campus_app/serializers.py:60
+msgid "Invalid state or province."
+msgstr "অবৈধ রাষ্ট্র বা প্রদেশ।"
+
+#: campus_app/serializers.py:72 college_app/serializers.py:78
+#: department_app/serializers.py:93
+#: educational_organizations_app/serializers.py:104
+#: faculty_members_app/serializers.py:148 profile_app/serializers.py:206
+#: profile_app/serializers.py:261 profile_app/serializers.py:855
+msgid "Ensure this field has no more than 20 characters."
+msgstr "নিশ্চিত করুন যে এই ক্ষেত্রটিতে 20টির বেশি অক্ষর নেই।"
+
+#: campus_app/serializers.py:81 college_app/serializers.py:86
+#: department_app/serializers.py:101
+#: educational_organizations_app/serializers.py:112
+#: faculty_members_app/serializers.py:156 profile_app/serializers.py:214
+#: profile_app/serializers.py:269
+msgid "Ensure this field has no more than 2 characters."
+msgstr "নিশ্চিত করুন যে এই ক্ষেত্রটিতে 2টির বেশি অক্ষর নেই।"
+
+#: campus_app/serializers.py:126
+msgid ""
+"A duplicate entry with the same campus name, educational organization, "
+"country code, city, and state or province already exists."
+msgstr "একই ক্যাম্পাসের নাম, শিক্ষা প্রতিষ্ঠান, দেশের কোড, শহর এবং রাজ্য বা প্রদেশের একটি ডুপ্লিকেট এন্ট্রি ইতিমধ্যেই বিদ্যমান।"
+
+#: campus_app/views.py:28
+msgid "You do not have permission to view campus data"
+msgstr "আপনার ক্যাম্পাস ডেটা দেখার অনুমতি নেই"
+
+#: campus_app/views.py:95
+msgid "You do not have permission to add a campus"
+msgstr "আপনার কাছে একটি ক্যাম্পাস যোগ করার অনুমতি নেই"
+
+#: campus_app/views.py:121 campus_app/views.py:173 department_app/messages.py:7
+#: department_app/views.py:124 department_app/views.py:173
+#: educational_organizations_app/views.py:248
+#: educational_organizations_app/views.py:357
+#: profile_app/educational_background_views.py:63
+#: profile_app/educational_background_views.py:96
+#: profile_app/reference_info_views.py:70
+#: profile_app/reference_info_views.py:101 profile_app/views.py:642
+#: profile_app/views.py:667 profile_app/views.py:1436 profile_app/views.py:1460
+#: profile_app/views.py:1538 profile_app/views.py:1569
+msgid "Validation error occurred."
+msgstr "বৈধতা ত্রুটি ঘটেছে।"
+
+#: campus_app/views.py:132
+msgid "You do not have permission to update this campus"
+msgstr "আপনার এই ক্যাম্পাস আপডেট করার অনুমতি নেই"
+
+#: campus_app/views.py:166
+msgid "Campus not found."
+msgstr "ক্যাম্পাস পাওয়া যায়নি।"
+
+#: campus_app/views.py:184
+msgid "You do not have permission to delete this campus"
+msgstr "আপনার এই ক্যাম্পাস মুছে ফেলার অনুমতি নেই"
+
+#: campus_app/views.py:193
+msgid "Campus deleted successfully."
+msgstr "ক্যাম্পাস সফলভাবে মুছে ফেলা হয়েছে।"
+
+#: campus_app/views.py:200
+msgid "An error occurred while deleting the campus."
+msgstr "ক্যাম্পাস মুছে ফেলার সময় একটি ত্রুটি ঘটেছে৷"
+
+#: coco/settings.py:148
+msgid "English"
+msgstr "ইংরেজি"
+
+#: coco/settings.py:149
+msgid "Bengali"
+msgstr "বাংলা"
+
+#: coco/settings.py:150
+msgid "French"
+msgstr "ফরাসি"
+
+#: college_app/messages.py:4 faculty_members_app/messages.py:4
+#: global_messages.py:7
+msgid "An error has occurred. Please try again later."
+msgstr "একটি ত্রুটি ঘটেছে। "
+
+#: college_app/messages.py:5 faculty_members_app/messages.py:5
+#: global_messages.py:8
+#: python-brace-format
+msgid ""
+"Please upload a file with one of the following extensions: {extensions}."
+msgstr "অনুগ্রহ করে নিম্নলিখিত এক্সটেনশনগুলির মধ্যে একটি সহ একটি ফাইল আপলোড করুন: {extensions}।"
+
+#: college_app/messages.py:6 faculty_members_app/messages.py:6
+#: global_messages.py:9
+msgid "File size exceeds the maximum limit."
+msgstr "ফাইলের আকার সর্বোচ্চ সীমা ছাড়িয়ে গেছে।"
+
+#: college_app/messages.py:7 faculty_members_app/messages.py:7
+#: global_messages.py:10
+msgid "Please upload either a Resume or a SOP file."
+msgstr "অনুগ্রহ করে একটি জীবনবৃত্তান্ত বা একটি SOP ফাইল আপলোড করুন৷"
+
+#: college_app/messages.py:8 faculty_members_app/messages.py:8
+#: global_messages.py:11
+msgid "Please upload a PDF file for Resume."
+msgstr "সারসংকলনের জন্য একটি পিডিএফ ফাইল আপলোড করুন।"
+
+#: college_app/messages.py:9 faculty_members_app/messages.py:9
+#: global_messages.py:12
+msgid "Please upload a JPG/PNG/JPEG/SVG/EPS file for Image."
+msgstr "চিত্রের জন্য একটি JPG/PNG/JPEG/SVG/EPS ফাইল আপলোড করুন।"
+
+#: college_app/messages.py:10 faculty_members_app/messages.py:10
+#: global_messages.py:13
+msgid "Please upload a PDF file for SOP."
+msgstr "অনুগ্রহ করে এসওপির জন্য একটি পিডিএফ ফাইল আপলোড করুন।"
+
+#: college_app/messages.py:11 faculty_members_app/messages.py:11
+#: global_messages.py:14 global_messages.py:20
+msgid "Please fix the following error."
+msgstr "অনুগ্রহ করে নিম্নলিখিত ত্রুটিটি ঠিক করুন।"
+
+#: college_app/messages.py:12 faculty_members_app/messages.py:12
+#: global_messages.py:15
+#: python-format
+msgid "Image size should be less than %(max_size)d mb"
+msgstr "ছবির আকার %(max_size)d mb এর কম হওয়া উচিত"
+
+#: college_app/messages.py:13
+msgid "College data not found."
+msgstr "কলেজের তথ্য পাওয়া যায়নি।"
+
+#: college_app/messages.py:17 faculty_members_app/messages.py:17
+#: global_messages.py:19
+msgid "Operation completed successfully."
+msgstr "অপারেশন সফলভাবে সম্পন্ন হয়েছে।"
+
+#: college_app/messages.py:18 faculty_members_app/messages.py:18
+#: global_messages.py:21
+msgid "Files uploaded successfully."
+msgstr "ফাইলগুলি সফলভাবে আপলোড হয়েছে৷"
+
+#: college_app/messages.py:19
+msgid "College data found."
+msgstr "কলেজের তথ্য পাওয়া গেছে।"
+
+#: college_app/messages.py:20
+msgid "College data saved successfully."
+msgstr "কলেজের ডেটা সফলভাবে সংরক্ষিত হয়েছে।"
+
+#: college_app/messages.py:21
+msgid "College data updated successfully."
+msgstr "কলেজ ডেটা সফলভাবে আপডেট করা হয়েছে।"
+
+#: college_app/serializers.py:15 college_app/serializers.py:16
+#: department_app/serializers.py:17
+msgid "Name cannot be blank."
+msgstr "নাম ফাঁকা রাখা যাবে না।"
+
+#: college_app/serializers.py:17 department_app/serializers.py:19
+#: profile_app/serializers.py:1037 profile_app/serializers.py:1104
+msgid "Name is required."
+msgstr "নাম প্রয়োজন।"
+
+#: college_app/serializers.py:24 faculty_members_app/serializers.py:55
+msgid "Campus is required."
+msgstr "ক্যাম্পাস প্রয়োজন।"
+
+#: college_app/serializers.py:25 faculty_members_app/serializers.py:56
+msgid "Campus cannot be blank."
+msgstr "ক্যাম্পাস ফাঁকা হতে পারে না।"
+
+#: college_app/serializers.py:26 faculty_members_app/serializers.py:57
+msgid "Specified campus does not exist or is not active."
+msgstr "নির্দিষ্ট ক্যাম্পাস বিদ্যমান নেই বা সক্রিয় নয়।"
+
+#: college_app/serializers.py:39 department_app/serializers.py:53
+#: department_app/serializers.py:133
+#: educational_organizations_app/serializers.py:50
+#: profile_app/serializers.py:756 profile_app/serializers.py:895
+msgid "Enter a valid URL."
+msgstr "একটি বৈধ URL লিখুন।"
+
+#: college_app/serializers.py:104 department_app/serializers.py:120
+msgid "Name cannot be empty."
+msgstr "নাম খালি হতে পারে না।"
+
+#: college_app/views.py:21
+msgid "You do not have permission to view college data"
+msgstr "আপনার কলেজ ডেটা দেখার অনুমতি নেই"
+
+#: college_app/views.py:89
+msgid "You do not have permission to add a college"
+msgstr "আপনার কাছে একটি কলেজ যোগ করার অনুমতি নেই"
+
+#: college_app/views.py:116
+msgid "You do not have permission to update this college"
+msgstr "আপনার এই কলেজ আপডেট করার অনুমতি নেই"
+
+#: college_app/views.py:143
+msgid "You do not have permission to delete this college"
+msgstr "আপনার এই কলেজটি মুছে ফেলার অনুমতি নেই"
+
+#: college_app/views.py:153
+msgid "College deleted successfully."
+msgstr "কলেজ সফলভাবে মুছে ফেলা হয়েছে।"
+
+#: common/messages.py:12 emails/welcome_email.html:5
+msgid "Welcome to Coco Platform!"
+msgstr "কোকো প্ল্যাটফর্মে স্বাগতম!"
+
+#: common/messages.py:14
+msgid "New Contact Request"
+msgstr "নতুন যোগাযোগের অনুরোধ"
+
+#: common/messages.py:15 emails/otp_activation_email.html:35
+msgid "OTP Activation Successful"
+msgstr "OTP সক্রিয়করণ সফল"
+
+#: common/serializers.py:36
+msgid "Country name must contain only letters and spaces."
+msgstr "দেশের নাম শুধুমাত্র অক্ষর এবং স্পেস থাকতে হবে।"
+
+#: common/serializers.py:44
+msgid "Country code must be alphanumeric."
+msgstr "দেশের কোড অবশ্যই বর্ণানুক্রমিক হতে হবে।"
+
+#: common/serializers.py:48 common/serializers.py:57
+msgid "This country code has already been registered."
+msgstr "এই দেশের কোড ইতিমধ্যে নিবন্ধিত হয়েছে."
+
+#: common/serializers.py:71
+msgid "Geo-admin 1 code must be alphanumeric."
+msgstr "Geo-admin 1 কোড অবশ্যই বর্ণসংখ্যার হতে হবে।"
+
+#: common/serializers.py:75
+msgid "This administrative code is already in use."
+msgstr "এই প্রশাসনিক কোড ইতিমধ্যে ব্যবহার করা হয়."
+
+#: common/serializers.py:82
+msgid "Geo-admin 1 name must contain only letters and spaces."
+msgstr "জিও-অ্যাডমিন 1 নামটিতে শুধুমাত্র অক্ষর এবং স্পেস থাকতে হবে।"
+
+#: common/serializers.py:89 common/serializers.py:124
+msgid "The selected country is not active."
+msgstr "নির্বাচিত দেশ সক্রিয় নয়।"
+
+#: common/serializers.py:93
+msgid "This Geo-admin 1 code has already been registered."
+msgstr "এই জিও-অ্যাডমিন 1 কোডটি ইতিমধ্যেই নিবন্ধিত হয়েছে৷"
+
+#: common/serializers.py:109
+msgid "Geo-admin 2 code must be alphanumeric."
+msgstr "জিও-অ্যাডমিন 2 কোড অবশ্যই আলফানিউমেরিক হতে হবে।"
+
+#: common/serializers.py:117
+msgid "Geo-admin 2 name must contain only letters and spaces."
+msgstr "জিও-অ্যাডমিন 2 নামটিতে শুধুমাত্র অক্ষর এবং স্পেস থাকতে হবে।"
+
+#: common/serializers.py:129
+msgid "The selected geo admin 1 is not active."
+msgstr "নির্বাচিত জিও অ্যাডমিন 1 সক্রিয় নয়।"
+
+#: common/serializers.py:134
+msgid "This Geo-admin 2 code has already been registered."
+msgstr "এই জিও-অ্যাডমিন 2 কোড ইতিমধ্যে নিবন্ধিত হয়েছে।"
+
+#: common/views.py:77 common/views.py:141 common/views.py:201
+#: common/views.py:244 common/views.py:313 common/views.py:675
+#: profile_app/publication_view.py:204
+msgid "Request processed successfully."
+msgstr "অনুরোধ সফলভাবে প্রক্রিয়া করা হয়েছে।"
+
+#: common/views.py:87
+msgid "An error occurred while fetching the research interests."
+msgstr "গবেষণার আগ্রহগুলি আনার সময় একটি ত্রুটি ঘটেছে৷"
+
+#: common/views.py:151
+msgid "An error occurred while fetching the skills."
+msgstr "দক্ষতা আনার সময় একটি ত্রুটি ঘটেছে।"
+
+#: common/views.py:210
+msgid "An error occurred while fetching the country list."
+msgstr "দেশের তালিকা আনার সময় একটি ত্রুটি ঘটেছে৷"
+
+#: common/views.py:229
+msgid "Invalid country code length. Expected 2 characters."
+msgstr "অবৈধ দেশের কোড দৈর্ঘ্য। "
+
+#: common/views.py:262 common/views.py:290 common/views.py:331
+msgid "An error occurred while fetching the state list."
+msgstr "রাজ্যের তালিকা আনার সময় একটি ত্রুটি ঘটেছে৷"
+
+#: common/views.py:280
+msgid "Ethnicity options fetched successfully."
+msgstr "জাতিগত বিকল্পগুলি সফলভাবে আনা হয়েছে৷"
+
+#: common/views.py:345
+msgid "You do not have permission to view countries"
+msgstr "আপনার দেশ দেখার অনুমতি নেই"
+
+#: common/views.py:352
+msgid "You do not have permission to add a country"
+msgstr "আপনার কাছে একটি দেশ যোগ করার অনুমতি নেই"
+
+#: common/views.py:370
+msgid "You do not have permission to view this country"
+msgstr "আপনার এই দেশ দেখার অনুমতি নেই"
+
+#: common/views.py:376
+msgid "You do not have permission to update this country"
+msgstr "আপনার কাছে এই দেশটি আপডেট করার অনুমতি নেই"
+
+#: common/views.py:388
+msgid "You do not have permission to delete this country"
+msgstr "আপনার এই দেশটি মুছে ফেলার অনুমতি নেই"
+
+#: common/views.py:400
+msgid "You do not have permission to view geo-administrative areas"
+msgstr "আপনার ভূ-প্রশাসনিক এলাকা দেখার অনুমতি নেই"
+
+#: common/views.py:414
+msgid "You do not have permission to add geo-administrative areas"
+msgstr "আপনার ভূ-প্রশাসনিক এলাকা যোগ করার অনুমতি নেই"
+
+#: common/views.py:434
+msgid "You do not have permission to view this geo-administrative area"
+msgstr "আপনার এই ভূ-প্রশাসনিক এলাকা দেখার অনুমতি নেই"
+
+#: common/views.py:440
+msgid "You do not have permission to update this geo-administrative area"
+msgstr "আপনার এই ভূ-প্রশাসনিক এলাকা আপডেট করার অনুমতি নেই"
+
+#: common/views.py:452
+msgid "You do not have permission to delete this geo-administrative area"
+msgstr "আপনার এই ভূ-প্রশাসনিক এলাকা মুছে ফেলার অনুমতি নেই"
+
+#: common/views.py:464
+msgid "You do not have permission to view geo-administrative areas level 2"
+msgstr "আপনার ভূ-প্রশাসনিক এলাকা স্তর 2 দেখার অনুমতি নেই"
+
+#: common/views.py:481
+msgid "You do not have permission to add geo-administrative areas level 2"
+msgstr "আপনার ভূ-প্রশাসনিক এলাকা লেভেল 2 যোগ করার অনুমতি নেই"
+
+#: common/views.py:500
+msgid "You do not have permission to view this geo-administrative area level 2"
+msgstr "আপনার এই ভূ-প্রশাসনিক এলাকা স্তর 2 দেখার অনুমতি নেই"
+
+#: common/views.py:506
+msgid ""
+"You do not have permission to update this geo-administrative area level 2"
+msgstr "আপনার কাছে এই ভূ-প্রশাসনিক এলাকা স্তর 2 আপডেট করার অনুমতি নেই"
+
+#: common/views.py:518
+msgid ""
+"You do not have permission to delete this geo-administrative area level 2"
+msgstr "আপনার এই ভূ-প্রশাসনিক এলাকা স্তর 2 মুছে ফেলার অনুমতি নেই"
+
+#: common/views.py:691
+msgid "An error occurred while fetching the organization category list."
+msgstr "সংস্থার বিভাগের তালিকা আনার সময় একটি ত্রুটি ঘটেছে৷"
+
+#: contact_app/messages.py:4
+msgid "Failed to save data from form."
+msgstr "ফর্ম থেকে ডেটা সংরক্ষণ করতে ব্যর্থ৷"
+
+#: contact_app/messages.py:6
+msgid "Full name is required."
+msgstr "সম্পূর্ণ নাম প্রয়োজন।"
+
+#: contact_app/messages.py:7
+msgid "Message is required."
+msgstr "বার্তা প্রয়োজন."
+
+#: contact_app/messages.py:13
+msgid ""
+"Thank you! Your message has been submitted successfully. We will get back to "
+"you soon."
+msgstr "আপনাকে ধন্যবাদ! "
+
+#: department_app/messages.py:5
+msgid "Department data not found."
+msgstr "বিভাগের তথ্য পাওয়া যায়নি।"
+
+#: department_app/messages.py:6
+msgid "Please fix the following errors:"
+msgstr "অনুগ্রহ করে নিম্নলিখিত ত্রুটিগুলি ঠিক করুন:"
+
+#: department_app/messages.py:8 department_app/views.py:166
+msgid "Department not found."
+msgstr "বিভাগ পাওয়া যায়নি।"
+
+#: department_app/messages.py:9 department_app/views.py:198
+msgid "An error occurred while deleting the department."
+msgstr "বিভাগটি মুছে ফেলার সময় একটি ত্রুটি ঘটেছে।"
+
+#: department_app/messages.py:13
+msgid "Department data found successfully."
+msgstr "বিভাগের ডেটা সফলভাবে পাওয়া গেছে।"
+
+#: department_app/messages.py:14
+msgid "Department saved successfully."
+msgstr "বিভাগ সফলভাবে সংরক্ষণ করা হয়েছে।"
+
+#: department_app/messages.py:15
+msgid "Department updated successfully."
+msgstr "বিভাগ সফলভাবে আপডেট হয়েছে।"
+
+#: department_app/messages.py:16 department_app/views.py:191
+msgid "Department deleted successfully."
+msgstr "বিভাগ সফলভাবে মুছে ফেলা হয়েছে।"
+
+#: department_app/serializers.py:18
+msgid "Name cannot be null."
+msgstr "নাম শূন্য হতে পারে না।"
+
+#: department_app/serializers.py:28
+msgid "The selected campus does not exist."
+msgstr "নির্বাচিত ক্যাম্পাস বিদ্যমান নেই।"
+
+#: department_app/serializers.py:29
+msgid "Invalid type. Expected a campus instance."
+msgstr "অবৈধ প্রকার। "
+
+#: department_app/serializers.py:40
+msgid "The selected college does not exist."
+msgstr "নির্বাচিত কলেজ বিদ্যমান নেই।"
+
+#: department_app/serializers.py:41
+msgid "Invalid type. Expected a college instance."
+msgstr "অবৈধ প্রকার। "
+
+#: department_app/serializers.py:122
+msgid "Name should not contain special characters or numbers."
+msgstr "নামে বিশেষ অক্ষর বা সংখ্যা থাকা উচিত নয়।"
+
+#: department_app/serializers.py:145
+msgid "The linked college must be active."
+msgstr "সংযুক্ত কলেজ সক্রিয় হতে হবে।"
+
+#: department_app/serializers.py:147
+msgid "The linked campus must be active."
+msgstr "সংযুক্ত ক্যাম্পাস সক্রিয় হতে হবে।"
+
+#: educational_organizations_app/messages.py:15
+msgid "Organization data deleted successfully."
+msgstr "প্রতিষ্ঠানের তথ্য সফলভাবে মুছে ফেলা হয়েছে।"
+
+#: educational_organizations_app/serializers.py:27
+msgid "Unsupported file extension. Please upload a JPG, JPEG, or PNG file."
+msgstr "অসমর্থিত ফাইল এক্সটেনশন। "
+
+#: educational_organizations_app/serializers.py:133
+msgid "Category is required."
+msgstr "বিভাগ প্রয়োজন।"
+
+#: educational_organizations_app/serializers.py:134
+msgid "Invalid category."
+msgstr "অবৈধ বিভাগ।"
+
+#: educational_organizations_app/views.py:37
+#: educational_organizations_app/views.py:66
+#: educational_organizations_app/views.py:81
+msgid "Educational organization category not found."
+msgstr "শিক্ষা প্রতিষ্ঠানের বিভাগ পাওয়া যায়নি।"
+
+#: educational_organizations_app/views.py:40
+msgid ""
+"You do not have permission to view this educational organization category"
+msgstr "আপনার এই শিক্ষা প্রতিষ্ঠানের বিভাগ দেখার অনুমতি নেই"
+
+#: educational_organizations_app/views.py:45
+msgid "You do not have permission to view educational organization categories"
+msgstr "আপনার কাছে শিক্ষা প্রতিষ্ঠানের বিভাগ দেখার অনুমতি নেই"
+
+#: educational_organizations_app/views.py:54
+msgid "You do not have permission to add an educational organization category"
+msgstr "আপনার কাছে শিক্ষা প্রতিষ্ঠানের বিভাগ যোগ করার অনুমতি নেই"
+
+#: educational_organizations_app/views.py:69
+msgid ""
+"You do not have permission to update this educational organization category"
+msgstr "আপনার কাছে এই শিক্ষা প্রতিষ্ঠানের বিভাগ আপডেট করার অনুমতি নেই"
+
+#: educational_organizations_app/views.py:84
+msgid ""
+"You do not have permission to delete this educational organization category"
+msgstr "আপনার কাছে এই শিক্ষা প্রতিষ্ঠানের বিভাগটি মুছে ফেলার অনুমতি নেই"
+
+#: educational_organizations_app/views.py:88
+msgid "Educational organization category deleted successfully."
+msgstr "শিক্ষা প্রতিষ্ঠানের বিভাগ সফলভাবে মুছে ফেলা হয়েছে।"
+
+#: educational_organizations_app/views.py:187
+#: educational_organizations_app/views.py:271
+msgid "Only JPG, PNG, GIF image files are allowed."
+msgstr "শুধুমাত্র JPG, PNG, GIF ইমেজ ফাইল অনুমোদিত।"
+
+#: educational_organizations_app/views.py:206
+#: educational_organizations_app/views.py:296
+#: educational_organizations_app/views.py:318
+msgid "File upload failed."
+msgstr "ফাইল আপলোড ব্যর্থ হয়েছে।"
+
+#: educational_organizations_app/views.py:349
+msgid "Educational organization not found."
+msgstr "শিক্ষা প্রতিষ্ঠান পাওয়া যায়নি।"
+
+#: educational_organizations_app/views.py:377
+msgid "Educational organization deleted successfully."
+msgstr "শিক্ষা প্রতিষ্ঠান সফলভাবে মুছে ফেলা হয়েছে।"
+
+#: emails/contact_request.html:5
+msgid "Contact Request on Coco Platform"
+msgstr "কোকো প্ল্যাটফর্মে যোগাযোগের অনুরোধ"
+
+#: emails/contact_request.html:37
+msgid "Hi,"
+msgstr "হাই,"
+
+#: emails/contact_request.html:39
+msgid "wants to contact you."
+msgstr "আপনার সাথে যোগাযোগ করতে চায়।"
+
+#: emails/contact_request.html:42
+msgid "Email:"
+msgstr "ইমেল:"
+
+#: emails/contact_request.html:45
+msgid "Message:"
+msgstr "বার্তা:"
+
+#: emails/contact_request.html:49
+msgid "This message was sent to Admin."
+msgstr "এই বার্তাটি অ্যাডমিনকে পাঠানো হয়েছিল।"
+
+#: emails/lockout_email.html:35
+msgid "Dear"
+msgstr "প্রিয়"
+
+#: emails/lockout_email.html:37
+#: python-format
+msgid ""
+"Your account has been locked for %(locked_time)s minute(s) due to an unusual "
+"login attempt on your account. Please contact support immediately to unlock "
+"your account."
+msgstr "আপনার অ্যাকাউন্টে একটি অস্বাভাবিক লগইন প্রচেষ্টার কারণে আপনার অ্যাকাউন্টটি %(locked_time)s মিনিটের জন্য লক করা হয়েছে। "
+
+#: emails/lockout_email.html:40 emails/otp_activation_email.html:39
+#: emails/password_reset_email.html:38 emails/welcome_email.html:36
+msgid "Best regards,"
+msgstr "শুভেচ্ছা,"
+
+#: emails/lockout_email.html:40 emails/otp_activation_email.html:39
+#: emails/password_reset_email.html:38 emails/welcome_email.html:36
+msgid "The Coco Platform Team"
+msgstr "কোকো প্ল্যাটফর্ম দল"
+
+#: emails/otp_activation_email.html:8
+msgid "OTP Activation"
+msgstr "OTP অ্যাক্টিভেশন"
+
+#: emails/otp_activation_email.html:36 emails/password_reset_email.html:34
+#: emails/welcome_email.html:33
+msgid "Hello"
+msgstr "হ্যালো"
+
+#: emails/otp_activation_email.html:37
+msgid "Your OTP setup was successful. You can now use OTP for secure login."
+msgstr "আপনার OTP সেটআপ সফল হয়েছে৷ "
+
+#: emails/otp_activation_email.html:38
+msgid "If you did not perform this action, please contact support immediately."
+msgstr "আপনি যদি এই কাজটি না করে থাকেন, অনুগ্রহ করে অবিলম্বে সহায়তার সাথে যোগাযোগ করুন।"
+
+#: emails/password_reset_email.html:7
+msgid "Password Reset"
+msgstr "পাসওয়ার্ড রিসেট"
+
+#: emails/password_reset_email.html:35
+msgid ""
+"You requested a password reset. Click the link below to reset your password:"
+msgstr "আপনি একটি পাসওয়ার্ড রিসেট করার অনুরোধ করেছেন৷ "
+
+#: emails/password_reset_email.html:36
+msgid "Reset Password"
+msgstr "পাসওয়ার্ড রিসেট করুন"
+
+#: emails/password_reset_email.html:37
+msgid "If you did not request a password reset, please ignore this email."
+msgstr "আপনি যদি পাসওয়ার্ড রিসেট করার অনুরোধ না করে থাকেন তাহলে অনুগ্রহ করে এই ইমেলটি উপেক্ষা করুন।"
+
+#: emails/welcome_email.html:34
+msgid ""
+"Thank you for registering on Coco Platform. To activate your account, please "
+"click the link below:"
+msgstr "কোকো প্ল্যাটফর্মে নিবন্ধন করার জন্য আপনাকে ধন্যবাদ। "
+
+#: faculty_members_app/messages.py:13
+msgid "Faculty member data not found."
+msgstr "অনুষদ সদস্য তথ্য পাওয়া যায়নি."
+
+#: faculty_members_app/messages.py:19
+msgid "Faculty member data found."
+msgstr "অনুষদ সদস্য তথ্য পাওয়া গেছে."
+
+#: faculty_members_app/messages.py:20
+msgid "Faculty member data saved successfully."
+msgstr "ফ্যাকাল্টি সদস্য ডেটা সফলভাবে সংরক্ষিত।"
+
+#: faculty_members_app/messages.py:21
+msgid "Faculty member data updated successfully."
+msgstr "ফ্যাকাল্টি সদস্য ডেটা সফলভাবে আপডেট করা হয়েছে।"
+
+#: faculty_members_app/serializers.py:19
+msgid "User is required."
+msgstr "ব্যবহারকারীর প্রয়োজন।"
+
+#: faculty_members_app/serializers.py:20
+msgid "User cannot be blank."
+msgstr "ব্যবহারকারী খালি হতে পারে না।"
+
+#: faculty_members_app/serializers.py:21
+msgid "Specified user does not exist."
+msgstr "নির্দিষ্ট ব্যবহারকারীর অস্তিত্ব নেই।"
+
+#: faculty_members_app/serializers.py:31
+msgid "Educational organization is required."
+msgstr "শিক্ষা প্রতিষ্ঠান প্রয়োজন।"
+
+#: faculty_members_app/serializers.py:32
+msgid "Educational organization cannot be blank."
+msgstr "শিক্ষা প্রতিষ্ঠান খালি হতে পারে না।"
+
+#: faculty_members_app/serializers.py:33
+msgid "Specified educational organization does not exist or is not active."
+msgstr "নির্দিষ্ট শিক্ষা প্রতিষ্ঠানের অস্তিত্ব নেই বা সক্রিয় নয়।"
+
+#: faculty_members_app/serializers.py:43
+msgid "Department is required."
+msgstr "বিভাগ প্রয়োজন।"
+
+#: faculty_members_app/serializers.py:44
+msgid "Department cannot be blank."
+msgstr "বিভাগ ফাঁকা হতে পারে না।"
+
+#: faculty_members_app/serializers.py:45
+msgid "Specified department does not exist or is not active."
+msgstr "নির্দিষ্ট বিভাগ বিদ্যমান নেই বা সক্রিয় নয়।"
+
+#: faculty_members_app/serializers.py:67
+msgid "College is required."
+msgstr "কলেজ প্রয়োজন।"
+
+#: faculty_members_app/serializers.py:68
+msgid "College cannot be blank."
+msgstr "কলেজ ফাঁকা হতে পারে না।"
+
+#: faculty_members_app/serializers.py:69
+msgid "Specified college does not exist or is not active."
+msgstr "নির্দিষ্ট কলেজ বিদ্যমান নেই বা সক্রিয় নয়।"
+
+#: faculty_members_app/serializers.py:79
+msgid "Enter a valid URL for the personal web address."
+msgstr "ব্যক্তিগত ওয়েব ঠিকানার জন্য একটি বৈধ URL লিখুন।"
+
+#: faculty_members_app/serializers.py:86
+msgid "Enter a valid URL for the research profile address."
+msgstr "গবেষণা প্রোফাইল ঠিকানার জন্য একটি বৈধ URL লিখুন।"
+
+#: faculty_members_app/serializers.py:91
+msgid "Enter a valid ORCID identifier."
+msgstr "একটি বৈধ ORCID শনাক্তকারী লিখুন।"
+
+#: faculty_members_app/serializers.py:99
+msgid "Ensure the faculty type has no more than 100 characters."
+msgstr "নিশ্চিত করুন যে অনুষদের ধরনে 100টির বেশি অক্ষর নেই।"
+
+#: faculty_members_app/serializers.py:100
+msgid "Faculty type cannot be blank."
+msgstr "ফ্যাকাল্টি টাইপ ফাঁকা হতে পারে না।"
+
+#: faculty_members_app/serializers.py:101
+msgid "Faculty type cannot be null."
+msgstr "ফ্যাকাল্টি টাইপ শূন্য হতে পারে না।"
+
+#: faculty_members_app/serializers.py:108
+#: faculty_members_app/serializers.py:109
+msgid "Statement cannot be blank."
+msgstr "বিবৃতি ফাঁকা হতে পারে না।"
+
+#: faculty_members_app/serializers.py:197
+msgid "A faculty member with these details already exists."
+msgstr "এই বিবরণ সহ একজন অনুষদ সদস্য ইতিমধ্যেই বিদ্যমান।"
+
+#: faculty_members_app/views.py:184
+msgid "Faculty member deleted successfully."
+msgstr "ফ্যাকাল্টি সদস্য সফলভাবে মুছে ফেলা হয়েছে।"
+
+#: profile_app/academic_history_view.py:11
+msgid "Get academic history"
+msgstr "একাডেমিক ইতিহাস পান"
+
+#: profile_app/academic_history_view.py:12
+msgid "Retrieve user's academic history."
+msgstr "ব্যবহারকারীর একাডেমিক ইতিহাস পুনরুদ্ধার করুন।"
+
+#: profile_app/academic_history_view.py:31
+msgid "academic history retrieved successfully."
+msgstr "একাডেমিক ইতিহাস সফলভাবে পুনরুদ্ধার করা হয়েছে।"
+
+#: profile_app/academic_history_view.py:46
+#: profile_app/academic_history_view.py:103
+#: profile_app/academic_history_view.py:163
+#: profile_app/award_grant_scholarship_view.py:46
+#: profile_app/award_grant_scholarship_view.py:103
+#: profile_app/award_grant_scholarship_view.py:163
+#: profile_app/dissertation_view.py:46 profile_app/dissertation_view.py:103
+#: profile_app/dissertation_view.py:163 profile_app/publication_view.py:46
+#: profile_app/publication_view.py:103 profile_app/publication_view.py:163
+#: profile_app/research_experience_view.py:46
+#: profile_app/research_experience_view.py:103
+#: profile_app/research_experience_view.py:163
+#: profile_app/training_workshop_view.py:46
+#: profile_app/training_workshop_view.py:103
+#: profile_app/training_workshop_view.py:163 profile_app/views.py:694
+#: profile_app/views.py:962 profile_app/views.py:1030 profile_app/views.py:1089
+#: profile_app/views.py:1156 profile_app/views.py:1215
+#: profile_app/views.py:1282 profile_app/views.py:1485
+#: profile_app/work_experience_view.py:46
+#: profile_app/work_experience_view.py:103
+#: profile_app/work_experience_view.py:163
+msgid "An error occurred while processing the request"
+msgstr "অনুরোধটি প্রক্রিয়া করার সময় একটি ত্রুটি ঘটেছে"
+
+#: profile_app/academic_history_view.py:53
+msgid "Add Academic history"
+msgstr "একাডেমিক ইতিহাস যোগ করুন"
+
+#: profile_app/academic_history_view.py:54
+msgid "Add a new Academic history."
+msgstr "একটি নতুন একাডেমিক ইতিহাস যোগ করুন।"
+
+#: profile_app/academic_history_view.py:78
+msgid "Academic history added successfully."
+msgstr "একাডেমিক ইতিহাস সফলভাবে যোগ করা হয়েছে।"
+
+#: profile_app/academic_history_view.py:86
+#: profile_app/academic_history_view.py:146
+#: profile_app/award_grant_scholarship_view.py:86
+#: profile_app/award_grant_scholarship_view.py:146
+#: profile_app/dissertation_view.py:86 profile_app/dissertation_view.py:146
+#: profile_app/publication_view.py:86 profile_app/publication_view.py:146
+#: profile_app/research_experience_view.py:86
+#: profile_app/research_experience_view.py:146
+#: profile_app/training_workshop_view.py:86
+#: profile_app/training_workshop_view.py:146 profile_app/views.py:439
+#: profile_app/views.py:1013 profile_app/views.py:1139
+#: profile_app/views.py:1265 profile_app/work_experience_view.py:86
+#: profile_app/work_experience_view.py:146
+msgid "Validation error"
+msgstr "বৈধতা ত্রুটি"
+
+#: profile_app/academic_history_view.py:111
+msgid "Update Academic history"
+msgstr "একাডেমিক ইতিহাস আপডেট করুন"
+
+#: profile_app/academic_history_view.py:112
+msgid "Update an existing Academic history."
+msgstr "একটি বিদ্যমান একাডেমিক ইতিহাস আপডেট করুন।"
+
+#: profile_app/academic_history_view.py:138
+msgid "Academic history updated successfully."
+msgstr "একাডেমিক ইতিহাস সফলভাবে আপডেট করা হয়েছে।"
+
+#: profile_app/academic_history_view.py:171
+msgid "Delete Academic history"
+msgstr "একাডেমিক ইতিহাস মুছুন"
+
+#: profile_app/academic_history_view.py:172
+msgid "Delete an existing Academic history."
+msgstr "একটি বিদ্যমান একাডেমিক ইতিহাস মুছুন।"
+
+#: profile_app/academic_history_view.py:187
+msgid "Academic history deleted successfully."
+msgstr "একাডেমিক ইতিহাস সফলভাবে মুছে ফেলা হয়েছে।"
+
+#: profile_app/award_grant_scholarship_view.py:11
+msgid "Get awards, grants, and scholarships"
+msgstr "পুরস্কার, অনুদান এবং বৃত্তি পান"
+
+#: profile_app/award_grant_scholarship_view.py:12
+msgid "Retrieve user's awards, grants, and scholarships."
+msgstr "ব্যবহারকারীর পুরস্কার, অনুদান এবং বৃত্তি পুনরুদ্ধার করুন।"
+
+#: profile_app/award_grant_scholarship_view.py:31
+msgid "Awards, grants, and scholarships retrieved successfully."
+msgstr "পুরস্কার, অনুদান, এবং বৃত্তি সফলভাবে পুনরুদ্ধার করা হয়েছে।"
+
+#: profile_app/award_grant_scholarship_view.py:53
+msgid "Add AwardGrantScholarship"
+msgstr "অ্যাওয়ার্ড গ্রান্ট স্কলারশিপ যোগ করুন"
+
+#: profile_app/award_grant_scholarship_view.py:54
+msgid "Add a new award grant scholarship."
+msgstr "একটি নতুন পুরস্কার অনুদান বৃত্তি যোগ করুন."
+
+#: profile_app/award_grant_scholarship_view.py:78
+msgid "Award grant scholarship added successfully."
+msgstr "পুরস্কার অনুদান বৃত্তি সফলভাবে যোগ করা হয়েছে."
+
+#: profile_app/award_grant_scholarship_view.py:111
+msgid "Update award grant scholarship"
+msgstr "পুরষ্কার অনুদান বৃত্তি আপডেট করুন"
+
+#: profile_app/award_grant_scholarship_view.py:112
+msgid "Update an existing award grant scholarship."
+msgstr "একটি বিদ্যমান পুরস্কার অনুদান বৃত্তি আপডেট করুন।"
+
+#: profile_app/award_grant_scholarship_view.py:138
+msgid "Award grant scholarship updated successfully."
+msgstr "পুরস্কার অনুদান বৃত্তি সফলভাবে আপডেট করা হয়েছে।"
+
+#: profile_app/award_grant_scholarship_view.py:171
+msgid "Delete award grant scholarship"
+msgstr "পুরস্কার অনুদান বৃত্তি মুছুন"
+
+#: profile_app/award_grant_scholarship_view.py:172
+msgid "Delete an existing award grant scholarship."
+msgstr "একটি বিদ্যমান পুরস্কার অনুদান বৃত্তি মুছুন।"
+
+#: profile_app/award_grant_scholarship_view.py:188
+msgid "Award grant scholarship deleted successfully."
+msgstr "পুরষ্কার অনুদান বৃত্তি সফলভাবে মুছে ফেলা হয়েছে।"
+
+#: profile_app/dissertation_view.py:11
+msgid "Get Dissertations"
+msgstr "গবেষণাপত্র পান"
+
+#: profile_app/dissertation_view.py:12
+msgid "Retrieve user's Dissertations."
+msgstr "ব্যবহারকারীর গবেষণাপত্র পুনরুদ্ধার করুন।"
+
+#: profile_app/dissertation_view.py:31
+msgid "Dissertations retrieved successfully."
+msgstr "প্রবন্ধগুলি সফলভাবে পুনরুদ্ধার করা হয়েছে।"
+
+#: profile_app/dissertation_view.py:53
+msgid "Add dissertation"
+msgstr "প্রবন্ধ যোগ করুন"
+
+#: profile_app/dissertation_view.py:54
+msgid "Add a new dissertation."
+msgstr "একটি নতুন গবেষণাপত্র যোগ করুন।"
+
+#: profile_app/dissertation_view.py:78
+msgid "Dissertation added successfully."
+msgstr "প্রবন্ধ সফলভাবে যোগ করা হয়েছে।"
+
+#: profile_app/dissertation_view.py:111
+msgid "Update dissertation"
+msgstr "গবেষণামূলক আপডেট করুন"
+
+#: profile_app/dissertation_view.py:112
+msgid "Update an existing dissertation."
+msgstr "একটি বিদ্যমান গবেষণাপত্র আপডেট করুন।"
+
+#: profile_app/dissertation_view.py:138
+msgid "Dissertation updated successfully."
+msgstr "প্রবন্ধ সফলভাবে আপডেট করা হয়েছে।"
+
+#: profile_app/dissertation_view.py:171
+msgid "Delete dissertation"
+msgstr "প্রবন্ধ মুছুন"
+
+#: profile_app/dissertation_view.py:172
+msgid "Delete an existing dissertation."
+msgstr "একটি বিদ্যমান গবেষণাপত্র মুছুন।"
+
+#: profile_app/dissertation_view.py:187
+msgid "Dissertation deleted successfully."
+msgstr "প্রবন্ধ সফলভাবে মুছে ফেলা হয়েছে।"
+
+#: profile_app/educational_background_views.py:18
+msgid "Get Educational Background"
+msgstr "শিক্ষাগত পটভূমি পান"
+
+#: profile_app/educational_background_views.py:19
+msgid "Retrieve user's educational background."
+msgstr "ব্যবহারকারীর শিক্ষাগত পটভূমি পুনরুদ্ধার করুন।"
+
+#: profile_app/educational_background_views.py:34
+msgid "Educational backgrounds retrieved successfully."
+msgstr "শিক্ষাগত পটভূমি সফলভাবে পুনরুদ্ধার করা হয়েছে।"
+
+#: profile_app/educational_background_views.py:39
+msgid "Add Educational Background"
+msgstr "শিক্ষাগত পটভূমি যোগ করুন"
+
+#: profile_app/educational_background_views.py:40
+msgid "Add a new educational background."
+msgstr "একটি নতুন শিক্ষাগত পটভূমি যোগ করুন।"
+
+#: profile_app/educational_background_views.py:56
+msgid "Educational background added successfully."
+msgstr "শিক্ষাগত পটভূমি সফলভাবে যোগ করা হয়েছে।"
+
+#: profile_app/educational_background_views.py:68
+msgid "Update Educational Background"
+msgstr "শিক্ষাগত পটভূমি আপডেট করুন"
+
+#: profile_app/educational_background_views.py:69
+msgid "Update an existing educational background."
+msgstr "একটি বিদ্যমান শিক্ষাগত পটভূমি আপডেট করুন।"
+
+#: profile_app/educational_background_views.py:89
+msgid "Educational background updated successfully."
+msgstr "শিক্ষাগত পটভূমি সফলভাবে আপডেট করা হয়েছে।"
+
+#: profile_app/educational_background_views.py:101
+msgid "Delete Educational Background"
+msgstr "শিক্ষাগত পটভূমি মুছুন"
+
+#: profile_app/educational_background_views.py:102
+msgid "Delete an existing educational background."
+msgstr "একটি বিদ্যমান শিক্ষাগত পটভূমি মুছুন।"
+
+#: profile_app/educational_background_views.py:117
+msgid "Educational background deleted successfully."
+msgstr "শিক্ষাগত পটভূমি সফলভাবে মুছে ফেলা হয়েছে।"
+
+#: profile_app/educational_background_views.py:125
+msgid "Update Ranks"
+msgstr "র্যাঙ্ক আপডেট করুন"
+
+#: profile_app/educational_background_views.py:126
+msgid "Update the ranks of educational backgrounds."
+msgstr "শিক্ষাগত ব্যাকগ্রাউন্ডের র‌্যাঙ্ক আপডেট করুন।"
+
+#: profile_app/educational_background_views.py:157
+msgid "Ranks updated successfully."
+msgstr "র‌্যাঙ্ক সফলভাবে আপডেট করা হয়েছে।"
+
+#: profile_app/educational_background_views.py:165
+msgid "An error occurred while updating ranks."
+msgstr "র‌্যাঙ্ক আপডেট করার সময় একটি ত্রুটি ঘটেছে।"
+
+#: profile_app/messages.py:10
+msgid "Profile details data saved successfully."
+msgstr "প্রোফাইলের বিশদ তথ্য সফলভাবে সংরক্ষিত হয়েছে।"
+
+#: profile_app/messages.py:11
+msgid "Profile details data updated successfully."
+msgstr "প্রোফাইলের বিশদ তথ্য সফলভাবে আপডেট করা হয়েছে।"
+
+#: profile_app/publication_view.py:11
+msgid "Get Publications"
+msgstr "প্রকাশনা পান"
+
+#: profile_app/publication_view.py:12
+msgid "Retrieve user's publications."
+msgstr "ব্যবহারকারীর প্রকাশনা পুনরুদ্ধার করুন।"
+
+#: profile_app/publication_view.py:31
+msgid "Publications retrieved successfully."
+msgstr "প্রকাশনাগুলি সফলভাবে পুনরুদ্ধার করা হয়েছে।"
+
+#: profile_app/publication_view.py:53
+msgid "Add Publication"
+msgstr "প্রকাশনা যোগ করুন"
+
+#: profile_app/publication_view.py:54
+msgid "Add a new publication."
+msgstr "একটি নতুন প্রকাশনা যোগ করুন।"
+
+#: profile_app/publication_view.py:78
+msgid "Publication added successfully."
+msgstr "প্রকাশনা সফলভাবে যোগ করা হয়েছে।"
+
+#: profile_app/publication_view.py:111
+msgid "Update Publication"
+msgstr "প্রকাশনা আপডেট করুন"
+
+#: profile_app/publication_view.py:112
+msgid "Update an existing publication."
+msgstr "একটি বিদ্যমান প্রকাশনা আপডেট করুন।"
+
+#: profile_app/publication_view.py:138
+msgid "Publication updated successfully."
+msgstr "প্রকাশনা সফলভাবে আপডেট হয়েছে।"
+
+#: profile_app/publication_view.py:171
+msgid "Delete Publication"
+msgstr "প্রকাশনা মুছুন"
+
+#: profile_app/publication_view.py:172
+msgid "Delete an existing publication."
+msgstr "একটি বিদ্যমান প্রকাশনা মুছুন।"
+
+#: profile_app/publication_view.py:187
+msgid "Publication deleted successfully."
+msgstr "প্রকাশনা সফলভাবে মুছে ফেলা হয়েছে।"
+
+#: profile_app/publication_view.py:214
+msgid "An error occurred while fetching the publication types list."
+msgstr "প্রকাশনার প্রকারের তালিকা আনার সময় একটি ত্রুটি ঘটেছে।"
+
+#: profile_app/reference_info_serializer.py:32
+msgid "Invalid title. Choose from Dr., Mr., Mrs., Ms., or Prof."
+msgstr "অবৈধ শিরোনাম। "
+
+#: profile_app/reference_info_serializer.py:36
+#: profile_app/reference_info_serializer.py:40
+#: profile_app/reference_info_serializer.py:46
+#: profile_app/reference_info_serializer.py:49
+#: profile_app/reference_info_serializer.py:52 profile_app/serializers.py:47
+#: profile_app/serializers.py:69 profile_app/serializers.py:87
+#: profile_app/serializers.py:92 profile_app/serializers.py:636
+#: profile_app/serializers.py:639 profile_app/serializers.py:642
+#: profile_app/serializers.py:1138
+msgid "Ensure this field has no more than 100 characters."
+msgstr "নিশ্চিত করুন যে এই ক্ষেত্রটিতে 100টির বেশি অক্ষর নেই।"
+
+#: profile_app/reference_info_serializer.py:62
+msgid "First name is required."
+msgstr "প্রথম নাম প্রয়োজন।"
+
+#: profile_app/reference_info_serializer.py:67
+msgid "Last name is required."
+msgstr "শেষ নাম প্রয়োজন।"
+
+#: profile_app/reference_info_serializer.py:72
+msgid "Email address is required."
+msgstr "ইমেল ঠিকানা প্রয়োজন।"
+
+#: profile_app/reference_info_serializer.py:79
+msgid "The phone number entered is not valid."
+msgstr "প্রবেশ করা ফোন নম্বরটি বৈধ নয়৷"
+
+#: profile_app/reference_info_serializer.py:81
+msgid "The phone number entered is not valid. exception"
+msgstr "প্রবেশ করা ফোন নম্বর বৈধ নয়। "
+
+#: profile_app/reference_info_views.py:28
+msgid "Get References"
+msgstr "রেফারেন্স পান"
+
+#: profile_app/reference_info_views.py:29
+msgid "Retrieve user's references."
+msgstr "ব্যবহারকারীর রেফারেন্স পুনরুদ্ধার করুন।"
+
+#: profile_app/reference_info_views.py:43
+msgid "References retrieved successfully."
+msgstr "তথ্যসূত্র সফলভাবে পুনরুদ্ধার করা হয়েছে।"
+
+#: profile_app/reference_info_views.py:48
+msgid "Add Reference"
+msgstr "রেফারেন্স যোগ করুন"
+
+#: profile_app/reference_info_views.py:49
+msgid "Add a new reference."
+msgstr "একটি নতুন রেফারেন্স যোগ করুন।"
+
+#: profile_app/reference_info_views.py:64
+msgid "Reference added successfully."
+msgstr "রেফারেন্স সফলভাবে যোগ করা হয়েছে।"
+
+#: profile_app/reference_info_views.py:75
+msgid "Update Reference"
+msgstr "রেফারেন্স আপডেট করুন"
+
+#: profile_app/reference_info_views.py:76
+msgid "Update an existing reference."
+msgstr "একটি বিদ্যমান রেফারেন্স আপডেট করুন।"
+
+#: profile_app/reference_info_views.py:95
+msgid "Reference updated successfully."
+msgstr "রেফারেন্স সফলভাবে আপডেট করা হয়েছে।"
+
+#: profile_app/reference_info_views.py:106
+msgid "Delete Reference"
+msgstr "রেফারেন্স মুছুন"
+
+#: profile_app/reference_info_views.py:107
+msgid "Delete an existing reference."
+msgstr "একটি বিদ্যমান রেফারেন্স মুছুন।"
+
+#: profile_app/reference_info_views.py:121
+msgid "Reference deleted successfully."
+msgstr "রেফারেন্স সফলভাবে মুছে ফেলা হয়েছে।"
+
+#: profile_app/research_experience_view.py:11
+msgid "Get research experiences"
+msgstr "গবেষণার অভিজ্ঞতা পান"
+
+#: profile_app/research_experience_view.py:12
+msgid "Retrieve user's research experiences."
+msgstr "ব্যবহারকারীর গবেষণা অভিজ্ঞতা পুনরুদ্ধার করুন।"
+
+#: profile_app/research_experience_view.py:31
+msgid "Research experiences retrieved successfully."
+msgstr "গবেষণার অভিজ্ঞতা সফলভাবে পুনরুদ্ধার করা হয়েছে।"
+
+#: profile_app/research_experience_view.py:53
+msgid "Add research experience"
+msgstr "গবেষণা অভিজ্ঞতা যোগ করুন"
+
+#: profile_app/research_experience_view.py:54
+msgid "Add a new research experience."
+msgstr "একটি নতুন গবেষণা অভিজ্ঞতা যোগ করুন।"
+
+#: profile_app/research_experience_view.py:78
+msgid "Research experience added successfully."
+msgstr "গবেষণার অভিজ্ঞতা সফলভাবে যোগ করা হয়েছে।"
+
+#: profile_app/research_experience_view.py:111
+msgid "Update research experience"
+msgstr "গবেষণার অভিজ্ঞতা আপডেট করুন"
+
+#: profile_app/research_experience_view.py:112
+msgid "Update an existing research experience."
+msgstr "একটি বিদ্যমান গবেষণা অভিজ্ঞতা আপডেট করুন।"
+
+#: profile_app/research_experience_view.py:138
+msgid "Research experience updated successfully."
+msgstr "গবেষণার অভিজ্ঞতা সফলভাবে আপডেট করা হয়েছে।"
+
+#: profile_app/research_experience_view.py:171
+msgid "Delete research experience"
+msgstr "গবেষণার অভিজ্ঞতা মুছুন"
+
+#: profile_app/research_experience_view.py:172
+msgid "Delete an existing research experience."
+msgstr "একটি বিদ্যমান গবেষণা অভিজ্ঞতা মুছুন।"
+
+#: profile_app/research_experience_view.py:187
+msgid "Research experience deleted successfully."
+msgstr "গবেষণার অভিজ্ঞতা সফলভাবে মুছে ফেলা হয়েছে।"
+
+#: profile_app/serializers.py:58
+msgid "Ensure this field has no more than 30 characters."
+msgstr "নিশ্চিত করুন যে এই ক্ষেত্রটিতে 30টির বেশি অক্ষর নেই।"
+
+#: profile_app/serializers.py:77 profile_app/serializers.py:866
+#: profile_app/serializers.py:927 profile_app/serializers.py:931
+#: profile_app/serializers.py:1023 profile_app/serializers.py:1027
+#: profile_app/serializers.py:1094
+msgid "Enter a valid date."
+msgstr "একটি বৈধ তারিখ লিখুন।"
+
+#: profile_app/serializers.py:107
+#: python-brace-format
+msgid "You must be at least {min_age} years old."
+msgstr "আপনার বয়স কমপক্ষে {min_age} বছর হতে হবে৷"
+
+#: profile_app/serializers.py:330
+msgid "Country is required."
+msgstr "দেশ প্রয়োজন।"
+
+#: profile_app/serializers.py:333
+msgid "Country cannot be longer than 100 characters."
+msgstr "দেশ 100 অক্ষরের বেশি হতে পারে না।"
+
+#: profile_app/serializers.py:339
+msgid "Legal state of residence is required."
+msgstr "বসবাসের আইনি অবস্থা প্রয়োজন।"
+
+#: profile_app/serializers.py:342
+msgid "Legal state of residence cannot be longer than 100 characters."
+msgstr "বসবাসের আইনগত অবস্থা 100 অক্ষরের বেশি হতে পারে না।"
+
+#: profile_app/serializers.py:357
+msgid "Visa type is required."
+msgstr "ভিসার ধরন প্রয়োজন।"
+
+#: profile_app/serializers.py:360
+msgid "Visa type cannot be longer than 100 characters."
+msgstr "ভিসার ধরন 100 অক্ষরের বেশি হতে পারে না।"
+
+#: profile_app/serializers.py:366
+msgid "Issuing country is required."
+msgstr "ইস্যুকারী দেশ প্রয়োজন।"
+
+#: profile_app/serializers.py:369
+msgid "Issuing country cannot be longer than 100 characters."
+msgstr "ইস্যুকারী দেশ 100 অক্ষরের বেশি হতে পারে না।"
+
+#: profile_app/serializers.py:379
+msgid "Date has wrong format. Use one of these formats instead: YYYY-MM-DD."
+msgstr "তারিখ ভুল বিন্যাস আছে. "
+
+#: profile_app/serializers.py:382
+msgid "Expiration date cannot be in the past."
+msgstr "মেয়াদ শেষ হওয়ার তারিখ অতীত হতে পারে না।"
+
+#: profile_app/serializers.py:421 profile_app/serializers.py:422
+#: profile_app/serializers.py:474 profile_app/serializers.py:475
+#: profile_app/test_score_serializer.py:37
+#: profile_app/test_score_serializer.py:38
+msgid "Please upload a file."
+msgstr "অনুগ্রহ করে একটি ফাইল আপলোড করুন।"
+
+#: profile_app/serializers.py:423 profile_app/serializers.py:435
+#: profile_app/serializers.py:476 profile_app/serializers.py:488
+#: profile_app/test_score_serializer.py:39
+#: profile_app/test_score_serializer.py:57
+msgid "Please upload a valid file."
+msgstr "একটি বৈধ ফাইল আপলোড করুন।"
+
+#: profile_app/serializers.py:431 profile_app/serializers.py:484
+#: profile_app/test_score_serializer.py:55
+msgid "No file uploaded."
+msgstr "কোন ফাইল আপলোড করা হয়নি।"
+
+#: profile_app/serializers.py:439 profile_app/serializers.py:492
+#: profile_app/test_score_serializer.py:59
+msgid "Invalid file type. Only PDF files are allowed."
+msgstr "অবৈধ ফাইল প্রকার। "
+
+#: profile_app/serializers.py:524
+msgid "Ethnicity is required."
+msgstr "জাতিগত প্রয়োজন।"
+
+#: profile_app/serializers.py:529
+msgid "Ethnicity origin field is required."
+msgstr "জাতিগত উত্স ক্ষেত্র প্রয়োজন।"
+
+#: profile_app/serializers.py:532
+msgid "Preference on Ethnicity Reporting is required."
+msgstr "জাতিগত প্রতিবেদনে অগ্রাধিকার প্রয়োজন।"
+
+#: profile_app/serializers.py:543
+msgid "Ethnicity origin must be either true or false."
+msgstr "জাতিগত উত্স হতে হবে সত্য বা মিথ্যা।"
+
+#: profile_app/serializers.py:551
+msgid "Preference on Ethnicity Reporting must be either true or false."
+msgstr "এথনিসিটি রিপোর্টিং এর উপর অগ্রাধিকার সত্য বা মিথ্যা হতে হবে।"
+
+#: profile_app/serializers.py:573
+msgid "First language is required."
+msgstr "প্রথম ভাষা প্রয়োজন।"
+
+#: profile_app/serializers.py:574
+msgid "First language cannot be null."
+msgstr "প্রথম ভাষা শূন্য হতে পারে না।"
+
+#: profile_app/serializers.py:575
+msgid "Invalid language ID."
+msgstr "অবৈধ ভাষা আইডি।"
+
+#: profile_app/serializers.py:576
+msgid "Language with this ID does not exist."
+msgstr "এই আইডির ভাষা বিদ্যমান নেই।"
+
+#: profile_app/serializers.py:577
+#: python-brace-format
+msgid "Incorrect type. Expected pk value, received {data_type}."
+msgstr "ভুল টাইপ। "
+
+#: profile_app/serializers.py:586
+msgid "Parental college graduation status is required."
+msgstr "পিতামাতার কলেজ স্নাতক অবস্থা প্রয়োজন."
+
+#: profile_app/serializers.py:602
+msgid "Languages is/are not valid."
+msgstr "ভাষা বৈধ/নয়।"
+
+#: profile_app/serializers.py:621
+msgid "Acknowledgement is required."
+msgstr "স্বীকৃতি প্রয়োজন।"
+
+#: profile_app/serializers.py:622
+msgid "Invalid acknowledgement value."
+msgstr "অবৈধ স্বীকৃতি মান।"
+
+#: profile_app/serializers.py:653
+msgid "Institution name is required."
+msgstr "প্রতিষ্ঠানের নাম প্রয়োজন।"
+
+#: profile_app/serializers.py:659 profile_app/serializers.py:741
+#: profile_app/serializers.py:822 profile_app/serializers.py:951
+#: profile_app/serializers.py:1057 profile_app/serializers.py:1153
+msgid "Start date is required."
+msgstr "শুরুর তারিখ প্রয়োজন।"
+
+#: profile_app/serializers.py:665
+msgid "Major is required."
+msgstr "মেজর প্রয়োজন।"
+
+#: profile_app/serializers.py:675 profile_app/serializers.py:765
+#: profile_app/serializers.py:831 profile_app/serializers.py:965
+#: profile_app/serializers.py:1162
+msgid "End date must be greater than start date."
+msgstr "সমাপ্তির তারিখ শুরুর তারিখের চেয়ে বড় হতে হবে।"
+
+#: profile_app/serializers.py:681
+msgid "Degree date must be greater than start date."
+msgstr "ডিগ্রী তারিখ শুরুর তারিখের চেয়ে বড় হতে হবে।"
+
+#: profile_app/serializers.py:685
+msgid "Degree date must be greater than end date."
+msgstr "ডিগ্রী তারিখ শেষ তারিখের চেয়ে বড় হতে হবে।"
+
+#: profile_app/serializers.py:711
+msgid "Ensure this field has no more than 50 characters."
+msgstr "নিশ্চিত করুন যে এই ক্ষেত্রটিতে 50টির বেশি অক্ষর নেই।"
+
+#: profile_app/serializers.py:725 profile_app/serializers.py:804
+#: profile_app/serializers.py:877
+msgid "Title is required."
+msgstr "শিরোনাম প্রয়োজন।"
+
+#: profile_app/serializers.py:731
+msgid "Academic Level is required."
+msgstr "একাডেমিক স্তর প্রয়োজন।"
+
+#: profile_app/serializers.py:736
+msgid "Full Dissertation Link is required."
+msgstr "সম্পূর্ণ গবেষণামূলক লিংক প্রয়োজন।"
+
+#: profile_app/serializers.py:810
+msgid "Supervisor is required."
+msgstr "সুপারভাইজার প্রয়োজন।"
+
+#: profile_app/serializers.py:816
+msgid "Organization is required."
+msgstr "সংগঠন প্রয়োজন।"
+
+#: profile_app/serializers.py:856
+msgid "Invalid publication type."
+msgstr "অবৈধ প্রকাশনার ধরন।"
+
+#: profile_app/serializers.py:882
+msgid "Authors are required."
+msgstr "লেখক প্রয়োজন."
+
+#: profile_app/serializers.py:887
+msgid "Publication date is required."
+msgstr "প্রকাশের তারিখ প্রয়োজন।"
+
+#: profile_app/serializers.py:941
+msgid "Position title is required."
+msgstr "পদের শিরোনাম প্রয়োজন।"
+
+#: profile_app/serializers.py:946
+msgid "Company name is required."
+msgstr "কোম্পানির নাম প্রয়োজন।"
+
+#: profile_app/serializers.py:996
+msgid "Skill Option is required"
+msgstr "দক্ষতার বিকল্প প্রয়োজন"
+
+#: profile_app/serializers.py:1000
+msgid "Invalid Skill Option ID"
+msgstr "অবৈধ দক্ষতা বিকল্প আইডি"
+
+#: profile_app/serializers.py:1042
+msgid "Organizer is required."
+msgstr "সংগঠক প্রয়োজন।"
+
+#: profile_app/serializers.py:1047
+msgid "Location is required."
+msgstr "অবস্থান প্রয়োজন।"
+
+#: profile_app/serializers.py:1052
+msgid "Certificate is required."
+msgstr "সার্টিফিকেট প্রয়োজন।"
+
+#: profile_app/serializers.py:1066
+msgid "Completion date must be greater than start date."
+msgstr "সমাপ্তির তারিখ শুরুর তারিখের চেয়ে বেশি হতে হবে।"
+
+#: profile_app/serializers.py:1109
+msgid "Awarding organization is required."
+msgstr "পুরস্কার প্রদানকারী সংস্থা প্রয়োজন।"
+
+#: profile_app/serializers.py:1114
+msgid "Date received is required."
+msgstr "প্রাপ্তির তারিখ প্রয়োজন।"
+
+#: profile_app/serializers.py:1148
+msgid "Organization name is required."
+msgstr "প্রতিষ্ঠানের নাম প্রয়োজন।"
+
+#: profile_app/test_score_serializer.py:23
+msgid "Invalid test name. Choose from IELTS, TOEFL, SAT, GRE, DUOLINGO, PTE."
+msgstr "অবৈধ পরীক্ষার নাম। "
+
+#: profile_app/test_score_serializer.py:26
+msgid "Score is required."
+msgstr "স্কোর প্রয়োজন।"
+
+#: profile_app/test_score_serializer.py:27
+msgid "Invalid score."
+msgstr "অবৈধ স্কোর।"
+
+#: profile_app/test_score_serializer.py:30
+msgid "Date taken is required."
+msgstr "নেওয়ার তারিখ প্রয়োজন।"
+
+#: profile_app/test_score_serializer.py:31
+msgid "Invalid date."
+msgstr "অবৈধ তারিখ।"
+
+#: profile_app/test_score_serializer.py:49
+#: python-brace-format
+msgid ""
+"Invalid score for {test_name}. Score should be between {min_score} and "
+"{max_score}."
+msgstr "{test_name} এর জন্য অবৈধ স্কোর। "
+
+#: profile_app/test_score_view.py:21
+msgid "Upload Test Score"
+msgstr "টেস্ট স্কোর আপলোড করুন"
+
+#: profile_app/test_score_view.py:22
+msgid "Allows authenticated users to upload their test scores."
+msgstr "প্রমাণিত ব্যবহারকারীদের তাদের পরীক্ষার স্কোর আপলোড করার অনুমতি দেয়।"
+
+#: profile_app/test_score_view.py:25 profile_app/test_score_view.py:61
+#: profile_app/test_score_view.py:105 profile_app/views.py:715
+#: profile_app/views.py:752 profile_app/views.py:819 profile_app/views.py:857
+#: profile_app/views.py:919 profile_app/views.py:983 profile_app/views.py:1047
+#: profile_app/views.py:1109 profile_app/views.py:1173
+#: profile_app/views.py:1235
+msgid "Success"
+msgstr "সাফল্য"
+
+#: profile_app/test_score_view.py:26 profile_app/test_score_view.py:106
+#: profile_app/views.py:716 profile_app/views.py:820 profile_app/views.py:984
+#: profile_app/views.py:1110 profile_app/views.py:1236
+msgid "Bad Request"
+msgstr "খারাপ অনুরোধ"
+
+#: profile_app/test_score_view.py:27 profile_app/test_score_view.py:87
+#: profile_app/test_score_view.py:108 profile_app/views.py:717
+#: profile_app/views.py:765 profile_app/views.py:821 profile_app/views.py:870
+#: profile_app/views.py:933 profile_app/views.py:985 profile_app/views.py:1060
+#: profile_app/views.py:1111 profile_app/views.py:1186
+#: profile_app/views.py:1237
+msgid "Internal Server Error"
+msgstr "অভ্যন্তরীণ সার্ভার ত্রুটি"
+
+#: profile_app/test_score_view.py:38
+msgid "Test score uploaded successfully."
+msgstr "টেস্ট স্কোর সফলভাবে আপলোড হয়েছে।"
+
+#: profile_app/test_score_view.py:44
+msgid "Test score upload operation failed."
+msgstr "টেস্ট স্কোর আপলোড অপারেশন ব্যর্থ হয়েছে।"
+
+#: profile_app/test_score_view.py:51 profile_app/views.py:741
+#: profile_app/views.py:846
+msgid "Internal Server Error."
+msgstr "অভ্যন্তরীণ সার্ভার ত্রুটি।"
+
+#: profile_app/test_score_view.py:57
+msgid "Get Test Scores"
+msgstr "টেস্ট স্কোর পান"
+
+#: profile_app/test_score_view.py:58
+msgid "Allows authenticated users to fetch their test scores."
+msgstr "প্রমাণিত ব্যবহারকারীদের তাদের পরীক্ষার স্কোর আনতে অনুমতি দেয়।"
+
+#: profile_app/test_score_view.py:96
+msgid "Test scores retrieved successfully."
+msgstr "টেস্ট স্কোর সফলভাবে পুনরুদ্ধার করা হয়েছে।"
+
+#: profile_app/test_score_view.py:101
+msgid "Update Test Score"
+msgstr "টেস্ট স্কোর আপডেট করুন"
+
+#: profile_app/test_score_view.py:102
+msgid "Allows authenticated users to update their test scores."
+msgstr "প্রমাণিত ব্যবহারকারীদের তাদের পরীক্ষার স্কোর আপডেট করার অনুমতি দেয়।"
+
+#: profile_app/test_score_view.py:107 profile_app/test_score_view.py:157
+msgid "Not Found"
+msgstr "পাওয়া যায়নি"
+
+#: profile_app/test_score_view.py:141
+msgid "Test score updated successfully."
+msgstr "টেস্ট স্কোর সফলভাবে আপডেট করা হয়েছে।"
+
+#: profile_app/test_score_view.py:147
+msgid "Test score update operation failed."
+msgstr "টেস্ট স্কোর আপডেট অপারেশন ব্যর্থ হয়েছে।"
+
+#: profile_app/test_score_view.py:153
+msgid "Delete Test Score"
+msgstr "টেস্ট স্কোর মুছুন"
+
+#: profile_app/test_score_view.py:154
+msgid "Allows authenticated users to delete their test scores."
+msgstr "প্রমাণিত ব্যবহারকারীদের তাদের পরীক্ষার স্কোর মুছে ফেলার অনুমতি দেয়।"
+
+#: profile_app/test_score_view.py:156
+msgid "No Content"
+msgstr "কোন বিষয়বস্তু নেই"
+
+#: profile_app/training_workshop_view.py:11
+msgid "Get training workshops"
+msgstr "প্রশিক্ষণ কর্মশালা পান"
+
+#: profile_app/training_workshop_view.py:12
+msgid "Retrieve user's training workshops."
+msgstr "ব্যবহারকারীর প্রশিক্ষণ কর্মশালা পুনরুদ্ধার করুন।"
+
+#: profile_app/training_workshop_view.py:31
+msgid "Training Workshops retrieved successfully."
+msgstr "প্রশিক্ষণ কর্মশালা সফলভাবে পুনরুদ্ধার করা হয়েছে।"
+
+#: profile_app/training_workshop_view.py:53
+msgid "Add TrainingWorkshop"
+msgstr "ট্রেনিং ওয়ার্কশপ যোগ করুন"
+
+#: profile_app/training_workshop_view.py:54
+msgid "Add a new training workshop."
+msgstr "একটি নতুন প্রশিক্ষণ কর্মশালা যোগ করুন।"
+
+#: profile_app/training_workshop_view.py:78
+msgid "Training workshop added successfully."
+msgstr "প্রশিক্ষণ কর্মশালা সফলভাবে যোগ করা হয়েছে।"
+
+#: profile_app/training_workshop_view.py:111
+msgid "Update Training Workshop"
+msgstr "প্রশিক্ষণ কর্মশালা আপডেট করুন"
+
+#: profile_app/training_workshop_view.py:112
+msgid "Update an existing training workshop."
+msgstr "একটি বিদ্যমান প্রশিক্ষণ কর্মশালা আপডেট করুন।"
+
+#: profile_app/training_workshop_view.py:138
+msgid "Training workshop updated successfully."
+msgstr "প্রশিক্ষণ কর্মশালা সফলভাবে আপডেট করা হয়েছে।"
+
+#: profile_app/training_workshop_view.py:171
+msgid "Delete Training Workshop"
+msgstr "প্রশিক্ষণ কর্মশালা মুছুন"
+
+#: profile_app/training_workshop_view.py:172
+msgid "Delete an existing training workshop."
+msgstr "একটি বিদ্যমান প্রশিক্ষণ কর্মশালা মুছুন।"
+
+#: profile_app/training_workshop_view.py:187
+msgid "Training workshop deleted successfully."
+msgstr "প্রশিক্ষণ কর্মশালা সফলভাবে মুছে ফেলা হয়েছে।"
+
+#: profile_app/views.py:363
+msgid "Get citizenship and visa information"
+msgstr "নাগরিকত্ব এবং ভিসার তথ্য পান"
+
+#: profile_app/views.py:365
+msgid "Get citizenship and visa information for a user."
+msgstr "একজন ব্যবহারকারীর জন্য নাগরিকত্ব এবং ভিসার তথ্য পান।"
+
+#: profile_app/views.py:368
+msgid "A list of citizenships and visas."
+msgstr "নাগরিকত্ব এবং ভিসার একটি তালিকা।"
+
+#: profile_app/views.py:377 profile_app/views.py:405 profile_app/views.py:454
+msgid "UserDetails not found"
+msgstr "ব্যবহারকারীর বিবরণ পাওয়া যায়নি"
+
+#: profile_app/views.py:409
+msgid "Create or update citizenship and visa information"
+msgstr "নাগরিকত্ব এবং ভিসার তথ্য তৈরি বা আপডেট করুন"
+
+#: profile_app/views.py:411
+msgid "Create or update citizenship and visa information for a user."
+msgstr "একজন ব্যবহারকারীর জন্য নাগরিকত্ব এবং ভিসার তথ্য তৈরি বা আপডেট করুন।"
+
+#: profile_app/views.py:418
+msgid "List of citizenships"
+msgstr "নাগরিকত্বের তালিকা"
+
+#: profile_app/views.py:423
+msgid "List of visas"
+msgstr "ভিসার তালিকা"
+
+#: profile_app/views.py:430
+msgid "Citizenships and visas created successfully."
+msgstr "নাগরিকত্ব এবং ভিসা সফলভাবে তৈরি করা হয়েছে।"
+
+#: profile_app/views.py:493
+msgid "Retrieve user's research interests"
+msgstr "ব্যবহারকারীর গবেষণার আগ্রহ পুনরুদ্ধার করুন"
+
+#: profile_app/views.py:494
+msgid ""
+"Retrieves the research interests associated with the authenticated user."
+msgstr "প্রমাণিত ব্যবহারকারীর সাথে সম্পর্কিত গবেষণা আগ্রহ পুনরুদ্ধার করে।"
+
+#: profile_app/views.py:497
+msgid "Successful retrieval of research interests"
+msgstr "গবেষণার আগ্রহের সফল পুনরুদ্ধার"
+
+#: profile_app/views.py:507
+msgid "Research interests not found for the user"
+msgstr "ব্যবহারকারীর জন্য গবেষণার আগ্রহ পাওয়া যায়নি"
+
+#: profile_app/views.py:530
+msgid "Research interests retrieved successfully."
+msgstr "গবেষণার আগ্রহ সফলভাবে পুনরুদ্ধার করা হয়েছে।"
+
+#: profile_app/views.py:537
+msgid "Research interests not found for this user."
+msgstr "এই ব্যবহারকারীর জন্য গবেষণার আগ্রহ পাওয়া যায়নি।"
+
+#: profile_app/views.py:544
+msgid "Save user's research interests"
+msgstr "ব্যবহারকারীর গবেষণার আগ্রহ সংরক্ষণ করুন"
+
+#: profile_app/views.py:545
+msgid ""
+"Saves the user's research interests based on the provided data. Expects a "
+"JSON array of research interests."
+msgstr "প্রদত্ত ডেটার উপর ভিত্তি করে ব্যবহারকারীর গবেষণার আগ্রহ সংরক্ষণ করে। "
+
+#: profile_app/views.py:559
+msgid "Successful saving of research interests"
+msgstr "গবেষণার আগ্রহের সফল সংরক্ষণ"
+
+#: profile_app/views.py:570 profile_app/views.py:1365
+msgid "Validation error occurred"
+msgstr "বৈধতা ত্রুটি ঘটেছে"
+
+#: profile_app/views.py:582 profile_app/views.py:932 profile_app/views.py:1059
+#: profile_app/views.py:1185 profile_app/views.py:1377
+msgid "User details not found"
+msgstr "ব্যবহারকারীর বিবরণ পাওয়া যায়নি"
+
+#: profile_app/views.py:594 profile_app/views.py:1389
+msgid "Internal server error occurred"
+msgstr "অভ্যন্তরীণ সার্ভার ত্রুটি ঘটেছে"
+
+#: profile_app/views.py:632 profile_app/views.py:1426
+msgid "Invalid data format. Expected a list."
+msgstr "অবৈধ তথ্য বিন্যাস। "
+
+#: profile_app/views.py:637
+msgid "At least one research interest is required."
+msgstr "কমপক্ষে একটি গবেষণা আগ্রহ প্রয়োজন।"
+
+#: profile_app/views.py:684
+msgid "Research interests saved successfully."
+msgstr "গবেষণার আগ্রহ সফলভাবে সংরক্ষিত হয়েছে।"
+
+#: profile_app/views.py:704
+msgid "Upload Resume"
+msgstr "জীবনবৃত্তান্ত আপলোড করুন"
+
+#: profile_app/views.py:706
+msgid "Allows authenticated users to upload their resume file in PDF format."
+msgstr "প্রমাণিত ব্যবহারকারীদের পিডিএফ ফরম্যাটে তাদের জীবনবৃত্তান্ত ফাইল আপলোড করার অনুমতি দেয়।"
+
+#: profile_app/views.py:711
+msgid "Resume file in PDF format."
+msgstr "পিডিএফ ফরম্যাটে ফাইল পুনরায় শুরু করুন।"
+
+#: profile_app/views.py:728
+msgid "Resume uploaded successfully."
+msgstr "পুনঃসূচনা সফলভাবে আপলোড হয়েছে।"
+
+#: profile_app/views.py:734
+msgid "Resume upload operation is failed."
+msgstr "পুনরায় শুরু আপলোড অপারেশন ব্যর্থ হয়েছে."
+
+#: profile_app/views.py:747
+msgid "Get Resume"
+msgstr "জীবনবৃত্তান্ত পান"
+
+#: profile_app/views.py:749
+msgid "Allows authenticated users to fetch their uploaded resume file."
+msgstr "প্রমাণিত ব্যবহারকারীদের তাদের আপলোড করা জীবনবৃত্তান্ত ফাইল আনতে অনুমতি দেয়।"
+
+#: profile_app/views.py:784
+msgid "Resume file is retrieved successfully."
+msgstr "রিজিউম ফাইল সফলভাবে পুনরুদ্ধার করা হয়েছে।"
+
+#: profile_app/views.py:791
+msgid "No resume file found."
+msgstr "কোন সারসংকলন ফাইল পাওয়া যায়নি।"
+
+#: profile_app/views.py:808
+msgid "Upload SOP"
+msgstr "SOP আপলোড করুন"
+
+#: profile_app/views.py:810
+msgid ""
+"Allows authenticated users to upload their statement of purpose (SOP) file "
+"in PDF format."
+msgstr "প্রমাণিত ব্যবহারকারীদের তাদের উদ্দেশ্যের বিবৃতি (SOP) ফাইল PDF ফরম্যাটে আপলোড করার অনুমতি দেয়।"
+
+#: profile_app/views.py:815
+msgid "SOP file in PDF format."
+msgstr "পিডিএফ ফরম্যাটে এসওপি ফাইল।"
+
+#: profile_app/views.py:833
+msgid "SOP uploaded successfully."
+msgstr "SOP সফলভাবে আপলোড হয়েছে।"
+
+#: profile_app/views.py:839
+msgid "SOP upload operation is failed."
+msgstr "SOP আপলোড অপারেশন ব্যর্থ হয়েছে৷"
+
+#: profile_app/views.py:852
+msgid "Get SOP"
+msgstr "SOP পান"
+
+#: profile_app/views.py:854
+msgid ""
+"Allows authenticated users to fetch their uploaded statement of purpose "
+"(SOP) file."
+msgstr "প্রমাণিত ব্যবহারকারীদের তাদের আপলোড করা স্টেটমেন্ট অব উদ্দেশ্য (SOP) ফাইল আনতে অনুমতি দেয়।"
+
+#: profile_app/views.py:890
+msgid "SOP file is retrieved successfully."
+msgstr "SOP ফাইল সফলভাবে পুনরুদ্ধার করা হয়েছে।"
+
+#: profile_app/views.py:897
+msgid "No SOP file found."
+msgstr "কোন SOP ফাইল পাওয়া যায়নি।"
+
+#: profile_app/views.py:914
+msgid "Get Ethnicity Info"
+msgstr "জাতিগত তথ্য পান"
+
+#: profile_app/views.py:916
+msgid "Allows authenticated users to fetch their ethnicity information."
+msgstr "প্রমাণিত ব্যবহারকারীদের তাদের জাতিগত তথ্য আনার অনুমতি দেয়।"
+
+#: profile_app/views.py:969
+msgid "Update Ethnicity Info"
+msgstr "জাতিগত তথ্য আপডেট করুন"
+
+#: profile_app/views.py:971
+msgid "Allows authenticated users to update their ethnicity information."
+msgstr "প্রমাণিত ব্যবহারকারীদের তাদের জাতিগত তথ্য আপডেট করার অনুমতি দেয়।"
+
+#: profile_app/views.py:976
+msgid "Ethnicity"
+msgstr "জাতিসত্তা"
+
+#: profile_app/views.py:977
+msgid "Ethnicity details"
+msgstr "জাতিগত বিবরণ"
+
+#: profile_app/views.py:978
+msgid "Ethnicity origin"
+msgstr "জাতিগত উত্স"
+
+#: profile_app/views.py:979
+msgid "Preference on Ethnicity Reporting"
+msgstr "জাতিগত প্রতিবেদনে অগ্রাধিকার"
+
+#: profile_app/views.py:1005
+msgid "Ethnicity details updated successfully"
+msgstr "জাতিগত বিবরণ সফলভাবে আপডেট করা হয়েছে"
+
+#: profile_app/views.py:1042
+msgid "Get Other Info"
+msgstr "অন্যান্য তথ্য পান"
+
+#: profile_app/views.py:1044
+msgid "Allows authenticated users to fetch their other information."
+msgstr "প্রমাণিত ব্যবহারকারীদের তাদের অন্যান্য তথ্য আনার অনুমতি দেয়।"
+
+#: profile_app/views.py:1096
+msgid "Update Other Info"
+msgstr "অন্যান্য তথ্য আপডেট করুন"
+
+#: profile_app/views.py:1098
+msgid "Allows authenticated users to update their other information."
+msgstr "প্রমাণিত ব্যবহারকারীদের তাদের অন্যান্য তথ্য আপডেট করার অনুমতি দেয়।"
+
+#: profile_app/views.py:1103 profile_app/views.py:1229
+msgid "Field 1"
+msgstr "ক্ষেত্র 1"
+
+#: profile_app/views.py:1104 profile_app/views.py:1230
+msgid "Field 2"
+msgstr "ক্ষেত্র 2"
+
+#: profile_app/views.py:1105 profile_app/views.py:1231
+msgid "Field 3"
+msgstr "ক্ষেত্র 3"
+
+#: profile_app/views.py:1131
+msgid "Other info updated successfully"
+msgstr "অন্যান্য তথ্য সফলভাবে আপডেট করা হয়েছে"
+
+#: profile_app/views.py:1168
+msgid "Get Acknowledgement Info"
+msgstr "স্বীকৃতি তথ্য পান"
+
+#: profile_app/views.py:1170
+msgid "Allows authenticated users to fetch their acknowledgement information."
+msgstr "প্রমাণিত ব্যবহারকারীদের তাদের স্বীকৃতি তথ্য আনার অনুমতি দেয়।"
+
+#: profile_app/views.py:1200
+msgid "User details found."
+msgstr "ব্যবহারকারীর বিবরণ পাওয়া গেছে।"
+
+#: profile_app/views.py:1222
+msgid "Update Acknowledgement Info"
+msgstr "স্বীকৃতি তথ্য আপডেট করুন"
+
+#: profile_app/views.py:1224
+msgid "Allows authenticated users to update their acknowledgement information."
+msgstr "প্রমাণিত ব্যবহারকারীদের তাদের স্বীকৃতি তথ্য আপডেট করার অনুমতি দেয়।"
+
+#: profile_app/views.py:1257
+msgid "Acknowledgement updated successfully"
+msgstr "স্বীকৃতি সফলভাবে আপডেট করা হয়েছে"
+
+#: profile_app/views.py:1293
+msgid "Retrieve user's skills"
+msgstr "ব্যবহারকারীর দক্ষতা পুনরুদ্ধার করুন"
+
+#: profile_app/views.py:1294
+msgid "Retrieves the skills associated with the authenticated user."
+msgstr "প্রমাণিত ব্যবহারকারীর সাথে সম্পর্কিত দক্ষতা পুনরুদ্ধার করে।"
+
+#: profile_app/views.py:1297
+msgid "Successful retrieval of skills"
+msgstr "দক্ষতার সফল পুনরুদ্ধার"
+
+#: profile_app/views.py:1307
+msgid "Skills not found for the user"
+msgstr "ব্যবহারকারীর জন্য দক্ষতা পাওয়া যায়নি"
+
+#: profile_app/views.py:1328
+msgid "Skills retrieved successfully."
+msgstr "দক্ষতা সফলভাবে পুনরুদ্ধার করা হয়েছে।"
+
+#: profile_app/views.py:1335
+msgid "Skills not found for this user."
+msgstr "এই ব্যবহারকারীর জন্য দক্ষতা পাওয়া যায়নি।"
+
+#: profile_app/views.py:1340
+msgid "Save user's skills"
+msgstr "ব্যবহারকারীর দক্ষতা সংরক্ষণ করুন"
+
+#: profile_app/views.py:1341
+msgid ""
+"Saves the user's skills based on the provided data. Expects a JSON array of "
+"skills."
+msgstr "প্রদত্ত ডেটার উপর ভিত্তি করে ব্যবহারকারীর দক্ষতা সংরক্ষণ করে। "
+
+#: profile_app/views.py:1355
+msgid "Successful saving of skills"
+msgstr "দক্ষতার সফল সংরক্ষণ"
+
+#: profile_app/views.py:1431
+msgid "At least one skill is required."
+msgstr "কমপক্ষে একটি দক্ষতা প্রয়োজন।"
+
+#: profile_app/views.py:1476
+msgid "Skills saved successfully."
+msgstr "দক্ষতা সফলভাবে সংরক্ষণ করা হয়েছে।"
+
+#: profile_app/views.py:1496
+msgid "Get Volunteer Activities"
+msgstr "স্বেচ্ছাসেবক কার্যক্রম পান"
+
+#: profile_app/views.py:1497
+msgid "Retrieve user's volunteer activities."
+msgstr "ব্যবহারকারীর স্বেচ্ছাসেবী কার্যক্রম পুনরুদ্ধার করুন।"
+
+#: profile_app/views.py:1511
+msgid "Volunteer activities retrieved successfully."
+msgstr "স্বেচ্ছাসেবক কার্যক্রম সফলভাবে পুনরুদ্ধার করা হয়েছে।"
+
+#: profile_app/views.py:1516
+msgid "Add Volunteer Activity"
+msgstr "স্বেচ্ছাসেবক কার্যকলাপ যোগ করুন"
+
+#: profile_app/views.py:1517
+msgid "Add a new volunteer activity."
+msgstr "একটি নতুন স্বেচ্ছাসেবক কার্যকলাপ যোগ করুন।"
+
+#: profile_app/views.py:1532
+msgid "Volunteer activity added successfully."
+msgstr "স্বেচ্ছাসেবক কার্যকলাপ সফলভাবে যোগ করা হয়েছে।"
+
+#: profile_app/views.py:1543
+msgid "Update Volunteer Activity"
+msgstr "স্বেচ্ছাসেবক কার্যকলাপ আপডেট করুন"
+
+#: profile_app/views.py:1544
+msgid "Update an existing volunteer activity."
+msgstr "একটি বিদ্যমান স্বেচ্ছাসেবক কার্যকলাপ আপডেট করুন।"
+
+#: profile_app/views.py:1563
+msgid "Volunteer activity updated successfully."
+msgstr "স্বেচ্ছাসেবক কার্যকলাপ সফলভাবে আপডেট করা হয়েছে।"
+
+#: profile_app/views.py:1574
+msgid "Delete Volunteer Activity"
+msgstr "স্বেচ্ছাসেবক কার্যকলাপ মুছুন"
+
+#: profile_app/views.py:1575
+msgid "Delete an existing volunteer activity."
+msgstr "একটি বিদ্যমান স্বেচ্ছাসেবক কার্যকলাপ মুছুন।"
+
+#: profile_app/views.py:1589
+msgid "Volunteer activity deleted successfully."
+msgstr "স্বেচ্ছাসেবক কার্যকলাপ সফলভাবে মুছে ফেলা হয়েছে।"
+
+#: profile_app/work_experience_view.py:11
+msgid "Get Work experiences"
+msgstr "কাজের অভিজ্ঞতা পান"
+
+#: profile_app/work_experience_view.py:12
+msgid "Retrieve user's work experiences."
+msgstr "ব্যবহারকারীর কাজের অভিজ্ঞতা পুনরুদ্ধার করুন।"
+
+#: profile_app/work_experience_view.py:31
+msgid "Work experiences retrieved successfully."
+msgstr "কাজের অভিজ্ঞতা সফলভাবে পুনরুদ্ধার করা হয়েছে।"
+
+#: profile_app/work_experience_view.py:53
+msgid "Add work experience"
+msgstr "কাজের অভিজ্ঞতা যোগ করুন"
+
+#: profile_app/work_experience_view.py:54
+msgid "Add a new work experience."
+msgstr "একটি নতুন কাজের অভিজ্ঞতা যোগ করুন।"
+
+#: profile_app/work_experience_view.py:78
+msgid "Work experience added successfully."
+msgstr "কাজের অভিজ্ঞতা সফলভাবে যোগ করা হয়েছে।"
+
+#: profile_app/work_experience_view.py:111
+msgid "Update work experience"
+msgstr "কাজের অভিজ্ঞতা আপডেট করুন"
+
+#: profile_app/work_experience_view.py:112
+msgid "Update an existing work experience."
+msgstr "একটি বিদ্যমান কাজের অভিজ্ঞতা আপডেট করুন।"
+
+#: profile_app/work_experience_view.py:138
+msgid "Work experience updated successfully."
+msgstr "কাজের অভিজ্ঞতা সফলভাবে আপডেট হয়েছে।"
+
+#: profile_app/work_experience_view.py:171
+msgid "Delete work experience"
+msgstr "কাজের অভিজ্ঞতা মুছুন"
+
+#: profile_app/work_experience_view.py:172
+msgid "Delete an existing work experience."
+msgstr "একটি বিদ্যমান কাজের অভিজ্ঞতা মুছুন।"
+
+#: profile_app/work_experience_view.py:187
+msgid "Work experience deleted successfully."
+msgstr "কাজের অভিজ্ঞতা সফলভাবে মুছে ফেলা হয়েছে।"
+
+msgid "Unsupported file type" 
+msgstr "অসমর্থিত ফাইল টাইপ"
+
+
+msgid "Data uploaded successfully"
+msgstr "ডেটা সফলভাবে আপলোড হয়েছে"
+
+msgid "Unsupported entity type"
+msgstr "অসহায়ক সংস্থা প্রকার"
+
+
+
+msgid "A duplicate entry with the same name, category, country, and city already exists."
+msgstr "একই নাম, বিভাগ, দেশ, এবং শহর সহ একটি ডুপ্লিকেট এন্ট্রি ইতিমধ্যেই বিদ্যমান।"
+
+msgid "Record Clone Successfully"
+msgstr "রেকর্ড সফলভাবে ক্লোন হয়েছে"
+
+msgid "Error in row %(index)s: %(error_message_str)s"
+msgstr "সারি %(index)s এ ত্রুটি: %(error_message_str)s"
+
+
+msgid "Invalid columns. Expected columns are %(expected_columns)s. Also optionally 'logo_file' for logo name."
+msgstr "অবৈধ কলাম। প্রত্যাশিত কলামগুলি হল %(expected_columns)s। লোগো নামের জন্য 'logo_file' ও বিকল্পভাবে থাকতে পারে।"
+
+msgid "Row count exceeds the limit of %(max_row_limit)s."
+msgstr "সারি সংখ্যা %(max_row_limit)s সীমা অতিক্রম করেছে।"
+
+#~ msgid "Test score upload operation failed."
+#~ msgstr "টেস্ট স্কোর আপলোড অপারেশন ব্যর্থ হয়েছে।"
+
+#~ msgid "Allows authenticated users to fetch their test scores."
+#~ msgstr "প্রমাণিত ব্যবহারকারীদের তাদের পরীক্ষার স্কোর আনতে অনুমতি দেয়।"
+
+#~ msgid "Allows authenticated users to update their test scores."
+#~ msgstr "প্রমাণিত ব্যবহারকারীদের তাদের পরীক্ষার স্কোর আপডেট করার অনুমতি দেয়।"
+
+#~ msgid "Test score update operation failed."
+#~ msgstr "টেস্ট স্কোর আপডেট অপারেশন ব্যর্থ হয়েছে।"
+
+#~ msgid "Allows authenticated users to delete their test scores."
+#~ msgstr "প্রমাণিত ব্যবহারকারীদের তাদের পরীক্ষার স্কোর মুছে ফেলার অনুমতি দেয়।"
+
+#~ msgid "No Content"
+#~ msgstr "কোন বিষয়বস্তু নেই"
+
+#~ msgid "Create or update citizenship and visa information"
+#~ msgstr "নাগরিকত্ব এবং ভিসার তথ্য তৈরি বা আপডেট করুন"
+
+#~ msgid "Create or update citizenship and visa information for a user."
+#~ msgstr "একজন ব্যবহারকারীর জন্য নাগরিকত্ব এবং ভিসার তথ্য তৈরি বা আপডেট করুন।"
+
+#~ msgid "List of citizenships"
+#~ msgstr "নাগরিকত্বের তালিকা"
+
+#~ msgid "List of visas"
+#~ msgstr "ভিসার তালিকা"
+
+#~ msgid "Citizenships and visas created successfully."
+#~ msgstr "নাগরিকত্ব এবং ভিসা সফলভাবে তৈরি করা হয়েছে।"
+msgid "%(document_filename)s of Logo file not found"
+msgstr "%(document_filename)s লোগো ফাইল পাওয়া যায়নি।"

@@ -1,0 +1,3926 @@
+[
+{
+    "model": "common.language",
+    "pk": 1,
+    "fields": {
+        "key": "af_NA",
+        "properties_name": "Afrikaans (Namibia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 2,
+    "fields": {
+        "key": "af_ZA",
+        "properties_name": "Afrikaans (South Africa)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 3,
+    "fields": {
+        "key": "af",
+        "properties_name": "Afrikaans",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 4,
+    "fields": {
+        "key": "ak_GH",
+        "properties_name": "Akan (Ghana)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 5,
+    "fields": {
+        "key": "ak",
+        "properties_name": "Akan",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 6,
+    "fields": {
+        "key": "sq_AL",
+        "properties_name": "Albanian (Albania)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 7,
+    "fields": {
+        "key": "sq",
+        "properties_name": "Albanian",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 8,
+    "fields": {
+        "key": "am_ET",
+        "properties_name": "Amharic (Ethiopia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 9,
+    "fields": {
+        "key": "am",
+        "properties_name": "Amharic",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 10,
+    "fields": {
+        "key": "ar_DZ",
+        "properties_name": "Arabic (Algeria)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 11,
+    "fields": {
+        "key": "ar_BH",
+        "properties_name": "Arabic (Bahrain)",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 12,
+    "fields": {
+        "key": "ar_EG",
+        "properties_name": "Arabic (Egypt)",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 13,
+    "fields": {
+        "key": "ar_IQ",
+        "properties_name": "Arabic (Iraq)",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 14,
+    "fields": {
+        "key": "ar_JO",
+        "properties_name": "Arabic (Jordan)",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 15,
+    "fields": {
+        "key": "ar_KW",
+        "properties_name": "Arabic (Kuwait)",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 16,
+    "fields": {
+        "key": "ar_LB",
+        "properties_name": "Arabic (Lebanon)",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 17,
+    "fields": {
+        "key": "ar_LY",
+        "properties_name": "Arabic (Libya)",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 18,
+    "fields": {
+        "key": "ar_MA",
+        "properties_name": "Arabic (Morocco)",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 19,
+    "fields": {
+        "key": "ar_OM",
+        "properties_name": "Arabic (Oman)",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 20,
+    "fields": {
+        "key": "ar_QA",
+        "properties_name": "Arabic (Qatar)",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 21,
+    "fields": {
+        "key": "ar_SA",
+        "properties_name": "Arabic (Saudi Arabia)",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 22,
+    "fields": {
+        "key": "ar_SD",
+        "properties_name": "Arabic (Sudan)",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 23,
+    "fields": {
+        "key": "ar_SY",
+        "properties_name": "Arabic (Syria)",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 24,
+    "fields": {
+        "key": "ar_TN",
+        "properties_name": "Arabic (Tunisia)",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 25,
+    "fields": {
+        "key": "ar_AE",
+        "properties_name": "Arabic (United Arab Emirates)",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 26,
+    "fields": {
+        "key": "ar_YE",
+        "properties_name": "Arabic (Yemen)",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 27,
+    "fields": {
+        "key": "ar",
+        "properties_name": "Arabic",
+        "properties_charset": "ISO-8859-6"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 28,
+    "fields": {
+        "key": "hy_AM",
+        "properties_name": "Armenian (Armenia)",
+        "properties_charset": "ARMSCII-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 29,
+    "fields": {
+        "key": "hy",
+        "properties_name": "Armenian",
+        "properties_charset": "ARMSCII-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 30,
+    "fields": {
+        "key": "as_IN",
+        "properties_name": "Assamese (India)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 31,
+    "fields": {
+        "key": "as",
+        "properties_name": "Assamese",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 32,
+    "fields": {
+        "key": "asa_TZ",
+        "properties_name": "Asu (Tanzania)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 33,
+    "fields": {
+        "key": "asa",
+        "properties_name": "Asu",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 34,
+    "fields": {
+        "key": "az_Cyrl",
+        "properties_name": "Azerbaijani (Cyrillic, Azerbaijan)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 35,
+    "fields": {
+        "key": "az_Cyrl_AZ",
+        "properties_name": "Azerbaijani (Cyrillic, Azerbaijan)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 36,
+    "fields": {
+        "key": "az_Latn",
+        "properties_name": "Azerbaijani (Latin)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 37,
+    "fields": {
+        "key": "az_Latn_AZ",
+        "properties_name": "Azerbaijani (Latin, Azerbaijan)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 38,
+    "fields": {
+        "key": "az",
+        "properties_name": "Azerbaijani",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 39,
+    "fields": {
+        "key": "bm_ML",
+        "properties_name": "Bambara (Mali)",
+        "properties_charset": "iso-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 40,
+    "fields": {
+        "key": "bm",
+        "properties_name": "Bambara",
+        "properties_charset": "iso-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 41,
+    "fields": {
+        "key": "eu_ES",
+        "properties_name": "Basque (Spain)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 42,
+    "fields": {
+        "key": "eu",
+        "properties_name": "Basque",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 43,
+    "fields": {
+        "key": "be_BY",
+        "properties_name": "Belarusian (Belarus)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 44,
+    "fields": {
+        "key": "be",
+        "properties_name": "Belarusian",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 45,
+    "fields": {
+        "key": "bem_ZM",
+        "properties_name": "Bemba (Zambia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 46,
+    "fields": {
+        "key": "bem",
+        "properties_name": "Bemba",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 47,
+    "fields": {
+        "key": "bez_TZ",
+        "properties_name": "Bena (Tanzania)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 48,
+    "fields": {
+        "key": "bez",
+        "properties_name": "Bena",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 49,
+    "fields": {
+        "key": "bn_BD",
+        "properties_name": "Bengali (Bangladesh)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 50,
+    "fields": {
+        "key": "bn_IN",
+        "properties_name": "Bengali (India)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 51,
+    "fields": {
+        "key": "bn",
+        "properties_name": "Bengali",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 52,
+    "fields": {
+        "key": "bs_BA",
+        "properties_name": "Bosnian (Bosnia and Herzegovina)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 53,
+    "fields": {
+        "key": "bs",
+        "properties_name": "Bosnian",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 54,
+    "fields": {
+        "key": "bg_BG",
+        "properties_name": "Bulgarian (Bulgaria)",
+        "properties_charset": "ISO-8859-2"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 55,
+    "fields": {
+        "key": "bg",
+        "properties_name": "Bulgarian",
+        "properties_charset": "ISO-8859-2"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 56,
+    "fields": {
+        "key": "my_MM",
+        "properties_name": "Burmese (Myanmar [Burma])",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 57,
+    "fields": {
+        "key": "my",
+        "properties_name": "Burmese",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 58,
+    "fields": {
+        "key": "yue_Hant_HK",
+        "properties_name": "Cantonese (Traditional, Hong Kong SAR China)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 59,
+    "fields": {
+        "key": "ca_ES",
+        "properties_name": "Catalan (Spain)",
+        "properties_charset": "ISO-8859-15"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 60,
+    "fields": {
+        "key": "ca",
+        "properties_name": "Catalan",
+        "properties_charset": "ISO-8859-15"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 61,
+    "fields": {
+        "key": "tzm_Latn",
+        "properties_name": "Central Morocco Tamazight (Latin)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 62,
+    "fields": {
+        "key": "tzm_Latn_MA",
+        "properties_name": "Central Morocco Tamazight (Latin, Morocco)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 63,
+    "fields": {
+        "key": "tzm",
+        "properties_name": "Central Morocco Tamazight",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 64,
+    "fields": {
+        "key": "chr_US",
+        "properties_name": "Cherokee (United States)",
+        "properties_charset": "U+13A0"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 65,
+    "fields": {
+        "key": "chr",
+        "properties_name": "Cherokee",
+        "properties_charset": "U+13A0"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 66,
+    "fields": {
+        "key": "cgg_UG",
+        "properties_name": "Chiga (Uganda)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 67,
+    "fields": {
+        "key": "cgg",
+        "properties_name": "Chiga",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 68,
+    "fields": {
+        "key": "zh_Hans",
+        "properties_name": "Chinese (Simplified Han)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 69,
+    "fields": {
+        "key": "zh_Hans_CN",
+        "properties_name": "Chinese (Simplified Han, China)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 70,
+    "fields": {
+        "key": "zh_Hans_HK",
+        "properties_name": "Chinese (Simplified Han, Hong Kong SAR China)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 71,
+    "fields": {
+        "key": "zh_Hans_MO",
+        "properties_name": "Chinese (Simplified Han, Macau SAR China)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 72,
+    "fields": {
+        "key": "zh_Hans_SG",
+        "properties_name": "Chinese (Simplified Han, Singapore)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 73,
+    "fields": {
+        "key": "zh_Hant",
+        "properties_name": "Chinese (Traditional Han)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 74,
+    "fields": {
+        "key": "zh_Hant_HK",
+        "properties_name": "Chinese (Traditional Han, Hong Kong SAR China)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 75,
+    "fields": {
+        "key": "zh_Hant_MO",
+        "properties_name": "Chinese (Traditional Han, Macau SAR China)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 76,
+    "fields": {
+        "key": "zh_Hant_TW",
+        "properties_name": "Chinese (Traditional Han, Taiwan)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 77,
+    "fields": {
+        "key": "zh",
+        "properties_name": "Chinese",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 78,
+    "fields": {
+        "key": "kw_GB",
+        "properties_name": "Cornish (United Kingdom)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 79,
+    "fields": {
+        "key": "kw",
+        "properties_name": "Cornish",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 80,
+    "fields": {
+        "key": "hr_HR",
+        "properties_name": "Croatian (Croatia)",
+        "properties_charset": "ISO-8859-2"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 81,
+    "fields": {
+        "key": "hr",
+        "properties_name": "Croatian",
+        "properties_charset": "ISO-8859-2"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 82,
+    "fields": {
+        "key": "cs_CZ",
+        "properties_name": "Czech (Czech Republic)",
+        "properties_charset": "ISO-8859-2"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 83,
+    "fields": {
+        "key": "cs",
+        "properties_name": "Czech",
+        "properties_charset": "ISO-8859-2"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 84,
+    "fields": {
+        "key": "da_DK",
+        "properties_name": "Danish (Denmark)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 85,
+    "fields": {
+        "key": "da",
+        "properties_name": "Danish",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 86,
+    "fields": {
+        "key": "nl_BE",
+        "properties_name": "Dutch (Belgium)",
+        "properties_charset": "ISO-8859-15"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 87,
+    "fields": {
+        "key": "nl_NL",
+        "properties_name": "Dutch (Netherlands)",
+        "properties_charset": "ISO-8859-15"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 88,
+    "fields": {
+        "key": "nl",
+        "properties_name": "Dutch",
+        "properties_charset": "ISO-8859-15"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 89,
+    "fields": {
+        "key": "ebu_KE",
+        "properties_name": "Embu (Kenya)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 90,
+    "fields": {
+        "key": "ebu",
+        "properties_name": "Embu",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 91,
+    "fields": {
+        "key": "en_AS",
+        "properties_name": "English (American Samoa)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 92,
+    "fields": {
+        "key": "en_AU",
+        "properties_name": "English (Australia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 93,
+    "fields": {
+        "key": "en_BE",
+        "properties_name": "English (Belgium)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 94,
+    "fields": {
+        "key": "en_BZ",
+        "properties_name": "English (Belize)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 95,
+    "fields": {
+        "key": "en_BW",
+        "properties_name": "English (Botswana)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 96,
+    "fields": {
+        "key": "en_CA",
+        "properties_name": "English (Canada)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 97,
+    "fields": {
+        "key": "en_GU",
+        "properties_name": "English (Guam)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 98,
+    "fields": {
+        "key": "en_HK",
+        "properties_name": "English (Hong Kong SAR China)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 99,
+    "fields": {
+        "key": "en_IN",
+        "properties_name": "English (India)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 100,
+    "fields": {
+        "key": "en_IE",
+        "properties_name": "English (Ireland)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 101,
+    "fields": {
+        "key": "en_IL",
+        "properties_name": "English (Israel)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 102,
+    "fields": {
+        "key": "en_JM",
+        "properties_name": "English (Jamaica)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 103,
+    "fields": {
+        "key": "en_MT",
+        "properties_name": "English (Malta)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 104,
+    "fields": {
+        "key": "en_MH",
+        "properties_name": "English (Marshall Islands)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 105,
+    "fields": {
+        "key": "en_MU",
+        "properties_name": "English (Mauritius)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 106,
+    "fields": {
+        "key": "en_NA",
+        "properties_name": "English (Namibia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 107,
+    "fields": {
+        "key": "en_NZ",
+        "properties_name": "English (New Zealand)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 108,
+    "fields": {
+        "key": "en_MP",
+        "properties_name": "English (Northern Mariana Islands)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 109,
+    "fields": {
+        "key": "en_PK",
+        "properties_name": "English (Pakistan)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 110,
+    "fields": {
+        "key": "en_PH",
+        "properties_name": "English (Philippines)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 111,
+    "fields": {
+        "key": "en_SG",
+        "properties_name": "English (Singapore)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 112,
+    "fields": {
+        "key": "en_ZA",
+        "properties_name": "English (South Africa)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 113,
+    "fields": {
+        "key": "en_TT",
+        "properties_name": "English (Trinidad and Tobago)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 114,
+    "fields": {
+        "key": "en_UM",
+        "properties_name": "English (U.S. Minor Outlying Islands)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 115,
+    "fields": {
+        "key": "en_VI",
+        "properties_name": "English (U.S. Virgin Islands)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 116,
+    "fields": {
+        "key": "en_GB",
+        "properties_name": "English (United Kingdom)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 117,
+    "fields": {
+        "key": "en_US",
+        "properties_name": "English (United States)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 118,
+    "fields": {
+        "key": "en_ZW",
+        "properties_name": "English (Zimbabwe)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 119,
+    "fields": {
+        "key": "en",
+        "properties_name": "English",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 120,
+    "fields": {
+        "key": "eo",
+        "properties_name": "Esperanto",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 121,
+    "fields": {
+        "key": "et_EE",
+        "properties_name": "Estonian (Estonia)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 122,
+    "fields": {
+        "key": "et",
+        "properties_name": "Estonian",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 123,
+    "fields": {
+        "key": "ee_GH",
+        "properties_name": "Ewe (Ghana)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 124,
+    "fields": {
+        "key": "ee_TG",
+        "properties_name": "Ewe (Togo)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 125,
+    "fields": {
+        "key": "ee",
+        "properties_name": "Ewe",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 126,
+    "fields": {
+        "key": "fo_FO",
+        "properties_name": "Faroese (Faroe Islands)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 127,
+    "fields": {
+        "key": "fo",
+        "properties_name": "Faroese",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 128,
+    "fields": {
+        "key": "fil_PH",
+        "properties_name": "Filipino (Philippines)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 129,
+    "fields": {
+        "key": "fil",
+        "properties_name": "Filipino",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 130,
+    "fields": {
+        "key": "fi_FI",
+        "properties_name": "Finnish (Finland)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 131,
+    "fields": {
+        "key": "fi",
+        "properties_name": "Finnish",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 132,
+    "fields": {
+        "key": "fr_BE",
+        "properties_name": "French (Belgium)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 133,
+    "fields": {
+        "key": "fr_BJ",
+        "properties_name": "French (Benin)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 134,
+    "fields": {
+        "key": "fr_BF",
+        "properties_name": "French (Burkina Faso)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 135,
+    "fields": {
+        "key": "fr_BI",
+        "properties_name": "French (Burundi)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 136,
+    "fields": {
+        "key": "fr_CM",
+        "properties_name": "French (Cameroon)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 137,
+    "fields": {
+        "key": "fr_CA",
+        "properties_name": "French (Canada)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 138,
+    "fields": {
+        "key": "fr_CF",
+        "properties_name": "French (Central African Republic)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 139,
+    "fields": {
+        "key": "fr_TD",
+        "properties_name": "French (Chad)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 140,
+    "fields": {
+        "key": "fr_KM",
+        "properties_name": "French (Comoros)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 141,
+    "fields": {
+        "key": "fr_CG",
+        "properties_name": "French (Congo - Brazzaville)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 142,
+    "fields": {
+        "key": "fr_CD",
+        "properties_name": "French (Congo - Kinshasa)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 143,
+    "fields": {
+        "key": "fr_CI",
+        "properties_name": "French (Côte d’Ivoire)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 144,
+    "fields": {
+        "key": "fr_DJ",
+        "properties_name": "French (Djibouti)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 145,
+    "fields": {
+        "key": "fr_GQ",
+        "properties_name": "French (Equatorial Guinea)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 146,
+    "fields": {
+        "key": "fr_FR",
+        "properties_name": "French (France)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 147,
+    "fields": {
+        "key": "fr_GA",
+        "properties_name": "French (Gabon)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 148,
+    "fields": {
+        "key": "fr_GP",
+        "properties_name": "French (Guadeloupe)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 149,
+    "fields": {
+        "key": "fr_GN",
+        "properties_name": "French (Guinea)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 150,
+    "fields": {
+        "key": "fr_LU",
+        "properties_name": "French (Luxembourg)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 151,
+    "fields": {
+        "key": "fr_MG",
+        "properties_name": "French (Madagascar)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 152,
+    "fields": {
+        "key": "fr_ML",
+        "properties_name": "French (Mali)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 153,
+    "fields": {
+        "key": "fr_MQ",
+        "properties_name": "French (Martinique)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 154,
+    "fields": {
+        "key": "fr_MC",
+        "properties_name": "French (Monaco)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 155,
+    "fields": {
+        "key": "fr_NE",
+        "properties_name": "French (Niger)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 156,
+    "fields": {
+        "key": "fr_RW",
+        "properties_name": "French (Rwanda)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 157,
+    "fields": {
+        "key": "fr_RE",
+        "properties_name": "French (Réunion)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 158,
+    "fields": {
+        "key": "fr_BL",
+        "properties_name": "French (Saint Barthélemy)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 159,
+    "fields": {
+        "key": "fr_MF",
+        "properties_name": "French (Saint Martin)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 160,
+    "fields": {
+        "key": "fr_SN",
+        "properties_name": "French (Senegal)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 161,
+    "fields": {
+        "key": "fr_CH",
+        "properties_name": "French (Switzerland)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 162,
+    "fields": {
+        "key": "fr_TG",
+        "properties_name": "French (Togo)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 163,
+    "fields": {
+        "key": "fr",
+        "properties_name": "French",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 164,
+    "fields": {
+        "key": "ff_SN",
+        "properties_name": "Fulah (Senegal)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 165,
+    "fields": {
+        "key": "ff",
+        "properties_name": "Fulah",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 166,
+    "fields": {
+        "key": "gl_ES",
+        "properties_name": "Galician (Spain)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 167,
+    "fields": {
+        "key": "gl",
+        "properties_name": "Galician",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 168,
+    "fields": {
+        "key": "lg_UG",
+        "properties_name": "Ganda (Uganda)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 169,
+    "fields": {
+        "key": "lg",
+        "properties_name": "Ganda",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 170,
+    "fields": {
+        "key": "ka_GE",
+        "properties_name": "Georgian (Georgia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 171,
+    "fields": {
+        "key": "ka",
+        "properties_name": "Georgian",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 172,
+    "fields": {
+        "key": "de_AT",
+        "properties_name": "German (Austria)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 173,
+    "fields": {
+        "key": "de_BE",
+        "properties_name": "German (Belgium)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 174,
+    "fields": {
+        "key": "de_DE",
+        "properties_name": "German (Germany)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 175,
+    "fields": {
+        "key": "de_LI",
+        "properties_name": "German (Liechtenstein)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 176,
+    "fields": {
+        "key": "de_LU",
+        "properties_name": "German (Luxembourg)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 177,
+    "fields": {
+        "key": "de_CH",
+        "properties_name": "German (Switzerland)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 178,
+    "fields": {
+        "key": "de",
+        "properties_name": "German",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 179,
+    "fields": {
+        "key": "el_CY",
+        "properties_name": "Greek (Cyprus)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 180,
+    "fields": {
+        "key": "el_GR",
+        "properties_name": "Greek (Greece)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 181,
+    "fields": {
+        "key": "el",
+        "properties_name": "Greek",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 182,
+    "fields": {
+        "key": "gu_IN",
+        "properties_name": "Gujarati (India)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 183,
+    "fields": {
+        "key": "gu",
+        "properties_name": "Gujarati",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 184,
+    "fields": {
+        "key": "guz_KE",
+        "properties_name": "Gusii (Kenya)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 185,
+    "fields": {
+        "key": "guz",
+        "properties_name": "Gusii",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 186,
+    "fields": {
+        "key": "ha_Latn",
+        "properties_name": "Hausa (Latin)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 187,
+    "fields": {
+        "key": "ha_Latn_GH",
+        "properties_name": "Hausa (Latin, Ghana)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 188,
+    "fields": {
+        "key": "ha_Latn_NE",
+        "properties_name": "Hausa (Latin, Niger)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 189,
+    "fields": {
+        "key": "ha_Latn_NG",
+        "properties_name": "Hausa (Latin, Nigeria)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 190,
+    "fields": {
+        "key": "ha",
+        "properties_name": "Hausa",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 191,
+    "fields": {
+        "key": "haw_US",
+        "properties_name": "Hawaiian (United States)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 192,
+    "fields": {
+        "key": "haw",
+        "properties_name": "Hawaiian",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 193,
+    "fields": {
+        "key": "he_IL",
+        "properties_name": "Hebrew (Israel)",
+        "properties_charset": "ISO-8859-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 194,
+    "fields": {
+        "key": "he",
+        "properties_name": "Hebrew",
+        "properties_charset": "ISO-8859-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 195,
+    "fields": {
+        "key": "hi_IN",
+        "properties_name": "Hindi (India)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 196,
+    "fields": {
+        "key": "hi",
+        "properties_name": "Hindi",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 197,
+    "fields": {
+        "key": "hu_HU",
+        "properties_name": "Hungarian (Hungary)",
+        "properties_charset": "ISO-8859-2"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 198,
+    "fields": {
+        "key": "hu",
+        "properties_name": "Hungarian",
+        "properties_charset": "ISO-8859-2"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 199,
+    "fields": {
+        "key": "is_IS",
+        "properties_name": "Icelandic (Iceland)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 200,
+    "fields": {
+        "key": "is",
+        "properties_name": "Icelandic",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 201,
+    "fields": {
+        "key": "ig_NG",
+        "properties_name": "Igbo (Nigeria)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 202,
+    "fields": {
+        "key": "ig",
+        "properties_name": "Igbo",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 203,
+    "fields": {
+        "key": "id_ID",
+        "properties_name": "Indonesian (Indonesia)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 204,
+    "fields": {
+        "key": "id",
+        "properties_name": "Indonesian",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 205,
+    "fields": {
+        "key": "ga_IE",
+        "properties_name": "Irish (Ireland)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 206,
+    "fields": {
+        "key": "ga",
+        "properties_name": "Irish",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 207,
+    "fields": {
+        "key": "it_IT",
+        "properties_name": "Italian (Italy)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 208,
+    "fields": {
+        "key": "it_CH",
+        "properties_name": "Italian (Switzerland)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 209,
+    "fields": {
+        "key": "it",
+        "properties_name": "Italian",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 210,
+    "fields": {
+        "key": "ja_JP",
+        "properties_name": "Japanese (Japan)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 211,
+    "fields": {
+        "key": "ja",
+        "properties_name": "Japanese",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 212,
+    "fields": {
+        "key": "kea_CV",
+        "properties_name": "Kabuverdianu (Cape Verde)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 213,
+    "fields": {
+        "key": "kea",
+        "properties_name": "Kabuverdianu",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 214,
+    "fields": {
+        "key": "kab_DZ",
+        "properties_name": "Kabyle (Algeria)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 215,
+    "fields": {
+        "key": "kab",
+        "properties_name": "Kabyle",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 216,
+    "fields": {
+        "key": "kl_GL",
+        "properties_name": "Kalaallisut (Greenland)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 217,
+    "fields": {
+        "key": "kl",
+        "properties_name": "Kalaallisut",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 218,
+    "fields": {
+        "key": "kln_KE",
+        "properties_name": "Kalenjin (Kenya)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 219,
+    "fields": {
+        "key": "kln",
+        "properties_name": "Kalenjin",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 220,
+    "fields": {
+        "key": "kam_KE",
+        "properties_name": "Kamba (Kenya)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 221,
+    "fields": {
+        "key": "kam",
+        "properties_name": "Kamba",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 222,
+    "fields": {
+        "key": "kn_IN",
+        "properties_name": "Kannada (India)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 223,
+    "fields": {
+        "key": "kn",
+        "properties_name": "Kannada",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 224,
+    "fields": {
+        "key": "kk_Cyrl",
+        "properties_name": "Kazakh (Cyrillic)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 225,
+    "fields": {
+        "key": "kk_Cyrl_KZ",
+        "properties_name": "Kazakh (Cyrillic, Kazakhstan)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 226,
+    "fields": {
+        "key": "kk",
+        "properties_name": "Kazakh",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 227,
+    "fields": {
+        "key": "km_KH",
+        "properties_name": "Khmer (Cambodia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 228,
+    "fields": {
+        "key": "km",
+        "properties_name": "Khmer",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 229,
+    "fields": {
+        "key": "ki_KE",
+        "properties_name": "Kikuyu (Kenya)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 230,
+    "fields": {
+        "key": "ki",
+        "properties_name": "Kikuyu",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 231,
+    "fields": {
+        "key": "rw_RW",
+        "properties_name": "Kinyarwanda (Rwanda)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 232,
+    "fields": {
+        "key": "rw",
+        "properties_name": "Kinyarwanda",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 233,
+    "fields": {
+        "key": "kok_IN",
+        "properties_name": "Konkani (India)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 234,
+    "fields": {
+        "key": "kok",
+        "properties_name": "Konkani",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 235,
+    "fields": {
+        "key": "ko_KR",
+        "properties_name": "Korean (South Korea)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 236,
+    "fields": {
+        "key": "ko",
+        "properties_name": "Korean",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 237,
+    "fields": {
+        "key": "khq_ML",
+        "properties_name": "Koyra Chiini (Mali)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 238,
+    "fields": {
+        "key": "khq",
+        "properties_name": "Koyra Chiini",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 239,
+    "fields": {
+        "key": "ses_ML",
+        "properties_name": "Koyraboro Senni (Mali)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 240,
+    "fields": {
+        "key": "ses",
+        "properties_name": "Koyraboro Senni",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 241,
+    "fields": {
+        "key": "lag_TZ",
+        "properties_name": "Langi (Tanzania)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 242,
+    "fields": {
+        "key": "lag",
+        "properties_name": "Langi",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 243,
+    "fields": {
+        "key": "lv_LV",
+        "properties_name": "Latvian (Latvia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 244,
+    "fields": {
+        "key": "lv",
+        "properties_name": "Latvian",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 245,
+    "fields": {
+        "key": "lt_LT",
+        "properties_name": "Lithuanian (Lithuania)",
+        "properties_charset": "ISO-8859-13"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 246,
+    "fields": {
+        "key": "lt",
+        "properties_name": "Lithuanian",
+        "properties_charset": "ISO-8859-13"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 247,
+    "fields": {
+        "key": "luo_KE",
+        "properties_name": "Luo (Kenya)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 248,
+    "fields": {
+        "key": "luo",
+        "properties_name": "Luo",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 249,
+    "fields": {
+        "key": "luy_KE",
+        "properties_name": "Luyia (Kenya)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 250,
+    "fields": {
+        "key": "luy",
+        "properties_name": "Luyia",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 251,
+    "fields": {
+        "key": "mk_MK",
+        "properties_name": "Macedonian (Macedonia)",
+        "properties_charset": "ISO-8859-5"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 252,
+    "fields": {
+        "key": "mk",
+        "properties_name": "Macedonian",
+        "properties_charset": "ISO-8859-5"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 253,
+    "fields": {
+        "key": "jmc_TZ",
+        "properties_name": "Machame (Tanzania)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 254,
+    "fields": {
+        "key": "jmc",
+        "properties_name": "Machame",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 255,
+    "fields": {
+        "key": "kde_TZ",
+        "properties_name": "Makonde (Tanzania)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 256,
+    "fields": {
+        "key": "kde",
+        "properties_name": "Makonde",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 257,
+    "fields": {
+        "key": "mg_MG",
+        "properties_name": "Malagasy (Madagascar)",
+        "properties_charset": "ISO-8859-15"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 258,
+    "fields": {
+        "key": "mg",
+        "properties_name": "Malagasy",
+        "properties_charset": "ISO-8859-15"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 259,
+    "fields": {
+        "key": "ms_BN",
+        "properties_name": "Malay (Brunei)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 260,
+    "fields": {
+        "key": "ms_MY",
+        "properties_name": "Malay (Malaysia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 261,
+    "fields": {
+        "key": "ms",
+        "properties_name": "Malay",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 262,
+    "fields": {
+        "key": "ml_IN",
+        "properties_name": "Malayalam (India)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 263,
+    "fields": {
+        "key": "ml",
+        "properties_name": "Malayalam",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 264,
+    "fields": {
+        "key": "mt_MT",
+        "properties_name": "Maltese (Malta)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 265,
+    "fields": {
+        "key": "mt",
+        "properties_name": "Maltese",
+        "properties_charset": "ISO-8859-3"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 266,
+    "fields": {
+        "key": "gv_GB",
+        "properties_name": "Manx (United Kingdom)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 267,
+    "fields": {
+        "key": "gv",
+        "properties_name": "Manx",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 268,
+    "fields": {
+        "key": "mr_IN",
+        "properties_name": "Marathi (India)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 269,
+    "fields": {
+        "key": "mr",
+        "properties_name": "Marathi",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 270,
+    "fields": {
+        "key": "mas_KE",
+        "properties_name": "Masai (Kenya)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 271,
+    "fields": {
+        "key": "mas_TZ",
+        "properties_name": "Masai (Tanzania)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 272,
+    "fields": {
+        "key": "mas",
+        "properties_name": "Masai",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 273,
+    "fields": {
+        "key": "mer_KE",
+        "properties_name": "Meru (Kenya)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 274,
+    "fields": {
+        "key": "mer",
+        "properties_name": "Meru",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 275,
+    "fields": {
+        "key": "mfe_MU",
+        "properties_name": "Morisyen (Mauritius)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 276,
+    "fields": {
+        "key": "mfe",
+        "properties_name": "Morisyen",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 277,
+    "fields": {
+        "key": "naq_NA",
+        "properties_name": "Nama (Namibia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 278,
+    "fields": {
+        "key": "naq",
+        "properties_name": "Nama",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 279,
+    "fields": {
+        "key": "ne_IN",
+        "properties_name": "Nepali (India)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 280,
+    "fields": {
+        "key": "ne_NP",
+        "properties_name": "Nepali (Nepal)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 281,
+    "fields": {
+        "key": "ne",
+        "properties_name": "Nepali",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 282,
+    "fields": {
+        "key": "nd_ZW",
+        "properties_name": "North Ndebele (Zimbabwe)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 283,
+    "fields": {
+        "key": "nd",
+        "properties_name": "North Ndebele",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 284,
+    "fields": {
+        "key": "nb_NO",
+        "properties_name": "Norwegian Bokmål (Norway)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 285,
+    "fields": {
+        "key": "nb",
+        "properties_name": "Norwegian Bokmål",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 286,
+    "fields": {
+        "key": "nn_NO",
+        "properties_name": "Norwegian Nynorsk (Norway)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 287,
+    "fields": {
+        "key": "nn",
+        "properties_name": "Norwegian Nynorsk",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 288,
+    "fields": {
+        "key": "nyn_UG",
+        "properties_name": "Nyankole (Uganda)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 289,
+    "fields": {
+        "key": "nyn",
+        "properties_name": "Nyankole",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 290,
+    "fields": {
+        "key": "or_IN",
+        "properties_name": "Oriya (India)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 291,
+    "fields": {
+        "key": "or",
+        "properties_name": "Oriya",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 292,
+    "fields": {
+        "key": "om_ET",
+        "properties_name": "Oromo (Ethiopia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 293,
+    "fields": {
+        "key": "om_KE",
+        "properties_name": "Oromo (Kenya)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 294,
+    "fields": {
+        "key": "om",
+        "properties_name": "Oromo",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 295,
+    "fields": {
+        "key": "ps_AF",
+        "properties_name": "Pashto (Afghanistan)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 296,
+    "fields": {
+        "key": "ps",
+        "properties_name": "Pashto",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 297,
+    "fields": {
+        "key": "fa_AF",
+        "properties_name": "Persian (Afghanistan)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 298,
+    "fields": {
+        "key": "fa_IR",
+        "properties_name": "Persian (Iran)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 299,
+    "fields": {
+        "key": "fa",
+        "properties_name": "Persian",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 300,
+    "fields": {
+        "key": "pl_PL",
+        "properties_name": "Polish (Poland)",
+        "properties_charset": "ISO-8859-2"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 301,
+    "fields": {
+        "key": "pl",
+        "properties_name": "Polish",
+        "properties_charset": "ISO-8859-2"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 302,
+    "fields": {
+        "key": "pt_BR",
+        "properties_name": "Portuguese (Brazil)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 303,
+    "fields": {
+        "key": "pt_GW",
+        "properties_name": "Portuguese (Guinea-Bissau)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 304,
+    "fields": {
+        "key": "pt_MZ",
+        "properties_name": "Portuguese (Mozambique)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 305,
+    "fields": {
+        "key": "pt_PT",
+        "properties_name": "Portuguese (Portugal)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 306,
+    "fields": {
+        "key": "pt",
+        "properties_name": "Portuguese",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 307,
+    "fields": {
+        "key": "pa_Arab",
+        "properties_name": "Punjabi (Arabic)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 308,
+    "fields": {
+        "key": "pa_Arab_PK",
+        "properties_name": "Punjabi (Arabic, Pakistan)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 309,
+    "fields": {
+        "key": "pa_Guru",
+        "properties_name": "Punjabi (Gurmukhi)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 310,
+    "fields": {
+        "key": "pa_Guru_IN",
+        "properties_name": "Punjabi (Gurmukhi, India)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 311,
+    "fields": {
+        "key": "pa",
+        "properties_name": "Punjabi",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 312,
+    "fields": {
+        "key": "ro_MD",
+        "properties_name": "Romanian (Moldova)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 313,
+    "fields": {
+        "key": "ro_RO",
+        "properties_name": "Romanian (Romania)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 314,
+    "fields": {
+        "key": "ro",
+        "properties_name": "Romanian",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 315,
+    "fields": {
+        "key": "rm_CH",
+        "properties_name": "Romansh (Switzerland)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 316,
+    "fields": {
+        "key": "rm",
+        "properties_name": "Romansh",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 317,
+    "fields": {
+        "key": "rof_TZ",
+        "properties_name": "Rombo (Tanzania)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 318,
+    "fields": {
+        "key": "rof",
+        "properties_name": "Rombo",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 319,
+    "fields": {
+        "key": "ru_MD",
+        "properties_name": "Russian (Moldova)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 320,
+    "fields": {
+        "key": "ru_RU",
+        "properties_name": "Russian (Russia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 321,
+    "fields": {
+        "key": "ru_UA",
+        "properties_name": "Russian (Ukraine)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 322,
+    "fields": {
+        "key": "ru",
+        "properties_name": "Russian",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 323,
+    "fields": {
+        "key": "rwk_TZ",
+        "properties_name": "Rwa (Tanzania)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 324,
+    "fields": {
+        "key": "rwk",
+        "properties_name": "Rwa",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 325,
+    "fields": {
+        "key": "saq_KE",
+        "properties_name": "Samburu (Kenya)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 326,
+    "fields": {
+        "key": "saq",
+        "properties_name": "Samburu",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 327,
+    "fields": {
+        "key": "sg_CF",
+        "properties_name": "Sango (Central African Republic)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 328,
+    "fields": {
+        "key": "sg",
+        "properties_name": "Sango",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 329,
+    "fields": {
+        "key": "seh_MZ",
+        "properties_name": "Sena (Mozambique)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 330,
+    "fields": {
+        "key": "seh",
+        "properties_name": "Sena",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 331,
+    "fields": {
+        "key": "sr_Cyrl",
+        "properties_name": "Serbian (Cyrillic)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 332,
+    "fields": {
+        "key": "sr_Cyrl_BA",
+        "properties_name": "Serbian (Cyrillic, Bosnia and Herzegovina)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 333,
+    "fields": {
+        "key": "sr_Cyrl_ME",
+        "properties_name": "Serbian (Cyrillic, Montenegro)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 334,
+    "fields": {
+        "key": "sr_Cyrl_RS",
+        "properties_name": "Serbian (Cyrillic, Serbia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 335,
+    "fields": {
+        "key": "sr_Latn",
+        "properties_name": "Serbian (Latin)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 336,
+    "fields": {
+        "key": "sr_Latn_BA",
+        "properties_name": "Serbian (Latin, Bosnia and Herzegovina)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 337,
+    "fields": {
+        "key": "sr_Latn_ME",
+        "properties_name": "Serbian (Latin, Montenegro)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 338,
+    "fields": {
+        "key": "sr_Latn_RS",
+        "properties_name": "Serbian (Latin, Serbia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 339,
+    "fields": {
+        "key": "sr",
+        "properties_name": "Serbian",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 340,
+    "fields": {
+        "key": "sn_ZW",
+        "properties_name": "Shona (Zimbabwe)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 341,
+    "fields": {
+        "key": "sn",
+        "properties_name": "Shona",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 342,
+    "fields": {
+        "key": "ii_CN",
+        "properties_name": "Sichuan Yi (China)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 343,
+    "fields": {
+        "key": "ii",
+        "properties_name": "Sichuan Yi",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 344,
+    "fields": {
+        "key": "si_LK",
+        "properties_name": "Sinhala (Sri Lanka)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 345,
+    "fields": {
+        "key": "si",
+        "properties_name": "Sinhala",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 346,
+    "fields": {
+        "key": "sk_SK",
+        "properties_name": "Slovak (Slovakia)",
+        "properties_charset": "ISO-8859-2"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 347,
+    "fields": {
+        "key": "sk",
+        "properties_name": "Slovak",
+        "properties_charset": "ISO-8859-2"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 348,
+    "fields": {
+        "key": "sl_SI",
+        "properties_name": "Slovenian (Slovenia)",
+        "properties_charset": "ISO-8859-2"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 349,
+    "fields": {
+        "key": "sl",
+        "properties_name": "Slovenian",
+        "properties_charset": "ISO-8859-2"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 350,
+    "fields": {
+        "key": "xog_UG",
+        "properties_name": "Soga (Uganda)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 351,
+    "fields": {
+        "key": "xog",
+        "properties_name": "Soga",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 352,
+    "fields": {
+        "key": "so_DJ",
+        "properties_name": "Somali (Djibouti)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 353,
+    "fields": {
+        "key": "so_ET",
+        "properties_name": "Somali (Ethiopia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 354,
+    "fields": {
+        "key": "so_KE",
+        "properties_name": "Somali (Kenya)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 355,
+    "fields": {
+        "key": "so_SO",
+        "properties_name": "Somali (Somalia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 356,
+    "fields": {
+        "key": "so",
+        "properties_name": "Somali",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 357,
+    "fields": {
+        "key": "es_AR",
+        "properties_name": "Spanish (Argentina)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 358,
+    "fields": {
+        "key": "es_BO",
+        "properties_name": "Spanish (Bolivia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 359,
+    "fields": {
+        "key": "es_CL",
+        "properties_name": "Spanish (Chile)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 360,
+    "fields": {
+        "key": "es_CO",
+        "properties_name": "Spanish (Colombia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 361,
+    "fields": {
+        "key": "es_CR",
+        "properties_name": "Spanish (Costa Rica)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 362,
+    "fields": {
+        "key": "es_DO",
+        "properties_name": "Spanish (Dominican Republic)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 363,
+    "fields": {
+        "key": "es_EC",
+        "properties_name": "Spanish (Ecuador)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 364,
+    "fields": {
+        "key": "es_SV",
+        "properties_name": "Spanish (El Salvador)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 365,
+    "fields": {
+        "key": "es_GQ",
+        "properties_name": "Spanish (Equatorial Guinea)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 366,
+    "fields": {
+        "key": "es_GT",
+        "properties_name": "Spanish (Guatemala)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 367,
+    "fields": {
+        "key": "es_HN",
+        "properties_name": "Spanish (Honduras)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 368,
+    "fields": {
+        "key": "es_419",
+        "properties_name": "Spanish (Latin America)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 369,
+    "fields": {
+        "key": "es_MX",
+        "properties_name": "Spanish (Mexico)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 370,
+    "fields": {
+        "key": "es_NI",
+        "properties_name": "Spanish (Nicaragua)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 371,
+    "fields": {
+        "key": "es_PA",
+        "properties_name": "Spanish (Panama)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 372,
+    "fields": {
+        "key": "es_PY",
+        "properties_name": "Spanish (Paraguay)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 373,
+    "fields": {
+        "key": "es_PE",
+        "properties_name": "Spanish (Peru)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 374,
+    "fields": {
+        "key": "es_PR",
+        "properties_name": "Spanish (Puerto Rico)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 375,
+    "fields": {
+        "key": "es_ES",
+        "properties_name": "Spanish (Spain)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 376,
+    "fields": {
+        "key": "es_US",
+        "properties_name": "Spanish (United States)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 377,
+    "fields": {
+        "key": "es_UY",
+        "properties_name": "Spanish (Uruguay)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 378,
+    "fields": {
+        "key": "es_VE",
+        "properties_name": "Spanish (Venezuela)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 379,
+    "fields": {
+        "key": "es",
+        "properties_name": "Spanish",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 380,
+    "fields": {
+        "key": "sw_KE",
+        "properties_name": "Swahili (Kenya)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 381,
+    "fields": {
+        "key": "sw_TZ",
+        "properties_name": "Swahili (Tanzania)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 382,
+    "fields": {
+        "key": "sw",
+        "properties_name": "Swahili",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 383,
+    "fields": {
+        "key": "sv_FI",
+        "properties_name": "Swedish (Finland)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 384,
+    "fields": {
+        "key": "sv_SE",
+        "properties_name": "Swedish (Sweden)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 385,
+    "fields": {
+        "key": "sv",
+        "properties_name": "Swedish",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 386,
+    "fields": {
+        "key": "gsw_CH",
+        "properties_name": "Swiss German (Switzerland)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 387,
+    "fields": {
+        "key": "gsw",
+        "properties_name": "Swiss German",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 388,
+    "fields": {
+        "key": "shi_Latn",
+        "properties_name": "Tachelhit (Latin)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 389,
+    "fields": {
+        "key": "shi_Latn_MA",
+        "properties_name": "Tachelhit (Latin, Morocco)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 390,
+    "fields": {
+        "key": "shi_Tfng",
+        "properties_name": "Tachelhit (Tifinagh)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 391,
+    "fields": {
+        "key": "shi_Tfng_MA",
+        "properties_name": "Tachelhit (Tifinagh, Morocco)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 392,
+    "fields": {
+        "key": "shi",
+        "properties_name": "Tachelhit",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 393,
+    "fields": {
+        "key": "dav_KE",
+        "properties_name": "Taita (Kenya)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 394,
+    "fields": {
+        "key": "dav",
+        "properties_name": "Taita",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 395,
+    "fields": {
+        "key": "ta_IN",
+        "properties_name": "Tamil (India)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 396,
+    "fields": {
+        "key": "ta_LK",
+        "properties_name": "Tamil (Sri Lanka)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 397,
+    "fields": {
+        "key": "ta",
+        "properties_name": "Tamil",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 398,
+    "fields": {
+        "key": "te_IN",
+        "properties_name": "Telugu (India)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 399,
+    "fields": {
+        "key": "te",
+        "properties_name": "Telugu",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 400,
+    "fields": {
+        "key": "teo_KE",
+        "properties_name": "Teso (Kenya)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 401,
+    "fields": {
+        "key": "teo_UG",
+        "properties_name": "Teso (Uganda)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 402,
+    "fields": {
+        "key": "teo",
+        "properties_name": "Teso",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 403,
+    "fields": {
+        "key": "th_TH",
+        "properties_name": "Thai (Thailand)",
+        "properties_charset": "TIS-620"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 404,
+    "fields": {
+        "key": "th",
+        "properties_name": "Thai",
+        "properties_charset": "TIS-620"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 405,
+    "fields": {
+        "key": "bo_CN",
+        "properties_name": "Tibetan (China)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 406,
+    "fields": {
+        "key": "bo_IN",
+        "properties_name": "Tibetan (India)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 407,
+    "fields": {
+        "key": "bo",
+        "properties_name": "Tibetan",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 408,
+    "fields": {
+        "key": "ti_ER",
+        "properties_name": "Tigrinya (Eritrea)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 409,
+    "fields": {
+        "key": "ti_ET",
+        "properties_name": "Tigrinya (Ethiopia)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 410,
+    "fields": {
+        "key": "ti",
+        "properties_name": "Tigrinya",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 411,
+    "fields": {
+        "key": "to_TO",
+        "properties_name": "Tonga (Tonga)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 412,
+    "fields": {
+        "key": "to",
+        "properties_name": "Tonga",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 413,
+    "fields": {
+        "key": "tr_TR",
+        "properties_name": "Turkish (Turkey)",
+        "properties_charset": "ISO-8859-9"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 414,
+    "fields": {
+        "key": "tr",
+        "properties_name": "Turkish",
+        "properties_charset": "ISO-8859-9"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 415,
+    "fields": {
+        "key": "uk_UA",
+        "properties_name": "Ukrainian (Ukraine)",
+        "properties_charset": "KOI8-U"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 416,
+    "fields": {
+        "key": "uk",
+        "properties_name": "Ukrainian",
+        "properties_charset": "KOI8-U"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 417,
+    "fields": {
+        "key": "ur_IN",
+        "properties_name": "Urdu (India)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 418,
+    "fields": {
+        "key": "ur_PK",
+        "properties_name": "Urdu (Pakistan)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 419,
+    "fields": {
+        "key": "ur",
+        "properties_name": "Urdu",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 420,
+    "fields": {
+        "key": "uz_Arab",
+        "properties_name": "Uzbek (Arabic)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 421,
+    "fields": {
+        "key": "uz_Arab_AF",
+        "properties_name": "Uzbek (Arabic, Afghanistan)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 422,
+    "fields": {
+        "key": "uz_Cyrl",
+        "properties_name": "Uzbek (Cyrillic)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 423,
+    "fields": {
+        "key": "uz_Cyrl_UZ",
+        "properties_name": "Uzbek (Cyrillic, Uzbekistan)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 424,
+    "fields": {
+        "key": "uz_Latn",
+        "properties_name": "Uzbek (Latin)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 425,
+    "fields": {
+        "key": "uz_Latn_UZ",
+        "properties_name": "Uzbek (Latin, Uzbekistan)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 426,
+    "fields": {
+        "key": "uz",
+        "properties_name": "Uzbek",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 427,
+    "fields": {
+        "key": "vi_VN",
+        "properties_name": "Vietnamese (Vietnam)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 428,
+    "fields": {
+        "key": "vi",
+        "properties_name": "Vietnamese",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 429,
+    "fields": {
+        "key": "vun_TZ",
+        "properties_name": "Vunjo (Tanzania)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 430,
+    "fields": {
+        "key": "vun",
+        "properties_name": "Vunjo",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 431,
+    "fields": {
+        "key": "cy_GB",
+        "properties_name": "Welsh (United Kingdom)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 432,
+    "fields": {
+        "key": "cy",
+        "properties_name": "Welsh",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 433,
+    "fields": {
+        "key": "yo_NG",
+        "properties_name": "Yoruba (Nigeria)",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 434,
+    "fields": {
+        "key": "yo",
+        "properties_name": "Yoruba",
+        "properties_charset": "UTF-8"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 435,
+    "fields": {
+        "key": "zu_ZA",
+        "properties_name": "Zulu (South Africa)",
+        "properties_charset": "ISO-8859-1"
+    }
+},
+{
+    "model": "common.language",
+    "pk": 436,
+    "fields": {
+        "key": "zu",
+        "properties_name": "Zulu",
+        "properties_charset": "ISO-8859-1"
+    }
+}
+]
