@@ -55,7 +55,7 @@ urlpatterns = [
     path('api/', include('program_app.urls')),
     path('api/', include('university_app.urls')),
     path('api/', include('common.urls')),
-    path('api/', include('profile_app.urls')),
+    # path('api/', include('profile_app.urls')),
     path('api/', include('security.urls')), 
     path("api/", include("contact_app.urls")),
     # path('logs/', include('log_viewer.urls')),

@@ -79,7 +79,8 @@ INSTALLED_APPS = [
     'funding_app',
     "program_app",
     "recommendation_app",
-    'newsletter_app'
+    'newsletter_app',
+    'questions'
 ]
 PHONENUMBER_DEFAULT_REGION = 'US' 
 
