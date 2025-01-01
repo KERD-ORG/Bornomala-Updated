@@ -73,3 +73,41 @@ python manage.py runserver
 https://www.ajexperience.com/po-translator/
 
 
+
+
+
+
+Below is a PowerShell-friendly approach for removing your migration files and ignoring them in Git.
+
+---
+
+## 1. Remove all `.py` files under `migrations` folders (except `__init__.py`)
+
+Open PowerShell in your project’s root directory and run:
+
+```powershell
+Get-ChildItem -Path . -Recurse -Include *.py `
+| Where-Object { 
+    $_.FullName -match 'migrations' -and 
+    $_.Name -ne '__init__.py'
+} `
+| Remove-Item -Force
+```
+
+### Explanation
+- **Get-ChildItem -Recurse -Include *.py**  
+  Recursively searches for all `*.py` files.
+- **Where-Object {...}**  
+  Filters files whose full path (`FullName`) contains `migrations` but whose filename (`Name`) is not `__init__.py`.
+- **Remove-Item -Force**  
+  Deletes the filtered files.
+
+If you also want to remove any compiled `.pyc` files inside `migrations`:
+
+```powershell
+Get-ChildItem -Path . -Recurse -Include *.pyc `
+| Where-Object { $_.FullName -match 'migrations' } `
+| Remove-Item -Force
+```
+
+---
