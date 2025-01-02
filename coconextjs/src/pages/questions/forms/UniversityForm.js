@@ -10,6 +10,7 @@ import {
 } from "@/utils/apiService";
 import useCommonForm from "@/hooks/useCommonForm";
 import { executeAjaxOperationStandard } from "@/utils/fetcher";
+import * as yup from "yup";
 
 // Optional translation hook; replace or remove if you don't need i18n
 const useTranslation = () => ({ t: (x) => x });
@@ -17,9 +18,7 @@ const useTranslation = () => ({ t: (x) => x });
 const MAX_QUESTIONS = 10;
 const MAX_OPTIONS = 8;
 
-// validationSchema.js
-import * as yup from "yup";
-
+// Validation Schema
 export const questionSchema = yup.object().shape({
   question_type: yup
     .string()
@@ -47,7 +46,7 @@ export const questionSchema = yup.object().shape({
         "true-false",
       ].includes(val),
     then: (schema) => schema.required("Question Text is required"),
-    otherwise: (schema) => schema.notRequired().nullable(),
+    otherwise: (schema) => yup.notRequired().nullable(),
   }),
 
   question_difficulty: yup
@@ -71,10 +70,11 @@ export const questionSchema = yup.object().shape({
 
   exam_references: yup.string().when("question_status", {
     is: "Reused",
-    then: yup
-      .string()
-      .required("Exam References are required for a reused question"),
-    otherwise: yup.string().nullable(),
+    then: (schema) =>
+      yup
+        .string()
+        .required("Exam References are required for a reused question"),
+    otherwise: (schema) => yup.string().nullable(),
   }),
 
   option_count: yup
@@ -107,35 +107,40 @@ export const questionSchema = yup.object().shape({
     .mixed()
     .when("question_type", {
       is: "single-select",
-      then: yup
-        .number()
-        .typeError("Correct answer must be a number")
-        .required("Correct answer is required for single-select MCQ")
-        .min(1, "Must be at least 1")
-        .max(MAX_OPTIONS, `Cannot exceed ${MAX_OPTIONS}`),
+      then: (schema) =>
+        yup
+          .number()
+          .typeError("Correct answer must be a number")
+          .required("Correct answer is required for single-select MCQ")
+          .min(1, "Must be at least 1")
+          .max(MAX_OPTIONS, `Cannot exceed ${MAX_OPTIONS}`),
     })
     .when("question_type", {
       is: "multiple-select",
-      then: yup
-        .string()
-        .required("Correct answers are required for multiple-select MCQ"),
+      then: (schema) =>
+        yup
+          .string()
+          .required("Correct answers are required for multiple-select MCQ"),
     })
     .when("question_type", {
       is: "true-false",
-      then: yup.boolean().required("Correct answer is required for True/False"),
+      then: (schema) =>
+        yup.boolean().required("Correct answer is required for True/False"),
     })
     .when("question_type", {
       is: (val) => ["descriptive", "short-answer", "fill-blanks"].includes(val),
-      then: yup
-        .string()
-        .required("Correct answer is required for this question type"),
-      otherwise: yup.mixed().nullable().notRequired(),
+      then: (schema) =>
+        yup
+          .string()
+          .required("Correct answer is required for this question type"),
+      otherwise: (schema) => schema.mixed().nullable().notRequired(),
     }),
 
   fill_blank_answer: yup.string().when("question_type", {
     is: "fill-blanks",
-    then: yup.string().required("Fill-in-the-blanks answer is required"),
-    otherwise: yup.string().nullable().notRequired(),
+    then: (schema) =>
+      yup.string().required("Fill-in-the-blanks answer is required"),
+    otherwise: (schema) => yup.string().nullable().notRequired(),
   }),
 });
 
@@ -170,19 +175,19 @@ export const mainSchema = yup.object().shape({
 
 const defaultQuestion = {
   question_type: "descriptive", // "short-answer", "single-select", "multiple-select", "fill-blanks", "true-false"
-  question_text: "",
+  question_text: "sad",
   question_difficulty: "Very Easy",
   question_status: "New",
-  question_topic: null, // Assuming null if not selected
-  question_subtopic: null,
+  question_topic: 1, // Assuming null if not selected
+  question_subtopic: 1,
   question_subsubtopic: "",
-  explanation: "",
+  explanation: "asd",
   exam_references: "",
 
   // For MCQ
   option_count: 2,
   question_options: ["", ""],
-  correct_answer: null,
+  correct_answer: "sds",
 
   // For fill-blanks
   fill_blank_answer: "",
@@ -204,28 +209,28 @@ const UniversityForm = forwardRef(
       control,
       handleSubmit,
       reset,
-      watch,
-      setValue,
+      getValues,
+      setError,
       formState: { errors },
     } = useForm({
       resolver: yupResolver(mainSchema),
       defaultValues: {
-        question_level: initialData?.question_level || "",
-        target_organization: initialData?.target_organization || "",
-        target_group: initialData?.target_group || "",
-        target_course: initialData?.target_course || "",
+        question_level: initialData?.question_level || 1,
+        target_organization: initialData?.target_organization || 1,
+        target_group: initialData?.target_group || 1,
+        target_course: initialData?.target_course || 1,
         question_count: initialData?.question_count || 1,
         questions: initialData?.questions || [defaultQuestion],
       },
       mode: "onSubmit",
     });
 
-    const { fields, append, remove, replace } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
       control,
       name: "questions",
     });
 
-    const questionCount = watch("question_count");
+    const questionCount = getValues("question_count");
 
     // Fetch dynamic select options
     const [questionLevels, setQuestionLevels] = React.useState([]);
@@ -262,11 +267,11 @@ const UniversityForm = forwardRef(
     // Synchronize the number of questions with question_count
     useEffect(() => {
       const currentCount = fields.length;
-      const desiredCount = questionCount;
+      const desiredCount = getValues("question_count");
 
       if (desiredCount > currentCount) {
         for (let i = currentCount; i < desiredCount; i++) {
-          append(JSON.parse(JSON.stringify(defaultQuestion)));
+          append({ ...defaultQuestion });
         }
       } else if (desiredCount < currentCount) {
         for (let i = currentCount; i > desiredCount; i--) {
@@ -274,7 +279,7 @@ const UniversityForm = forwardRef(
         }
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [questionCount, append, remove]);
+    }, [questionCount, append, remove, fields.length]);
 
     // Handle form reset when initialData changes
     useEffect(() => {
@@ -310,6 +315,8 @@ const UniversityForm = forwardRef(
     const onSubmitForm = async (data) => {
       setGlobalError("");
       try {
+        setLoading(true);
+
         const url =
           formMode === "create" || formMode === "clone"
             ? "/api/questions/"
@@ -317,19 +324,44 @@ const UniversityForm = forwardRef(
         const method =
           formMode === "create" || formMode === "clone" ? "POST" : "PUT";
 
-        setLoading(true);
+        // Process each question, omit question_type and exam_references
+        const questionsToSubmit = data.questions.map((q) => {
+          const { question_type, exam_references, ...payload } = q;
+
+          // Parse exam_references to array of integers if it's a string
+          let parsedExamReferences = [];
+          if (exam_references) {
+            parsedExamReferences = exam_references
+              .split(",")
+              .map((ref) => parseInt(ref.trim()))
+              .filter((num) => !isNaN(num));
+          }
+
+          return {
+            ...payload,
+            exam_references: parsedExamReferences,
+          };
+        });
+
+        // Prepare the payload by omitting question_type from each question
+        const payloadToSend = {
+          ...data,
+          questions: questionsToSubmit.map(({ question_type, ...q }) => q),
+        };
+
         const response = await executeAjaxOperationStandard({
           url: url,
           method: method,
           token,
-          data: data,
+          data: payloadToSend,
           locale: router.locale || "en",
         });
 
         if (
           response.status >=
-            parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START) &&
-          response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END)
+            parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
+          response.status <
+            parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
         ) {
           // Handle successful submission
           onSubmit(
@@ -424,8 +456,8 @@ const UniversityForm = forwardRef(
                 >
                   <option value="">{t("-- Select --")}</option>
                   {educationOrganizationList.map((val) => (
-                    <option value={val.id} key={val.id}>
-                      {val.name}
+                    <option value={val.value} key={val.value}>
+                      {val.label}
                     </option>
                   ))}
                 </select>
@@ -521,8 +553,10 @@ const UniversityForm = forwardRef(
 
         {/* Render each question */}
         {fields.map((item, qIndex) => {
-          const questionType = watch(`questions.${qIndex}.question_type`);
-          const questionStatus = watch(`questions.${qIndex}.question_status`);
+          // Access current question values using getValues
+          const currentQuestion = getValues(`questions.${qIndex}`);
+          const questionType = currentQuestion?.question_type;
+          const questionStatus = currentQuestion?.question_status;
 
           return (
             <div key={item.id} className="border p-3 mb-4">
@@ -740,18 +774,26 @@ const UniversityForm = forwardRef(
 
                   <div className="mb-3">
                     <label>{t("Options")}</label>
-                    {fields[qIndex].question_options.map((option, optIndex) => (
-                      <div key={optIndex} className="input-group mb-2">
-                        <span className="input-group-text">
-                          {t(`Option ${optIndex + 1}`)}
-                        </span>
-                        <Controller
-                          name={`questions.${qIndex}.question_options.${optIndex}`}
-                          control={control}
-                          render={({ field }) => (
+                    <Controller
+                      name={`questions.${qIndex}.question_options`}
+                      control={control}
+                      render={({ field }) => {
+                        const options = field.value || [];
+                        return options.map((option, optIndex) => (
+                          <div key={optIndex} className="input-group mb-2">
+                            <span className="input-group-text">
+                              {t(`Option ${optIndex + 1}`)}
+                            </span>
                             <input
-                              {...field}
                               type="text"
+                              {...field}
+                              name={`questions.${qIndex}.question_options.${optIndex}`}
+                              value={option}
+                              onChange={(e) => {
+                                const newOptions = [...options];
+                                newOptions[optIndex] = e.target.value;
+                                field.onChange(newOptions);
+                              }}
                               className={`form-control ${
                                 errors.questions?.[qIndex]?.question_options?.[
                                   optIndex
@@ -760,21 +802,21 @@ const UniversityForm = forwardRef(
                                   : ""
                               }`}
                             />
-                          )}
-                        />
-                        {errors.questions?.[qIndex]?.question_options?.[
-                          optIndex
-                        ] && (
-                          <div className="invalid-feedback">
-                            {
-                              errors.questions[qIndex].question_options[
-                                optIndex
-                              ].message
-                            }
+                            {errors.questions?.[qIndex]?.question_options?.[
+                              optIndex
+                            ] && (
+                              <div className="invalid-feedback">
+                                {
+                                  errors.questions[qIndex].question_options[
+                                    optIndex
+                                  ].message
+                                }
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
-                    ))}
+                        ));
+                      }}
+                    />
                   </div>
 
                   {/* Correct Answer for Single-Select */}
