@@ -67,14 +67,12 @@ export const executeAjaxOperationStandard = async ({ url, method = 'get', token 
         if (csrfToken) {
             headers['X-CSRF-Token'] = csrfToken;
         }
-
         const response = await axios({
             method,
             url: baseUrl + url, // Combining base URL with endpoint URL
             headers,
             data: formData || data,
         });
-
         return response;
         
     } catch (error) {

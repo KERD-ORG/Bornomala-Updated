@@ -89,6 +89,7 @@ class EducationalOrganizationsSerializer(serializers.ModelSerializer):
             'email',
             'created_by',
             'updated_by',
+            "updated_at",
             'slug',
         ]
         extra_kwargs = {

@@ -21,14 +21,14 @@ import {
 } from "../../../utils/apiService";
 
 const DIVISIONS = [
-  { value: "dhaka", label: "Dhaka" },
-  { value: "chattogram", label: "Chattogram" },
-  { value: "khulna", label: "Khulna" },
-  { value: "rajshahi", label: "Rajshahi" },
-  { value: "barishal", label: "Barishal" },
-  { value: "sylhet", label: "Sylhet" },
-  { value: "rangpur", label: "Rangpur" },
-  { value: "mymensingh", label: "Mymensingh" },
+  { value: 1, label: "Dhaka" },
+  { value: 2, label: "Chattogram" },
+  { value: 3, label: "Khulna" },
+  { value: 4, label: "Rajshahi" },
+  { value: 5, label: "Barishal" },
+  { value: 6, label: "Sylhet" },
+  { value: 7, label: "Rangpur" },
+  { value: 8, label: "Mymensingh" },
 ];
 
 const UniversityForm = forwardRef(
@@ -62,7 +62,6 @@ const UniversityForm = forwardRef(
       under_category: "",
       web_address: "",
       division: "",
-      city: "",
       address_line1: "",
       address_line2: "",
       postal_code: "",
@@ -85,13 +84,17 @@ const UniversityForm = forwardRef(
         .url(t("Invalid URL format"))
         .required(t("Web Address is required")),
       division: yup.string().trim().required(t("Division is required")),
-      city: yup.string().trim().required(t("City is required")),
+      // city: yup.string().trim().required(t("City is required")),
       address_line1: yup
         .string()
         .trim()
         .required(t("Address Line 1 is required")),
       postal_code: yup.string().trim().required(t("Zip Code is required")),
-      statement: yup.string().trim().required(t("Statement is required")),
+      email: yup
+        .string()
+        .trim()
+        .email(t("Invalid mail"))
+        .required(t("Email is required")),
     });
 
     const {
@@ -155,11 +158,12 @@ const UniversityForm = forwardRef(
           under_category: initialData.under_category || "",
           web_address: initialData.web_address || "",
           division: initialData.division || "",
-          city: initialData.city || "",
+          // city: initialData.city || "",
           address_line1: initialData.address_line1 || "",
           address_line2: initialData.address_line2 || "",
           postal_code: initialData.postal_code || "",
           statement: initialData.statement || "",
+          email: initialData.email || "",
           status: initialData.status ? true : false,
           document_file: null, // Ensure document_file field is reset
           logo_url: initialData.logo_url || "",
@@ -170,8 +174,9 @@ const UniversityForm = forwardRef(
         setValue("under_category", initialData.under_category || "");
         setValue("web_address", initialData.web_address || "");
         setValue("division", initialData.division || "");
-        setValue("city", initialData.city || "");
+        // setValue("city", initialData.city || "");
         setValue("address_line1", initialData.address_line1 || "");
+        setValue("email", initialData.email || "");
         setValue("address_line2", initialData.address_line2 || "");
         setValue("postal_code", initialData.postal_code || "");
         setValue("statement", initialData.statement || "");
@@ -187,7 +192,6 @@ const UniversityForm = forwardRef(
           first_name,
           last_name,
           middle_name,
-          email,
           document,
           document_name,
           ...filteredData
@@ -198,7 +202,6 @@ const UniversityForm = forwardRef(
           data.first_name = null;
           data.last_name = null;
           data.middle_name = null;
-          data.email = null;
         }
 
         const url =
@@ -230,13 +233,14 @@ const UniversityForm = forwardRef(
           formData,
           locale: router.locale || "en",
         });
+
         if (
           response.status >=
             parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START) &&
           response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END)
         ) {
-          deleteRow(response.data.data.id);
-          addRow(response.data.data);
+          deleteRow(response.data.id);
+          addRow(response.data);
           handleCancelClick();
           onSubmit(
             response.data.message || t("Form submitted successfully."),
@@ -391,7 +395,10 @@ const UniversityForm = forwardRef(
                 >
                   <option value="">{t("Select Division")}</option>
                   {DIVISIONS.map((country) => (
-                    <option key={country.value} value={country.value}>
+                    <option
+                      key={`${country.value}${country.label}`}
+                      value={country.value}
+                    >
                       {country.label}
                     </option>
                   ))}
@@ -405,7 +412,7 @@ const UniversityForm = forwardRef(
         </div>
 
         <div className="row">
-          <div className="col-md-12 mb-1">
+          <div className="col-md-6 mb-1">
             <label className="form-label">{t("Logo")}</label>
 
             {formMode === "edit" && formData.logo_url && !showFileUpload ? (
@@ -452,10 +459,28 @@ const UniversityForm = forwardRef(
               </div>
             )}
           </div>
+
+          <div className="col-md-6 mb-1">
+            <label className="form-label">{t("Email")}</label>
+            <input
+              type="email"
+              className={`form-control form-control-sm ${
+                errors.email ? "is-invalid" : ""
+              }`}
+              {...register("email")}
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
+            />
+            {errors.email && (
+              <div className="invalid-feedback">{errors.email.message}</div>
+            )}
+          </div>
         </div>
 
         <div className="row">
-          <div className="col-md-6 mb-1">
+          {/* <div className="col-md-6 mb-1">
             <label className="form-label">{t("City")}</label>
             <input
               type="text"
@@ -471,7 +496,7 @@ const UniversityForm = forwardRef(
             {errors.city && (
               <div className="invalid-feedback">{errors.city.message}</div>
             )}
-          </div>
+          </div> */}
 
           <div className="col-md-6 mb-1">
             <label className="form-label">{t("Zip Code")}</label>

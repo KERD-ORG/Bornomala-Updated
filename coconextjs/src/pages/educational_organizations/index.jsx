@@ -179,6 +179,7 @@ export default function EducationalOrganizationList() {
     openCloneForm,
     openShowView,
     permissionsMap,
+    deleteUniversity,
     t,
   });
 

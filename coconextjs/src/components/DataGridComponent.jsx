@@ -61,14 +61,13 @@ const DataGridComponent = forwardRef(
           token,
           locale: router.locale || "en",
         });
-        // console.log(response )
         if (
           response.status >=
             parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
           response.status <
             parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
         ) {
-          return response.data.data;
+          return response.data;
         } else {
           return [];
         }
@@ -95,10 +94,15 @@ const DataGridComponent = forwardRef(
 
     async function handleScroll(event) {
       if (isLoading || !isAtBottom(event)) return;
+
       setIsLoading(true);
       try {
         const newRows = await fetchData(token, rows.length, limit, searchTerm);
-        setRows((prevRows) => [...prevRows, ...newRows]);
+        // Filter out rows that already exist
+        const filteredNewRows = newRows.filter(
+          (newRow) => !rows.some((existingRow) => existingRow.id === newRow.id)
+        );
+        setRows((prevRows) => [...prevRows, ...filteredNewRows]);
       } catch (error) {
         console.error("Error loading more data:", error);
       } finally {
@@ -142,6 +146,7 @@ const DataGridComponent = forwardRef(
     };
 
     const sortedRows = useMemo(() => {
+      if (!rows) return [];
       if (sortColumns.length === 0) return rows;
 
       const sortedData = [...rows];

@@ -7,6 +7,7 @@ const UniversityColumns = ({
   openCloneForm,
   openShowView,
   permissionsMap,
+  deleteUniversity,
   t,
 }) => {
   const confirmDelete = (id) => {
@@ -155,26 +156,20 @@ const UniversityColumns = ({
       sortable: true,
     },
     {
-      key: "country_name",
-      name: t("Country"),
-      width: "130px",
+      key: "division_name",
+      name: t("Division"),
+      width: "180px",
       resizable: true,
       sortable: true,
     },
-    {
-      key: "state_province_name",
-      name: t("State"),
-      width: "130px",
-      resizable: true,
-      sortable: true,
-    },
-    {
-      key: "city",
-      name: t("City"),
-      width: "100px",
-      resizable: true,
-      sortable: true,
-    },
+
+    // {
+    //   key: "city",
+    //   name: t("City"),
+    //   width: "100px",
+    //   resizable: true,
+    //   sortable: true,
+    // },
     {
       key: "address_line1",
       name: t("Address Line 1"),
@@ -243,7 +238,7 @@ const UniversityColumns = ({
                 data-tooltip-place="top"
                 onClick={() => openCloneForm(row)}
               >
-                 <i className="bx bx-copy text-success"></i>
+                <i className="bx bx-copy text-success"></i>
               </button>
             )}
             {permissionsMap.permissionlist.view_educationalorganizations && (
