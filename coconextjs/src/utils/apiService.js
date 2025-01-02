@@ -1,91 +1,133 @@
 // apiService.js
 
-import { executeAjaxOperationStandard } from './commonImports';
+import { executeAjaxOperationStandard } from "./commonImports";
 
-export const fetchCountryList = async (token, locale, setGlobalError, setSuccessMessage, setCountries) => {
+export const fetchCountryList = async (
+  token,
+  locale,
+  setGlobalError,
+  setSuccessMessage,
+  setCountries
+) => {
   try {
-      const response = await executeAjaxOperationStandard({
-          url: process.env.NEXT_PUBLIC_API_ENDPOINT_COUNTRY_LIST,
-          method: 'get',
-          token,
-          locale: locale || 'en',
-      });
+    const response = await executeAjaxOperationStandard({
+      url: process.env.NEXT_PUBLIC_API_ENDPOINT_COUNTRY_LIST,
+      method: "get",
+      token,
+      locale: locale || "en",
+    });
 
-      if (response.status >= parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) && response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)) {
-          if (response.data && response.data.data && response.data.data.countries) {
-              const countryOptions = response.data.data.countries.map(country => ({
-                  label: country.name,
-                  value: country.code,
-              }));
-              setCountries(countryOptions);
-          } else {
-              setCountries([]);
-          }
+    if (
+      response.status >=
+        parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
+      response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
+    ) {
+      if (response.data && response.data.data && response.data.data.countries) {
+        const countryOptions = response.data.data.countries.map((country) => ({
+          label: country.name,
+          value: country.code,
+        }));
+        setCountries(countryOptions);
       } else {
-          setGlobalError('Failed to fetch country list');
+        setCountries([]);
       }
+    } else {
+      setGlobalError("Failed to fetch country list");
+    }
   } catch (error) {
-      console.error('Error fetching country list:', error);
-      setGlobalError('Error fetching country list');
+    console.error("Error fetching country list:", error);
+    setGlobalError("Error fetching country list");
   }
 };
 
-export const fetchStateList = async (token, locale, setGlobalError, setSuccessMessage, setStates) => {
+export const fetchStateList = async (
+  token,
+  locale,
+  setGlobalError,
+  setSuccessMessage,
+  setStates
+) => {
   try {
-      const response = await executeAjaxOperationStandard({
-          url: process.env.NEXT_PUBLIC_API_ENDPOINT_STATE_LIST,
-          method: 'get',
-          token,
-          locale: locale || 'en' // Include country_code in params for state list
-      });
+    const response = await executeAjaxOperationStandard({
+      url: process.env.NEXT_PUBLIC_API_ENDPOINT_STATE_LIST,
+      method: "get",
+      token,
+      locale: locale || "en", // Include country_code in params for state list
+    });
 
-      if (response.status >= parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) && response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)) {
-          if (response.data && response.data.data && response.data.data.states) {
-              const statesArray = JSON.parse(response.data.data.states);
-              const stateOptions = statesArray.map(state => ({
-                  label: state.fields.name,
-                  value: state.pk,
-                  country_code: state.fields.country_code,
-              }));
-              setStates(stateOptions);
-          } else {
-              setStates([]);
-          }
+    if (
+      response.status >=
+        parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
+      response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
+    ) {
+      if (response.data && response.data.data && response.data.data.states) {
+        const statesArray = JSON.parse(response.data.data.states);
+        const stateOptions = statesArray.map((state) => ({
+          label: state.fields.name,
+          value: state.pk,
+          country_code: state.fields.country_code,
+        }));
+        setStates(stateOptions);
       } else {
-          setGlobalError('Failed to fetch state list');
+        setStates([]);
       }
+    } else {
+      setGlobalError("Failed to fetch state list");
+    }
   } catch (error) {
-      console.error('Error fetching state list:', error);
-      setGlobalError('Error fetching state list');
+    console.error("Error fetching state list:", error);
+    setGlobalError("Error fetching state list");
   }
 };
 
-export const fetchOrganizationCategoryList = async (token, locale, setGlobalError, setSuccessMessage, setOrganizationCategories) => {
+export const fetchOrganizationCategoryList = async (
+  token,
+  locale,
+  setGlobalError,
+  setSuccessMessage,
+  setOrganizationCategories
+) => {
   try {
-      const response = await executeAjaxOperationStandard({
-          url: process.env.NEXT_PUBLIC_API_ENDPOINT_ORGANIZATION_CATEGORY_LIST,
-          method: 'get',
-          token,
-          locale: locale || 'en' // Include country_code in params for state list
-      });
+    const response = await executeAjaxOperationStandard({
+      url: process.env.NEXT_PUBLIC_API_ENDPOINT_ORGANIZATION_CATEGORY_LIST,
+      method: "get",
+      token,
+      locale: locale || "en", // Include country_code in params for state list
+    });
 
-      if (response.status >= parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) && response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)) {
-          if (response.data && response.data.data && response.data.data.organizational_categories) {
-              const organizationalCategoriesArray = JSON.parse(response.data.data.organizational_categories);
-              const organizationalCategoriesOptions = organizationalCategoriesArray.map(organizationalCategoriesArrayEach => ({
-                  label: organizationalCategoriesArrayEach.fields.name,
-                  value: organizationalCategoriesArrayEach.pk
-              }));
-              setOrganizationCategories(organizationalCategoriesOptions);
-          } else {
-              setOrganizationCategories([]);
-          }
+    if (
+      response.status >=
+        parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
+      response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
+    ) {
+      if (
+        response.data &&
+        response.data.data &&
+        response.data.data.organizational_categories
+      ) {
+        const organizationalCategoriesArray = JSON.parse(
+          response.data.data.organizational_categories
+        );
+        const organizationalCategoriesOptions =
+          organizationalCategoriesArray.map(
+            (organizationalCategoriesArrayEach) => ({
+              label: organizationalCategoriesArrayEach.fields.name,
+              value: organizationalCategoriesArrayEach.pk,
+            })
+          );
+        setOrganizationCategories(organizationalCategoriesOptions);
       } else {
-          setGlobalError('Failed to fetch organizational categories list');
+        setOrganizationCategories([]);
       }
+    } else {
+      setGlobalError("Failed to fetch organizational categories list");
+    }
   } catch (error) {
-      console.error('Error fetching organizational categories options list:', error);
-      setGlobalError('Error fetching organizational categories list');
+    console.error(
+      "Error fetching organizational categories options list:",
+      error
+    );
+    setGlobalError("Error fetching organizational categories list");
   }
 };
 
@@ -106,12 +148,12 @@ export const fetchEducationalOrganizations = async (
     });
     if (
       response.status >=
-      parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
+        parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
       response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
     ) {
-      if (response.data && response.data.data) {
-        const educationalOrganizationsArray = response.data.data;
-        
+      if (response.data && response.data) {
+        const educationalOrganizationsArray = response.data;
+
         const educationalOrganizationsOptions =
           educationalOrganizationsArray.map(
             (educationalOrganizationsArrayEach) => ({
@@ -152,7 +194,7 @@ export const fetchCampuses = async (
     });
     if (
       response.status >=
-      parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
+        parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
       response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
     ) {
       if (response.data && response.data.data) {
@@ -194,7 +236,7 @@ export const fetchColleges = async (
     });
     if (
       response.status >=
-      parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
+        parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
       response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
     ) {
       if (response.data && response.data.data) {
@@ -258,7 +300,6 @@ export const fetchFacultyMembers = async (
     setGlobalError("Error fetching facultymembers");
   }
 };
-
 
 export const fetchFaculty = async (
   token,
@@ -354,7 +395,7 @@ export const fetchDepartmentList = async (
     });
     if (
       response.status >=
-      parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
+        parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
       response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
     ) {
       if (response.data && response.data.data) {
@@ -362,7 +403,8 @@ export const fetchDepartmentList = async (
 
         const departmentsOptions = departmentsArray.map(
           (departmentsArrayEach) => ({
-            label: departmentsArrayEach.department_college_campus_educational_organization,
+            label:
+              departmentsArrayEach.department_college_campus_educational_organization,
             value: departmentsArrayEach.id,
             college_id: departmentsArrayEach.college_id,
             //label: departmentsArrayEach.dept_college_institute,
@@ -374,11 +416,11 @@ export const fetchDepartmentList = async (
         setDepartments([]);
       }
     } else {
-      setGlobalError('Failed to fetch departments');
+      setGlobalError("Failed to fetch departments");
     }
   } catch (error) {
     console.error("Error fetching departments options list:", error);
-    setGlobalError('Error fetching departments');
+    setGlobalError("Error fetching departments");
   }
 };
 
@@ -398,7 +440,7 @@ export const fetchUsers = async (
     });
     if (
       response.status >=
-      parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
+        parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
       response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
     ) {
       if (response.data) {
@@ -420,18 +462,28 @@ export const fetchUsers = async (
   }
 };
 
-export const fetchDegreeList = async (token, locale, setGlobalError, setSuccessMessage, setDegreeOptions) => {
+export const fetchDegreeList = async (
+  token,
+  locale,
+  setGlobalError,
+  setSuccessMessage,
+  setDegreeOptions
+) => {
   try {
     const response = await executeAjaxOperationStandard({
       url: process.env.NEXT_PUBLIC_API_ENDPOINT_DEGREE_LIST,
-      method: 'get',
+      method: "get",
       token,
-      locale: locale || 'en',
+      locale: locale || "en",
     });
 
-    if (response.status >= parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) && response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)) {
+    if (
+      response.status >=
+        parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
+      response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
+    ) {
       if (response.data && response.data.data && response.data.data.degrees) {
-        const degreeOptions = response.data.data.degrees.map(degree => ({
+        const degreeOptions = response.data.data.degrees.map((degree) => ({
           name: degree.name,
           id: degree.id,
         }));
@@ -440,14 +492,13 @@ export const fetchDegreeList = async (token, locale, setGlobalError, setSuccessM
         setDegreeOptions([]);
       }
     } else {
-      setGlobalError('Failed to fetch degree list');
+      setGlobalError("Failed to fetch degree list");
     }
   } catch (error) {
-    console.error('Error fetching degree list:', error);
-    setGlobalError('Error fetching degree list');
+    console.error("Error fetching degree list:", error);
+    setGlobalError("Error fetching degree list");
   }
 };
-
 
 export const fetchCustomGroups = async (
   token,
@@ -465,17 +516,16 @@ export const fetchCustomGroups = async (
     });
     if (
       response.status >=
-      parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
+        parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
       response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
     ) {
-      
       if (response.data && response.data.data.custom_groups) {
         const customGroupArray = response.data.data.custom_groups;
         const customGroupsOptions = customGroupArray.map(
           (customGroupsArrayEach) => ({
             label: customGroupsArrayEach.name,
             value: customGroupsArrayEach.id,
-            educational_organization: customGroupsArrayEach.organization
+            educational_organization: customGroupsArrayEach.organization,
           })
         );
         setCustomGroups(customGroupsOptions);
@@ -483,16 +533,13 @@ export const fetchCustomGroups = async (
         setCustomGroups([]);
       }
     } else {
-      setGlobalError('Failed to fetch custom groups');
+      setGlobalError("Failed to fetch custom groups");
     }
   } catch (error) {
     console.error("Error fetching custom groups list:", error);
-    setGlobalError('Error fetching custom groups');
+    setGlobalError("Error fetching custom groups");
   }
 };
-
-
-
 
 export const fetchUserTypes = async (
   token,
@@ -510,31 +557,27 @@ export const fetchUserTypes = async (
     });
     if (
       response.status >=
-      parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
+        parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
       response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
     ) {
-      
       if (response.data && response.data.data.user_types) {
         const userTypeArray = response.data.data.user_types;
-        const userTypesOptions = userTypeArray.map(
-          (userTypesArrayEach) => ({
-            label: userTypesArrayEach.name,
-            value: userTypesArrayEach.id
-          })
-        );
+        const userTypesOptions = userTypeArray.map((userTypesArrayEach) => ({
+          label: userTypesArrayEach.name,
+          value: userTypesArrayEach.id,
+        }));
         setUserTypes(userTypesOptions);
       } else {
         setUserTypes([]);
       }
     } else {
-      setGlobalError('Failed to fetch user types');
+      setGlobalError("Failed to fetch user types");
     }
   } catch (error) {
     console.error("Error fetching user types list:", error);
-    setGlobalError('Error fetching user types');
+    setGlobalError("Error fetching user types");
   }
 };
-
 
 export const fetchDepartments = async (
   token,
@@ -552,7 +595,7 @@ export const fetchDepartments = async (
     });
     if (
       response.status >=
-      parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
+        parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
       response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
     ) {
       if (response.data && response.data.data) {
@@ -604,5 +647,71 @@ export const fetchFundingChoices = async (
   } catch (error) {
     console.error("Error fetching funding choices:", error);
     setGlobalError("Error fetching funding choices");
+  }
+};
+
+export const fetchQuestionLevels = async (
+  token,
+  locale,
+  setGlobalError,
+  setSuccessMessage,
+  setBenefits
+) => {
+  try {
+    const response = await executeAjaxOperationStandard({
+      url: "/api/question-levels/",
+      method: "get",
+      token,
+      locale: locale || "en",
+    });
+    if (
+      response.status >=
+        parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
+      response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
+    ) {
+      if (response.data) {
+        setBenefits(response.data);
+      } else {
+        setBenefits([]);
+      }
+    } else {
+      setGlobalError("Failed to fetch question levels");
+    }
+  } catch (error) {
+    console.error("Error fetching question levels:", error);
+    setGlobalError("Error fetching question levels");
+  }
+};
+
+export const fetchTargetGroups = async (
+  token,
+  locale,
+  setGlobalError,
+  setSuccessMessage,
+  setBenefits
+) => {
+  try {
+    const response = await executeAjaxOperationStandard({
+      url: "/api/target-groups/",
+      method: "get",
+      token,
+      locale: locale || "en",
+    });
+    if (
+      response.status >=
+        parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
+      response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
+    ) {
+      if (response.data) {
+        setBenefits(response.data);
+      } else {
+        setBenefits([]);
+      }
+    } else {
+      setGlobalError("Failed to fetch target groups");
+    }
+  } catch (error) {
+    console.error("Error fetching target groups:", error);
+    setGlobalError("Error fetching target groups");
   }
 };

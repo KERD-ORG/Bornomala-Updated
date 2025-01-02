@@ -207,12 +207,8 @@ class Question(models.Model):
         null=True
     )
 
-    question_status = models.ForeignKey(
-        QuestionStatus,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
-    )
+    question_status = models.BooleanField(default=False)
+
 
     difficulty_level = models.ForeignKey(
         DifficultyLevel,

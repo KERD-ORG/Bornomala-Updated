@@ -79,7 +79,7 @@ export const executeAjaxOperationStandard = async ({ url, method = 'get', token 
         let errorMessage = 'An error occurred';
         let errorCode = null;
         let details = null;
-
+        console.log(error)
         if (error.response && error.response.status === 401) {
             // Clear the session and redirect to signin
             logout(); // Clears any client-side session information

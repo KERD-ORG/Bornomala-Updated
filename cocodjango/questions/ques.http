@@ -409,7 +409,7 @@ Content-Type: application/json
   "sub_topic": 1,
   "sub_sub_topic": null,
   "exam_references": [1, 2],
-  "question_status": 1,
+  "question_status": false,
   "difficulty_level": 1
 }
 
