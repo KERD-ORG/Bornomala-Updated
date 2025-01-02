@@ -7,12 +7,13 @@ const UniversityColumns = ({
   openCloneForm,
   openShowView,
   permissionsMap,
+  deleteUniversity,
   t,
 }) => {
   const confirmDelete = (id) => {
     Swal.fire({
       title: t("Are you sure?"),
-      text: t("You will not be able to recover this university!"),
+      text: t("You will not be able to recover this question!"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -36,54 +37,12 @@ const UniversityColumns = ({
         } catch (error) {
           Swal.fire(
             t("Failed!"),
-            error.message || t("Failed to delete the university."),
+            error.message || t("Failed to delete the question."),
             "error"
           );
         }
       }
     });
-  };
-
-  const handleLogoClick = (row) => {
-    const imageUrl = row.logo_url
-      ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${row.logo_url}`
-      : defaultThumbnail;
-    Swal.fire({
-      imageUrl: imageUrl,
-      imageAlt: "University Logo",
-      showCloseButton: true,
-      confirmButtonText: t("OK"),
-      customClass: {
-        popup: "my-swal-image-popup",
-        image: "my-swal-image",
-        confirmButton: "my-swal-confirm-button",
-      },
-    });
-  };
-
-  const defaultThumbnail = process.env.NEXT_PUBLIC_LOGO_DEFAULT_THUMBNAIL;
-
-  const renderDocumentCell = (row) => {
-    const imageUrl = row.logo_url
-      ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${row.logo_url}`
-      : defaultThumbnail;
-    return (
-      <img
-        src={imageUrl}
-        alt="University Logo"
-        onError={(e) => {
-          e.target.src = defaultThumbnail;
-        }}
-        onClick={() => handleLogoClick(row)}
-        style={{
-          width: "50px",
-          height: "30px",
-          borderRadius: "2px",
-          border: "1px solid #000000",
-          cursor: "pointer",
-        }}
-      />
-    );
   };
 
   const formatDate = (dateString) => {
@@ -118,19 +77,6 @@ const UniversityColumns = ({
       },
       renderSummaryCell({ row }) {
         return `${row.totalCount} records`;
-      },
-    },
-    {
-      key: "document_name",
-      name: t("Logo"),
-      width: "80px",
-      resizable: true,
-      frozen: true,
-      renderCell(props) {
-        const { row } = props;
-        return (
-          <span style={{ padding: "5px" }}>{renderDocumentCell(row)}</span>
-        );
       },
     },
     {
@@ -224,7 +170,7 @@ const UniversityColumns = ({
         const { row } = props;
         return (
           <>
-            {permissionsMap.permissionlist.change_educationalorganizations && (
+            {permissionsMap.permissionlist.change_question && (
               <button
                 className="btn btn-sm btn-icon"
                 data-tooltip-id="my-tooltip"
@@ -235,7 +181,7 @@ const UniversityColumns = ({
                 <i className="bx bx-edit text-warning"></i>
               </button>
             )}
-            {permissionsMap.permissionlist.add_educationalorganizations && (
+            {permissionsMap.permissionlist.add_question && (
               <button
                 className="btn btn-icon"
                 data-tooltip-id="my-tooltip"
@@ -243,10 +189,10 @@ const UniversityColumns = ({
                 data-tooltip-place="top"
                 onClick={() => openCloneForm(row)}
               >
-                 <i className="bx bx-copy text-success"></i>
+                <i className="bx bx-copy text-success"></i>
               </button>
             )}
-            {permissionsMap.permissionlist.view_educationalorganizations && (
+            {permissionsMap.permissionlist.view_question && (
               <button
                 className="btn btn-icon"
                 data-tooltip-id="my-tooltip"
@@ -257,7 +203,7 @@ const UniversityColumns = ({
                 <i className="bx bx-detail text-info"></i>
               </button>
             )}
-            {permissionsMap.permissionlist.delete_educationalorganizations && (
+            {permissionsMap.permissionlist.delete_question && (
               <button
                 className="btn btn-sm btn-icon"
                 data-tooltip-id="my-tooltip"

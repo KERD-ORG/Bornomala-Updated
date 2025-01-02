@@ -7,6 +7,7 @@ import {
   CustomAlert,
   useUserPermissions,
   executeAjaxOperationStandard,
+  useEffect,
 } from "../../utils/commonImports";
 import useCommonForm from "../../hooks/useCommonForm";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -39,18 +40,6 @@ export default function QuestionList() {
   } = useCommonForm();
 
   const { permissions, permissionsMap } = useUserPermissions();
-  const canAdd = permissions.some(
-    (permission) => permission.codename === "add_educationalorganizations"
-  );
-  const canEdit = permissions.some(
-    (permission) => permission.codename === "change_educationalorganizations"
-  );
-  const canDetails = permissions.some(
-    (permission) => permission.codename === "view_educationalorganizations"
-  );
-  const canDelete = permissions.some(
-    (permission) => permission.codename === "delete_educationalorganizations"
-  );
 
   const [showModal, setShowModal] = useState(false);
   const [formMode, setFormMode] = useState("create");
@@ -175,6 +164,7 @@ export default function QuestionList() {
     openCloneForm,
     openShowView,
     permissionsMap,
+    deleteUniversity,
     t,
   });
 
@@ -220,7 +210,7 @@ export default function QuestionList() {
       <div className="card">
         <div className="card-body">
           <div className="d-flex justify-content-end mb-3">
-            {permissionsMap.permissionlist.add_educationalorganizations && (
+            {permissionsMap.permissionlist.add_question && (
               <>
                 <button
                   data-tooltip-id="my-tooltip"

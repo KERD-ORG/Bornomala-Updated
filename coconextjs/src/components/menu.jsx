@@ -6,20 +6,14 @@ function Menu() {
   const router = useRouter();
   const { permissions } = useUserPermissions();
 
-  // Check if the user has the "view_facultymembers" permission
-
-  const canViewFacultyMember =
-    Array.isArray(permissions) &&
-    permissions.some(
-      (permission) =>
-        permission.codename === "view_any_facultymember" ||
-        permission.codename === "view_own_facultymember" ||
-        "view_facultymembers"
-    );
   // Check if the user has the "view_university" permission
 
   const canViewEducationalOrganizations = permissions.some(
     (permission) => permission.codename === "view_educationalorganizations"
+  );
+
+  const canViewQuestion = permissions.some(
+    (permission) => permission.codename === "view_question"
   );
 
   const isActive = (pathname) => router.pathname === pathname;
@@ -150,6 +144,14 @@ function Menu() {
             >
               <i className="menu-icon tf-icons bx bxs-school" />
               <div>{t("Ed. Organizations")}</div>
+            </a>
+          </li>
+        )}
+        {canViewQuestion && (
+          <li className={`menu-item ${isActive("/questions") ? "active" : ""}`}>
+            <a href={localizedPath("/questions")} className="menu-link">
+              <i className="menu-icon tf-icons bx bx-question-mark" />
+              <div>{t("Questions")}</div>
             </a>
           </li>
         )}
