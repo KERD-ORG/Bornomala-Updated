@@ -2,12 +2,13 @@
 
 from rest_framework import serializers
 from .models import (
-    Organization, QuestionLevel, TargetGroup, Subject,
+     QuestionLevel, TargetGroup, Subject,
     QuestionType, Topic, SubTopic, SubSubTopic,
     DifficultyLevel, QuestionStatus, ExamReference,
     Question, MCQOption
 )
 
+from educational_organizations_app.models import EducationalOrganizations as Organization
 
 class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -142,6 +143,8 @@ class QuestionSerializer(serializers.ModelSerializer):
         required=False
     )
 
+
+
     # Nested or “inline” MCQ options (many)
     mcq_options = MCQOptionSerializer(many=True, required=False)
 
@@ -157,10 +160,15 @@ class QuestionSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
 
+    def validate(self, data):
+        # Ensure the `correct_answer` matches the `question_type`
+        self.validate_correct_answer(data.get("correct_answer"))
+        return data
     def create(self, validated_data):
         # Extract nested data (if any)
         mcq_options_data = validated_data.pop('mcq_options', [])
         exam_refs_data = validated_data.pop('exam_references', [])
+        correct_answer = validated_data.pop('correct_answer', None)
 
         # Create the question
         question = Question.objects.create(**validated_data)
@@ -172,12 +180,16 @@ class QuestionSerializer(serializers.ModelSerializer):
         for option_data in mcq_options_data:
             MCQOption.objects.create(question=question, **option_data)
 
+        question.correct_answer = correct_answer
+        question.save()
+
         return question
 
     def update(self, instance, validated_data):
         # For partial updates, ensure we handle nested data carefully
         mcq_options_data = validated_data.pop('mcq_options', None)
         exam_refs_data = validated_data.pop('exam_references', None)
+        correct_answer = validated_data.pop('correct_answer', None)
 
         # Update direct fields
         for attr, value in validated_data.items():
@@ -196,4 +208,41 @@ class QuestionSerializer(serializers.ModelSerializer):
             for option_data in mcq_options_data:
                 MCQOption.objects.create(question=instance, **option_data)
 
+        instance.correct_answer = correct_answer
+        instance.save()
+
         return instance
+
+    def validate_correct_answer(self, value):
+        question_type = self.initial_data.get("question_type")
+        mcq_options = self.initial_data.get("mcq_options", [])
+
+        if question_type:
+            question_type_instance = QuestionType.objects.get(pk=question_type)
+            question_type_name = question_type_instance.name.lower()
+
+            if "mcq" in question_type_name:
+                if "multi" in question_type_name and not isinstance(value, list):
+                    raise serializers.ValidationError("Correct answer must be a list for MCQ_MULTI type.")
+                if "single" in question_type_name and not isinstance(value, int):
+                    raise serializers.ValidationError("Correct answer must be an integer ID for MCQ_SINGLE type.")
+
+                # Validate that the IDs in `value` exist in `mcq_options`
+                if isinstance(value, list):
+                    option_ids = [opt["id"] for opt in mcq_options]
+                    if not all(answer in option_ids for answer in value):
+                        raise serializers.ValidationError("Invalid option IDs in correct_answer.")
+                elif isinstance(value, int):
+                    option_ids = [opt["id"] for opt in mcq_options]
+                    if value not in option_ids:
+                        raise serializers.ValidationError("Invalid option ID in correct_answer.")
+
+            elif "descriptive" in question_type_name:
+                if not isinstance(value, str):
+                    raise serializers.ValidationError("Correct answer must be a string for DESCRIPTIVE type.")
+
+            elif "true_false" in question_type_name:
+                if value not in ["True", "False"]:
+                    raise serializers.ValidationError("Correct answer must be 'True' or 'False' for TRUE_FALSE type.")
+
+        return value

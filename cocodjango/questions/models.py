@@ -3,6 +3,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from educational_organizations_app.models import EducationalOrganizations as Organization
+from django.db.models import JSONField
 
 
 class QuestionLevel(models.Model):
@@ -200,15 +201,20 @@ class Question(models.Model):
         blank=True,
         null=True
     )
-    correct_answer = models.CharField(
+    correct_answer = JSONField(
         _("Correct Answer"),
-        max_length=255,
         blank=True,
-        null=True
+        null=True,
+        help_text=_("Stores the correct answer(s) in a flexible format based on the question type.")
     )
 
-    question_status = models.BooleanField(default=False)
-
+    question_status = models.ForeignKey(
+        QuestionStatus,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        help_text="Status of the question, e.g., New, Approved, Rejected"
+    )
 
     difficulty_level = models.ForeignKey(
         DifficultyLevel,
