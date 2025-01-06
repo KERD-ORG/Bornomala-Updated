@@ -119,6 +119,37 @@ class ExamReference(models.Model):
             return f"{self.reference_name} ({self.year_of_exam})"
         return self.reference_name
 
+class Explanation(models.Model):
+    """
+    Model for storing explanations of different levels.
+    """
+    LEVEL_CHOICES = [
+        ('Preliminary', 'Preliminary'),
+        ('Intermediate', 'Intermediate'),
+        ('Advanced', 'Advanced'),
+    ]
+
+    level = models.CharField(
+        max_length=15,
+        choices=LEVEL_CHOICES,
+        help_text=_("The level of the explanation (Preliminary, Intermediate, Advanced).")
+    )
+    text = models.TextField(
+        _("Text Explanation"),
+        blank=True,
+        null=True,
+        help_text=_("Textual explanation for the question.")
+    )
+    video = models.FileField(
+        _("Video Explanation"),
+        upload_to='explanations/videos/',
+        blank=True,
+        null=True,
+        help_text=_("Optional video file for the explanation.")
+    )
+
+    def __str__(self):
+        return f"{self.level} Explanation"
 
 class Question(models.Model):
     """
@@ -196,11 +227,13 @@ class Question(models.Model):
     )
 
     # Additional details
-    explanation = models.TextField(
-        _("Explanation / Solution"),
+    explanations = models.ManyToManyField(
+        Explanation,
         blank=True,
-        null=True
+        related_name="questions",
+        help_text=_("Explanations associated with the question.")
     )
+
     correct_answer = JSONField(
         _("Correct Answer"),
         blank=True,

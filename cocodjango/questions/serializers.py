@@ -2,13 +2,20 @@
 
 from rest_framework import serializers
 from .models import (
-     QuestionLevel, TargetGroup, Subject,
+    QuestionLevel, TargetGroup, Subject,
     QuestionType, Topic, SubTopic, SubSubTopic,
     DifficultyLevel, QuestionStatus, ExamReference,
-    Question, MCQOption
+    Question, MCQOption, Explanation
 )
 
 from educational_organizations_app.models import EducationalOrganizations as Organization
+
+
+class ExplanationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Explanation
+        fields = ['id', 'level', 'text', 'video']
+
 
 class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -104,6 +111,8 @@ class QuestionSerializer(serializers.ModelSerializer):
     - Links to other models via ForeignKey or ManyToMany
     - Demonstrates how to handle nested MCQOptions and exam_references
     """
+    explanations = ExplanationSerializer(many=True, required=False)
+
     # ForeignKey fields:
     question_level = serializers.PrimaryKeyRelatedField(
         queryset=QuestionLevel.objects.all(), allow_null=True, required=False
@@ -143,15 +152,13 @@ class QuestionSerializer(serializers.ModelSerializer):
         required=False
     )
 
-
-
     # Nested or “inline” MCQ options (many)
     mcq_options = MCQOptionSerializer(many=True, required=False)
 
     class Meta:
         model = Question
         fields = [
-            'id', 'question_text', 'explanation', 'correct_answer',
+            'id', 'question_text', 'explanations', 'correct_answer',
             'question_level', 'target_organization', 'target_group',
             'target_subject', 'question_type', 'topic', 'sub_topic', 'sub_sub_topic',
             'exam_references', 'question_status', 'difficulty_level',
@@ -164,14 +171,21 @@ class QuestionSerializer(serializers.ModelSerializer):
         # Ensure the `correct_answer` matches the `question_type`
         self.validate_correct_answer(data.get("correct_answer"))
         return data
+
     def create(self, validated_data):
         # Extract nested data (if any)
         mcq_options_data = validated_data.pop('mcq_options', [])
         exam_refs_data = validated_data.pop('exam_references', [])
         correct_answer = validated_data.pop('correct_answer', None)
+        explanations_data = validated_data.pop('explanations', [])
+
 
         # Create the question
         question = Question.objects.create(**validated_data)
+
+        for explanation_data in explanations_data:
+            explanation, _ = Explanation.objects.get_or_create(**explanation_data)
+            question.explanations.add(explanation)
 
         # ManyToMany: exam_references
         question.exam_references.set(exam_refs_data)
@@ -190,6 +204,13 @@ class QuestionSerializer(serializers.ModelSerializer):
         mcq_options_data = validated_data.pop('mcq_options', None)
         exam_refs_data = validated_data.pop('exam_references', None)
         correct_answer = validated_data.pop('correct_answer', None)
+        explanations_data = validated_data.pop('explanations', None)
+
+        if explanations_data is not None:
+            instance.explanations.clear()
+            for explanation_data in explanations_data:
+                explanation, _ = Explanation.objects.get_or_create(**explanation_data)
+                instance.explanations.add(explanation)
 
         # Update direct fields
         for attr, value in validated_data.items():

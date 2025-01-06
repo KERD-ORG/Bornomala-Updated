@@ -1,0 +1,259 @@
+# Base URL: http://127.0.0.1:8000/api
+
+############################################
+## Educational Organizations Category API ##
+############################################
+
+### 1) List Categories
+GET {{base_url}}/categories/
+Authorization: token {{token}}
+Content-Type: application/json
+
+### 2) Create Category
+POST {{base_url}}/categories/
+Authorization: token {{token}}
+Content-Type: application/json
+
+{
+  "name": "Universities",
+  "description": "All public and private universities"
+}
+
+### 3) Get Category by ID
+GET {{base_url}}/categories/1
+Authorization: token {{token}}
+Content-Type: application/json
+
+### 4) Update Category
+PUT {{base_url}}/categories/1
+Authorization: token {{token}}
+Content-Type: application/json
+
+{
+  "description": "Updated category description"
+}
+
+#########################################
+## Educational Organizations API ##
+#########################################
+
+### 6) List Organizations
+GET {{base_url}}/educational_organizations/
+Authorization: token {{token}}
+
+### 7) Get Organization by ID
+GET {{base_url}}/educational_organizations/1/
+Authorization: token {{token}}
+
+### 8) Create Organization
+POST {{base_url}}/educational_organizations/
+Authorization: token {{token}}
+Content-Type: application/json
+
+{
+  "name": "Dhaka University",
+  "under_category": 1,
+  "web_address": "https://du.ac.bd",
+  "statement": "Top public university in Bangladesh",
+  "document": null,
+  "status": true,
+  "address_line1": "Administrative Office",
+  "address_line2": "Nilkhet Rd",
+  "division": 1,
+  "district": "Dhaka",
+  "postal_code": "1000",
+  "first_name": "Registrar",
+  "middle_name": "",
+  "last_name": "",
+  "email": "info@du.ac.bd"
+}
+
+### 9) Update Organization (Full)
+PUT {{base_url}}/educational_organizations/1/
+Authorization: token {{token}}
+Content-Type: application/json
+
+{
+  "name": "Dhaka University Updated",
+  "under_category": 1,
+  "web_address": "https://du.ac.bd",
+  "statement": "Updated statement",
+  "document": null,
+  "status": true,
+  "address_line1": "Updated Address",
+  "address_line2": "Updated Road",
+  "division": 1,
+  "district": "Dhaka South",
+  "postal_code": "1000",
+  "first_name": "Updated",
+  "last_name": "Name",
+  "email": "updated@du.ac.bd"
+}
+
+### 10) Update Organization (Partial)
+PATCH {{base_url}}/educational_organizations/1/
+Authorization: token {{token}}
+Content-Type: application/json
+
+{
+  "name": "Dhaka University (Updated)"
+}
+
+#########################################
+## Supporting Resources API ##
+#########################################
+
+### 18) Create Question Level
+POST {{base_url}}/question-levels/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+  "name": "Beginner Level"
+}
+
+### 19) Create Difficulty Level
+POST {{base_url}}/difficulty-levels/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+  "name": "Medium Difficulty"
+}
+
+### 20) Create Question Status
+POST {{base_url}}/question-statuses/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+  "name": "Approved"
+}
+
+### 21) Create Question Type
+POST {{base_url}}/question-types/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+  "name": "Multiple Choice"
+}
+
+### 22) Create Target Group
+POST {{base_url}}/target-groups/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+  "name": "Sample Group"
+}
+
+### 23) Create Subject
+POST {{base_url}}/subjects/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+  "name": "General Knowledge"
+}
+
+### 24) Create Topic
+POST {{base_url}}/topics/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+  "name": "Geography"
+}
+
+### 25) Create SubTopic
+POST {{base_url}}/subtopics/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+  "name": "Asian Countries",
+  "topic": 1
+}
+
+### 26) Create Exam Reference
+GET {{base_url}}/exam-references/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+
+### 27) Create Exam Reference
+POST {{base_url}}/exam-references/
+Authorization: Token {{token}}
+Content-Type: application/json
+
+{
+  "reference_name": "Reference One",
+  "year_of_exam": 2019
+}
+
+#########################################
+## Questions API ##
+#########################################
+
+### 12) List Questions
+GET {{base_url}}/questions/
+Authorization: token {{token}}
+
+### 13) Get Question by ID
+GET {{base_url}}/questions/1/
+Authorization: token {{token}}
+
+### 14) Create Question
+POST {{base_url}}/questions/
+Authorization: token {{token}}
+Content-Type: application/json
+
+{
+  "question_text": "What is the capital of Bangladesh?",
+  "explanations": [
+        {
+            "level": "Preliminary",
+            "text": "Paris is the capital city of France.",
+            "video": null
+        },
+        {
+            "level": "Intermediate",
+            "text": "Paris has been the capital of France since 508 AD.",
+            "video": null
+        },
+        {
+            "level": "Advanced",
+            "text": "Paris is a global center for art, fashion, and culture, and has been the capital of France since the early Middle Ages.",
+            "video": null
+        }
+  ],
+  "correct_answer": "Dhaka",
+  "question_level": 1,
+  "target_organization": 2,
+  "target_group": 1,
+  "target_subject": 1,
+  "question_type": 1,
+  "topic": 2,
+  "sub_topic": 2,
+  "sub_sub_topic": null,
+  "exam_references": [2],
+  "question_status": 1,
+  "difficulty_level": 1,
+  "mcq_options": [
+    { "option_text": "Dhaka" },
+    { "option_text": "Chittagong" },
+    { "option_text": "Sylhet" },
+    { "option_text": "Khulna" }
+  ]
+}
+
+### 16) Update Question (Partial)
+PATCH {{base_url}}/questions/1/
+Authorization: token {{token}}
+Content-Type: application/json
+
+{
+  "question_text": "Partially Updated: What is the capital of Bangladesh?"
+}
+
