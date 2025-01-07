@@ -55,9 +55,9 @@ export default function QuestionList() {
   const closeModal = () => {
     setShowModal(false);
     setSelectedUniversity(null);
-    if (formRef.current) {
-      formRef.current.handleCancelClick();
-    }
+    // if (formRef.current) {
+    //   formRef.current.handleCancelClick();
+    // }
   };
 
   const handleCancel = () => {

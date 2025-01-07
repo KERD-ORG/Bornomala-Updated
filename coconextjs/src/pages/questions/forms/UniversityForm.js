@@ -1,21 +1,22 @@
 import React, { useEffect, forwardRef, useImperativeHandle } from "react";
-import PropTypes from "prop-types";
 import axios from "axios";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import useCommonForm from "@/hooks/useCommonForm";
 import { executeAjaxOperationStandard } from "@/utils/fetcher";
-// import { toast } from "react-toastify";
+import Select from 'react-select'
 
-// Define constants and default values
 const MAX_OPTIONS = 8;
-
 const BASE_URL = "http://localhost:8000";
 
 const defaultValues = {
   question_text: "",
-  explanation: "",
+  explanations: [
+    { level: "Preliminary", text: "", video: null },
+    { level: "Intermediate", text: "", video: null },
+    { level: "Advanced", text: "", video: null },
+  ],
   correct_answer: "",
   question_level: "",
   target_organization: "",
@@ -23,29 +24,29 @@ const defaultValues = {
   target_subject: "",
   question_type: "",
   topic: "",
+  sub_topic: "",
+  sub_sub_topic: "",
   exam_references: [],
   question_status: "",
   difficulty_level: "",
   mcq_options: [{ option_text: "" }, { option_text: "" }],
 };
 
-// Yup validation schema
 const mainSchema = yup.object().shape({
   question_text: yup.string().required("Question Text is required"),
-  explanation: yup.string().required("Explanation is required"),
-  correct_answer: yup.mixed().required("Correct Answer is required"),
-  question_level: yup.number().required("Question Level is required"),
-  target_organization: yup.number().required("Organization is required"),
-  target_group: yup.number().required("Target Group is required"),
-  target_subject: yup.number().required("Subject is required"),
-  question_type: yup.number().required("Question Type is required"),
-  topic: yup.number().required("Topic is required"),
+  correct_answer: yup.string(), //.required("Correct Answer is required"),
+  question_level: yup.string().required("Question Level is required"),
+  target_organization: yup.string().required("Organization is required"),
+  target_group: yup.string().required("Target Group is required"),
+  target_subject: yup.string().required("Subject is required"),
+  question_type: yup.string().required("Question Type is required"),
+  topic: yup.string().required("Topic is required"),
   exam_references: yup
     .array()
     .of(yup.number())
     .min(1, "At least one exam reference is required"),
-  question_status: yup.number().required("Question Status is required"),
-  difficulty_level: yup.number().required("Difficulty Level is required"),
+  question_status: yup.string().required("Question Status is required"),
+  difficulty_level: yup.string().required("Difficulty Level is required"),
   mcq_options: yup
     .array()
     .of(
@@ -61,14 +62,14 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
     control,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(mainSchema),
     defaultValues,
   });
-  const { token } = useCommonForm();
 
-  // Dropdown data state
+  const { token } = useCommonForm();
   const [dropdownData, setDropdownData] = React.useState({
     questionLevels: [],
     organizations: [],
@@ -82,7 +83,18 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
     subTopics: [],
   });
 
-  // Field array for MCQ options
+  const [explanations, setExplanations] = React.useState([
+    { level: "Preliminary", text: "", video: null },
+    { level: "Intermediate", text: "", video: null },
+    { level: "Advanced", text: "", video: null },
+  ]);
+
+  const handleExplanationChange = (index, field, value) => {
+    const newExplanations = [...explanations];
+    newExplanations[index][field] = value;
+    setExplanations(newExplanations);
+  };
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "mcq_options",
@@ -92,10 +104,9 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
     resetForm: () => reset(defaultValues),
   }));
 
-  // Fetch dropdown data on mount
   useEffect(() => {
     const fetchDropdownData = async () => {
-      if(!token) return;
+      if (!token) return;
       const endpoints = {
         questionLevels: "api/question-levels",
         organizations: "api/organizations",
@@ -111,7 +122,7 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
       try {
         const promises = Object.entries(endpoints).map(([key, endpoint]) =>
           executeAjaxOperationStandard({
-            url: `/${endpoint}/`, // Endpoint URL
+            url: `/${endpoint}/`,
             method: "get",
             token,
           })
@@ -136,238 +147,367 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
         setDropdownData((prev) => ({ ...prev, ...newData }));
       } catch (error) {
         console.error("Error fetching dropdown data:", error);
-        // Optionally show a toast notification here
       }
     };
 
     fetchDropdownData();
   }, [token]);
 
-  // Fetch subtopics when topic changes (if needed)
-  // This part is omitted for brevity – you can add similar logic if necessary.
-
   const onSubmitForm = async (data) => {
     try {
-      const headers = {
-        Authorization: `Token ${TOKEN}`,
-        "Content-Type": "application/json",
-      };
-
-      // Transform exam_references to array of IDs if they are objects
-      const examRefs = data.exam_references.map((ref) => ref.value || ref);
-
-      // Prepare payload
       const payload = {
         ...data,
-        question_level: data.question_level.value || data.question_level,
-        target_organization:
-          data.target_organization.value || data.target_organization,
-        target_group: data.target_group.value || data.target_group,
-        target_subject: data.target_subject.value || data.target_subject,
-        question_type: data.question_type.value || data.question_type,
-        topic: data.topic.value || data.topic,
-        exam_references: examRefs,
-        question_status: data.question_status.value || data.question_status,
-        difficulty_level: data.difficulty_level.value || data.difficulty_level,
+        exam_references: data.exam_references.map((ref) => ref.value || ref),
       };
 
-      await axios.post(`${BASE_URL}/questions/`, payload, { headers });
-      // toast.success("Question created successfully!");
+      await axios.post(`${BASE_URL}/questions/`, payload, {
+        headers: {
+          Authorization: `Token ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
       reset(defaultValues);
       if (onSubmitSuccess) onSubmitSuccess();
     } catch (error) {
       console.error("Error creating question:", error);
-      // toast.error("Failed to create question.");
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
-      {/* Question Text */}
-      <div className="form-group">
-        <label>Question Text:</label>
-        <Controller
-          name="question_text"
-          control={control}
-          render={({ field }) => (
-            <textarea
-              {...field}
-              className={`form-control ${
-                errors.question_text ? "is-invalid" : ""
-              }`}
-            />
-          )}
-        />
-        {errors.question_text && (
-          <div className="invalid-feedback">{errors.question_text.message}</div>
-        )}
-      </div>
-
-      {/* Explanation */}
-      <div className="form-group">
-        <label>Explanation:</label>
-        <Controller
-          name="explanation"
-          control={control}
-          render={({ field }) => (
-            <textarea
-              {...field}
-              className={`form-control ${
-                errors.explanation ? "is-invalid" : ""
-              }`}
-            />
-          )}
-        />
-        {errors.explanation && (
-          <div className="invalid-feedback">{errors.explanation.message}</div>
-        )}
-      </div>
-
-      {/* Correct Answer */}
-      <div className="form-group">
-        <label>Correct Answer:</label>
-        <Controller
-          name="correct_answer"
-          control={control}
-          render={({ field }) => (
-            <input
-              {...field}
-              className={`form-control ${
-                errors.correct_answer ? "is-invalid" : ""
-              }`}
-            />
-          )}
-        />
-        {errors.correct_answer && (
-          <div className="invalid-feedback">
-            {errors.correct_answer.message}
-          </div>
-        )}
-      </div>
-
-      {/* MCQ Options */}
-      {fields.map((item, index) => (
-        <div key={item.id} className="form-group">
-          <label>Option {index + 1}:</label>
+      {/* Dropdowns */}
+      <div className="row">
+        <div className="col-md-6 mb-3">
+          <label className="form-label">Question Level:</label>
           <Controller
-            name={`mcq_options.${index}.option_text`}
+            name="question_level"
             control={control}
             render={({ field }) => (
-              <div className="input-group">
-                <input
-                  {...field}
-                  className={`form-control ${
-                    errors.mcq_options?.[index]?.option_text ? "is-invalid" : ""
-                  }`}
-                />
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  onClick={() => {
-                    if (fields.length > 2) remove(index);
-                    // else toast.error("At least two options required.");
-                  }}
-                >
-                  Remove
-                </button>
-              </div>
+              <select
+                {...field}
+                className={`form-control form-control-sm ${
+                  errors.question_level ? "is-invalid" : ""
+                }`}
+              >
+                <option value="">-- Select Question Level --</option>
+                {dropdownData.questionLevels.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
             )}
           />
-          {errors.mcq_options?.[index]?.option_text && (
+          {errors.question_level && (
             <div className="invalid-feedback">
-              {errors.mcq_options[index].option_text.message}
+              {errors.question_level.message}
             </div>
           )}
         </div>
-      ))}
-      <button
-        type="button"
-        className="btn btn-secondary"
-        onClick={() => {
-          if (fields.length < MAX_OPTIONS) append({ option_text: "" });
-          // else toast.error(`Maximum ${MAX_OPTIONS} options allowed.`);
-        }}
-      >
-        Add Option
-      </button>
 
-      {/* Dropdowns for other fields */}
-      <div className="form-group">
-        <label>Question Level:</label>
-        <Controller
-          name="question_level"
-          control={control}
-          render={({ field }) => (
-            <select
-              {...field}
-              className={`form-control ${
-                errors.question_level ? "is-invalid" : ""
-              }`}
-            >
-              <option value="">-- Select Question Level --</option>
-              {dropdownData.questionLevels.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
+        <div className="col-md-6 mb-3">
+          <label className="form-label">Target Organization:</label>
+          <Controller
+            name="target_organization"
+            control={control}
+            render={({ field }) => (
+              <select
+                {...field}
+                className={`form-control form-control-sm ${
+                  errors.target_organization ? "is-invalid" : ""
+                }`}
+              >
+                <option value="">-- Select Organization --</option>
+                {dropdownData.organizations.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            )}
+          />
+          {errors.target_organization && (
+            <div className="invalid-feedback">
+              {errors.target_organization.message}
+            </div>
           )}
-        />
-        {errors.question_level && (
-          <div className="invalid-feedback">
-            {errors.question_level.message}
-          </div>
-        )}
+        </div>
+      </div>
+      <div className="row mb-3">
+        <div className="col-12">
+          <label className="form-label">Question Text:</label>
+          <Controller
+            name="question_text"
+            control={control}
+            render={({ field }) => (
+              <textarea
+                {...field}
+                className={`form-control form-control-sm ${
+                  errors.question_text ? "is-invalid" : ""
+                }`}
+                rows={4}
+              />
+            )}
+          />
+          {errors.question_text && (
+            <div className="invalid-feedback">
+              {errors.question_text.message}
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Repeat similar blocks for target_organization, target_group, target_subject,
-          question_type, topic, exam_references, question_status, difficulty_level */}
-
-      {/* For brevity, here's one more example for Target Organization */}
-      <div className="form-group">
-        <label>Target Organization:</label>
-        <Controller
-          name="target_organization"
-          control={control}
-          render={({ field }) => (
-            <select
-              {...field}
-              className={`form-control ${
-                errors.target_organization ? "is-invalid" : ""
-              }`}
-            >
-              <option value="">-- Select Organization --</option>
-              {dropdownData.organizations.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
+      {/* <div className="row">
+        <div className="col-md-12 mb-3">
+          <label className="form-label">Correct Answer:</label>
+          <Controller
+            name="correct_answer"
+            control={control}
+            render={({ field }) => (
+              <input
+                {...field}
+                className={`form-control form-control-sm ${
+                  errors.correct_answer ? "is-invalid" : ""
+                }`}
+              />
+            )}
+          />
+          {errors.correct_answer && (
+            <div className="invalid-feedback">
+              {errors.correct_answer.message}
+            </div>
           )}
-        />
-        {errors.target_organization && (
-          <div className="invalid-feedback">
-            {errors.target_organization.message}
-          </div>
-        )}
+        </div>
+      </div> */}
+
+      {/* MCQ Options */}
+      <div className="row mb-3">
+        <div className="col-12">
+          <label className="form-label">MCQ Options:</label>
+          {fields.map((field, index) => (
+            <div key={field.id} className="input-group mb-2">
+              <Controller
+                name={`mcq_options.${index}.option_text`}
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    className={`form-control form-control-sm ${
+                      errors.mcq_options?.[index]?.option_text
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    placeholder={`Option ${index + 1}`}
+                  />
+                )}
+              />
+              {fields.length > 2 && (
+                <button
+                  type="button"
+                  className="btn btn-danger btn-sm"
+                  onClick={() => remove(index)}
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+          ))}
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            onClick={() => append({ option_text: "" })}
+            disabled={fields.length >= MAX_OPTIONS}
+          >
+            Add Option
+          </button>
+        </div>
       </div>
 
-      {/* Add similar dropdowns for target_group, target_subject, question_type, topic, 
-          exam_references, question_status, difficulty_level */}
+      <div className="row">
+        <div className="col-md-6 mb-3">
+          <label className="form-label">Subject:</label>
+          <Controller
+            name="target_subject"
+            control={control}
+            render={({ field }) => (
+              <select
+                {...field}
+                className={`form-control form-control-sm ${
+                  errors.target_subject ? "is-invalid" : ""
+                }`}
+              >
+                <option value="">-- Select Subject --</option>
+                {dropdownData.subjects.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            )}
+          />
+          {errors.target_subject && (
+            <div className="invalid-feedback">
+              {errors.target_subject.message}
+            </div>
+          )}
+        </div>
 
-      <button type="submit" className="btn btn-primary mt-3">
-        Create Question
-      </button>
+        <div className="col-md-6 mb-3">
+          <label className="form-label">Exam References:</label>
+          <Controller
+            name="exam_references"
+            control={control}
+            render={({ field }) => {
+              // Convert react-hook-form field value into expected format for react-select
+              const { onChange, value, ref } = field;
+
+              return (
+                <Select
+                  inputRef={ref}
+                  isMulti
+                  options={dropdownData.examReferences}
+                  // Ensure the selected options match the current field value
+                  value={dropdownData.examReferences.filter((option) =>
+                    value?.includes(option.value)
+                  )}
+                  onChange={(selectedOptions) => {
+                    // Update the RHF field with an array of selected values
+                    onChange(selectedOptions.map((option) => option.value));
+                  }}
+                  classNamePrefix={
+                    errors.exam_references ? "is-invalid" : "select"
+                  }
+                />
+              );
+            }}
+          />
+          {errors.exam_references && (
+            <div className="invalid-feedback d-block">
+              {errors.exam_references.message}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="col-md-6 mb-3">
+          <label className="form-label">Question Type:</label>
+          <Controller
+            name="question_type"
+            control={control}
+            render={({ field }) => (
+              <select
+                {...field}
+                className={`form-control form-control-sm ${
+                  errors.question_type ? "is-invalid" : ""
+                }`}
+              >
+                <option value="">-- Select Question Type --</option>
+                {dropdownData.questionTypes.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            )}
+          />
+          {errors.question_type && (
+            <div className="invalid-feedback">
+              {errors.question_type.message}
+            </div>
+          )}
+        </div>
+
+        <div className="col-md-6 mb-3">
+          <label className="form-label">Topic:</label>
+          <Controller
+            name="topic"
+            control={control}
+            render={({ field }) => (
+              <select
+                {...field}
+                className={`form-control form-control-sm ${
+                  errors.topic ? "is-invalid" : ""
+                }`}
+              >
+                <option value="">-- Select Topic --</option>
+                {dropdownData.topics.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            )}
+          />
+          {errors.topic && (
+            <div className="invalid-feedback">{errors.topic.message}</div>
+          )}
+        </div>
+      </div>
+
+      {/* Explanations */}
+      <div className="row mb-3">
+        <div className="col-12">
+          <h5>Explanations</h5>
+          {explanations.map((explanation, index) => (
+            <div key={explanation.level} className="card mb-3">
+              <div className="card-body">
+                <h6 className="card-title">{explanation.level} Level</h6>
+                <div className="mb-3">
+                  <label className="form-label">Explanation Text:</label>
+                  <textarea
+                    className="form-control form-control-sm"
+                    value={explanation.text}
+                    onChange={(e) =>
+                      handleExplanationChange(index, "text", e.target.value)
+                    }
+                    rows={3}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Video (optional):</label>
+                  <div className="input-group">
+                    <input
+                      type="file"
+                      className="form-control form-control-sm"
+                      accept="video/*"
+                      // onChange={(e) =>
+                      //   // handleVideoUpload(index, e.target.files[0])
+                      // }
+                    />
+                    {explanation.video && (
+                      <button
+                        type="button"
+                        className="btn btn-outline-danger btn-sm"
+                        onClick={() =>
+                          handleExplanationChange(index, "video", null)
+                        }
+                      >
+                        Remove Video
+                      </button>
+                    )}
+                  </div>
+                  {explanation.video && (
+                    <small className="text-muted">
+                      Video uploaded: {explanation.video}
+                    </small>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="col-12">
+          <button type="submit" className="btn btn-primary">
+            Create Question
+          </button>
+        </div>
+      </div>
     </form>
   );
 });
-
-UniversityQuestionForm.propTypes = {
-  onSubmitSuccess: PropTypes.func,
-};
-
-UniversityQuestionForm.defaultProps = {
-  onSubmitSuccess: () => {},
-};
 
 export default UniversityQuestionForm;
