@@ -241,11 +241,8 @@ class Question(models.Model):
         help_text=_("Stores the correct answer(s) in a flexible format based on the question type.")
     )
 
-    question_status = models.ForeignKey(
-        QuestionStatus,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
+    question_status = models.BooleanField(
+        default=False,
         help_text="Status of the question, e.g., New, Approved, Rejected"
     )
 

@@ -32,33 +32,33 @@ const defaultValues = {
 };
 
 const questionSchema = yup.object().shape({
-  question_text: yup.string().required("Question Text is required"),
-  correct_answer: yup.string(),
-  target_subject: yup.string().required("Subject is required"),
-  exam_references: yup.array(),
-  question_type: yup.string().required("Question Type is required"),
-  topic: yup.string().required("Topic is required"),
-  sub_topic: yup.string(),
-  difficulty_level: yup.string().required("Difficulty Level is required"),
-  mcq_options: yup
-    .array()
-    .of(
-      yup.object({
-        option_text: yup.string().required("Option cannot be empty"),
-      })
-    )
-    .min(2, "At least two options are required"),
+  // question_text: yup.string().required("Question Text is required"),
+  // correct_answer: yup.string(),
+  // target_subject: yup.string().required("Subject is required"),
+  // exam_references: yup.array(),
+  // question_type: yup.string().required("Question Type is required"),
+  // topic: yup.string().required("Topic is required"),
+  // sub_topic: yup.string(),
+  // difficulty_level: yup.string().required("Difficulty Level is required"),
+  // mcq_options: yup
+  //   .array()
+  //   .of(
+  //     yup.object({
+  //       option_text: yup.string().required("Option cannot be empty"),
+  //     })
+  //   )
+  //   .min(2, "At least two options are required"),
 });
 
 const mainSchema = yup.object().shape({
-  target_organization: yup.string().required("Organization is required"),
-  question_level: yup.string().required("Question Level is required"),
-  number_of_questions: yup
-    .number()
-    .min(1)
-    .max(10)
-    .required("Number of questions is required"),
-  questions: yup.array().of(questionSchema),
+  // target_organization: yup.string().required("Organization is required"),
+  // question_level: yup.string().required("Question Level is required"),
+  // number_of_questions: yup
+  //   .number()
+  //   .min(1)
+  //   .max(10)
+  //   .required("Number of questions is required"),
+  // questions: yup.array().of(questionSchema),
 });
 
 const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
@@ -178,26 +178,48 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
   }, [token]);
 
   const onSubmitForm = async (data) => {
+    console.log(data);
     try {
-      const processedData = {
-        ...data,
-        questions: data.questions.map((q) => ({
-          ...q,
-          exam_references: q.exam_references.map((ref) => ref.value || ref),
-        })),
-      };
+      for (let i = 0; i < data.number_of_questions; i++) {
+        const formData = data.questions[i];
 
-      await axios.post(`${BASE_URL}/questions/`, processedData, {
-        headers: {
-          Authorization: `Token YOUR_TOKEN_HERE`,
-          "Content-Type": "application/json",
-        },
-      });
-      reset(defaultValues);
-      if (onSubmitSuccess) onSubmitSuccess();
+        // Append top-level fields
+        formData["target_organization"] = data.target_organization;
+        formData["question_level"] = data.question_level;
+
+        // for (let pair of formData.entries()) {
+        //   console.log(pair[0] + ": " + pair[1]);
+        // }
+        const res = await executeAjaxOperationStandard({
+          url: "/api/questions/",
+          method: "post",
+          data: JSON.stringify(formData),
+          token,
+        });
+      }
     } catch (error) {
-      console.error("Error creating questions:", error);
+      console.log(error);
     }
+    // try {
+    //   const processedData = {
+    //     ...data,
+    //     questions: data.questions.map((q) => ({
+    //       ...q,
+    //       exam_references: q.exam_references.map((ref) => ref.value || ref),
+    //     })),
+    //   };
+
+    //   await axios.post(`${BASE_URL}/questions/`, processedData, {
+    //     headers: {
+    //       Authorization: `Token YOUR_TOKEN_HERE`,
+    //       "Content-Type": "application/json",
+    //     },
+    //   });
+    //   reset(defaultValues);
+    //   if (onSubmitSuccess) onSubmitSuccess();
+    // } catch (error) {
+    //   console.error("Error creating questions:", error);
+    // }
   };
 
   return (

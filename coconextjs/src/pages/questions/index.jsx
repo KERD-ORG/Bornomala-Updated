@@ -105,7 +105,7 @@ export default function QuestionList() {
     try {
       setLoading(true);
       const response = await executeAjaxOperationStandard({
-        url: `${process.env.NEXT_PUBLIC_API_ENDPOINT_EDUCATIONAL_ORAGANIZATION}${id}/`,
+        url: `${process.env.NEXT_PUBLIC_API_ENDPOINT_QUESTION}${id}/`,
         method: "DELETE",
         token,
         locale: router.locale || "en",
@@ -251,7 +251,7 @@ export default function QuestionList() {
             <DataGridComponent
               ref={dataGridRef}
               endpoint={
-                process.env.NEXT_PUBLIC_API_ENDPOINT_EDUCATIONAL_ORAGANIZATION
+                process.env.NEXT_PUBLIC_API_ENDPOINT_QUESTION
               }
               columns={universityColumns}
               offset={0}
