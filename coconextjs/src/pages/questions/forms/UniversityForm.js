@@ -9,6 +9,7 @@ import { executeAjaxOperationStandard } from "@/utils/fetcher";
 
 const MAX_OPTIONS = 8;
 const BASE_URL = "http://localhost:8000";
+const explanationLevels = ["Preliminary", "Intermediate", "Advanced"];
 
 const defaultValues = {
   target_organization: "",
@@ -25,6 +26,7 @@ const defaultValues = {
       sub_topic: "",
       difficulty_level: "",
       mcq_options: [{ option_text: "" }, { option_text: "" }],
+      explanations: [],
     },
   ],
 };
@@ -60,7 +62,7 @@ const mainSchema = yup.object().shape({
 });
 
 const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
-  const {token} = useCommonForm()
+  const { token } = useCommonForm();
   const {
     control,
     handleSubmit,
@@ -200,31 +202,36 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
+      {/* Render dropdowns for organization and question level */}
       <div className="row mb-3">
-        <div className="col-md-4">
-          <label className="form-label">Number of Questions (1-10):</label>
+        <div className="col-md-12">
+          <label className="form-label">Target Organization:</label>
           <Controller
-            name="number_of_questions"
+            name="target_organization"
             control={control}
             render={({ field }) => (
-              <input
+              <select
                 {...field}
-                type="number"
-                min="1"
-                max="10"
-                className="form-control"
-              />
+                className={`form-control ${
+                  errors.target_organization ? "is-invalid" : ""
+                }`}
+              >
+                <option value="">-- Select Organization --</option>
+                {dropdownData.organizations.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
             )}
           />
-          {errors.number_of_questions && (
-            <div className="invalid-feedback d-block">
-              {errors.number_of_questions.message}
+          {errors.target_organization && (
+            <div className="invalid-feedback">
+              {errors.target_organization.message}
             </div>
           )}
         </div>
       </div>
-
-      {/* Render dropdowns for organization and question level */}
       <div className="row mb-3">
         <div className="col-md-6">
           <label className="form-label">Question Level:</label>
@@ -254,29 +261,23 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
           )}
         </div>
         <div className="col-md-6">
-          <label className="form-label">Target Organization:</label>
+          <label className="form-label">Number of Questions (1-10):</label>
           <Controller
-            name="target_organization"
+            name="number_of_questions"
             control={control}
             render={({ field }) => (
-              <select
+              <input
                 {...field}
-                className={`form-control ${
-                  errors.target_organization ? "is-invalid" : ""
-                }`}
-              >
-                <option value="">-- Select Organization --</option>
-                {dropdownData.organizations.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
+                type="number"
+                min="1"
+                max="10"
+                className="form-control"
+              />
             )}
           />
-          {errors.target_organization && (
-            <div className="invalid-feedback">
-              {errors.target_organization.message}
+          {errors.number_of_questions && (
+            <div className="invalid-feedback d-block">
+              {errors.number_of_questions.message}
             </div>
           )}
         </div>
@@ -498,6 +499,12 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
               )}
             </div>
           </div>
+
+          <NestedExplanations
+            control={control}
+            errors={errors}
+            qIndex={qIndex}
+          />
         </div>
       ))}
 
@@ -560,6 +567,78 @@ const NestedMCQOptions = ({ control, errors, qIndex }) => {
           Add Option
         </button>
       </div>
+    </div>
+  );
+};
+
+const NestedExplanations = ({ control, errors, qIndex }) => {
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: `questions.${qIndex}.explanations`,
+  });
+
+  return (
+    <div className="mb-3">
+      <label className="form-label">Explanations:</label>
+      {fields.map((field, eIndex) => (
+        <div key={field.id} className="card mb-3">
+          <div className="card-body">
+            <h6 className="card-title">{field.level} Level Explanation</h6>
+            <Controller
+              name={`questions.${qIndex}.explanations.${eIndex}.text`}
+              control={control}
+              render={({ field }) => (
+                <textarea
+                  {...field}
+                  className="form-control mb-2"
+                  placeholder="Explanation text"
+                  rows={3}
+                />
+              )}
+            />
+            <div className="mb-2">
+              <label className="form-label">Video (optional):</label>
+              <Controller
+                name={`questions.${qIndex}.explanations.${eIndex}.video`}
+                control={control}
+                render={({ field }) => (
+                  <input
+                    type="file"
+                    accept="video/*"
+                    className="form-control"
+                    onChange={(e) => {
+                      // Store the selected file in form state
+                      field.onChange(e.target.files[0]);
+                    }}
+                  />
+                )}
+              />
+            </div>
+            <button
+              type="button"
+              className="btn btn-danger btn-sm"
+              onClick={() => remove(eIndex)}
+            >
+              Remove Explanation
+            </button>
+          </div>
+        </div>
+      ))}
+      <button
+        type="button"
+        className="btn btn-secondary btn-sm"
+        style={{ marginLeft: "10px" }}
+        disabled={fields.length >= 3}
+        onClick={() => {
+          append({
+            level: explanationLevels[fields.length] || explanationLevels[2],
+            text: "",
+            video: null,
+          });
+        }}
+      >
+        Add Explanation
+      </button>
     </div>
   );
 };
