@@ -86,10 +86,6 @@ const QuestionEditForm = forwardRef(
     }));
 
     useEffect(() => {
-      console.log(errors);
-    }, [errors]);
-
-    useEffect(() => {
       const fetchDropdownData = async () => {
         if (!token) return;
         const endpoints = {

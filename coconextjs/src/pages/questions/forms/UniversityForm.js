@@ -30,33 +30,33 @@ const defaultValues = {
 };
 
 const questionSchema = yup.object().shape({
-  // question_text: yup.string().required("Question Text is required"),
-  // correct_answer: yup.string(),
-  // target_subject: yup.string().required("Subject is required"),
-  // exam_references: yup.array(),
-  // question_type: yup.string().required("Question Type is required"),
-  // topic: yup.string().required("Topic is required"),
-  // sub_topic: yup.string(),
-  // difficulty_level: yup.string().required("Difficulty Level is required"),
-  // mcq_options: yup
-  //   .array()
-  //   .of(
-  //     yup.object({
-  //       option_text: yup.string().required("Option cannot be empty"),
-  //     })
-  //   )
-  //   .min(2, "At least two options are required"),
+  question_text: yup.string().required("Question Text is required"),
+  correct_answer: yup.string().required("Correct Answer is required"),
+  target_subject: yup.string().required("Subject is required"),
+  exam_references: yup.array(),
+  question_type: yup.string().required("Question Type is required"),
+  topic: yup.string().required("Topic is required"),
+  sub_topic: yup.string(),
+  difficulty_level: yup.string().required("Difficulty Level is required"),
+  mcq_options: yup
+    .array()
+    .of(
+      yup.object({
+        option_text: yup.string().required("Option cannot be empty"),
+      })
+    )
+    .min(2, "At least two options are required"),
 });
 
 const mainSchema = yup.object().shape({
-  // target_organization: yup.string().required("Organization is required"),
-  // question_level: yup.string().required("Question Level is required"),
-  // number_of_questions: yup
-  //   .number()
-  //   .min(1)
-  //   .max(10)
-  //   .required("Number of questions is required"),
-  // questions: yup.array().of(questionSchema),
+  target_organization: yup.string().required("Organization is required"),
+  question_level: yup.string().required("Question Level is required"),
+  number_of_questions: yup
+    .number()
+    .min(1)
+    .max(10)
+    .required("Number of questions is required"),
+  questions: yup.array().of(questionSchema),
 });
 
 const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
@@ -125,6 +125,10 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
   useImperativeHandle(ref, () => ({
     resetForm: () => reset(defaultValues),
   }));
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
   useEffect(() => {
     const fetchDropdownData = async () => {
@@ -587,6 +591,15 @@ const NestedMCQOptions = ({ control, errors, qIndex }) => {
               >
                 Remove
               </button>
+            )}
+            {errors?.questions?.[qIndex]?.mcq_options?.[oIndex]
+              ?.option_text.message && (
+              <div className="invalid-feedback">
+                {
+                  errors?.questions?.[qIndex]?.mcq_options?.[oIndex]
+                    ?.option_text.message
+                }
+              </div>
             )}
           </div>
         ))}
