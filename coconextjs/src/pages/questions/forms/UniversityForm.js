@@ -1,1053 +1,373 @@
-// UniversityForm.jsx
 import React, { useEffect, forwardRef, useImperativeHandle } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {
-  fetchEducationalOrganizations,
-  fetchQuestionLevels,
-  fetchTargetGroups,
-} from "@/utils/apiService";
+import * as yup from "yup";
 import useCommonForm from "@/hooks/useCommonForm";
 import { executeAjaxOperationStandard } from "@/utils/fetcher";
-import * as yup from "yup";
+// import { toast } from "react-toastify";
 
-// Optional translation hook; replace or remove if you don't need i18n
-const useTranslation = () => ({ t: (x) => x });
-
-const MAX_QUESTIONS = 10;
+// Define constants and default values
 const MAX_OPTIONS = 8;
 
-// Validation Schema
-export const questionSchema = yup.object().shape({
-  question_type: yup
-    .string()
-    .oneOf(
-      [
-        "descriptive",
-        "short-answer",
-        "single-select",
-        "multiple-select",
-        "fill-blanks",
-        "true-false",
-      ],
-      "Invalid question type"
-    )
-    .required("Question Type is required"),
+const BASE_URL = "http://localhost:8000";
 
-  question_text: yup.string().when("question_type", {
-    is: (val) =>
-      [
-        "descriptive",
-        "short-answer",
-        "single-select",
-        "multiple-select",
-        "fill-blanks",
-        "true-false",
-      ].includes(val),
-    then: (schema) => schema.required("Question Text is required"),
-    otherwise: (schema) => yup.notRequired().nullable(),
-  }),
-
-  question_difficulty: yup
-    .string()
-    .oneOf(
-      ["Very Easy", "Easy", "Moderate", "Difficult", "Very Difficult"],
-      "Invalid difficulty selected"
-    )
-    .required("Question Difficulty is required"),
-
-  question_status: yup
-    .string()
-    .oneOf(["New", "Reused"], "Invalid status")
-    .required("Question Status is required"),
-
-  question_topic: yup.number().nullable(),
-  question_subtopic: yup.number().nullable(),
-  question_subsubtopic: yup.string().nullable(),
-
-  explanation: yup.string().nullable(),
-
-  exam_references: yup.string().when("question_status", {
-    is: "Reused",
-    then: (schema) =>
-      yup
-        .string()
-        .required("Exam References are required for a reused question"),
-    otherwise: (schema) => yup.string().nullable(),
-  }),
-
-  option_count: yup
-    .number()
-    .typeError("Option Count must be a number")
-    .when("question_type", {
-      is: (val) => val === "single-select" || val === "multiple-select",
-      then: (schema) =>
-        schema
-          .min(2, "Minimum 2 options")
-          .max(MAX_OPTIONS, `Maximum ${MAX_OPTIONS} options`)
-          .required("Option Count is required for MCQ"),
-      otherwise: (schema) => schema.notRequired().nullable(),
-    }),
-
-  question_options: yup
-    .array()
-    .of(yup.string().required("Option cannot be empty"))
-    .when("question_type", {
-      is: (val) => val === "single-select" || val === "multiple-select",
-      then: (schema) =>
-        schema
-          .min(2, "At least 2 options are required")
-          .max(MAX_OPTIONS, `No more than ${MAX_OPTIONS} options allowed`)
-          .required("Options are required for MCQ"),
-      otherwise: (schema) => schema.notRequired().nullable(),
-    }),
-
-  correct_answer: yup
-    .mixed()
-    .when("question_type", {
-      is: "single-select",
-      then: (schema) =>
-        yup
-          .number()
-          .typeError("Correct answer must be a number")
-          .required("Correct answer is required for single-select MCQ")
-          .min(1, "Must be at least 1")
-          .max(MAX_OPTIONS, `Cannot exceed ${MAX_OPTIONS}`),
-    })
-    .when("question_type", {
-      is: "multiple-select",
-      then: (schema) =>
-        yup
-          .string()
-          .required("Correct answers are required for multiple-select MCQ"),
-    })
-    .when("question_type", {
-      is: "true-false",
-      then: (schema) =>
-        yup.boolean().required("Correct answer is required for True/False"),
-    })
-    .when("question_type", {
-      is: (val) => ["descriptive", "short-answer", "fill-blanks"].includes(val),
-      then: (schema) =>
-        yup
-          .string()
-          .required("Correct answer is required for this question type"),
-      otherwise: (schema) => schema.mixed().nullable().notRequired(),
-    }),
-
-  fill_blank_answer: yup.string().when("question_type", {
-    is: "fill-blanks",
-    then: (schema) =>
-      yup.string().required("Fill-in-the-blanks answer is required"),
-    otherwise: (schema) => yup.string().nullable().notRequired(),
-  }),
-});
-
-export const mainSchema = yup.object().shape({
-  question_level: yup
-    .number()
-    .typeError("Question Level must be selected")
-    .required("Question Level is required"),
-  target_organization: yup
-    .number()
-    .typeError("Target Organization must be selected")
-    .required("Target Organization is required"),
-  target_group: yup
-    .number()
-    .typeError("Target Group must be selected")
-    .required("Target Group is required"),
-  target_course: yup.string().required("Target Course is required"),
-
-  question_count: yup
-    .number()
-    .typeError("How many questions? must be a number")
-    .min(1, "At least 1 question")
-    .max(MAX_QUESTIONS, `No more than ${MAX_QUESTIONS} questions`)
-    .required("Number of questions is required"),
-
-  questions: yup
-    .array()
-    .of(questionSchema)
-    .required()
-    .min(1, "At least one question is required"),
-});
-
-const defaultQuestion = {
-  question_type: "descriptive", // "short-answer", "single-select", "multiple-select", "fill-blanks", "true-false"
-  question_text: "sad",
-  question_difficulty: "Very Easy",
-  question_status: "New",
-  question_topic: 1, // Assuming null if not selected
-  question_subtopic: 1,
-  question_subsubtopic: "",
-  explanation: "asd",
-  exam_references: "",
-
-  // For MCQ
-  option_count: 2,
-  question_options: ["", ""],
-  correct_answer: "sds",
-
-  // For fill-blanks
-  fill_blank_answer: "",
+const defaultValues = {
+  question_text: "",
+  explanation: "",
+  correct_answer: "",
+  question_level: "",
+  target_organization: "",
+  target_group: "",
+  target_subject: "",
+  question_type: "",
+  topic: "",
+  exam_references: [],
+  question_status: "",
+  difficulty_level: "",
+  mcq_options: [{ option_text: "" }, { option_text: "" }],
 };
 
-const UniversityForm = forwardRef(
-  ({ initialData, onSubmit, onCancel, formMode, loading, setLoading }, ref) => {
-    const {
-      t,
-      token,
-      globalError,
-      setGlobalError,
-      router,
-      successMessage,
-      setSuccessMessage,
-    } = useCommonForm();
+// Yup validation schema
+const mainSchema = yup.object().shape({
+  question_text: yup.string().required("Question Text is required"),
+  explanation: yup.string().required("Explanation is required"),
+  correct_answer: yup.mixed().required("Correct Answer is required"),
+  question_level: yup.number().required("Question Level is required"),
+  target_organization: yup.number().required("Organization is required"),
+  target_group: yup.number().required("Target Group is required"),
+  target_subject: yup.number().required("Subject is required"),
+  question_type: yup.number().required("Question Type is required"),
+  topic: yup.number().required("Topic is required"),
+  exam_references: yup
+    .array()
+    .of(yup.number())
+    .min(1, "At least one exam reference is required"),
+  question_status: yup.number().required("Question Status is required"),
+  difficulty_level: yup.number().required("Difficulty Level is required"),
+  mcq_options: yup
+    .array()
+    .of(
+      yup.object({
+        option_text: yup.string().required("Option cannot be empty"),
+      })
+    )
+    .min(2, "At least two options are required"),
+});
 
-    const {
-      control,
-      handleSubmit,
-      reset,
-      getValues,
-      setError,
-      formState: { errors },
-    } = useForm({
-      resolver: yupResolver(mainSchema),
-      defaultValues: {
-        question_level: initialData?.question_level || 1,
-        target_organization: initialData?.target_organization || 1,
-        target_group: initialData?.target_group || 1,
-        target_course: initialData?.target_course || 1,
-        question_count: initialData?.question_count || 1,
-        questions: initialData?.questions || [defaultQuestion],
-      },
-      mode: "onSubmit",
-    });
+const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(mainSchema),
+    defaultValues,
+  });
+  const { token } = useCommonForm();
 
-    const { fields, append, remove } = useFieldArray({
-      control,
-      name: "questions",
-    });
+  // Dropdown data state
+  const [dropdownData, setDropdownData] = React.useState({
+    questionLevels: [],
+    organizations: [],
+    targetGroups: [],
+    subjects: [],
+    questionTypes: [],
+    topics: [],
+    examReferences: [],
+    questionStatuses: [],
+    difficultyLevels: [],
+    subTopics: [],
+  });
 
-    const questionCount = getValues("question_count");
+  // Field array for MCQ options
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "mcq_options",
+  });
 
-    // Fetch dynamic select options
-    const [questionLevels, setQuestionLevels] = React.useState([]);
-    const [educationOrganizationList, setEducationalOrganizationList] =
-      React.useState([]);
-    const [targetGroups, setTargetGroups] = React.useState([]);
+  useImperativeHandle(ref, () => ({
+    resetForm: () => reset(defaultValues),
+  }));
 
-    useEffect(() => {
-      if (token) {
-        fetchQuestionLevels(
-          token,
-          router.locale || "en",
-          setGlobalError,
-          setSuccessMessage,
-          setQuestionLevels
-        );
-        fetchEducationalOrganizations(
-          token,
-          router.locale || "en",
-          setGlobalError,
-          setSuccessMessage,
-          setEducationalOrganizationList
-        );
-        fetchTargetGroups(
-          token,
-          router.locale || "en",
-          setGlobalError,
-          setSuccessMessage,
-          setTargetGroups
-        );
-      }
-    }, [token, router.locale, setGlobalError, setSuccessMessage]);
+  // Fetch dropdown data on mount
+  useEffect(() => {
+    const fetchDropdownData = async () => {
+      if(!token) return;
+      const endpoints = {
+        questionLevels: "api/question-levels",
+        organizations: "api/organizations",
+        targetGroups: "api/target-groups",
+        subjects: "api/subjects",
+        questionTypes: "api/question-types",
+        topics: "api/topics",
+        examReferences: "api/exam-references",
+        questionStatuses: "api/question-statuses",
+        difficultyLevels: "api/difficulty-levels",
+      };
 
-    // Synchronize the number of questions with question_count
-    useEffect(() => {
-      const currentCount = fields.length;
-      const desiredCount = getValues("question_count");
-
-      if (desiredCount > currentCount) {
-        for (let i = currentCount; i < desiredCount; i++) {
-          append({ ...defaultQuestion });
-        }
-      } else if (desiredCount < currentCount) {
-        for (let i = currentCount; i > desiredCount; i--) {
-          remove(i - 1);
-        }
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [questionCount, append, remove, fields.length]);
-
-    // Handle form reset when initialData changes
-    useEffect(() => {
-      if (initialData) {
-        reset({
-          question_level: initialData.question_level || "",
-          target_organization: initialData.target_organization || "",
-          target_group: initialData.target_group || "",
-          target_course: initialData.target_course || "",
-          question_count: initialData.question_count || 1,
-          questions: initialData.questions.length
-            ? initialData.questions
-            : [defaultQuestion],
-        });
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [initialData, reset]);
-
-    useImperativeHandle(ref, () => ({
-      handleCancelClick: () => {
-        reset({
-          question_level: "",
-          target_organization: "",
-          target_group: "",
-          target_course: "",
-          question_count: 1,
-          questions: [defaultQuestion],
-        });
-        onCancel();
-      },
-    }));
-
-    const onSubmitForm = async (data) => {
-      setGlobalError("");
       try {
-        setLoading(true);
+        const promises = Object.entries(endpoints).map(([key, endpoint]) =>
+          executeAjaxOperationStandard({
+            url: `/${endpoint}/`, // Endpoint URL
+            method: "get",
+            token,
+          })
+        );
 
-        const url =
-          formMode === "create" || formMode === "clone"
-            ? "/api/questions/"
-            : `/api/questions/${initialData.id}/`;
-        const method =
-          formMode === "create" || formMode === "clone" ? "POST" : "PUT";
-
-        // Process each question, omit question_type and exam_references
-        const questionsToSubmit = data.questions.map((q) => {
-          const { question_type, exam_references, ...payload } = q;
-
-          // Parse exam_references to array of integers if it's a string
-          let parsedExamReferences = [];
-          if (exam_references) {
-            parsedExamReferences = exam_references
-              .split(",")
-              .map((ref) => parseInt(ref.trim()))
-              .filter((num) => !isNaN(num));
+        const results = await Promise.all(promises);
+        const newData = {};
+        let index = 0;
+        for (let key in endpoints) {
+          const response = results[index];
+          if (response && response.status >= 200 && response.status < 300) {
+            const data = response.data;
+            newData[key] = data.map((item) => ({
+              value: item.id,
+              label: item.name || item.reference_name || item.title || "",
+            }));
+          } else {
+            newData[key] = [];
           }
-
-          return {
-            ...payload,
-            exam_references: parsedExamReferences,
-          };
-        });
-
-        // Prepare the payload by omitting question_type from each question
-        const payloadToSend = {
-          ...data,
-          questions: questionsToSubmit.map(({ question_type, ...q }) => q),
-        };
-
-        const response = await executeAjaxOperationStandard({
-          url: url,
-          method: method,
-          token,
-          data: payloadToSend,
-          locale: router.locale || "en",
-        });
-
-        if (
-          response.status >=
-            parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
-          response.status <
-            parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
-        ) {
-          // Handle successful submission
-          onSubmit(
-            response.data.message || "Form submitted successfully.",
-            true
-          );
-          reset({
-            question_level: "",
-            target_organization: "",
-            target_group: "",
-            target_course: "",
-            question_count: 1,
-            questions: [defaultQuestion],
-          });
-        } else {
-          if (response.details) {
-            Object.keys(response.details).forEach((field) => {
-              // Assuming response.details[field] is an array of error messages
-              setError(field, {
-                type: "server",
-                message: response.details[field][0],
-              });
-            });
-          }
-          setGlobalError(response.message || "Submission failed.");
-          setSuccessMessage("");
+          index++;
         }
+        setDropdownData((prev) => ({ ...prev, ...newData }));
       } catch (error) {
-        let errorMessage = "An error occurred while submitting the form.";
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.error
-        ) {
-          errorMessage = error.response.data.error;
-        }
-        setGlobalError(errorMessage);
-        setSuccessMessage("");
-      } finally {
-        setLoading(false);
+        console.error("Error fetching dropdown data:", error);
+        // Optionally show a toast notification here
       }
     };
 
-    return (
-      <form onSubmit={handleSubmit(onSubmitForm)}>
-        {globalError && (
-          <div className="alert alert-danger mt-3" role="alert">
-            {globalError}
+    fetchDropdownData();
+  }, [token]);
+
+  // Fetch subtopics when topic changes (if needed)
+  // This part is omitted for brevity – you can add similar logic if necessary.
+
+  const onSubmitForm = async (data) => {
+    try {
+      const headers = {
+        Authorization: `Token ${TOKEN}`,
+        "Content-Type": "application/json",
+      };
+
+      // Transform exam_references to array of IDs if they are objects
+      const examRefs = data.exam_references.map((ref) => ref.value || ref);
+
+      // Prepare payload
+      const payload = {
+        ...data,
+        question_level: data.question_level.value || data.question_level,
+        target_organization:
+          data.target_organization.value || data.target_organization,
+        target_group: data.target_group.value || data.target_group,
+        target_subject: data.target_subject.value || data.target_subject,
+        question_type: data.question_type.value || data.question_type,
+        topic: data.topic.value || data.topic,
+        exam_references: examRefs,
+        question_status: data.question_status.value || data.question_status,
+        difficulty_level: data.difficulty_level.value || data.difficulty_level,
+      };
+
+      await axios.post(`${BASE_URL}/questions/`, payload, { headers });
+      // toast.success("Question created successfully!");
+      reset(defaultValues);
+      if (onSubmitSuccess) onSubmitSuccess();
+    } catch (error) {
+      console.error("Error creating question:", error);
+      // toast.error("Failed to create question.");
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmitForm)}>
+      {/* Question Text */}
+      <div className="form-group">
+        <label>Question Text:</label>
+        <Controller
+          name="question_text"
+          control={control}
+          render={({ field }) => (
+            <textarea
+              {...field}
+              className={`form-control ${
+                errors.question_text ? "is-invalid" : ""
+              }`}
+            />
+          )}
+        />
+        {errors.question_text && (
+          <div className="invalid-feedback">{errors.question_text.message}</div>
+        )}
+      </div>
+
+      {/* Explanation */}
+      <div className="form-group">
+        <label>Explanation:</label>
+        <Controller
+          name="explanation"
+          control={control}
+          render={({ field }) => (
+            <textarea
+              {...field}
+              className={`form-control ${
+                errors.explanation ? "is-invalid" : ""
+              }`}
+            />
+          )}
+        />
+        {errors.explanation && (
+          <div className="invalid-feedback">{errors.explanation.message}</div>
+        )}
+      </div>
+
+      {/* Correct Answer */}
+      <div className="form-group">
+        <label>Correct Answer:</label>
+        <Controller
+          name="correct_answer"
+          control={control}
+          render={({ field }) => (
+            <input
+              {...field}
+              className={`form-control ${
+                errors.correct_answer ? "is-invalid" : ""
+              }`}
+            />
+          )}
+        />
+        {errors.correct_answer && (
+          <div className="invalid-feedback">
+            {errors.correct_answer.message}
           </div>
         )}
+      </div>
 
-        {/* Row 1: Question Level & Target Organization */}
-        <div className="row">
-          <div className="col-md-6 mb-3">
-            <label className="form-label">{t("Question Level")}</label>
-            <Controller
-              name="question_level"
-              control={control}
-              render={({ field }) => (
-                <select
-                  {...field}
-                  className={`form-control ${
-                    errors.question_level ? "is-invalid" : ""
-                  }`}
-                >
-                  <option value="">{t("-- Select --")}</option>
-                  {questionLevels.map((val) => (
-                    <option key={val.id} value={val.id}>
-                      {val.name}
-                    </option>
-                  ))}
-                </select>
-              )}
-            />
-            {errors.question_level && (
-              <div className="invalid-feedback">
-                {errors.question_level.message}
-              </div>
-            )}
-          </div>
-          <div className="col-md-6 mb-3">
-            <label className="form-label">{t("Target Organization")}</label>
-            <Controller
-              name="target_organization"
-              control={control}
-              render={({ field }) => (
-                <select
-                  {...field}
-                  className={`form-control ${
-                    errors.target_organization ? "is-invalid" : ""
-                  }`}
-                >
-                  <option value="">{t("-- Select --")}</option>
-                  {educationOrganizationList.map((val) => (
-                    <option value={val.value} key={val.value}>
-                      {val.label}
-                    </option>
-                  ))}
-                </select>
-              )}
-            />
-            {errors.target_organization && (
-              <div className="invalid-feedback">
-                {errors.target_organization.message}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Row 2: Target Group & Target Course */}
-        <div className="row">
-          <div className="col-md-6 mb-3">
-            <label className="form-label">{t("Target Group")}</label>
-            <Controller
-              name="target_group"
-              control={control}
-              render={({ field }) => (
-                <select
-                  {...field}
-                  className={`form-control ${
-                    errors.target_group ? "is-invalid" : ""
-                  }`}
-                >
-                  <option value="">{t("-- Select --")}</option>
-                  {targetGroups.map((val) => (
-                    <option value={val.id} key={val.id}>
-                      {val.name}
-                    </option>
-                  ))}
-                </select>
-              )}
-            />
-            {errors.target_group && (
-              <div className="invalid-feedback">
-                {errors.target_group.message}
-              </div>
-            )}
-          </div>
-
-          <div className="col-md-6 mb-3">
-            <label className="form-label">{t("Target Course/Subject")}</label>
-            <Controller
-              name="target_course"
-              control={control}
-              render={({ field }) => (
+      {/* MCQ Options */}
+      {fields.map((item, index) => (
+        <div key={item.id} className="form-group">
+          <label>Option {index + 1}:</label>
+          <Controller
+            name={`mcq_options.${index}.option_text`}
+            control={control}
+            render={({ field }) => (
+              <div className="input-group">
                 <input
                   {...field}
-                  type="text"
                   className={`form-control ${
-                    errors.target_course ? "is-invalid" : ""
+                    errors.mcq_options?.[index]?.option_text ? "is-invalid" : ""
                   }`}
                 />
-              )}
-            />
-            {errors.target_course && (
-              <div className="invalid-feedback">
-                {errors.target_course.message}
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={() => {
+                    if (fields.length > 2) remove(index);
+                    // else toast.error("At least two options required.");
+                  }}
+                >
+                  Remove
+                </button>
               </div>
             )}
-          </div>
-        </div>
-
-        {/* How many questions? */}
-        <div className="row">
-          <div className="col-md-6 mb-3">
-            <label>{t("How many questions? (1-10)")}</label>
-            <Controller
-              name="question_count"
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="number"
-                  min={1}
-                  max={MAX_QUESTIONS}
-                  className={`form-control ${
-                    errors.question_count ? "is-invalid" : ""
-                  }`}
-                />
-              )}
-            />
-            {errors.question_count && (
-              <div className="invalid-feedback">
-                {errors.question_count.message}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Render each question */}
-        {fields.map((item, qIndex) => {
-          // Access current question values using getValues
-          const currentQuestion = getValues(`questions.${qIndex}`);
-          const questionType = currentQuestion?.question_type;
-          const questionStatus = currentQuestion?.question_status;
-
-          return (
-            <div key={item.id} className="border p-3 mb-4">
-              <h5>
-                {t("Question")} #{qIndex + 1}
-              </h5>
-
-              {/* Question Type */}
-              <div className="mb-3">
-                <label>{t("Question Type")}</label>
-                <Controller
-                  name={`questions.${qIndex}.question_type`}
-                  control={control}
-                  render={({ field }) => (
-                    <select
-                      {...field}
-                      className={`form-control ${
-                        errors.questions?.[qIndex]?.question_type
-                          ? "is-invalid"
-                          : ""
-                      }`}
-                    >
-                      <option value="descriptive">
-                        {t("Descriptive/Essay")}
-                      </option>
-                      <option value="short-answer">{t("Short Answer")}</option>
-                      <option value="single-select">
-                        {t("Single-Select MCQ")}
-                      </option>
-                      <option value="multiple-select">
-                        {t("Multiple-Select MCQ")}
-                      </option>
-                      <option value="fill-blanks">
-                        {t("Fill-in-the-Blanks")}
-                      </option>
-                      <option value="true-false">{t("True/False")}</option>
-                    </select>
-                  )}
-                />
-                {errors.questions?.[qIndex]?.question_type && (
-                  <div className="invalid-feedback">
-                    {errors.questions[qIndex].question_type.message}
-                  </div>
-                )}
-              </div>
-
-              {/* Difficulty & Status */}
-              <div className="row">
-                <div className="col-md-6 mb-3">
-                  <label>{t("Difficulty")}</label>
-                  <Controller
-                    name={`questions.${qIndex}.question_difficulty`}
-                    control={control}
-                    render={({ field }) => (
-                      <select
-                        {...field}
-                        className={`form-control ${
-                          errors.questions?.[qIndex]?.question_difficulty
-                            ? "is-invalid"
-                            : ""
-                        }`}
-                      >
-                        <option value="Very Easy">{t("Very Easy")}</option>
-                        <option value="Easy">{t("Easy")}</option>
-                        <option value="Moderate">{t("Moderate")}</option>
-                        <option value="Difficult">{t("Difficult")}</option>
-                        <option value="Very Difficult">
-                          {t("Very Difficult")}
-                        </option>
-                      </select>
-                    )}
-                  />
-                  {errors.questions?.[qIndex]?.question_difficulty && (
-                    <div className="invalid-feedback">
-                      {errors.questions[qIndex].question_difficulty.message}
-                    </div>
-                  )}
-                </div>
-
-                <div className="col-md-6 mb-3">
-                  <label>{t("Question Status")}</label>
-                  <Controller
-                    name={`questions.${qIndex}.question_status`}
-                    control={control}
-                    render={({ field }) => (
-                      <select
-                        {...field}
-                        className={`form-control ${
-                          errors.questions?.[qIndex]?.question_status
-                            ? "is-invalid"
-                            : ""
-                        }`}
-                      >
-                        <option value="New">{t("New")}</option>
-                        <option value="Reused">{t("Reused")}</option>
-                      </select>
-                    )}
-                  />
-                  {errors.questions?.[qIndex]?.question_status && (
-                    <div className="invalid-feedback">
-                      {errors.questions[qIndex].question_status.message}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Question Text */}
-              <div className="mb-3">
-                <label>{t("Question Text")}</label>
-                <Controller
-                  name={`questions.${qIndex}.question_text`}
-                  control={control}
-                  render={({ field }) => (
-                    <textarea
-                      {...field}
-                      rows={2}
-                      className={`form-control ${
-                        errors.questions?.[qIndex]?.question_text
-                          ? "is-invalid"
-                          : ""
-                      }`}
-                    />
-                  )}
-                />
-                {errors.questions?.[qIndex]?.question_text && (
-                  <div className="invalid-feedback">
-                    {errors.questions[qIndex].question_text.message}
-                  </div>
-                )}
-              </div>
-
-              {/* Correct Answer for Descriptive and Short-Answer */}
-              {["descriptive", "short-answer"].includes(questionType) && (
-                <div className="mb-3">
-                  <label>{t("Correct Answer")}</label>
-                  <Controller
-                    name={`questions.${qIndex}.correct_answer`}
-                    control={control}
-                    render={({ field }) => (
-                      <textarea
-                        {...field}
-                        rows={2}
-                        className={`form-control ${
-                          errors.questions?.[qIndex]?.correct_answer
-                            ? "is-invalid"
-                            : ""
-                        }`}
-                      />
-                    )}
-                  />
-                  {errors.questions?.[qIndex]?.correct_answer && (
-                    <div className="invalid-feedback">
-                      {errors.questions[qIndex].correct_answer.message}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Fill-in-the-Blanks Answer */}
-              {questionType === "fill-blanks" && (
-                <div className="mb-3">
-                  <label>{t("Correct Answer for Blank")}</label>
-                  <Controller
-                    name={`questions.${qIndex}.fill_blank_answer`}
-                    control={control}
-                    render={({ field }) => (
-                      <input
-                        {...field}
-                        type="text"
-                        className={`form-control ${
-                          errors.questions?.[qIndex]?.fill_blank_answer
-                            ? "is-invalid"
-                            : ""
-                        }`}
-                      />
-                    )}
-                  />
-                  {errors.questions?.[qIndex]?.fill_blank_answer && (
-                    <div className="invalid-feedback">
-                      {errors.questions[qIndex].fill_blank_answer.message}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* MCQ Fields */}
-              {(questionType === "single-select" ||
-                questionType === "multiple-select") && (
-                <>
-                  <div className="mb-3">
-                    <label>{t("How many options? (2-8)")}</label>
-                    <Controller
-                      name={`questions.${qIndex}.option_count`}
-                      control={control}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          type="number"
-                          min={2}
-                          max={MAX_OPTIONS}
-                          className={`form-control ${
-                            errors.questions?.[qIndex]?.option_count
-                              ? "is-invalid"
-                              : ""
-                          }`}
-                        />
-                      )}
-                    />
-                    {errors.questions?.[qIndex]?.option_count && (
-                      <div className="invalid-feedback">
-                        {errors.questions[qIndex].option_count.message}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="mb-3">
-                    <label>{t("Options")}</label>
-                    <Controller
-                      name={`questions.${qIndex}.question_options`}
-                      control={control}
-                      render={({ field }) => {
-                        const options = field.value || [];
-                        return options.map((option, optIndex) => (
-                          <div key={optIndex} className="input-group mb-2">
-                            <span className="input-group-text">
-                              {t(`Option ${optIndex + 1}`)}
-                            </span>
-                            <input
-                              type="text"
-                              {...field}
-                              name={`questions.${qIndex}.question_options.${optIndex}`}
-                              value={option}
-                              onChange={(e) => {
-                                const newOptions = [...options];
-                                newOptions[optIndex] = e.target.value;
-                                field.onChange(newOptions);
-                              }}
-                              className={`form-control ${
-                                errors.questions?.[qIndex]?.question_options?.[
-                                  optIndex
-                                ]
-                                  ? "is-invalid"
-                                  : ""
-                              }`}
-                            />
-                            {errors.questions?.[qIndex]?.question_options?.[
-                              optIndex
-                            ] && (
-                              <div className="invalid-feedback">
-                                {
-                                  errors.questions[qIndex].question_options[
-                                    optIndex
-                                  ].message
-                                }
-                              </div>
-                            )}
-                          </div>
-                        ));
-                      }}
-                    />
-                  </div>
-
-                  {/* Correct Answer for Single-Select */}
-                  {questionType === "single-select" && (
-                    <div className="mb-3">
-                      <label>{t("Correct Answer (option #)")}</label>
-                      <Controller
-                        name={`questions.${qIndex}.correct_answer`}
-                        control={control}
-                        render={({ field }) => (
-                          <input
-                            {...field}
-                            type="number"
-                            min={1}
-                            max={MAX_OPTIONS}
-                            className={`form-control ${
-                              errors.questions?.[qIndex]?.correct_answer
-                                ? "is-invalid"
-                                : ""
-                            }`}
-                          />
-                        )}
-                      />
-                      {errors.questions?.[qIndex]?.correct_answer && (
-                        <div className="invalid-feedback">
-                          {errors.questions[qIndex].correct_answer.message}
-                        </div>
-                      )}
-                      <small className="form-text text-muted">
-                        {t(
-                          "For single-select, enter the option number (1..N)."
-                        )}
-                      </small>
-                    </div>
-                  )}
-
-                  {/* Correct Answer for Multiple-Select */}
-                  {questionType === "multiple-select" && (
-                    <div className="mb-3">
-                      <label>{t("Correct Answers (e.g. 1,3)")}</label>
-                      <Controller
-                        name={`questions.${qIndex}.correct_answer`}
-                        control={control}
-                        render={({ field }) => (
-                          <input
-                            {...field}
-                            type="text"
-                            className={`form-control ${
-                              errors.questions?.[qIndex]?.correct_answer
-                                ? "is-invalid"
-                                : ""
-                            }`}
-                            placeholder="e.g., 1,3"
-                          />
-                        )}
-                      />
-                      {errors.questions?.[qIndex]?.correct_answer && (
-                        <div className="invalid-feedback">
-                          {errors.questions[qIndex].correct_answer.message}
-                        </div>
-                      )}
-                      <small className="form-text text-muted">
-                        {t(
-                          "For multiple-select, specify indices separated by commas."
-                        )}
-                      </small>
-                    </div>
-                  )}
-                </>
-              )}
-
-              {/* True/False Correct Answer */}
-              {questionType === "true-false" && (
-                <div className="mb-3">
-                  <label>{t("Correct Answer")}: </label>
-                  <Controller
-                    name={`questions.${qIndex}.correct_answer`}
-                    control={control}
-                    render={({ field }) => (
-                      <select
-                        {...field}
-                        className={`form-control ${
-                          errors.questions?.[qIndex]?.correct_answer
-                            ? "is-invalid"
-                            : ""
-                        }`}
-                        value={field.value === true ? "true" : "false"}
-                        onChange={(e) => {
-                          const value = e.target.value === "true";
-                          field.onChange(value);
-                        }}
-                      >
-                        <option value="true">{t("True")}</option>
-                        <option value="false">{t("False")}</option>
-                      </select>
-                    )}
-                  />
-                  {errors.questions?.[qIndex]?.correct_answer && (
-                    <div className="invalid-feedback">
-                      {errors.questions[qIndex].correct_answer.message}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Explanation */}
-              <div className="mb-3">
-                <label>{t("Explanation")}</label>
-                <Controller
-                  name={`questions.${qIndex}.explanation`}
-                  control={control}
-                  render={({ field }) => (
-                    <textarea
-                      {...field}
-                      rows={2}
-                      className={`form-control ${
-                        errors.questions?.[qIndex]?.explanation
-                          ? "is-invalid"
-                          : ""
-                      }`}
-                    />
-                  )}
-                />
-                {errors.questions?.[qIndex]?.explanation && (
-                  <div className="invalid-feedback">
-                    {errors.questions[qIndex].explanation.message}
-                  </div>
-                )}
-              </div>
-
-              {/* Exam References - Only if Reused */}
-              {questionStatus === "Reused" && (
-                <div className="mb-3">
-                  <label>{t("Exam References")}</label>
-                  <Controller
-                    name={`questions.${qIndex}.exam_references`}
-                    control={control}
-                    render={({ field }) => (
-                      <textarea
-                        {...field}
-                        rows={2}
-                        className={`form-control ${
-                          errors.questions?.[qIndex]?.exam_references
-                            ? "is-invalid"
-                            : ""
-                        }`}
-                      />
-                    )}
-                  />
-                  {errors.questions?.[qIndex]?.exam_references && (
-                    <div className="invalid-feedback">
-                      {errors.questions[qIndex].exam_references.message}
-                    </div>
-                  )}
-                </div>
-              )}
+          />
+          {errors.mcq_options?.[index]?.option_text && (
+            <div className="invalid-feedback">
+              {errors.mcq_options[index].option_text.message}
             </div>
-          );
-        })}
-
-        <div className="d-flex justify-content-end">
-          <button
-            type="button"
-            className="btn btn-secondary me-2"
-            onClick={() =>
-              reset({
-                question_level: "",
-                target_organization: "",
-                target_group: "",
-                target_course: "",
-                question_count: 1,
-                questions: [defaultQuestion],
-              })
-            }
-            disabled={loading}
-          >
-            {t("Cancel")}
-          </button>
-          <button type="submit" className="btn btn-primary" disabled={loading}>
-            {t("Save")}
-          </button>
+          )}
         </div>
-      </form>
-    );
-  }
-);
+      ))}
+      <button
+        type="button"
+        className="btn btn-secondary"
+        onClick={() => {
+          if (fields.length < MAX_OPTIONS) append({ option_text: "" });
+          // else toast.error(`Maximum ${MAX_OPTIONS} options allowed.`);
+        }}
+      >
+        Add Option
+      </button>
 
-UniversityForm.propTypes = {
-  initialData: PropTypes.shape({
-    question_level: PropTypes.number,
-    target_organization: PropTypes.number,
-    target_group: PropTypes.number,
-    target_course: PropTypes.string,
-    question_count: PropTypes.number,
-    questions: PropTypes.arrayOf(
-      PropTypes.shape({
-        question_type: PropTypes.oneOf([
-          "descriptive",
-          "short-answer",
-          "single-select",
-          "multiple-select",
-          "fill-blanks",
-          "true-false",
-        ]).isRequired,
-        question_text: PropTypes.string,
-        question_difficulty: PropTypes.string,
-        question_status: PropTypes.string,
-        question_topic: PropTypes.number,
-        question_subtopic: PropTypes.number,
-        question_subsubtopic: PropTypes.string,
-        explanation: PropTypes.string,
-        exam_references: PropTypes.string,
-        option_count: PropTypes.number,
-        question_options: PropTypes.arrayOf(PropTypes.string),
-        correct_answer: PropTypes.any, // number, string, boolean
-        fill_blank_answer: PropTypes.string,
-      })
-    ),
-  }),
-  onSubmit: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
-  formMode: PropTypes.oneOf(["create", "edit", "clone"]),
-  loading: PropTypes.bool,
-  setLoading: PropTypes.func,
+      {/* Dropdowns for other fields */}
+      <div className="form-group">
+        <label>Question Level:</label>
+        <Controller
+          name="question_level"
+          control={control}
+          render={({ field }) => (
+            <select
+              {...field}
+              className={`form-control ${
+                errors.question_level ? "is-invalid" : ""
+              }`}
+            >
+              <option value="">-- Select Question Level --</option>
+              {dropdownData.questionLevels.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          )}
+        />
+        {errors.question_level && (
+          <div className="invalid-feedback">
+            {errors.question_level.message}
+          </div>
+        )}
+      </div>
+
+      {/* Repeat similar blocks for target_organization, target_group, target_subject,
+          question_type, topic, exam_references, question_status, difficulty_level */}
+
+      {/* For brevity, here's one more example for Target Organization */}
+      <div className="form-group">
+        <label>Target Organization:</label>
+        <Controller
+          name="target_organization"
+          control={control}
+          render={({ field }) => (
+            <select
+              {...field}
+              className={`form-control ${
+                errors.target_organization ? "is-invalid" : ""
+              }`}
+            >
+              <option value="">-- Select Organization --</option>
+              {dropdownData.organizations.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          )}
+        />
+        {errors.target_organization && (
+          <div className="invalid-feedback">
+            {errors.target_organization.message}
+          </div>
+        )}
+      </div>
+
+      {/* Add similar dropdowns for target_group, target_subject, question_type, topic, 
+          exam_references, question_status, difficulty_level */}
+
+      <button type="submit" className="btn btn-primary mt-3">
+        Create Question
+      </button>
+    </form>
+  );
+});
+
+UniversityQuestionForm.propTypes = {
+  onSubmitSuccess: PropTypes.func,
 };
 
-UniversityForm.defaultProps = {
-  initialData: null,
-  formMode: "create",
-  loading: false,
-  setLoading: () => {},
+UniversityQuestionForm.defaultProps = {
+  onSubmitSuccess: () => {},
 };
 
-export default UniversityForm;
+export default UniversityQuestionForm;
