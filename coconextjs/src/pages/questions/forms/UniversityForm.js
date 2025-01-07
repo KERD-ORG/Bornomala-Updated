@@ -1,5 +1,4 @@
 import React, { useEffect, forwardRef, useImperativeHandle } from "react";
-import axios from "axios";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -8,7 +7,6 @@ import useCommonForm from "@/hooks/useCommonForm";
 import { executeAjaxOperationStandard } from "@/utils/fetcher";
 
 const MAX_OPTIONS = 8;
-const BASE_URL = "http://localhost:8000";
 const explanationLevels = ["Preliminary", "Intermediate", "Advanced"];
 
 const defaultValues = {
@@ -180,46 +178,34 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
   const onSubmitForm = async (data) => {
     console.log(data);
     try {
+      const promises = [];
       for (let i = 0; i < data.number_of_questions; i++) {
-        const formData = data.questions[i];
+        const formData = { ...data.questions[i] };
 
-        // Append top-level fields
+        // Append top-level fields to each question's form data
         formData["target_organization"] = data.target_organization;
         formData["question_level"] = data.question_level;
 
-        // for (let pair of formData.entries()) {
-        //   console.log(pair[0] + ": " + pair[1]);
-        // }
-        const res = await executeAjaxOperationStandard({
-          url: "/api/questions/",
+        // Create a promise for each API call and push it to the array
+        const promise = executeAjaxOperationStandard({
+          url: process.env.NEXT_PUBLIC_API_ENDPOINT_QUESTION,
           method: "post",
           data: JSON.stringify(formData),
           token,
         });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-    // try {
-    //   const processedData = {
-    //     ...data,
-    //     questions: data.questions.map((q) => ({
-    //       ...q,
-    //       exam_references: q.exam_references.map((ref) => ref.value || ref),
-    //     })),
-    //   };
 
-    //   await axios.post(`${BASE_URL}/questions/`, processedData, {
-    //     headers: {
-    //       Authorization: `Token YOUR_TOKEN_HERE`,
-    //       "Content-Type": "application/json",
-    //     },
-    //   });
-    //   reset(defaultValues);
-    //   if (onSubmitSuccess) onSubmitSuccess();
-    // } catch (error) {
-    //   console.error("Error creating questions:", error);
-    // }
+        promises.push(promise);
+      }
+
+      // Execute all promises concurrently. If any single request fails, Promise.all will reject.
+      const results = await Promise.all(promises);
+      window.location.reload();
+      // Process results if needed
+      console.log("All questions submitted successfully:", results);
+    } catch (error) {
+      // If one fails, all fail. Handle the error here.
+      console.error("An error occurred during question submission:", error);
+    }
   };
 
   return (
@@ -333,8 +319,32 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
               )}
             </div>
           </div>
-
           <NestedMCQOptions control={control} errors={errors} qIndex={qIndex} />
+
+          <div className="row mb-3">
+            <div className="col-12">
+              <label className="form-label">Correct Answer:</label>
+              <Controller
+                name={`questions.${qIndex}.correct_answer`}
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    className={`form-control ${
+                      errors?.questions?.[qIndex]?.correct_answer
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                  />
+                )}
+              />
+              {errors?.questions?.[qIndex]?.correct_answer && (
+                <div className="invalid-feedback">
+                  {errors?.questions?.[qIndex]?.correct_answer.message}
+                </div>
+              )}
+            </div>
+          </div>
 
           <div className="row mb-3">
             <div className="col-md-6">

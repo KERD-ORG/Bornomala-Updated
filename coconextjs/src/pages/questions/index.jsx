@@ -21,6 +21,7 @@ import DataGridComponent from "../../components/DataGridComponent";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import ImportData from "@/components/ImportData";
+import QuestionEditForm from "./forms/EditForm";
 
 export default function QuestionList() {
   const dataGridRef = useRef();
@@ -55,7 +56,8 @@ export default function QuestionList() {
   const closeModal = () => {
     setShowModal(false);
     setSelectedUniversity(null);
-    // if (formRef.current) {
+
+    // if (formRef.current ) {
     //   formRef.current.handleCancelClick();
     // }
   };
@@ -117,7 +119,7 @@ export default function QuestionList() {
         response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END)
       ) {
         setSuccessMessage(
-          response.data.message || t("Form submitted successfully.")
+          response.data.message || t("Record deleted successfully.")
         );
         setGlobalError("");
         handleDatagridDeleteRowFunction(id);
@@ -148,6 +150,7 @@ export default function QuestionList() {
   };
 
   const handleDatagridDeleteRowFunction = (id) => {
+    console.log(dataGridRef);
     if (dataGridRef.current) {
       dataGridRef.current.deleteRow(id);
     }
@@ -250,9 +253,7 @@ export default function QuestionList() {
           <div className="col-sm-12">
             <DataGridComponent
               ref={dataGridRef}
-              endpoint={
-                process.env.NEXT_PUBLIC_API_ENDPOINT_QUESTION
-              }
+              endpoint={process.env.NEXT_PUBLIC_API_ENDPOINT_QUESTION}
               columns={universityColumns}
               offset={0}
               limit={parseInt(process.env.NEXT_PUBLIC_ITEM_PER_PAGE)}
@@ -269,7 +270,7 @@ export default function QuestionList() {
             : formMode === "edit"
             ? t("Update Question") +
               ": " +
-              (selectedUniversity ? selectedUniversity.name : "")
+              (selectedUniversity ? selectedUniversity.name || "" : "")
             : formMode === "view"
             ? t("View Question") +
               ": " +
@@ -292,7 +293,7 @@ export default function QuestionList() {
               setLoading={setLoading} // Pass setLoading function
             />
           ) : formMode === "edit" || formMode === "clone" ? (
-            <UniversityForm
+            <QuestionEditForm
               ref={formRef}
               initialData={selectedUniversity}
               onSubmit={handleFormSubmit}

@@ -61,7 +61,6 @@ const DataGridComponent = forwardRef(
           token,
           locale: router.locale || "en",
         });
-        console.log(response)
         if (
           response.status >=
             parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
