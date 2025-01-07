@@ -71,95 +71,88 @@ const UniversityColumns = ({
       frozen: true,
       sortable: true,
       resizable: true,
-      renderCell(props) {
-        const { row } = props;
+      renderCell({ row }) {
         return <span>{formatDate(row.updated_at)}</span>;
       },
-      renderSummaryCell({ row }) {
-        return `${row.totalCount} records`;
-      },
     },
     {
-      key: "name",
-      name: t("Name"),
-      width: "130px",
+      key: "question_level_name",
+      name: t("Question Level"),
       resizable: true,
       sortable: true,
     },
     {
-      key: "under_category_name",
-      name: t("Category"),
-      width: "95px",
+      key: "target_group_name",
+      name: t("Target Group"),
       resizable: true,
       sortable: true,
     },
     {
-      key: "web_address",
-      name: t("Web Address"),
+      key: "subject_name",
+      name: t("Subject"),
+      resizable: true,
+      sortable: true,
+    },
+    {
+      key: "question_type_name",
+      name: t("Question Type"),
+      resizable: true,
+      sortable: true,
+    },
+    {
+      key: "topic_name",
+      name: t("Topic"),
+      resizable: true,
+      sortable: true,
+    },
+    {
+      key: "sub_topic_name",
+      name: t("Sub Topic"),
+      resizable: true,
+      sortable: true,
+    },
+    {
+      key: "sub_sub_topic_name",
+      name: t("Sub Sub Topic"),
+      resizable: true,
+      sortable: true,
+    },
+    {
+      key: "difficulty_level_name",
+      name: t("Difficulty Level"),
+      resizable: true,
+      sortable: true,
+    },
+    {
+      key: "target_organization_name",
+      name: t("Target Organization"),
+      resizable: true,
+      sortable: true,
+    },
+    {
+      key: "question_text",
+      name: t("Question Text"),
+      resizable: true,
+      sortable: true,
       width: "180px",
+    },
+    {
+      key: "correct_answer",
+      name: t("Correct Answer"),
       resizable: true,
       sortable: true,
     },
     {
-      key: "country_name",
-      name: t("Country"),
-      width: "130px",
+      key: "mcq_options",
+      name: t("MCQ Options"),
       resizable: true,
-      sortable: true,
-    },
-    {
-      key: "state_province_name",
-      name: t("State"),
-      width: "130px",
-      resizable: true,
-      sortable: true,
-    },
-    {
-      key: "city",
-      name: t("City"),
-      width: "100px",
-      resizable: true,
-      sortable: true,
-    },
-    {
-      key: "address_line1",
-      name: t("Address Line 1"),
-      width: "150px",
-      resizable: true,
-      sortable: true,
-    },
-    {
-      key: "address_line2",
-      name: t("Address Line 2"),
-      width: "150px",
-      resizable: true,
-      sortable: true,
-    },
-    {
-      key: "postal_code",
-      name: t("Postal Code"),
-      resizable: true,
-      sortable: true,
-    },
-    {
-      key: "status",
-      name: t("Status"),
-      width: "100px",
-      resizable: true,
-      renderCell(props) {
-        const { row } = props;
-        return (
-          <span
-            className={`badge badge-pill ${
-              row.status ? "bg-success" : "bg-danger"
-            }`}
-            style={{ borderRadius: "2px", fontSize: "10px" }}
-          >
-            {row.status ? t("Active") : t("Inactive")}
-          </span>
-        );
+      sortable: false,
+      renderCell({ row }) {
+        // Render MCQ options as a comma-separated list or similar
+        return row.mcq_options
+          ? row.mcq_options.map(opt => opt.option_text).join(", ")
+          : "";
       },
-      sortable: true,
     },
     {
       key: "action",

@@ -1,87 +1,75 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
-import slugify from 'slugify';
+import React from "react";
+import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
-const UniversityDetails = ({ university }) => {
+const QuestionDetails = ({ university:question }) => {
   const { t } = useTranslation();
 
-  if (!university) return null; 
-
-  const defaultThumbnail = process.env.NEXT_PUBLIC_LOGO_DEFAULT_THUMBNAIL
-  const imageUrl = university.logo_url ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${university.logo_url}` : defaultThumbnail;
+  if (!question) return null;
 
   return (
     <div className="container">
       <div className="row">
-        <div className='col-md-6'>
+        <div className="col-md-8">
           <ul className="list-group list-group-flush">
             <li className="list-group-item">
-              <strong>{t('ID')}:</strong> {university.id}
+              <strong>{t("ID")}:</strong> {question.id}
             </li>
             <li className="list-group-item">
-              <strong>{t('Name')}:</strong> {university.name}
+              <strong>{t("Updated At")}:</strong>{" "}
+              {new Date(question.updated_at).toLocaleString()}
             </li>
             <li className="list-group-item">
-              <strong>{t('Platform Address')}:</strong> <a href={`${process.env.NEXT_PUBLIC_MAIN_URL}/org/${slugify(university.name, { lower: true })}`} target="_blank" rel="noopener noreferrer">{process.env.NEXT_PUBLIC_MAIN_URL}/org/{slugify(university.name, { lower: true })}</a>
+              <strong>{t("Question Level")}:</strong>{" "}
+              {question.question_level_name}
             </li>
             <li className="list-group-item">
-              <strong>{t('Category')}:</strong> {university.under_category_name}
+              <strong>{t("Target Group")}:</strong> {question.target_group_name}
             </li>
             <li className="list-group-item">
-              <strong>{t('Web Address')}:</strong> <a href={university.web_address} target="_blank" rel="noopener noreferrer">{university.web_address}</a>
+              <strong>{t("Subject")}:</strong> {question.subject_name}
             </li>
             <li className="list-group-item">
-              <strong>{t('Country')}:</strong> {university.country_name}
+              <strong>{t("Question Type")}:</strong>{" "}
+              {question.question_type_name}
             </li>
             <li className="list-group-item">
-              <strong>{t('State')}:</strong> {university.state_province_name}
+              <strong>{t("Topic")}:</strong> {question.topic_name}
             </li>
             <li className="list-group-item">
-              <strong>{t('City')}:</strong> {university.city}
+              <strong>{t("Sub Topic")}:</strong> {question.sub_topic_name}
             </li>
             <li className="list-group-item">
-              <strong>{t('Address Line 1')}:</strong> {university.address_line1}
+              <strong>{t("Sub Sub Topic")}:</strong>{" "}
+              {question.sub_sub_topic_name}
             </li>
             <li className="list-group-item">
-              <strong>{t('Address Line 2')}:</strong> {university.address_line2}
+              <strong>{t("Difficulty Level")}:</strong>{" "}
+              {question.difficulty_level_name}
             </li>
             <li className="list-group-item">
-              <strong>{t('Postal Code')}:</strong> {university.postal_code}
+              <strong>{t("Target Organization")}:</strong>{" "}
+              {question.target_organization_name}
             </li>
             <li className="list-group-item">
-              <strong>{t('Logo')}:</strong>
-              {university.logo_url && (
-                <img
-                  src={imageUrl}
-                  alt="University Logo"
-                  style={{ width: '70px', height: 'auto', borderRadius: '2px', marginLeft: '10px' }}
-                />
+              <strong>{t("Question Text")}:</strong> {question.question_text}
+            </li>
+            <li className="list-group-item">
+              <strong>{t("Correct Answer")}:</strong> {question.correct_answer}
+            </li>
+            <li className="list-group-item">
+              <strong>{t("MCQ Options")}:</strong>
+              {question.mcq_options && question.mcq_options.length > 0 ? (
+                <ul>
+                  {question.mcq_options.map((option, index) => (
+                    <li key={index}>{option.option_text}</li>
+                  ))}
+                </ul>
+              ) : (
+                t("No options available")
               )}
             </li>
-            <li className="list-group-item">
-              <strong>{t('Status')}:</strong> <span className={`badge badge-pill ${university.status ? 'bg-success' : 'bg-danger'}`}>{university.status ? t('Active') : t('Inactive')}</span>
-            </li>
-          </ul>
-        </div>
-
-        <div className='col-md-6'>
-          <h5> User Information</h5>
-          <hr></hr>
-          <ul className="list-group list-group-flush">
-            <li className="list-group-item">
-              <strong>{t('First Name')}:</strong> {university.first_name}
-            </li>
-            <li className="list-group-item">
-              <strong>{t('Middle Name')}:</strong> {university.middle_name}
-            </li>
-            <li className="list-group-item">
-              <strong>{t('Last Name')}:</strong> {university.last_name}
-            </li>
-            <li className="list-group-item">
-              <strong>{t('Email')}:</strong> <a href={`mailto:${university.email}`} target="_blank" rel="noopener noreferrer">{university.email}</a>
-            </li>
-            
+            {/* You can include additional fields like explanations if needed */}
           </ul>
         </div>
       </div>
@@ -89,8 +77,8 @@ const UniversityDetails = ({ university }) => {
   );
 };
 
-UniversityDetails.propTypes = {
-  university: PropTypes.object,
+QuestionDetails.propTypes = {
+  question: PropTypes.object,
 };
 
-export default UniversityDetails;
+export default QuestionDetails;

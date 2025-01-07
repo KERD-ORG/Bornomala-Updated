@@ -145,6 +145,51 @@ class QuestionSerializer(serializers.ModelSerializer):
         queryset=DifficultyLevel.objects.all(), allow_null=True, required=False
     )
 
+    question_level_name = serializers.CharField(
+        source='question_level.name',
+        read_only=True
+    )
+
+    target_group_name = serializers.CharField(
+        source='target_group.name',
+        read_only=True
+    )
+
+    subject_name = serializers.CharField(
+        source='target_subject.name',
+        read_only=True
+    )
+
+    question_type_name = serializers.CharField(
+        source='question_type.name',
+        read_only=True
+    )
+
+    topic_name = serializers.CharField(
+        source='topic.name',
+        read_only=True
+    )
+
+    sub_topic_name = serializers.CharField(
+        source='sub_topic.name',
+        read_only=True
+    )
+
+    sub_sub_topic_name = serializers.CharField(
+        source='sub_sub_topic.name',
+        read_only=True
+    )
+
+    difficulty_level_name = serializers.CharField(
+        source='difficulty_level.name',
+        read_only=True
+    )
+
+    target_organization_name = serializers.CharField(
+        source='target_organization.name',
+        read_only=True
+    )
+
     # ManyToMany: references
     exam_references = serializers.PrimaryKeyRelatedField(
         many=True,
@@ -163,7 +208,10 @@ class QuestionSerializer(serializers.ModelSerializer):
             'target_subject', 'question_type', 'topic', 'sub_topic', 'sub_sub_topic',
             'exam_references', 'question_status', 'difficulty_level',
             'created_at', 'updated_at',
-            'mcq_options'
+            'mcq_options', "question_level_name", "target_group_name", "subject_name",
+            "question_type_name", "topic_name", "sub_topic_name", "sub_sub_topic_name",
+            "difficulty_level_name", "target_organization_name"
+            
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
 
