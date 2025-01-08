@@ -61,7 +61,7 @@ const mainSchema = yup.object().shape({
 });
 
 const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
-  const { token } = useCommonForm();
+  const { token, globalError, setGlobalError } = useCommonForm();
   const [modalShow, setModalShow] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
 
@@ -191,7 +191,10 @@ const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
 
         promises.push(promise);
       }
-      // return;
+      if (promises.length === 0) {
+        setGlobalError("You have to add at least 1 question");
+        return;
+      }
 
       // Execute all promises concurrently. If any single request fails, Promise.all will reject.
       const results = await Promise.all(promises);
@@ -201,6 +204,14 @@ const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
     } catch (error) {
       // If one fails, all fail. Handle the error here.
       console.error("An error occurred during question submission:", error);
+      let errorMessage = "An error occurred while submitting the form.";
+      if (error.message) {
+        errorMessage = error.message;
+      }
+      if (error.response && error.response.data && error.response.data.error) {
+        errorMessage = error.response.data.error;
+      }
+      setGlobalError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -208,6 +219,22 @@ const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmitForm)} className="container-fluid p-3">
+      {globalError && (
+        <div
+          className="alert alert-danger alert-dismissible fade show mt-3"
+          role="alert"
+        >
+          <strong>{globalError}</strong>
+          <button
+            type="button"
+            className="btn-close"
+            aria-label="Close"
+            onClick={() => {
+              setGlobalError("");
+            }}
+          ></button>
+        </div>
+      )}
       <div className="row g-4 mb-4">
         <div className="col-md-6">
           <div className="form-group">

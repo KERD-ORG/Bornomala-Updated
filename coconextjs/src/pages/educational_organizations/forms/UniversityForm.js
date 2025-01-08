@@ -14,11 +14,7 @@ import * as yup from "yup";
 import { useRouter } from "next/router";
 import { getToken, useTranslation } from "../../../utils/commonImports";
 import useCommonForm from "../../../hooks/useCommonForm";
-import {
-  fetchCountryList,
-  fetchStateList,
-  fetchOrganizationCategoryList,
-} from "../../../utils/apiService";
+import { fetchOrganizationCategoryList } from "../../../utils/apiService";
 
 const DIVISIONS = [
   { value: 1, label: "Dhaka" },
