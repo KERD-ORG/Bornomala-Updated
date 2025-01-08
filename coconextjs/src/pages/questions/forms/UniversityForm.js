@@ -1,10 +1,16 @@
-import React, { useEffect, forwardRef, useImperativeHandle } from "react";
+import React, {
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+  useState,
+} from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Select from "react-select";
 import useCommonForm from "@/hooks/useCommonForm";
 import { executeAjaxOperationStandard } from "@/utils/fetcher";
+import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 
 const MAX_OPTIONS = 8;
 const explanationLevels = ["Preliminary", "Intermediate", "Advanced"];
@@ -13,20 +19,20 @@ const defaultValues = {
   target_organization: "",
   question_level: "",
   number_of_questions: 1,
-  questions: [
-    {
-      question_text: "",
-      correct_answer: "",
-      target_subject: "",
-      exam_references: [],
-      question_type: "",
-      topic: "",
-      sub_topic: "",
-      difficulty_level: "",
-      mcq_options: [{ option_text: "" }, { option_text: "" }],
-      explanations: [],
-    },
-  ],
+  // questions: [
+  //   {
+  //     question_text: "",
+  //     correct_answer: "",
+  //     target_subject: "",
+  //     exam_references: [],
+  //     question_type: "",
+  //     topic: "",
+  //     sub_topic: "",
+  //     difficulty_level: "",
+  //     mcq_options: [{ option_text: "" }, { option_text: "" }],
+  //     explanations: [],
+  //   },
+  // ],
 };
 
 const questionSchema = yup.object().shape({
@@ -51,16 +57,19 @@ const questionSchema = yup.object().shape({
 const mainSchema = yup.object().shape({
   target_organization: yup.string().required("Organization is required"),
   question_level: yup.string().required("Question Level is required"),
-  number_of_questions: yup
-    .number()
-    .min(1)
-    .max(10)
-    .required("Number of questions is required"),
   questions: yup.array().of(questionSchema),
 });
 
-const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
+const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
   const { token } = useCommonForm();
+  const [modalShow, setModalShow] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(null);
+
+  const handleEditQuestion = (index) => {
+    setEditingIndex(index);
+    setModalShow(true);
+  };
+
   const {
     control,
     handleSubmit,
@@ -94,41 +103,23 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
     name: "questions",
   });
 
-  const numberOfQuestions = watch("number_of_questions");
-
-  // Adjust questions array when number_of_questions changes
-  useEffect(() => {
-    const currentCount = questionFields.length;
-    const desiredCount = numberOfQuestions;
-    if (desiredCount > currentCount) {
-      for (let i = currentCount; i < desiredCount; i++) {
-        appendQuestion({
-          question_text: "",
-          correct_answer: "",
-          target_subject: "",
-          exam_references: [],
-          question_type: "",
-          topic: "",
-          sub_topic: "",
-          difficulty_level: "",
-          mcq_options: [{ option_text: "" }, { option_text: "" }],
-        });
-      }
-    } else if (desiredCount < currentCount) {
-      for (let i = currentCount; i > desiredCount; i--) {
-        removeQuestion(i - 1);
-      }
+  const handleModalSubmit = (formData) => {
+    if (editingIndex !== null) {
+      removeQuestion(editingIndex);
+      appendQuestion(formData, {
+        shouldFocus: false,
+        focusName: `questions.${editingIndex}`,
+      });
+    } else {
+      appendQuestion(formData);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [numberOfQuestions]);
+    setModalShow(false);
+    setEditingIndex(null);
+  };
 
   useImperativeHandle(ref, () => ({
     resetForm: () => reset(defaultValues),
   }));
-
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
 
   useEffect(() => {
     const fetchDropdownData = async () => {
@@ -180,10 +171,10 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
   }, [token]);
 
   const onSubmitForm = async (data) => {
-    console.log(data);
+    setLoading(true);
     try {
       const promises = [];
-      for (let i = 0; i < data.number_of_questions; i++) {
+      for (let i = 0; i < data.questions.length; i++) {
         const formData = { ...data.questions[i] };
 
         // Append top-level fields to each question's form data
@@ -200,6 +191,7 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
 
         promises.push(promise);
       }
+      // return;
 
       // Execute all promises concurrently. If any single request fails, Promise.all will reject.
       const results = await Promise.all(promises);
@@ -209,182 +201,335 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
     } catch (error) {
       // If one fails, all fail. Handle the error here.
       console.error("An error occurred during question submission:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitForm)}>
-      {/* Render dropdowns for organization and question level */}
-      <div className="row mb-3">
-        <div className="col-md-12">
-          <label className="form-label">Target Organization:</label>
-          <Controller
-            name="target_organization"
-            control={control}
-            render={({ field }) => (
-              <select
-                {...field}
-                className={`form-control ${
-                  errors.target_organization ? "is-invalid" : ""
-                }`}
-              >
-                <option value="">-- Select Organization --</option>
-                {dropdownData.organizations.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            )}
-          />
-          {errors.target_organization && (
-            <div className="invalid-feedback">
-              {errors.target_organization.message}
-            </div>
-          )}
-        </div>
-      </div>
-      <div className="row mb-3">
+    <form onSubmit={handleSubmit(onSubmitForm)} className="container-fluid p-3">
+      <div className="row g-4 mb-4">
         <div className="col-md-6">
-          <label className="form-label">Question Level:</label>
-          <Controller
-            name="question_level"
-            control={control}
-            render={({ field }) => (
-              <select
-                {...field}
-                className={`form-control ${
-                  errors.question_level ? "is-invalid" : ""
-                }`}
-              >
-                <option value="">-- Select Question Level --</option>
-                {dropdownData.questionLevels.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
+          <div className="form-group">
+            <label className="form-label fw-semibold">
+              Target Organization
+            </label>
+            <Controller
+              name="target_organization"
+              control={control}
+              render={({ field }) => (
+                <select
+                  {...field}
+                  className={`form-select ${
+                    errors.target_organization ? "is-invalid" : ""
+                  }`}
+                >
+                  <option value="">Select Organization</option>
+                  {dropdownData.organizations.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              )}
+            />
+            {errors.target_organization && (
+              <div className="invalid-feedback">
+                {errors.target_organization.message}
+              </div>
             )}
-          />
-          {errors.question_level && (
-            <div className="invalid-feedback">
-              {errors.question_level.message}
-            </div>
-          )}
+          </div>
         </div>
+
         <div className="col-md-6">
-          <label className="form-label">Number of Questions (1-10):</label>
-          <Controller
-            name="number_of_questions"
-            control={control}
-            render={({ field }) => (
-              <input
-                {...field}
-                type="number"
-                min="1"
-                max="10"
-                className="form-control"
-              />
+          <div className="form-group">
+            <label className="form-label fw-semibold">Question Level</label>
+            <Controller
+              name="question_level"
+              control={control}
+              render={({ field }) => (
+                <select
+                  {...field}
+                  className={`form-select ${
+                    errors.question_level ? "is-invalid" : ""
+                  }`}
+                >
+                  <option value="">Select Question Level</option>
+                  {dropdownData.questionLevels.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              )}
+            />
+            {errors.question_level && (
+              <div className="invalid-feedback">
+                {errors.question_level.message}
+              </div>
             )}
-          />
-          {errors.number_of_questions && (
-            <div className="invalid-feedback d-block">
-              {errors.number_of_questions.message}
-            </div>
-          )}
+          </div>
         </div>
       </div>
 
-      {questionFields.map((question, qIndex) => (
-        <div key={question.id} className="border p-3 mb-4">
-          <h4>Question {qIndex + 1}</h4>
-          <div className="row mb-3">
-            <div className="col-12">
-              <label className="form-label">Question Text:</label>
-              <Controller
-                name={`questions.${qIndex}.question_text`}
-                control={control}
-                render={({ field }) => (
-                  <textarea
-                    {...field}
-                    className={`form-control ${
-                      errors?.questions?.[qIndex]?.question_text
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    rows={4}
-                  />
-                )}
-              />
-              {errors?.questions?.[qIndex]?.question_text && (
-                <div className="invalid-feedback">
-                  {errors.questions[qIndex].question_text.message}
+      <div className="question-list">
+        {questionFields.length === 0 ? (
+          <p className="text-muted">No questions added yet.</p>
+        ) : (
+          questionFields.map((question, index) => (
+            <div key={question.id} className="card mb-3 shadow-sm">
+              <div className="card-body">
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h5 className="card-title mb-0">Question {index + 1}</h5>
+                  <div className="btn-group">
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary btn-sm"
+                      onClick={() => handleEditQuestion(index)}
+                    >
+                      <i className="bi bi-pencil me-1"></i>
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-outline-danger btn-sm"
+                      onClick={() => removeQuestion(index)}
+                    >
+                      <i className="bi bi-trash me-1"></i>
+                      Remove
+                    </button>
+                  </div>
                 </div>
-              )}
+                <p className="card-text text-muted mb-0">
+                  {question.question_text}
+                </p>
+              </div>
             </div>
-          </div>
-          <NestedMCQOptions control={control} errors={errors} qIndex={qIndex} />
+          ))
+        )}
+      </div>
 
-          <div className="row mb-3">
-            <div className="col-12">
-              <label className="form-label">Correct Answer:</label>
+      <div className="mb-4">
+        <button
+          type="button"
+          className="btn btn-secondary d-flex align-items-center gap-2"
+          onClick={() => {
+            setModalShow(true);
+            setEditingIndex(null);
+          }}
+        >
+          <i className="bi bi-plus-lg"></i>
+          Add Question
+        </button>
+      </div>
+
+      <QuestionModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        onSubmit={handleModalSubmit}
+        dropdownData={dropdownData}
+        initialData={
+          editingIndex !== null ? questionFields[editingIndex] : null
+        }
+      />
+
+      <div className="row mt-4">
+        <div className="col-12">
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn btn-primary w-100 w-md-auto"
+          >
+            Create Questions
+          </button>
+        </div>
+      </div>
+    </form>
+  );
+});
+
+const QuestionModal = ({
+  show,
+  onHide,
+  onSubmit,
+  dropdownData,
+  initialData,
+}) => {
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(questionSchema),
+    defaultValues: initialData || {
+      question_text: "",
+      correct_answer: "",
+      target_subject: "",
+      exam_references: [],
+      question_type: "",
+      topic: "",
+      sub_topic: "",
+      difficulty_level: "",
+      mcq_options: [{ option_text: "" }, { option_text: "" }],
+      explanations: [],
+    },
+  });
+
+  useEffect(() => {
+    if (show && !initialData) {
+      reset({
+        question_text: "",
+        correct_answer: "",
+        target_subject: "",
+        exam_references: [],
+        question_type: "",
+        topic: "",
+        sub_topic: "",
+        difficulty_level: "",
+        mcq_options: [{ option_text: "" }, { option_text: "" }],
+        explanations: [],
+      });
+    }
+  }, [show, initialData, reset]);
+
+  useEffect(() => {
+    if (initialData) reset(initialData);
+  }, [initialData, reset]);
+
+  return (
+    <Modal show={show} onHide={onHide} size="lg" backdrop="static">
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {initialData ? "Edit Question" : "Add New Question"}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group controlId={`question_type`}>
+                <Form.Label>Question Type:</Form.Label>
+                <Controller
+                  name={`question_type`}
+                  control={control}
+                  render={({ field }) => (
+                    <Form.Select {...field} isInvalid={!!errors?.question_type}>
+                      <option value="">-- Select Question Type --</option>
+                      {dropdownData.questionTypes.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  )}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors?.question_type?.message}
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+
+            <Col md={6}>
+              <Form.Label>Subject:</Form.Label>
               <Controller
-                name={`questions.${qIndex}.correct_answer`}
+                name="target_subject"
                 control={control}
                 render={({ field }) => (
-                  <input
-                    {...field}
-                    className={`form-control ${
-                      errors?.questions?.[qIndex]?.correct_answer
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                  />
-                )}
-              />
-              {errors?.questions?.[qIndex]?.correct_answer && (
-                <div className="invalid-feedback">
-                  {errors?.questions?.[qIndex]?.correct_answer.message}
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="row mb-3">
-            <div className="col-md-6">
-              <label className="form-label">Subject:</label>
-              <Controller
-                name={`questions.${qIndex}.target_subject`}
-                control={control}
-                render={({ field }) => (
-                  <select
-                    {...field}
-                    className={`form-control ${
-                      errors?.questions?.[qIndex]?.target_subject
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                  >
+                  <Form.Select isInvalid={!!errors.target_subject} {...field}>
                     <option value="">-- Select Subject --</option>
                     {dropdownData.subjects.map((opt) => (
                       <option key={opt.value} value={opt.value}>
                         {opt.label}
                       </option>
                     ))}
-                  </select>
+                  </Form.Select>
                 )}
               />
-              {errors?.questions?.[qIndex]?.target_subject && (
-                <div className="invalid-feedback">
-                  {errors.questions[qIndex].target_subject.message}
-                </div>
-              )}
-            </div>
+              <Form.Control.Feedback type="invalid">
+                {errors.target_subject?.message}
+              </Form.Control.Feedback>
+            </Col>
+          </Row>
 
-            <div className="col-md-6">
-              <label className="form-label">Exam References:</label>
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group controlId={`topic`}>
+                <Form.Label>Topic:</Form.Label>
+                <Controller
+                  name={`topic`}
+                  control={control}
+                  render={({ field }) => (
+                    <Form.Select {...field} isInvalid={!!errors?.topic}>
+                      <option value="">-- Select Topic --</option>
+                      {dropdownData.topics.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  )}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors?.topic?.message}
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+
+            <Col md={6}>
+              <Form.Group controlId={`sub_topic`}>
+                <Form.Label>Subtopic:</Form.Label>
+                <Controller
+                  name={`sub_topic`}
+                  control={control}
+                  render={({ field }) => (
+                    <Form.Select {...field} isInvalid={!!errors?.sub_topic}>
+                      <option value="">-- Select Subtopic --</option>
+                      {dropdownData.subTopics.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  )}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors?.sub_topic?.message}
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group controlId={`difficulty_level`}>
+                <Form.Label>Difficulty:</Form.Label>
+                <Controller
+                  name={`difficulty_level`}
+                  control={control}
+                  render={({ field }) => (
+                    <Form.Select
+                      {...field}
+                      isInvalid={!!errors?.difficulty_level}
+                    >
+                      <option value="">-- Select Difficulty --</option>
+                      {dropdownData.difficultyLevels.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  )}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors?.difficulty_level?.message}
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Label>Exam References:</Form.Label>
               <Controller
-                name={`questions.${qIndex}.exam_references`}
+                name="exam_references"
                 control={control}
                 render={({ field }) => {
                   const { onChange, value, ref } = field;
@@ -400,165 +545,83 @@ const UniversityQuestionForm = forwardRef(({ onSubmitSuccess }, ref) => {
                         onChange(selectedOptions.map((option) => option.value))
                       }
                       classNamePrefix={
-                        errors?.questions?.[qIndex]?.exam_references
-                          ? "is-invalid"
-                          : "select"
+                        errors.exam_references ? "is-invalid" : "select"
                       }
                     />
                   );
                 }}
               />
-              {errors?.questions?.[qIndex]?.exam_references && (
+              {errors.exam_references && (
                 <div className="invalid-feedback d-block">
-                  {errors.questions[qIndex].exam_references.message}
+                  {errors.exam_references?.message}
                 </div>
               )}
-            </div>
-          </div>
+            </Col>
+          </Row>
 
-          <div className="row mb-3">
-            <div className="col-md-6">
-              <label className="form-label">Question Type:</label>
+          <Row className="mb-3">
+            <Col>
+              <Form.Label>Question Text:</Form.Label>
               <Controller
-                name={`questions.${qIndex}.question_type`}
+                name="question_text"
                 control={control}
                 render={({ field }) => (
-                  <select
+                  <Form.Control
+                    as="textarea"
+                    rows={4}
+                    isInvalid={!!errors.question_text}
                     {...field}
-                    className={`form-control ${
-                      errors?.questions?.[qIndex]?.question_type
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                  >
-                    <option value="">-- Select Question Type --</option>
-                    {dropdownData.questionTypes.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
+                  />
                 )}
               />
-              {errors?.questions?.[qIndex]?.question_type && (
-                <div className="invalid-feedback">
-                  {errors.questions[qIndex].question_type.message}
-                </div>
-              )}
-            </div>
+              <Form.Control.Feedback type="invalid">
+                {errors.question_text?.message}
+              </Form.Control.Feedback>
+            </Col>
+          </Row>
 
-            <div className="col-md-6">
-              <label className="form-label">Topic:</label>
+          <NestedMCQOptions control={control} errors={errors} qIndex={0} />
+
+          <Row className="mb-3">
+            <Col>
+              <Form.Label>Correct Answer:</Form.Label>
               <Controller
-                name={`questions.${qIndex}.topic`}
+                name="correct_answer"
                 control={control}
                 render={({ field }) => (
-                  <select
+                  <Form.Control
+                    type="text"
+                    isInvalid={!!errors.correct_answer}
                     {...field}
-                    className={`form-control ${
-                      errors?.questions?.[qIndex]?.topic ? "is-invalid" : ""
-                    }`}
-                  >
-                    <option value="">-- Select Topic --</option>
-                    {dropdownData.topics.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
+                  />
                 )}
               />
-              {errors?.questions?.[qIndex]?.topic && (
-                <div className="invalid-feedback">
-                  {errors.questions[qIndex].topic.message}
-                </div>
-              )}
-            </div>
-          </div>
+              <Form.Control.Feedback type="invalid">
+                {errors.correct_answer?.message}
+              </Form.Control.Feedback>
+            </Col>
+          </Row>
 
-          <div className="row mb-3">
-            <div className="col-md-6">
-              <label className="form-label">Subtopic:</label>
-              <Controller
-                name={`questions.${qIndex}.sub_topic`}
-                control={control}
-                render={({ field }) => (
-                  <select
-                    {...field}
-                    className={`form-control ${
-                      errors?.questions?.[qIndex]?.sub_topic ? "is-invalid" : ""
-                    }`}
-                  >
-                    <option value="">-- Select Subtopic --</option>
-                    {dropdownData.subTopics.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              />
-              {errors?.questions?.[qIndex]?.sub_topic && (
-                <div className="invalid-feedback">
-                  {errors.questions[qIndex].sub_topic.message}
-                </div>
-              )}
-            </div>
-
-            <div className="col-md-6">
-              <label className="form-label">Difficulty:</label>
-              <Controller
-                name={`questions.${qIndex}.difficulty_level`}
-                control={control}
-                render={({ field }) => (
-                  <select
-                    {...field}
-                    className={`form-control ${
-                      errors?.questions?.[qIndex]?.difficulty_level
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                  >
-                    <option value="">-- Select Difficulty --</option>
-                    {dropdownData.difficultyLevels.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              />
-              {errors?.questions?.[qIndex]?.difficulty_level && (
-                <div className="invalid-feedback">
-                  {errors.questions[qIndex].difficulty_level.message}
-                </div>
-              )}
-            </div>
-          </div>
-
-          <NestedExplanations
-            control={control}
-            errors={errors}
-            qIndex={qIndex}
-          />
-        </div>
-      ))}
-
-      <div className="row">
-        <div className="col-12">
-          <button type="submit" className="btn btn-primary">
-            Create Questions
-          </button>
-        </div>
-      </div>
-    </form>
+          {/* Continue adding other fields similarly using react-bootstrap components */}
+          <NestedExplanations control={control} errors={errors} qIndex={0} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={onHide}>
+            Cancel
+          </Button>
+          <Button variant="primary" type="submit">
+            {initialData ? "Save Changes" : "Add Question"}
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </Modal>
   );
-});
+};
 
 const NestedMCQOptions = ({ control, errors, qIndex }) => {
   const { fields, append, remove } = useFieldArray({
     control,
-    name: `questions.${qIndex}.mcq_options`,
+    name: `mcq_options`,
   });
 
   return (
@@ -568,14 +631,13 @@ const NestedMCQOptions = ({ control, errors, qIndex }) => {
         {fields.map((field, oIndex) => (
           <div key={field.id} className="input-group mb-2">
             <Controller
-              name={`questions.${qIndex}.mcq_options.${oIndex}.option_text`}
+              name={`mcq_options.${oIndex}.option_text`}
               control={control}
               render={({ field }) => (
                 <input
                   {...field}
                   className={`form-control ${
-                    errors?.questions?.[qIndex]?.mcq_options?.[oIndex]
-                      ?.option_text
+                    errors?.mcq_options?.[oIndex]?.option_text
                       ? "is-invalid"
                       : ""
                   }`}
@@ -592,13 +654,9 @@ const NestedMCQOptions = ({ control, errors, qIndex }) => {
                 Remove
               </button>
             )}
-            {errors?.questions?.[qIndex]?.mcq_options?.[oIndex]
-              ?.option_text.message && (
+            {errors?.mcq_options?.[oIndex]?.option_text.message && (
               <div className="invalid-feedback">
-                {
-                  errors?.questions?.[qIndex]?.mcq_options?.[oIndex]
-                    ?.option_text.message
-                }
+                {errors?.mcq_options?.[oIndex]?.option_text.message}
               </div>
             )}
           </div>
@@ -619,7 +677,7 @@ const NestedMCQOptions = ({ control, errors, qIndex }) => {
 const NestedExplanations = ({ control, errors, qIndex }) => {
   const { fields, append, remove } = useFieldArray({
     control,
-    name: `questions.${qIndex}.explanations`,
+    name: `explanations`,
   });
 
   return (
