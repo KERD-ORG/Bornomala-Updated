@@ -77,7 +77,6 @@ export default function Signup({ locale }) {
 
 
 
-
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -298,7 +297,7 @@ export default function Signup({ locale }) {
                                         <option value="">{t('Select your role')}</option>
                                         {/* Only show the "Student" option */}
                                         {roles
-                                            .filter((roleName) => roleName === 'Student')
+                                            // .filter((roleName) => roleName === 'Student')
                                             .map((roleName) => (
                                                 <option key={roleName} value={roleName}>
                                                     {roleName}
