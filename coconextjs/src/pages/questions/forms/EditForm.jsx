@@ -68,12 +68,15 @@ const QuestionEditForm = forwardRef(
       control,
       handleSubmit,
       reset,
-      setValue,
+      watch,
       formState: { errors },
     } = useForm({
       resolver: yupResolver(mainSchema),
       defaultValues,
     });
+
+    const topic = watch("topic");
+    const sub_topic = watch("sub_topic");
 
     const [dropdownData, setDropdownData] = React.useState({
       subjects: [],
@@ -125,6 +128,7 @@ const QuestionEditForm = forwardRef(
             if (response && response.status >= 200 && response.status < 300) {
               const data = response.data;
               newData[key] = data.map((item) => ({
+                ...item,
                 value: item.id,
                 label: item.name || item.reference_name || item.title || "",
               }));
@@ -341,15 +345,18 @@ const QuestionEditForm = forwardRef(
               <Form.Label>Subtopic:</Form.Label>
               <Controller
                 name={`sub_topic`}
+                disabled={!topic}
                 control={control}
                 render={({ field }) => (
                   <Form.Select {...field} isInvalid={!!errors?.sub_topic}>
                     <option value="">-- Select Subtopic --</option>
-                    {dropdownData.subTopics.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
+                    {dropdownData.subTopics
+                      .filter((val) => val.topic == topic)
+                      .map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
                   </Form.Select>
                 )}
               />
@@ -361,10 +368,11 @@ const QuestionEditForm = forwardRef(
 
           <Col md={4}>
             <Form.Group controlId={`sub_sub_topic`}>
-              <Form.Label>Topic:</Form.Label>
+              <Form.Label>Sub Sub Topic:</Form.Label>
               <Controller
                 name={`sub_sub_topic`}
                 control={control}
+                disabled={!sub_topic}
                 render={({ field }) => (
                   <Form.Select {...field} isInvalid={!!errors?.sub_sub_topic}>
                     <option value="">-- Select Sub Subtopic --</option>

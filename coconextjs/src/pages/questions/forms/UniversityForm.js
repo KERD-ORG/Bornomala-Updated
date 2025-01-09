@@ -93,6 +93,7 @@ const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
     questionStatuses: [],
     difficultyLevels: [],
     subTopics: [],
+    subSubTopics: [],
   });
 
   const {
@@ -155,6 +156,7 @@ const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
           if (response && response.status >= 200 && response.status < 300) {
             const data = response.data;
             newData[key] = data.map((item) => ({
+              ...item,
               value: item.id,
               label: item.name || item.reference_name || item.title || "",
             }));
@@ -389,6 +391,7 @@ export const QuestionModal = ({
     handleSubmit,
     reset,
     formState: { errors },
+    watch,
   } = useForm({
     resolver: yupResolver(questionSchema),
     defaultValues: initialData || {
@@ -406,6 +409,10 @@ export const QuestionModal = ({
       sub_sub_topic: "",
     },
   });
+
+  const topic = watch("topic");
+  console.log(topic, dropdownData.subTopics);
+  const subTopic = watch("sub_topic");
 
   useEffect(() => {
     if (show && !initialData) {
@@ -511,14 +518,17 @@ export const QuestionModal = ({
                 <Controller
                   name={`sub_topic`}
                   control={control}
+                  disabled={!topic}
                   render={({ field }) => (
                     <Form.Select {...field} isInvalid={!!errors?.sub_topic}>
                       <option value="">-- Select Subtopic --</option>
-                      {dropdownData.subTopics.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
+                      {dropdownData.subTopics
+                        .filter((val) => val.topic == topic)
+                        .map((opt) => (
+                          <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </option>
+                        ))}
                     </Form.Select>
                   )}
                 />
@@ -530,10 +540,11 @@ export const QuestionModal = ({
 
             <Col md={4}>
               <Form.Group controlId={`sub_sub_topic`}>
-                <Form.Label>Topic:</Form.Label>
+                <Form.Label>Sub Sub Topic:</Form.Label>
                 <Controller
                   name={`sub_sub_topic`}
                   control={control}
+                  disabled={!subTopic}
                   render={({ field }) => (
                     <Form.Select {...field} isInvalid={!!errors?.sub_sub_topic}>
                       <option value="">-- Select Sub Subtopic --</option>
