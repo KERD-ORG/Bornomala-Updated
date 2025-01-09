@@ -7,6 +7,8 @@ import useCommonForm from "@/hooks/useCommonForm";
 import { executeAjaxOperationStandard } from "@/utils/fetcher";
 import { useRouter } from "next/router";
 import Select from "react-select";
+import { Button, Col, Form, Row } from "react-bootstrap";
+import { sub } from "date-fns";
 
 const MAX_OPTIONS = 8;
 const explanationLevels = ["Preliminary", "Intermediate", "Advanced"];
@@ -24,6 +26,8 @@ const defaultValues = {
   difficulty_level: "",
   mcq_options: [{ option_text: "" }, { option_text: "" }],
   explanations: [],
+  target_group: "",
+  sub_sub_topic: "",
 };
 
 // Define validation schema as needed for editing a question
@@ -46,6 +50,7 @@ const mainSchema = yup.object().shape({
       })
     )
     .min(2, "At least two options are required"),
+  target_group: yup.string().required("Target Group is required"),
 });
 
 const QuestionEditForm = forwardRef(
@@ -79,6 +84,8 @@ const QuestionEditForm = forwardRef(
       subTopics: [],
       organizations: [],
       questionLevels: [],
+      targetGroups: [],
+      subSubTopics: [],
     });
 
     useImperativeHandle(ref, () => ({
@@ -98,6 +105,7 @@ const QuestionEditForm = forwardRef(
           examReferences: "api/exam-references",
           questionStatuses: "api/question-statuses",
           difficultyLevels: "api/difficulty-levels",
+          subTopics: "api/subtopics",
         };
 
         try {
@@ -154,6 +162,8 @@ const QuestionEditForm = forwardRef(
           explanations: initialData.explanations.length
             ? initialData.explanations
             : [],
+          target_group: initialData.target_group || "",
+          sub_sub_topic: initialData.sub_sub_topic || "",
         });
       }
     }, [initialData, reset]);
@@ -213,236 +223,207 @@ const QuestionEditForm = forwardRef(
     };
 
     return (
-      <form onSubmit={handleSubmit(onSubmitForm)}>
-        <div className="row mb-3">
-          <div className="col-md-6">
-            <label className="form-label">Target Organization:</label>
+      <Form onSubmit={handleSubmit(onSubmitForm)}>
+        <Row className="mb-3">
+          <Col md={6}>
+            <Form.Label>Target Organization:</Form.Label>
             <Controller
               name="target_organization"
               control={control}
               render={({ field }) => (
-                <select
+                <Form.Select
+                  isInvalid={!!errors.target_organization}
                   {...field}
-                  className={`form-control ${
-                    errors.target_organization ? "is-invalid" : ""
-                  }`}
                 >
-                  <option value="">-- Select Organization --</option>
+                  <option value="">-- Select Target Organization --</option>
                   {dropdownData.organizations.map((opt) => (
                     <option key={opt.value} value={opt.value}>
                       {opt.label}
                     </option>
                   ))}
-                </select>
+                </Form.Select>
               )}
             />
-            {errors.target_organization && (
-              <div className="invalid-feedback">
-                {errors.target_organization.message}
-              </div>
-            )}
-          </div>
-
-          <div className="col-md-6">
-            <label className="form-label">Question Level:</label>
+            <Form.Control.Feedback type="invalid">
+              {errors.target_organization?.message}
+            </Form.Control.Feedback>
+          </Col>
+          <Col md={6}>
+            <Form.Label>Question Level:</Form.Label>
             <Controller
               name="question_level"
               control={control}
               render={({ field }) => (
-                <select
-                  {...field}
-                  className={`form-control ${
-                    errors.question_level ? "is-invalid" : ""
-                  }`}
-                >
+                <Form.Select isInvalid={!!errors.question_level} {...field}>
                   <option value="">-- Select Question Level --</option>
                   {dropdownData.questionLevels.map((opt) => (
                     <option key={opt.value} value={opt.value}>
                       {opt.label}
                     </option>
                   ))}
-                </select>
+                </Form.Select>
               )}
             />
-            {errors.question_level && (
-              <div className="invalid-feedback">
-                {errors.question_level.message}
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="row mb-3">
-          <div className="col-12">
-            <label className="form-label">Question Text:</label>
+            <Form.Control.Feedback type="invalid">
+              {errors.question_level?.message}
+            </Form.Control.Feedback>
+          </Col>
+        </Row>
+        <Row className="mb-3">
+          <Col md={6}>
+            <Form.Label>Target Group:</Form.Label>
             <Controller
-              name="question_text"
+              name="target_group"
               control={control}
               render={({ field }) => (
-                <textarea
-                  {...field}
-                  className={`form-control ${
-                    errors.question_text ? "is-invalid" : ""
-                  }`}
-                  rows={4}
-                />
+                <Form.Select isInvalid={!!errors.target_group} {...field}>
+                  <option value="">-- Select Target Group --</option>
+                  {dropdownData.targetGroups.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </Form.Select>
               )}
             />
-            {errors.question_text && (
-              <div className="invalid-feedback">
-                {errors.question_text.message}
-              </div>
-            )}
-          </div>
-        </div>
-        <NestedMCQOptions control={control} errors={errors} />
-
-        <div className="row mb-3">
-          <div className="col-12">
-            <label className="form-label">Correct Answer:</label>
-            <Controller
-              name="correct_answer"
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  className={`form-control ${
-                    errors.correct_answer ? "is-invalid" : ""
-                  }`}
-                />
-              )}
-            />
-            {errors.correct_answer && (
-              <div className="invalid-feedback">
-                {errors.correct_answer.message}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Render Subject, Question Type, Topic, Subtopic, Difficulty dropdowns */}
-        <div className="row mb-3">
-          <div className="col-md-6">
-            <label className="form-label">Subject:</label>
+            <Form.Control.Feedback type="invalid">
+              {errors.target_group?.message}
+            </Form.Control.Feedback>
+          </Col>
+          <Col md={6}>
+            <Form.Label>Subject:</Form.Label>
             <Controller
               name="target_subject"
               control={control}
               render={({ field }) => (
-                <select {...field} className="form-control">
+                <Form.Select isInvalid={!!errors.target_subject} {...field}>
                   <option value="">-- Select Subject --</option>
                   {dropdownData.subjects.map((opt) => (
                     <option key={opt.value} value={opt.value}>
                       {opt.label}
                     </option>
                   ))}
-                </select>
+                </Form.Select>
               )}
             />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label">Question Type:</label>
-            <Controller
-              name="question_type"
-              control={control}
-              render={({ field }) => (
-                <select {...field} className="form-control">
-                  <option value="">-- Select Question Type --</option>
-                  {dropdownData.questionTypes.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              )}
-            />
-          </div>
-        </div>
+            <Form.Control.Feedback type="invalid">
+              {errors.target_subject?.message}
+            </Form.Control.Feedback>
+          </Col>
+        </Row>
 
-        {/* Additional dropdowns for Topic, Sub Topic, Difficulty Level */}
-        <div className="row mb-3">
-          <div className="col-md-6">
-            <label className="form-label">Topic:</label>
-            <Controller
-              name="topic"
-              control={control}
-              render={({ field }) => (
-                <select {...field} className="form-control">
-                  <option value="">-- Select Topic --</option>
-                  {dropdownData.topics.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              )}
-            />
-            {errors.topic && (
-              <div className="invalid-feedback">{errors.topic.message}</div>
-            )}
-          </div>
-          <div className="col-md-6">
-            <label className="form-label">Sub Topic:</label>
-            <Controller
-              name="sub_sub_topic"
-              control={control}
-              render={({ field }) => (
-                <select {...field} className="form-control">
-                  <option value="">-- Select Sub Topic --</option>
-                  {dropdownData.subTopics.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              )}
-            />
-            {errors.sub_sub_topic && (
-              <div className="invalid-feedback">
-                {errors.sub_sub_topic.message}
-              </div>
-            )}
-          </div>
-        </div>
+        <Row className="mb-3">
+          <Col md={4}>
+            <Form.Group controlId={`topic`}>
+              <Form.Label>Topic:</Form.Label>
+              <Controller
+                name={`topic`}
+                control={control}
+                render={({ field }) => (
+                  <Form.Select {...field} isInvalid={!!errors?.topic}>
+                    <option value="">-- Select Topic --</option>
+                    {dropdownData.topics.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </Form.Select>
+                )}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors?.topic?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Col>
 
-        <div className="row mb-3">
-          <div className="col-md-6">
-            <label className="form-label">Difficulty Level:</label>
-            <Controller
-              name="difficulty_level"
-              control={control}
-              render={({ field }) => (
-                <select {...field} className="form-control">
-                  <option value="">-- Select Difficulty Level --</option>
-                  {dropdownData.difficultyLevels.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              )}
-            />
-            {errors.difficulty_level && (
-              <div className="invalid-feedback">
-                {errors.difficulty_level.message}
-              </div>
-            )}
-          </div>
-          <div className="col-md-6">
-            <label className="form-label">Exam References:</label>
+          <Col md={4}>
+            <Form.Group controlId={`sub_topic`}>
+              <Form.Label>Subtopic:</Form.Label>
+              <Controller
+                name={`sub_topic`}
+                control={control}
+                render={({ field }) => (
+                  <Form.Select {...field} isInvalid={!!errors?.sub_topic}>
+                    <option value="">-- Select Subtopic --</option>
+                    {dropdownData.subTopics.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </Form.Select>
+                )}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors?.sub_topic?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Col>
+
+          <Col md={4}>
+            <Form.Group controlId={`sub_sub_topic`}>
+              <Form.Label>Topic:</Form.Label>
+              <Controller
+                name={`sub_sub_topic`}
+                control={control}
+                render={({ field }) => (
+                  <Form.Select {...field} isInvalid={!!errors?.sub_sub_topic}>
+                    <option value="">-- Select Sub Subtopic --</option>
+                    {dropdownData.subSubTopics.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </Form.Select>
+                )}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors?.sub_sub_topic?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Row className="mb-3">
+          <Col md={6}>
+            <Form.Group controlId={`difficulty_level`}>
+              <Form.Label>Difficulty:</Form.Label>
+              <Controller
+                name={`difficulty_level`}
+                control={control}
+                render={({ field }) => (
+                  <Form.Select
+                    {...field}
+                    isInvalid={!!errors?.difficulty_level}
+                  >
+                    <option value="">-- Select Difficulty --</option>
+                    {dropdownData.difficultyLevels.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </Form.Select>
+                )}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors?.difficulty_level?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Label>Exam References:</Form.Label>
             <Controller
               name="exam_references"
               control={control}
               render={({ field }) => {
                 const { onChange, value, ref } = field;
-                const currentVal = dropdownData.examReferences.filter((val) =>
-                  value.includes(val.value)
-                );
                 return (
                   <Select
                     inputRef={ref}
                     isMulti
-                    {...field}
-                    value={currentVal}
                     options={dropdownData.examReferences}
+                    value={dropdownData.examReferences.filter((option) =>
+                      value?.includes(option.value)
+                    )}
                     onChange={(selectedOptions) =>
                       onChange(selectedOptions.map((option) => option.value))
                     }
@@ -454,30 +435,93 @@ const QuestionEditForm = forwardRef(
               }}
             />
             {errors.exam_references && (
-              <div className="invalid-feedback">
-                {errors.exam_references.message}
+              <div className="invalid-feedback d-block">
+                {errors.exam_references?.message}
               </div>
             )}
-          </div>
-        </div>
+          </Col>
+        </Row>
 
-        <NestedExplanations control={control} errors={errors} />
+        <Row className="mb-3">
+          <Col md={12}>
+            <Form.Group controlId={`question_type`}>
+              <Form.Label>Question Type:</Form.Label>
+              <Controller
+                name={`question_type`}
+                control={control}
+                render={({ field }) => (
+                  <Form.Select {...field} isInvalid={!!errors?.question_type}>
+                    <option value="">-- Select Question Type --</option>
+                    {dropdownData.questionTypes.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </Form.Select>
+                )}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors?.question_type?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Col>
+        </Row>
 
-        <div className="row">
-          <div className="col-12">
-            <button type="submit" className="btn btn-primary">
-              Update Question
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary ms-2"
-              onClick={onCancel}
-            >
-              Cancel
-            </button>
-          </div>
+        <Row className="mb-3">
+          <Col>
+            <Form.Label>Question Text:</Form.Label>
+            <Controller
+              name="question_text"
+              control={control}
+              render={({ field }) => (
+                <Form.Control
+                  as="textarea"
+                  rows={4}
+                  isInvalid={!!errors.question_text}
+                  {...field}
+                />
+              )}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.question_text?.message}
+            </Form.Control.Feedback>
+          </Col>
+        </Row>
+
+        <NestedMCQOptions control={control} errors={errors} qIndex={0} />
+
+        <Row className="mb-3">
+          <Col>
+            <Form.Label>Correct Answer:</Form.Label>
+            <Controller
+              name="correct_answer"
+              control={control}
+              render={({ field }) => (
+                <Form.Control
+                  type="text"
+                  isInvalid={!!errors.correct_answer}
+                  {...field}
+                />
+              )}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.correct_answer?.message}
+            </Form.Control.Feedback>
+          </Col>
+        </Row>
+
+        {/* Continue adding other fields similarly using react-bootstrap components */}
+        <NestedExplanations control={control} errors={errors} qIndex={0} />
+
+        <div className="d-flex justify-content-end gap-3 mt-3">
+          <Button variant="secondary" onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button variant="primary" type="submit">
+            {initialData ? "Save Changes" : "Add Question"}
+          </Button>
         </div>
-      </form>
+      </Form>
     );
   }
 );

@@ -11,6 +11,7 @@ import Select from "react-select";
 import useCommonForm from "@/hooks/useCommonForm";
 import { executeAjaxOperationStandard } from "@/utils/fetcher";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import { sub } from "date-fns";
 
 const MAX_OPTIONS = 8;
 const explanationLevels = ["Preliminary", "Intermediate", "Advanced"];
@@ -18,7 +19,6 @@ const explanationLevels = ["Preliminary", "Intermediate", "Advanced"];
 const defaultValues = {
   target_organization: "",
   question_level: "",
-  number_of_questions: 1,
   // questions: [
   //   {
   //     question_text: "",
@@ -52,6 +52,7 @@ const questionSchema = yup.object().shape({
       })
     )
     .min(2, "At least two options are required"),
+  target_group: yup.string().required("Target Group is required"),
 });
 
 const mainSchema = yup.object().shape({
@@ -134,6 +135,7 @@ const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
         examReferences: "api/exam-references",
         questionStatuses: "api/question-statuses",
         difficultyLevels: "api/difficulty-levels",
+        subTopics: "api/subtopics",
       };
 
       try {
@@ -375,7 +377,7 @@ const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
   );
 });
 
-const QuestionModal = ({
+export const QuestionModal = ({
   show,
   onHide,
   onSubmit,
@@ -391,6 +393,7 @@ const QuestionModal = ({
     resolver: yupResolver(questionSchema),
     defaultValues: initialData || {
       question_text: "",
+      target_group: "",
       correct_answer: "",
       target_subject: "",
       exam_references: [],
@@ -400,6 +403,7 @@ const QuestionModal = ({
       difficulty_level: "",
       mcq_options: [{ option_text: "" }, { option_text: "" }],
       explanations: [],
+      sub_sub_topic: "",
     },
   });
 
@@ -416,6 +420,7 @@ const QuestionModal = ({
         difficulty_level: "",
         mcq_options: [{ option_text: "" }, { option_text: "" }],
         explanations: [],
+        sub_sub_topic: "",
       });
     }
   }, [show, initialData, reset]);
@@ -435,28 +440,25 @@ const QuestionModal = ({
         <Modal.Body>
           <Row className="mb-3">
             <Col md={6}>
-              <Form.Group controlId={`question_type`}>
-                <Form.Label>Question Type:</Form.Label>
-                <Controller
-                  name={`question_type`}
-                  control={control}
-                  render={({ field }) => (
-                    <Form.Select {...field} isInvalid={!!errors?.question_type}>
-                      <option value="">-- Select Question Type --</option>
-                      {dropdownData.questionTypes.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </Form.Select>
-                  )}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors?.question_type?.message}
-                </Form.Control.Feedback>
-              </Form.Group>
+              <Form.Label>Target Group:</Form.Label>
+              <Controller
+                name="target_group"
+                control={control}
+                render={({ field }) => (
+                  <Form.Select isInvalid={!!errors.target_group} {...field}>
+                    <option value="">-- Select Target Group --</option>
+                    {dropdownData.targetGroups.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </Form.Select>
+                )}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.target_group?.message}
+              </Form.Control.Feedback>
             </Col>
-
             <Col md={6}>
               <Form.Label>Subject:</Form.Label>
               <Controller
@@ -480,7 +482,7 @@ const QuestionModal = ({
           </Row>
 
           <Row className="mb-3">
-            <Col md={6}>
+            <Col md={4}>
               <Form.Group controlId={`topic`}>
                 <Form.Label>Topic:</Form.Label>
                 <Controller
@@ -503,7 +505,7 @@ const QuestionModal = ({
               </Form.Group>
             </Col>
 
-            <Col md={6}>
+            <Col md={4}>
               <Form.Group controlId={`sub_topic`}>
                 <Form.Label>Subtopic:</Form.Label>
                 <Controller
@@ -522,6 +524,29 @@ const QuestionModal = ({
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors?.sub_topic?.message}
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+
+            <Col md={4}>
+              <Form.Group controlId={`sub_sub_topic`}>
+                <Form.Label>Topic:</Form.Label>
+                <Controller
+                  name={`sub_sub_topic`}
+                  control={control}
+                  render={({ field }) => (
+                    <Form.Select {...field} isInvalid={!!errors?.sub_sub_topic}>
+                      <option value="">-- Select Sub Subtopic --</option>
+                      {dropdownData.subSubTopics.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  )}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors?.sub_sub_topic?.message}
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
@@ -587,6 +612,31 @@ const QuestionModal = ({
           </Row>
 
           <Row className="mb-3">
+            <Col md={12}>
+              <Form.Group controlId={`question_type`}>
+                <Form.Label>Question Type:</Form.Label>
+                <Controller
+                  name={`question_type`}
+                  control={control}
+                  render={({ field }) => (
+                    <Form.Select {...field} isInvalid={!!errors?.question_type}>
+                      <option value="">-- Select Question Type --</option>
+                      {dropdownData.questionTypes.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  )}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors?.question_type?.message}
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
             <Col>
               <Form.Label>Question Text:</Form.Label>
               <Controller
@@ -645,7 +695,7 @@ const QuestionModal = ({
   );
 };
 
-const NestedMCQOptions = ({ control, errors, qIndex }) => {
+const NestedMCQOptions = ({ control, errors }) => {
   const { fields, append, remove } = useFieldArray({
     control,
     name: `mcq_options`,

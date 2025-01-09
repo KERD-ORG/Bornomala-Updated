@@ -61,6 +61,7 @@ const DataGridComponent = forwardRef(
           token,
           locale: router.locale || "en",
         });
+        // console.log(response.data);
         if (
           response.status >=
             parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
@@ -147,9 +148,12 @@ const DataGridComponent = forwardRef(
 
     const sortedRows = useMemo(() => {
       if (!rows) return [];
-      if (sortColumns.length === 0) return rows;
+      if (sortColumns.length === 0) return Array.from(new Set(rows));
 
-      const sortedData = [...rows];
+      const uniqueRows = Array.from(
+        new Set(rows.map((row) => JSON.stringify(row)))
+      ).map((row) => JSON.parse(row));
+      const sortedData = [...uniqueRows];
       const { columnKey, direction } = sortColumns[0];
 
       sortedData.sort((a, b) => {
