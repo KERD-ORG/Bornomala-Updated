@@ -10,6 +10,9 @@ from .models import (
 
 from educational_organizations_app.models import EducationalOrganizations as Organization
 
+from rest_framework import serializers
+from .models import Explanation
+
 
 class ExplanationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -227,6 +230,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         correct_answer = validated_data.pop('correct_answer', None)
         explanations_data = validated_data.pop('explanations', [])
 
+        print("CREATE: Explanations Data:", explanations_data)
 
         # Create the question
         question = Question.objects.create(**validated_data)

@@ -228,7 +228,7 @@ Content-Type: application/json
             "video": null
         }
   ],
-  "correct_answer": "Dhaka",
+  "correct_answer": "1",
   "question_level": 1,
   "target_organization": 2,
   "target_group": 1,

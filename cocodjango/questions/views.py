@@ -1,6 +1,11 @@
 # views.py
 
 from rest_framework import generics
+import os
+from django.conf import settings
+from django.http import JsonResponse, HttpResponseNotAllowed
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import (
     Organization, QuestionLevel, TargetGroup, Subject,
     QuestionType, Topic, SubTopic, SubSubTopic,
@@ -145,3 +150,43 @@ class QuestionListCreateView(generics.ListCreateAPIView):
 class QuestionRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+
+@csrf_exempt
+def presign_url(request):
+    """
+    Mimic presigned URLs by returning a fake upload URL and an object URL.
+    E.g. GET /presign-url?file_name=myvideo.mp4
+    """
+    if request.method == 'GET':
+        file_name = request.GET.get('file_name', 'default.mp4')
+        # Build an upload URL that includes the filename as a query param
+        # so we know where to store it.
+        upload_url = request.build_absolute_uri(f'/fake-upload?filename={file_name}')
+        # The final "object_url" is how the file can be publicly accessed later
+        # (this relies on serving MEDIA files, see urls.py below).
+        object_url = request.build_absolute_uri(f'{settings.MEDIA_URL}{file_name}')
+
+        return JsonResponse({
+            'url': upload_url,
+            'object_url': object_url
+        })
+    return HttpResponseNotAllowed(['GET'])
+
+
+@csrf_exempt
+def fake_upload(request):
+    """
+    Handle PUT to store the file locally in MEDIA_ROOT.
+    E.g. PUT /fake-upload?filename=myvideo.mp4
+    """
+    if request.method == 'PUT':
+        file_name = request.GET.get('filename', 'default.mp4')
+        full_path = os.path.join(settings.MEDIA_ROOT, file_name)
+
+        # Write the raw request body directly to a file
+        with open(full_path, 'wb') as f:
+            f.write(request.body)
+
+        return JsonResponse({'message': 'File uploaded successfully.'})
+    return HttpResponseNotAllowed(['PUT'])
+

@@ -11,7 +11,8 @@ from .views import (
     DifficultyLevelListCreateView, DifficultyLevelRetrieveUpdateDestroyView,
     QuestionStatusListCreateView, QuestionStatusRetrieveUpdateDestroyView,
     ExamReferenceListCreateView, ExamReferenceRetrieveUpdateDestroyView,
-    QuestionListCreateView, QuestionRetrieveUpdateDestroyView
+    QuestionListCreateView, QuestionRetrieveUpdateDestroyView,
+presign_url,fake_upload
 )
 
 urlpatterns = [
@@ -50,4 +51,7 @@ urlpatterns = [
 
     path('questions/', QuestionListCreateView.as_view(), name='question-list-create'),
     path('questions/<int:pk>/', QuestionRetrieveUpdateDestroyView.as_view(), name='question-detail'),
+
+    path('presign-url', presign_url, name='presign-url'),
+    path('fake-upload', fake_upload, name='fake-upload'),
 ]
