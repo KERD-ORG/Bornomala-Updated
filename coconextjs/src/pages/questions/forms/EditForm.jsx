@@ -75,9 +75,6 @@ const QuestionEditForm = forwardRef(
       defaultValues,
     });
 
-    const topic = watch("topic");
-    const sub_topic = watch("sub_topic");
-
     const [dropdownData, setDropdownData] = React.useState({
       subjects: [],
       questionTypes: [],
@@ -90,6 +87,12 @@ const QuestionEditForm = forwardRef(
       targetGroups: [],
       subSubTopics: [],
     });
+
+    const topic = watch("topic");
+    const sub_topic = watch("sub_topic");
+    const question_type = dropdownData.questionTypes.filter(
+      (val) => val.id == watch("question_type")
+    )[0];
 
     useImperativeHandle(ref, () => ({
       resetForm: () => reset(defaultValues),
@@ -475,48 +478,95 @@ const QuestionEditForm = forwardRef(
           </Col>
         </Row>
 
-        <Row className="mb-3">
-          <Col>
-            <Form.Label>Question Text:</Form.Label>
-            <Controller
-              name="question_text"
-              control={control}
-              render={({ field }) => (
-                <Form.Control
-                  as="textarea"
-                  rows={4}
-                  isInvalid={!!errors.question_text}
-                  {...field}
+        {question_type && question_type.name && (
+          <Row className="mb-3">
+            <Col>
+              <Form.Label>Question Text:</Form.Label>
+              <Controller
+                name="question_text"
+                control={control}
+                render={({ field }) => (
+                  <Form.Control
+                    as="textarea"
+                    rows={4}
+                    isInvalid={!!errors.question_text}
+                    {...field}
+                  />
+                )}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.question_text?.message}
+              </Form.Control.Feedback>
+            </Col>
+          </Row>
+        )}
+
+        {question_type && question_type.name === "MCQ" && (
+          <NestedMCQOptions control={control} errors={errors} qIndex={0} />
+        )}
+
+        {question_type && question_type.name && (
+          <Row className="mb-3">
+            <Col>
+              <Form.Label>Answer:</Form.Label>
+              {[
+                "Descriptive/Essay Questions",
+                "Code or Programming Questions",
+              ].includes(question_type.name) && (
+                <Controller
+                  name="correct_answer"
+                  control={control}
+                  render={({ field }) => (
+                    <Form.Control
+                      as={"textarea"}
+                      rows={4}
+                      isInvalid={!!errors.correct_answer}
+                      {...field}
+                    />
+                  )}
                 />
               )}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.question_text?.message}
-            </Form.Control.Feedback>
-          </Col>
-        </Row>
-
-        <NestedMCQOptions control={control} errors={errors} qIndex={0} />
-
-        <Row className="mb-3">
-          <Col>
-            <Form.Label>Correct Answer:</Form.Label>
-            <Controller
-              name="correct_answer"
-              control={control}
-              render={({ field }) => (
-                <Form.Control
-                  type="text"
-                  isInvalid={!!errors.correct_answer}
-                  {...field}
+              {[
+                "Short Answer Questions",
+                "Fill-in-the-Blanks",
+                "Numerical/Calculation Questions",
+                "MCQ",
+              ].includes(question_type.name) && (
+                <Controller
+                  name="correct_answer"
+                  control={control}
+                  render={({ field }) => (
+                    <Form.Control
+                      type={
+                        question_type.name === "Numerical/Calculation Questions"
+                          ? "number"
+                          : "text"
+                      }
+                      isInvalid={!!errors.correct_answer}
+                      {...field}
+                    />
+                  )}
                 />
               )}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.correct_answer?.message}
-            </Form.Control.Feedback>
-          </Col>
-        </Row>
+              {question_type.name === "True/false" && (
+                <Controller
+                  name="correct_answer"
+                  control={control}
+                  render={({ field }) => (
+                    <Form.Select isInvalid={!!errors.correct_answer} {...field}>
+                      <option value="">-- Select --</option>
+                      <option value="True">True</option>
+                      <option value="False">False</option>
+                    </Form.Select>
+                  )}
+                />
+              )}
+              <Form.Control.Feedback type="invalid">
+                {errors.correct_answer?.message}
+              </Form.Control.Feedback>
+            </Col>
+          </Row>
+        )}
 
         {/* Continue adding other fields similarly using react-bootstrap components */}
         <NestedExplanations control={control} errors={errors} qIndex={0} />
