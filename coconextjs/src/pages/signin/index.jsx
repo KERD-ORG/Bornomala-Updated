@@ -270,12 +270,12 @@ export default function Signin({ locale }) {
             </a>
           </p>
 
-          <p className="text-center">
+          {/* <p className="text-center">
               <span>Need to register your organization?</span>
               <a href={localizedPath('/org/signup')}>
                   <span> Register</span>
               </a>
-          </p>
+          </p> */}
         </div>
       </div>
       {loading && <Loader />}
