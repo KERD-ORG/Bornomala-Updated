@@ -63,8 +63,8 @@ const questionSchema = yup.object().shape({
 });
 
 const mainSchema = yup.object().shape({
-  target_organization: yup.string().required("Organization is required"),
-  question_level: yup.string().required("Question Level is required"),
+  // target_organization: yup.string().required("Organization is required"),
+  // question_level: yup.string().required("Question Level is required"),
   questions: yup.array().of(questionSchema),
 });
 
@@ -401,12 +401,14 @@ export const QuestionModal = ({
   dropdownData,
   initialData,
 }) => {
+  const { token, setGlobalError } = useCommonForm();
   const {
     control,
     handleSubmit,
     reset,
     formState: { errors },
     watch,
+    setValue,
   } = useForm({
     resolver: yupResolver(questionSchema),
     defaultValues: initialData || {
@@ -449,9 +451,39 @@ export const QuestionModal = ({
     }
   }, [show, initialData, reset]);
 
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "explanations",
+  });
+
   useEffect(() => {
     if (initialData) reset(initialData);
   }, [initialData, reset]);
+
+  const handleVideoUpload = async (file, index) => {
+    if (!file) return;
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/upload/?filename=${file.name}`,
+        file,
+        {
+          headers: {
+            "Content-Type": file.type,
+            Authorization: `Token ${token}`,
+          },
+        }
+      );
+
+      setValue(`explanations.${index}.file_url`, response.data.video_link);
+      setValue(`explanations.${index}.filename`, file.name);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      setGlobalError(error.response?.data?.message || error.message);
+    }
+  };
 
   return (
     <Modal show={show} onHide={onHide} size="lg" backdrop="static">
@@ -761,7 +793,104 @@ export const QuestionModal = ({
           )}
 
           {/* Continue adding other fields similarly using react-bootstrap components */}
-          <NestedExplanations control={control} errors={errors} />
+          {/* <NestedExplanations control={control} errors={errors} /> */}
+          <Row className="mb-3">
+            <Col>
+              <h5>Explanations</h5>
+            </Col>
+          </Row>
+          {fields.map((field, index) => {
+            const filename = watch(`explanations.${index}.filename`);
+            const file_url = watch(`explanations.${index}.file_url`);
+
+            return (
+              <Row className="mb-3" key={field.id}>
+                <Col md={12} className="mb-2">
+                  <Form.Label>Explanation Text:</Form.Label>
+                  <Controller
+                    name={`explanations.${index}.text`}
+                    control={control}
+                    render={({ field }) => (
+                      <Form.Control
+                        as="textarea"
+                        rows={3}
+                        {...field}
+                        isInvalid={!!errors?.explanations?.[index]?.text}
+                      />
+                    )}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors?.explanations?.[index]?.text?.message}
+                  </Form.Control.Feedback>
+                </Col>
+
+                <Col md={12} className="mb-2">
+                  <Form.Label>Explanation File:</Form.Label>
+                  <Controller
+                    name={`explanations.${index}.file`}
+                    control={control}
+                    render={({ field }) => (
+                      <Form.Control
+                        type="file"
+                        onChange={(e) => {
+                          const files = e.target.files;
+                          field.onChange(files);
+                          handleVideoUpload(files[0], index);
+                        }}
+                        isInvalid={!!errors?.explanations?.[index]?.file}
+                      />
+                    )}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors?.explanations?.[index]?.file?.message}
+                  </Form.Control.Feedback>
+                  {filename && (
+                    <div className="mt-2">
+                      <small>
+                        Current File:{" "}
+                        {file_url ? (
+                          <a
+                            href={file_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {filename}
+                          </a>
+                        ) : (
+                          filename
+                        )}
+                      </small>
+                    </div>
+                  )}
+                </Col>
+
+                <Col>
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => remove(index)}
+                  >
+                    Remove Explanation
+                  </Button>
+                </Col>
+              </Row>
+            );
+          })}
+
+          <Row>
+            <Col>
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                onClick={() =>
+                  append({ text: "", file: null, file_url: "", filename: "" })
+                }
+              >
+                Add Explanation
+              </Button>
+            </Col>
+          </Row>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>
@@ -775,6 +904,133 @@ export const QuestionModal = ({
     </Modal>
   );
 };
+
+// const NestedExplanations = ({ control, errors }) => {
+//   const { setValue, watch } = useFormContext();
+//   const { fields, append, remove } = useFieldArray({
+//     control,
+//     name: "explanations",
+//   });
+//   console.log(fields);
+
+//   return (
+//     <div className="nested-explanations">
+//       <Row className="mb-2">
+//         <Col>
+//           <h5>Explanations</h5>
+//         </Col>
+//       </Row>
+
+//       {fields.map((field, index) => {
+//         // Watch for filename and file_url changes
+//         const filename = watch(`explanations.${index}.filename`);
+//         const file_url = watch(`explanations.${index}.file_url`);
+
+//         return (
+//           <Row className="mb-3" key={field.id}>
+//             <Col md={12} className="mb-2">
+//               <Form.Label>Explanation Text:</Form.Label>
+//               <Controller
+//                 name={`explanations.${index}.text`}
+//                 control={control}
+//                 defaultValue={field.text || ""}
+//                 render={({ field }) => (
+//                   <Form.Control
+//                     as="textarea"
+//                     rows={3}
+//                     {...field}
+//                     isInvalid={!!errors?.explanations?.[index]?.text}
+//                   />
+//                 )}
+//               />
+//               <Form.Control.Feedback type="invalid">
+//                 {errors?.explanations?.[index]?.text?.message}
+//               </Form.Control.Feedback>
+//             </Col>
+
+//             <Col md={12} className="mb-2">
+//               <Form.Label>Explanation File:</Form.Label>
+//               <Controller
+//                 name={`explanations.${index}.file`}
+//                 control={control}
+//                 render={({ field }) => (
+//                   <Form.Control
+//                     type="file"
+//                     onChange={(e) => {
+//                       const files = e.target.files;
+//                       field.onChange(files);
+
+//                       if (files && files.length > 0) {
+//                         // Simulate file upload by setting dummy URL and filename
+//                         const dummyFileUrl = "https://example.com/dummy-file";
+//                         const dummyFilename = files[0].name;
+
+//                         // Update file_url and filename fields after "upload"
+//                         setValue(
+//                           `explanations.${index}.file_url`,
+//                           dummyFileUrl
+//                         );
+//                         setValue(
+//                           `explanations.${index}.filename`,
+//                           dummyFilename
+//                         );
+//                       }
+//                     }}
+//                     isInvalid={!!errors?.explanations?.[index]?.file}
+//                   />
+//                 )}
+//               />
+//               <Form.Control.Feedback type="invalid">
+//                 {errors?.explanations?.[index]?.file?.message}
+//               </Form.Control.Feedback>
+
+//               {/* Display the uploaded file name/link if available */}
+//               {filename && (
+//                 <div className="mt-2">
+//                   <small>
+//                     Current File:{" "}
+//                     {file_url ? (
+//                       <a
+//                         href={file_url}
+//                         target="_blank"
+//                         rel="noopener noreferrer"
+//                       >
+//                         {filename}
+//                       </a>
+//                     ) : (
+//                       filename
+//                     )}
+//                   </small>
+//                 </div>
+//               )}
+//             </Col>
+
+//             <Col>
+//               <Button variant="danger" size="sm" onClick={() => remove(index)}>
+//                 Remove Explanation
+//               </Button>
+//             </Col>
+//           </Row>
+//         );
+//       })}
+
+//       <Row>
+//         <Col>
+//           <Button
+//             type="button"
+//             variant="secondary"
+//             size="sm"
+//             onClick={() =>
+//               append({ text: "", file: null, file_url: "", filename: "" })
+//             }
+//           >
+//             Add Explanation
+//           </Button>
+//         </Col>
+//       </Row>
+//     </div>
+//   );
+// };
 
 const NestedMCQOptions = ({ control, errors }) => {
   const { fields, append, remove } = useFieldArray({
@@ -828,119 +1084,6 @@ const NestedMCQOptions = ({ control, errors }) => {
           Add Option
         </button>
       </div>
-    </div>
-  );
-};
-
-const NestedExplanations = ({ control, errors }) => {
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "explanations",
-  });
-
-  const { setValue, getValues, watch } = useFormContext();
-
-  const { token, setGlobalError } = useCommonForm();
-
-  console.log(watch("explanations"));
-
-  const handleVideoUpload = async (file, eIndex) => {
-    if (!file) return;
-
-    try {
-      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/upload/?filename=${file.name}`;
-      const response = await axios.put(url, file, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": file.type,
-        },
-      });
-
-      if (response.data && response.data.video_link) {
-        // Update the form field using react-hook-form
-        const fieldName = `explanations.${eIndex}.video`;
-        setValue(fieldName, response.data.video, {
-          shouldValidate: true,
-          shouldDirty: true,
-        });
-      }
-    } catch (error) {
-      const errorMsg = error?.response?.data?.message || "Video upload failed.";
-      setGlobalError(errorMsg);
-      console.error("Video upload failed:", error);
-    }
-  };
-
-  return (
-    <div className="mb-3">
-      <label className="form-label">Explanations:</label>
-      {fields.map((field, index) => (
-        <div key={field.id} className="card mb-3">
-          <div className="card-body">
-            <h6 className="card-title">
-              {explanationLevels[index]} Level Explanation
-            </h6>
-
-            <Controller
-              name={`explanations.${index}.text`}
-              control={control}
-              render={({ field }) => (
-                <Form.Control
-                  {...field}
-                  as="textarea"
-                  rows={3}
-                  placeholder="Explanation text"
-                  isInvalid={!!errors?.explanations?.[index]?.text}
-                />
-              )}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors?.explanations?.[index]?.text?.message}
-            </Form.Control.Feedback>
-
-            <div className="mt-3">
-              <Form.Label>Video (optional):</Form.Label>
-              <div className="d-flex gap-2 align-items-center">
-                <Form.Control
-                  type="file"
-                  accept="video/*"
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    handleVideoUpload(file, index);
-                  }}
-                />
-                <Controller
-                  name={`explanations.${index}.video_file`}
-                  control={control}
-                  render={({ field }) => (
-                    <Form.Control type="hidden" {...field} />
-                  )}
-                />
-              </div>
-            </div>
-
-            <div className="mt-3">
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={() => remove(index)}
-                // disabled={index < 2} // Keep at least 2 explanation levels
-              >
-                Remove Explanation
-              </Button>
-            </div>
-          </div>
-        </div>
-      ))}
-
-      <Button
-        variant="secondary"
-        size="sm"
-        onClick={() => append({ text: "", video: "", video_file: "" })}
-        disabled={fields.length >= 3}
-      >
-        Add Explanation
-      </Button>
     </div>
   );
 };
