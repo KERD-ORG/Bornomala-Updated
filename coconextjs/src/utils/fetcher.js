@@ -91,6 +91,9 @@ export const executeAjaxOperationStandard = async ({ url, method = 'get', token 
             errorMessage = error.response.data.error || error.response.data.detail || 'Server error';
             errorCode = error.response.data.error_code || null;
             details = error.response.data.details || null;
+            if(!details) {
+                details = error.response.data
+            }
         } else if (error.message) {
             // Network or client-side error
             errorMessage = error.message;
