@@ -4,7 +4,13 @@ import React, {
   useImperativeHandle,
   useState,
 } from "react";
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import {
+  useForm,
+  useFieldArray,
+  Controller,
+  useFormContext,
+  FormProvider,
+} from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Select from "react-select";
@@ -12,6 +18,7 @@ import useCommonForm from "@/hooks/useCommonForm";
 import { executeAjaxOperationStandard } from "@/utils/fetcher";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { sub } from "date-fns";
+import axios from "axios";
 
 const MAX_OPTIONS = 8;
 const explanationLevels = ["Preliminary", "Intermediate", "Advanced"];
@@ -36,23 +43,23 @@ const defaultValues = {
 };
 
 const questionSchema = yup.object().shape({
-  question_text: yup.string().required("Question Text is required"),
-  correct_answer: yup.string().required("Correct Answer is required"),
-  target_subject: yup.string().required("Subject is required"),
-  exam_references: yup.array(),
-  question_type: yup.string().required("Question Type is required"),
-  topic: yup.string().required("Topic is required"),
-  sub_topic: yup.string(),
-  difficulty_level: yup.string().required("Difficulty Level is required"),
-  mcq_options: yup
-    .array()
-    .of(
-      yup.object({
-        option_text: yup.string().required("Option cannot be empty"),
-      })
-    )
-    .min(2, "At least two options are required"),
-  target_group: yup.string().required("Target Group is required"),
+  // question_text: yup.string().required("Question Text is required"),
+  // correct_answer: yup.string().required("Correct Answer is required"),
+  // target_subject: yup.string().required("Subject is required"),
+  // exam_references: yup.array(),
+  // question_type: yup.string().required("Question Type is required"),
+  // topic: yup.string().required("Topic is required"),
+  // sub_topic: yup.string(),
+  // difficulty_level: yup.string().required("Difficulty Level is required"),
+  // mcq_options: yup
+  //   .array()
+  //   .of(
+  //     yup.object({
+  //       option_text: yup.string().required("Option cannot be empty"),
+  //     })
+  //   )
+  //   .min(2, "At least two options are required"),
+  // target_group: yup.string().required("Target Group is required"),
 });
 
 const mainSchema = yup.object().shape({
@@ -71,16 +78,16 @@ const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
     setModalShow(true);
   };
 
+  const method = useForm({
+    resolver: yupResolver(mainSchema),
+    defaultValues,
+  });
   const {
     control,
     handleSubmit,
     reset,
-    watch,
     formState: { errors },
-  } = useForm({
-    resolver: yupResolver(mainSchema),
-    defaultValues,
-  });
+  } = method;
 
   const [dropdownData, setDropdownData] = React.useState({
     questionLevels: [],
@@ -137,6 +144,7 @@ const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
         questionStatuses: "api/question-statuses",
         difficultyLevels: "api/difficulty-levels",
         subTopics: "api/subtopics",
+        subSubTopics: "api/subsubtopics",
       };
 
       try {
@@ -175,6 +183,8 @@ const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
   }, [token]);
 
   const onSubmitForm = async (data) => {
+    console.log(data);
+    return;
     setLoading(true);
     try {
       const promises = [];
@@ -222,160 +232,165 @@ const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitForm)} className="container-fluid p-3">
-      {globalError && (
-        <div
-          className="alert alert-danger alert-dismissible fade show mt-3"
-          role="alert"
-        >
-          <strong>{globalError}</strong>
+    <FormProvider {...method}>
+      <form
+        onSubmit={handleSubmit(onSubmitForm)}
+        className="container-fluid p-3"
+      >
+        {globalError && (
+          <div
+            className="alert alert-danger alert-dismissible fade show mt-3"
+            role="alert"
+          >
+            <strong>{globalError}</strong>
+            <button
+              type="button"
+              className="btn-close"
+              aria-label="Close"
+              onClick={() => {
+                setGlobalError("");
+              }}
+            ></button>
+          </div>
+        )}
+        <div className="row g-4 mb-4">
+          <div className="col-md-6">
+            <div className="form-group">
+              <label className="form-label fw-semibold">
+                Target Organization
+              </label>
+              <Controller
+                name="target_organization"
+                control={control}
+                render={({ field }) => (
+                  <select
+                    {...field}
+                    className={`form-select ${
+                      errors.target_organization ? "is-invalid" : ""
+                    }`}
+                  >
+                    <option value="">Select Organization</option>
+                    {dropdownData.organizations.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              />
+              {errors.target_organization && (
+                <div className="invalid-feedback">
+                  {errors.target_organization.message}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="col-md-6">
+            <div className="form-group">
+              <label className="form-label fw-semibold">Question Level</label>
+              <Controller
+                name="question_level"
+                control={control}
+                render={({ field }) => (
+                  <select
+                    {...field}
+                    className={`form-select ${
+                      errors.question_level ? "is-invalid" : ""
+                    }`}
+                  >
+                    <option value="">Select Question Level</option>
+                    {dropdownData.questionLevels.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              />
+              {errors.question_level && (
+                <div className="invalid-feedback">
+                  {errors.question_level.message}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="question-list">
+          {questionFields.length === 0 ? (
+            <p className="text-muted">No questions added yet.</p>
+          ) : (
+            questionFields.map((question, index) => (
+              <div key={question.id} className="card mb-3 shadow-sm">
+                <div className="card-body">
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <h5 className="card-title mb-0">Question {index + 1}</h5>
+                    <div className="btn-group">
+                      <button
+                        type="button"
+                        className="btn btn-outline-primary btn-sm"
+                        onClick={() => handleEditQuestion(index)}
+                      >
+                        <i className="bi bi-pencil me-1"></i>
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-outline-danger btn-sm"
+                        onClick={() => removeQuestion(index)}
+                      >
+                        <i className="bi bi-trash me-1"></i>
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                  <p className="card-text text-muted mb-0">
+                    {question.question_text}
+                  </p>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        <div className="mb-4">
           <button
             type="button"
-            className="btn-close"
-            aria-label="Close"
+            className="btn btn-secondary d-flex align-items-center gap-2"
             onClick={() => {
-              setGlobalError("");
+              setModalShow(true);
+              setEditingIndex(null);
             }}
-          ></button>
-        </div>
-      )}
-      <div className="row g-4 mb-4">
-        <div className="col-md-6">
-          <div className="form-group">
-            <label className="form-label fw-semibold">
-              Target Organization
-            </label>
-            <Controller
-              name="target_organization"
-              control={control}
-              render={({ field }) => (
-                <select
-                  {...field}
-                  className={`form-select ${
-                    errors.target_organization ? "is-invalid" : ""
-                  }`}
-                >
-                  <option value="">Select Organization</option>
-                  {dropdownData.organizations.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              )}
-            />
-            {errors.target_organization && (
-              <div className="invalid-feedback">
-                {errors.target_organization.message}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="col-md-6">
-          <div className="form-group">
-            <label className="form-label fw-semibold">Question Level</label>
-            <Controller
-              name="question_level"
-              control={control}
-              render={({ field }) => (
-                <select
-                  {...field}
-                  className={`form-select ${
-                    errors.question_level ? "is-invalid" : ""
-                  }`}
-                >
-                  <option value="">Select Question Level</option>
-                  {dropdownData.questionLevels.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              )}
-            />
-            {errors.question_level && (
-              <div className="invalid-feedback">
-                {errors.question_level.message}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="question-list">
-        {questionFields.length === 0 ? (
-          <p className="text-muted">No questions added yet.</p>
-        ) : (
-          questionFields.map((question, index) => (
-            <div key={question.id} className="card mb-3 shadow-sm">
-              <div className="card-body">
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <h5 className="card-title mb-0">Question {index + 1}</h5>
-                  <div className="btn-group">
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary btn-sm"
-                      onClick={() => handleEditQuestion(index)}
-                    >
-                      <i className="bi bi-pencil me-1"></i>
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-outline-danger btn-sm"
-                      onClick={() => removeQuestion(index)}
-                    >
-                      <i className="bi bi-trash me-1"></i>
-                      Remove
-                    </button>
-                  </div>
-                </div>
-                <p className="card-text text-muted mb-0">
-                  {question.question_text}
-                </p>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
-
-      <div className="mb-4">
-        <button
-          type="button"
-          className="btn btn-secondary d-flex align-items-center gap-2"
-          onClick={() => {
-            setModalShow(true);
-            setEditingIndex(null);
-          }}
-        >
-          <i className="bi bi-plus-lg"></i>
-          Add Question
-        </button>
-      </div>
-
-      <QuestionModal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-        onSubmit={handleModalSubmit}
-        dropdownData={dropdownData}
-        initialData={
-          editingIndex !== null ? questionFields[editingIndex] : null
-        }
-      />
-
-      <div className="row mt-4">
-        <div className="col-12">
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn btn-primary w-100 w-md-auto"
           >
-            Create Questions
+            <i className="bi bi-plus-lg"></i>
+            Add Question
           </button>
         </div>
-      </div>
-    </form>
+
+        <QuestionModal
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+          onSubmit={handleModalSubmit}
+          dropdownData={dropdownData}
+          initialData={
+            editingIndex !== null ? questionFields[editingIndex] : null
+          }
+        />
+
+        <div className="row mt-4">
+          <div className="col-12">
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn btn-primary w-100 w-md-auto"
+            >
+              Create Questions
+            </button>
+          </div>
+        </div>
+      </form>
+    </FormProvider>
   );
 });
 
@@ -550,11 +565,13 @@ export const QuestionModal = ({
                   render={({ field }) => (
                     <Form.Select {...field} isInvalid={!!errors?.sub_sub_topic}>
                       <option value="">-- Select Sub Subtopic --</option>
-                      {dropdownData.subSubTopics.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
+                      {dropdownData.subSubTopics
+                        .filter((val) => val.sub_topic == subTopic)
+                        .map((opt) => (
+                          <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </option>
+                        ))}
                     </Form.Select>
                   )}
                 />
@@ -673,7 +690,7 @@ export const QuestionModal = ({
           )}
 
           {question_type && question_type.name === "MCQ" && (
-            <NestedMCQOptions control={control} errors={errors} qIndex={0} />
+            <NestedMCQOptions control={control} errors={errors} />
           )}
 
           {question_type && question_type.name && (
@@ -744,7 +761,7 @@ export const QuestionModal = ({
           )}
 
           {/* Continue adding other fields similarly using react-bootstrap components */}
-          <NestedExplanations control={control} errors={errors} qIndex={0} />
+          <NestedExplanations control={control} errors={errors} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>
@@ -815,74 +832,115 @@ const NestedMCQOptions = ({ control, errors }) => {
   );
 };
 
-const NestedExplanations = ({ control, errors, qIndex }) => {
+const NestedExplanations = ({ control, errors }) => {
   const { fields, append, remove } = useFieldArray({
     control,
-    name: `explanations`,
+    name: "explanations",
   });
+
+  const { setValue, getValues, watch } = useFormContext();
+
+  const { token, setGlobalError } = useCommonForm();
+
+  console.log(watch("explanations"));
+
+  const handleVideoUpload = async (file, eIndex) => {
+    if (!file) return;
+
+    try {
+      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/upload/?filename=${file.name}`;
+      const response = await axios.put(url, file, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": file.type,
+        },
+      });
+
+      if (response.data && response.data.video_link) {
+        // Update the form field using react-hook-form
+        const fieldName = `explanations.${eIndex}.video`;
+        setValue(fieldName, response.data.video, {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+      }
+    } catch (error) {
+      const errorMsg = error?.response?.data?.message || "Video upload failed.";
+      setGlobalError(errorMsg);
+      console.error("Video upload failed:", error);
+    }
+  };
 
   return (
     <div className="mb-3">
       <label className="form-label">Explanations:</label>
-      {fields.map((field, eIndex) => (
+      {fields.map((field, index) => (
         <div key={field.id} className="card mb-3">
           <div className="card-body">
-            <h6 className="card-title">{field.level} Level Explanation</h6>
+            <h6 className="card-title">
+              {explanationLevels[index]} Level Explanation
+            </h6>
+
             <Controller
-              name={`questions.${qIndex}.explanations.${eIndex}.text`}
+              name={`explanations.${index}.text`}
               control={control}
               render={({ field }) => (
-                <textarea
+                <Form.Control
                   {...field}
-                  className="form-control mb-2"
-                  placeholder="Explanation text"
+                  as="textarea"
                   rows={3}
+                  placeholder="Explanation text"
+                  isInvalid={!!errors?.explanations?.[index]?.text}
                 />
               )}
             />
-            <div className="mb-2">
-              <label className="form-label">Video (optional):</label>
-              <Controller
-                name={`questions.${qIndex}.explanations.${eIndex}.video`}
-                control={control}
-                render={({ field }) => (
-                  <input
-                    type="file"
-                    accept="video/*"
-                    className="form-control"
-                    onChange={(e) => {
-                      // Store the selected file in form state
-                      field.onChange(e.target.files[0]);
-                    }}
-                  />
-                )}
-              />
+            <Form.Control.Feedback type="invalid">
+              {errors?.explanations?.[index]?.text?.message}
+            </Form.Control.Feedback>
+
+            <div className="mt-3">
+              <Form.Label>Video (optional):</Form.Label>
+              <div className="d-flex gap-2 align-items-center">
+                <Form.Control
+                  type="file"
+                  accept="video/*"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    handleVideoUpload(file, index);
+                  }}
+                />
+                <Controller
+                  name={`explanations.${index}.video_file`}
+                  control={control}
+                  render={({ field }) => (
+                    <Form.Control type="hidden" {...field} />
+                  )}
+                />
+              </div>
             </div>
-            <button
-              type="button"
-              className="btn btn-danger btn-sm"
-              onClick={() => remove(eIndex)}
-            >
-              Remove Explanation
-            </button>
+
+            <div className="mt-3">
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => remove(index)}
+                // disabled={index < 2} // Keep at least 2 explanation levels
+              >
+                Remove Explanation
+              </Button>
+            </div>
           </div>
         </div>
       ))}
-      <button
-        type="button"
-        className="btn btn-secondary btn-sm"
-        style={{ marginLeft: "10px" }}
+
+      <Button
+        variant="secondary"
+        size="sm"
+        onClick={() => append({ text: "", video: "", video_file: "" })}
         disabled={fields.length >= 3}
-        onClick={() => {
-          append({
-            level: explanationLevels[fields.length] || explanationLevels[2],
-            text: "",
-            video: null,
-          });
-        }}
       >
         Add Explanation
-      </button>
+      </Button>
     </div>
   );
 };

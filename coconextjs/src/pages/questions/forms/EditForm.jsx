@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import Select from "react-select";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { sub } from "date-fns";
+import axios from "axios";
 
 const MAX_OPTIONS = 8;
 const explanationLevels = ["Preliminary", "Intermediate", "Advanced"];
@@ -646,6 +647,30 @@ const NestedExplanations = ({ control, errors, qIndex }) => {
     name: `explanations`,
   });
 
+  const handleVideoUpload = async (file) => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/presign-url`,
+        {
+          params: { file_name: file.name },
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+          /* possibly pass auth token if needed */
+        }
+      );
+
+      await axios.put(data.url, file, {
+        headers: {
+          "Content-Type": file.type,
+        },
+      });
+      console.log(data.url);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="mb-3">
       <label className="form-label">Explanations:</label>
@@ -677,6 +702,7 @@ const NestedExplanations = ({ control, errors, qIndex }) => {
                     className="form-control"
                     onChange={(e) => {
                       // Store the selected file in form state
+                      handleVideoUpload(e.target.files[0]);
                       field.onChange(e.target.files[0]);
                     }}
                   />

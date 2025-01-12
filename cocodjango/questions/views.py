@@ -1,5 +1,4 @@
 # views.py
-
 from rest_framework import generics
 import os
 from django.conf import settings
@@ -161,7 +160,7 @@ def presign_url(request):
         file_name = request.GET.get('file_name', 'default.mp4')
         # Build an upload URL that includes the filename as a query param
         # so we know where to store it.
-        upload_url = request.build_absolute_uri(f'/fake-upload?filename={file_name}')
+        upload_url = request.build_absolute_uri(f'/api/fake-upload?filename={file_name}')
         # The final "object_url" is how the file can be publicly accessed later
         # (this relies on serving MEDIA files, see urls.py below).
         object_url = request.build_absolute_uri(f'{settings.MEDIA_URL}{file_name}')
@@ -190,3 +189,74 @@ def fake_upload(request):
         return JsonResponse({'message': 'File uploaded successfully.'})
     return HttpResponseNotAllowed(['PUT'])
 
+
+from django.urls import reverse
+from django.http import (
+    HttpResponse,
+    HttpResponseNotFound,
+)
+import uuid
+import time
+
+@csrf_exempt
+def upload(request):
+    """
+    Handle PUT to store the file locally in MEDIA_ROOT.
+    Example usage:
+        PUT /upload?filename=myvideo.mp4
+        (Use raw binary data in the request body)
+    """
+    if request.method == 'PUT':
+        file_name = request.GET.get('filename', 'default.mp4')
+        unique_name = f"{int(time.time())}_{uuid.uuid4()}_{file_name}"
+        full_path = os.path.join(settings.MEDIA_ROOT, unique_name)
+
+        try:
+            if not request.body:
+                return JsonResponse(
+                    {'message': 'No file data found in the request body.'},
+                    status=400
+                )
+            
+            # Write the raw request body directly to a file
+            with open(full_path, 'wb') as f:
+                f.write(request.body)
+
+            # Build a URL for retrieving the uploaded video
+            video_url = request.build_absolute_uri(
+                reverse('get_video', args=[unique_name])
+            )
+
+            return JsonResponse({
+                'message': 'File uploaded successfully.',
+                'video_link': video_url
+            }, status=201)
+
+        except Exception as e:
+            return JsonResponse(
+                {
+                    'message': 'Failed to upload file.',
+                    'error': str(e)
+                },
+                status=500
+            )
+    else:
+        return HttpResponseNotAllowed(['PUT'])
+
+
+@csrf_exempt
+def get_video(request, filename):
+    """
+    When a user accesses /media/<filename>, serve the video file if it exists.
+    """
+    full_path = os.path.join(settings.MEDIA_ROOT, filename)
+
+    if not os.path.exists(full_path):
+        return HttpResponseNotFound('File not found.')
+
+    # Read the file from disk
+    with open(full_path, 'rb') as f:
+        file_data = f.read()
+
+    # Use a generic video MIME type or detect based on extension
+    return HttpResponse(file_data, content_type='video/mp4')
