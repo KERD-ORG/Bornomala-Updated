@@ -73,6 +73,7 @@ const QuestionEditForm = forwardRef(
       reset,
       watch,
       formState: { errors },
+      setValue,
     } = useForm({
       resolver: yupResolver(mainSchema),
       defaultValues,
@@ -155,6 +156,15 @@ const QuestionEditForm = forwardRef(
     // Populate form fields with initialData when editing a single question
     useEffect(() => {
       if (initialData) {
+        if (initialData.explanations) {
+          // sort the array based on level
+          initialData.explanations.sort((a, b) => {
+            return (
+              explanationLevels.indexOf(a.level) -
+              explanationLevels.indexOf(b.level)
+            );
+          });
+        }
         reset({
           target_organization: initialData.target_organization || "",
           question_level: initialData.question_level || "",
@@ -169,14 +179,12 @@ const QuestionEditForm = forwardRef(
           mcq_options: initialData.mcq_options.length
             ? initialData.mcq_options
             : [{ option_text: "" }, { option_text: "" }],
-          explanations: initialData.explanations.length
-            ? initialData.explanations
-            : [],
+          explanations: initialData.explanations || [],
           target_group: initialData.target_group || "",
           sub_sub_topic: initialData.sub_sub_topic || "",
         });
       }
-    }, [initialData, reset]);
+    }, [initialData]);
 
     const { fields, append, remove } = useFieldArray({
       control,
@@ -187,6 +195,10 @@ const QuestionEditForm = forwardRef(
       try {
         const url = process.env.NEXT_PUBLIC_API_ENDPOINT_QUESTION;
         const method = "put";
+        data.explanations = data.explanations.map((val, ind) => ({
+          ...val,
+          level: explanationLevels[ind],
+        }));
 
         setLoading(true);
         const response = await executeAjaxOperationStandard({
