@@ -1,23 +1,22 @@
 # serializers.py
-
-from rest_framework import serializers
 from .models import (
     QuestionLevel, TargetGroup, Subject,
     QuestionType, Topic, SubTopic, SubSubTopic,
     DifficultyLevel, QuestionStatus, ExamReference,
-    Question, MCQOption, Explanation
+    MCQSingleQuestion, MCQMultiQuestion, FillInTheBlanksQuestion, TrueFalseQuestion,
+    MatchingQuestion, OrderingQuestion, NumericalQuestion, ImageBasedQuestion,
+    AudioVideoQuestion, CaseStudyQuestion, DiagramLabelingQuestion,
+    CodeProgrammingQuestion, DragAndDropQuestion, AssertionReasonQuestion, Explanation,BaseQuestion
+
 )
-
 from educational_organizations_app.models import EducationalOrganizations as Organization
-
 from rest_framework import serializers
-from .models import Explanation
 
 
 class ExplanationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Explanation
-        fields = ['id', 'level', 'text', 'video']
+        fields = ['id', 'level', 'text', 'video_url']
 
 
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -98,165 +97,74 @@ class ExamReferenceSerializer(serializers.ModelSerializer):
         fields = ['id', 'reference_name', 'year_of_exam']
 
 
-class MCQOptionSerializer(serializers.ModelSerializer):
-    """
-    Serializer for the MCQOption model. Each MCQ option belongs to one question.
-    """
-    class Meta:
-        model = MCQOption
-        fields = ['id', 'option_text']
-        # 'question' is usually handled by the parent or in create logic.
-
-
-class QuestionSerializer(serializers.ModelSerializer):
-    """
-    Main Question Serializer:
-    - Links to other models via ForeignKey or ManyToMany
-    - Demonstrates how to handle nested MCQOptions and exam_references
-    """
+class BaseQuestionSerializer(serializers.ModelSerializer):
     explanations = ExplanationSerializer(many=True, required=False)
-
-    # ForeignKey fields:
-    question_level = serializers.PrimaryKeyRelatedField(
-        queryset=QuestionLevel.objects.all(), allow_null=True, required=False
+    exam_references = serializers.PrimaryKeyRelatedField(
+        queryset=ExamReference.objects.all(), many=True, required=False
     )
-    target_organization = serializers.PrimaryKeyRelatedField(
-        queryset=Organization.objects.all(), allow_null=True, required=False
+
+    question_level = serializers.PrimaryKeyRelatedField(
+        queryset=QuestionLevel.objects.all(), required=False, allow_null=True
     )
     target_group = serializers.PrimaryKeyRelatedField(
-        queryset=TargetGroup.objects.all(), allow_null=True, required=False
+        queryset=TargetGroup.objects.all(), required=False, allow_null=True
     )
     target_subject = serializers.PrimaryKeyRelatedField(
-        queryset=Subject.objects.all(), allow_null=True, required=False
+        queryset=Subject.objects.all(), required=False, allow_null=True
     )
     question_type = serializers.PrimaryKeyRelatedField(
-        queryset=QuestionType.objects.all(), allow_null=True, required=False
+        queryset=QuestionType.objects.all(), required=False, allow_null=True
     )
     topic = serializers.PrimaryKeyRelatedField(
-        queryset=Topic.objects.all(), allow_null=True, required=False
+        queryset=Topic.objects.all(), required=False, allow_null=True
     )
     sub_topic = serializers.PrimaryKeyRelatedField(
-        queryset=SubTopic.objects.all(), allow_null=True, required=False
+        queryset=SubTopic.objects.all(), required=False, allow_null=True
     )
     sub_sub_topic = serializers.PrimaryKeyRelatedField(
-        queryset=SubSubTopic.objects.all(), allow_null=True, required=False
-    )
-    question_status = serializers.PrimaryKeyRelatedField(
-        queryset=QuestionStatus.objects.all(), allow_null=True, required=False
+        queryset=SubSubTopic.objects.all(), required=False, allow_null=True
     )
     difficulty_level = serializers.PrimaryKeyRelatedField(
-        queryset=DifficultyLevel.objects.all(), allow_null=True, required=False
+        queryset=DifficultyLevel.objects.all(), required=False, allow_null=True
     )
-
-    question_level_name = serializers.CharField(
-        source='question_level.name',
-        read_only=True
+    question_status = serializers.PrimaryKeyRelatedField(
+        queryset=QuestionStatus.objects.all(), required=False, allow_null=True
     )
-
-    target_group_name = serializers.CharField(
-        source='target_group.name',
-        read_only=True
-    )
-
-    subject_name = serializers.CharField(
-        source='target_subject.name',
-        read_only=True
-    )
-
-    question_type_name = serializers.CharField(
-        source='question_type.name',
-        read_only=True
-    )
-
-    topic_name = serializers.CharField(
-        source='topic.name',
-        read_only=True
-    )
-
-    sub_topic_name = serializers.CharField(
-        source='sub_topic.name',
-        read_only=True
-    )
-
-    sub_sub_topic_name = serializers.CharField(
-        source='sub_sub_topic.name',
-        read_only=True
-    )
-
-    difficulty_level_name = serializers.CharField(
-        source='difficulty_level.name',
-        read_only=True
-    )
-
-    target_organization_name = serializers.CharField(
-        source='target_organization.name',
-        read_only=True
-    )
-
-    # ManyToMany: references
-    exam_references = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=ExamReference.objects.all(),
-        required=False
-    )
-
-    # Nested or “inline” MCQ options (many)
-    mcq_options = MCQOptionSerializer(many=True, required=False)
 
     class Meta:
-        model = Question
+        model = BaseQuestion
         fields = [
-            'id', 'question_text', 'explanations', 'correct_answer',
-            'question_level', 'target_organization', 'target_group',
-            'target_subject', 'question_type', 'topic', 'sub_topic', 'sub_sub_topic',
-            'exam_references', 'question_status', 'difficulty_level',
-            'created_at', 'updated_at',
-            'mcq_options', "question_level_name", "target_group_name", "subject_name",
-            "question_type_name", "topic_name", "sub_topic_name", "sub_sub_topic_name",
-            "difficulty_level_name", "target_organization_name"
-            
+            'id', 'question_level', 'target_group', 'target_subject', 'question_type',
+            'topic', 'sub_topic', 'sub_sub_topic', 'difficulty_level', 'question_status',
+            'exam_references', 'explanations', 'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
 
-    def validate(self, data):
-        # Ensure the `correct_answer` matches the `question_type`
-        self.validate_correct_answer(data.get("correct_answer"))
-        return data
-
     def create(self, validated_data):
-        # Extract nested data (if any)
-        mcq_options_data = validated_data.pop('mcq_options', [])
-        exam_refs_data = validated_data.pop('exam_references', [])
-        correct_answer = validated_data.pop('correct_answer', None)
         explanations_data = validated_data.pop('explanations', [])
+        exam_references_data = validated_data.pop('exam_references', [])
 
-        print("CREATE: Explanations Data:", explanations_data)
+        # Create the base question instance
+        question = self.Meta.model.objects.create(**validated_data)
 
-        # Create the question
-        question = Question.objects.create(**validated_data)
-
+        # Add explanations
         for explanation_data in explanations_data:
             explanation, _ = Explanation.objects.get_or_create(**explanation_data)
             question.explanations.add(explanation)
 
-        # ManyToMany: exam_references
-        question.exam_references.set(exam_refs_data)
-
-        # Create MCQOption objects
-        for option_data in mcq_options_data:
-            MCQOption.objects.create(question=question, **option_data)
-
-        question.correct_answer = correct_answer
-        question.save()
+        # Add exam references
+        if exam_references_data:
+            question.exam_references.set(exam_references_data)
 
         return question
 
     def update(self, instance, validated_data):
-        # For partial updates, ensure we handle nested data carefully
-        mcq_options_data = validated_data.pop('mcq_options', None)
-        exam_refs_data = validated_data.pop('exam_references', None)
-        correct_answer = validated_data.pop('correct_answer', None)
         explanations_data = validated_data.pop('explanations', None)
+        exam_references_data = validated_data.pop('exam_references', None)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
 
         if explanations_data is not None:
             instance.explanations.clear()
@@ -264,58 +172,142 @@ class QuestionSerializer(serializers.ModelSerializer):
                 explanation, _ = Explanation.objects.get_or_create(**explanation_data)
                 instance.explanations.add(explanation)
 
-        # Update direct fields
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-        instance.save()
-
-        # Update exam references if provided
-        if exam_refs_data is not None:
-            instance.exam_references.set(exam_refs_data)
-
-        # Update MCQOptions if provided
-        if mcq_options_data is not None:
-            # One approach: clear existing options then recreate
-            # or do more nuanced logic (update existing options, etc.)
-            instance.mcq_options.all().delete()
-            for option_data in mcq_options_data:
-                MCQOption.objects.create(question=instance, **option_data)
-
-        instance.correct_answer = correct_answer
-        instance.save()
+        if exam_references_data is not None:
+            instance.exam_references.set(exam_references_data)
 
         return instance
 
-    def validate_correct_answer(self, value):
-        question_type = self.initial_data.get("question_type")
-        mcq_options = self.initial_data.get("mcq_options", [])
+# Serializers for each Question Type
+class MCQSingleQuestionSerializer(BaseQuestionSerializer):
+    explanations = ExplanationSerializer(many=True, required=False)
 
-        if question_type:
-            question_type_instance = QuestionType.objects.get(pk=question_type)
-            question_type_name = question_type_instance.name.lower()
+    class Meta(BaseQuestionSerializer.Meta):
+        model = MCQSingleQuestion
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'options', 'correct_answer']
 
-            if "mcq" in question_type_name:
-                if "multi" in question_type_name and not isinstance(value, list):
-                    raise serializers.ValidationError("Correct answer must be a list for MCQ_MULTI type.")
-                if "single" in question_type_name and not isinstance(value, int):
-                    raise serializers.ValidationError("Correct answer must be an integer ID for MCQ_SINGLE type.")
 
-                # Validate that the IDs in `value` exist in `mcq_options`
-                if isinstance(value, list):
-                    option_ids = [opt["id"] for opt in mcq_options]
-                    if not all(answer in option_ids for answer in value):
-                        raise serializers.ValidationError("Invalid option IDs in correct_answer.")
-                elif isinstance(value, int):
-                    option_ids = [opt["id"] for opt in mcq_options]
-                    if value not in option_ids:
-                        raise serializers.ValidationError("Invalid option ID in correct_answer.")
+class MCQMultiQuestionSerializer(BaseQuestionSerializer):
+    explanations = ExplanationSerializer(many=True, required=False)
 
-            elif "descriptive" in question_type_name:
-                if not isinstance(value, str):
-                    raise serializers.ValidationError("Correct answer must be a string for DESCRIPTIVE type.")
+    class Meta(BaseQuestionSerializer.Meta):
+        model = MCQMultiQuestion
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'options', 'correct_answer']
 
-            elif "true_false" in question_type_name:
-                if value not in ["True", "False"]:
-                    raise serializers.ValidationError("Correct answer must be 'True' or 'False' for TRUE_FALSE type.")
 
-        return value
+class FillInTheBlanksQuestionSerializer(BaseQuestionSerializer):
+    explanations = ExplanationSerializer(many=True, required=False)
+
+    class Meta(BaseQuestionSerializer.Meta):
+        model = FillInTheBlanksQuestion
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'correct_answer']
+
+
+class TrueFalseQuestionSerializer(BaseQuestionSerializer):
+    explanations = ExplanationSerializer(many=True, required=False)
+
+    class Meta(BaseQuestionSerializer.Meta):
+        model = TrueFalseQuestion
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'correct_answer']
+
+
+class MatchingQuestionSerializer(BaseQuestionSerializer):
+    explanations = ExplanationSerializer(many=True, required=False)
+
+    class Meta(BaseQuestionSerializer.Meta):
+        model = MatchingQuestion
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'matching_pairs']
+
+
+class OrderingQuestionSerializer(BaseQuestionSerializer):
+    explanations = ExplanationSerializer(many=True, required=False)
+
+    class Meta(BaseQuestionSerializer.Meta):
+        model = OrderingQuestion
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'ordering_sequence']
+
+
+class NumericalQuestionSerializer(BaseQuestionSerializer):
+    explanations = ExplanationSerializer(many=True, required=False)
+
+    class Meta(BaseQuestionSerializer.Meta):
+        model = NumericalQuestion
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'correct_answer']
+
+
+class ImageBasedQuestionSerializer(BaseQuestionSerializer):
+    explanations = ExplanationSerializer(many=True, required=False)
+
+    class Meta(BaseQuestionSerializer.Meta):
+        model = ImageBasedQuestion
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'image_url', 'correct_answer']
+
+
+class AudioVideoQuestionSerializer(BaseQuestionSerializer):
+    explanations = ExplanationSerializer(many=True, required=False)
+
+    class Meta(BaseQuestionSerializer.Meta):
+        model = AudioVideoQuestion
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'audio_url', 'video_url', 'correct_answer']
+
+
+class CaseStudyQuestionSerializer(BaseQuestionSerializer):
+    explanations = ExplanationSerializer(many=True, required=False)
+
+    class Meta(BaseQuestionSerializer.Meta):
+        model = CaseStudyQuestion
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'correct_answer']
+
+
+class DiagramLabelingQuestionSerializer(BaseQuestionSerializer):
+    explanations = ExplanationSerializer(many=True, required=False)
+
+    class Meta(BaseQuestionSerializer.Meta):
+        model = DiagramLabelingQuestion
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'diagram_url', 'correct_answer']
+
+
+class CodeProgrammingQuestionSerializer(BaseQuestionSerializer):
+    explanations = ExplanationSerializer(many=True, required=False)
+
+    class Meta(BaseQuestionSerializer.Meta):
+        model = CodeProgrammingQuestion
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'correct_answer']
+
+
+class DragAndDropQuestionSerializer(BaseQuestionSerializer):
+    explanations = ExplanationSerializer(many=True, required=False)
+
+    class Meta(BaseQuestionSerializer.Meta):
+        model = DragAndDropQuestion
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'options_column_a', 'options_column_b', 'correct_answer']
+
+
+class AssertionReasonQuestionSerializer(BaseQuestionSerializer):
+    explanations = ExplanationSerializer(many=True, required=False)
+
+    class Meta(BaseQuestionSerializer.Meta):
+        model = AssertionReasonQuestion
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'correct_answer']
+
+
+# Factory for Dynamic Serializer Selection
+class QuestionSerializerFactory:
+    @staticmethod
+    def get_serializer(question_type):
+        mapping = {
+            'MCQ_SINGLE': MCQSingleQuestionSerializer,
+            'MCQ_MULTI': MCQMultiQuestionSerializer,
+            'FILL_BLANK': FillInTheBlanksQuestionSerializer,
+            'TRUE_FALSE': TrueFalseQuestionSerializer,
+            'MATCHING': MatchingQuestionSerializer,
+            'ORDERING': OrderingQuestionSerializer,
+            'NUMERICAL': NumericalQuestionSerializer,
+            'IMAGE': ImageBasedQuestionSerializer,
+            'AUDIO_VIDEO': AudioVideoQuestionSerializer,
+            'CASE_STUDY': CaseStudyQuestionSerializer,
+            'DIAGRAM': DiagramLabelingQuestionSerializer,
+            'CODE': CodeProgrammingQuestionSerializer,
+            'DRAG_DROP': DragAndDropQuestionSerializer,
+            'ASSERTION_REASON': AssertionReasonQuestionSerializer
+        }
+        return mapping.get(question_type)

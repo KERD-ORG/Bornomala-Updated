@@ -1,0 +1,248 @@
+### List All Questions by Type
+GET http://localhost:8000/api/questions/?type=MCQ_SINGLE
+Content-Type: application/json
+
+
+###
+
+GET http://localhost:8000/api/questions/?type=MCQ_MULTI
+Content-Type: application/json
+
+
+###
+
+GET http://localhost:8000/api/questions/?type=FILL_BLANK
+Content-Type: application/json
+
+
+###
+
+GET http://localhost:8000/api/questions/?type=TRUE_FALSE
+Content-Type: application/json
+
+
+###
+
+GET http://localhost:8000/api/questions/?type=MATCHING
+Content-Type: application/json
+
+
+###
+
+GET http://localhost:8000/api/questions/?type=ORDERING
+Content-Type: application/json
+
+
+###
+
+GET http://localhost:8000/api/questions/?type=NUMERICAL
+Content-Type: application/json
+
+
+###
+
+GET http://localhost:8000/api/questions/?type=IMAGE
+Content-Type: application/json
+
+
+###
+
+GET http://localhost:8000/api/questions/?type=AUDIO_VIDEO
+Content-Type: application/json
+
+
+###
+
+GET http://localhost:8000/api/questions/?type=CASE_STUDY
+Content-Type: application/json
+
+
+###
+
+GET http://localhost:8000/api/questions/?type=DIAGRAM
+Content-Type: application/json
+
+
+###
+
+GET http://localhost:8000/api/questions/?type=CODE
+Content-Type: application/json
+
+
+###
+
+GET http://localhost:8000/api/questions/?type=DRAG_DROP
+Content-Type: application/json
+
+
+###
+
+GET http://localhost:8000/api/questions/?type=ASSERTION_REASON
+Content-Type: application/json
+
+
+### Create Questions for All Types
+
+###
+
+###
+
+POST http://localhost:8000/api/questions/?type=MCQ_SINGLE
+Content-Type: application/json
+
+{
+  "question_text": "Who is the Father of the Nation of Bangladesh?",
+  "options": ["Sheikh Mujibur Rahman", "Ziaur Rahman", "A. K. Fazlul Huq", "Huseyn Shaheed Suhrawardy"],
+  "correct_answer": 1,
+  "explanations": [{"level": "Preliminary", "text": "Sheikh Mujibur Rahman led Bangladesh to independence."}]
+}
+
+###
+
+POST http://localhost:8000/api/questions/?type=MCQ_MULTI
+Content-Type: application/json
+
+{
+  "question_text": "Which are major rivers in Bangladesh?",
+  "options": ["Padma", "Jamuna", "Teesta", "Amazon"],
+  "correct_answer": [1, 2, 3],
+  "explanations": [{"level": "Preliminary", "text": "Padma, Jamuna, and Teesta are major rivers."}]
+}
+
+###
+
+POST http://localhost:8000/api/questions/?type=FILL_BLANK
+Content-Type: application/json
+
+{
+  "question_text": "The Sundarbans is famous for the ________ tiger.",
+  "correct_answer": "Bengal",
+  "explanations": [{"level": "Preliminary", "text": "The Bengal tiger is native to the Sundarbans."}]
+}
+
+###
+
+POST http://localhost:8000/api/questions/?type=TRUE_FALSE
+Content-Type: application/json
+
+{
+  "question_text": "Bangladesh became independent in 1971.",
+  "correct_answer": true,
+  "explanations": [{"level": "Preliminary", "text": "Bangladesh gained independence in 1971."}]
+}
+
+###
+
+POST http://localhost:8000/api/questions/?type=MATCHING
+Content-Type: application/json
+
+{
+  "question_text": "Match cultural items with their regions of origin.",
+  "matching_pairs": {"Jamdani": "Dhaka", "Nakshi Kantha": "Rajshahi"},
+  "explanations": [{"level": "Intermediate", "text": "Jamdani from Dhaka, Nakshi Kantha from Rajshahi."}]
+}
+
+###
+
+POST http://localhost:8000/api/questions/?type=ORDERING
+Content-Type: application/json
+
+{
+  "question_text": "Arrange these events in chronological order.",
+  "ordering_sequence": ["Language Movement", "Liberation War", "Constitution"],
+  "explanations": [{"level": "Advanced", "text": "Correct order: 1952, 1971, 1972."}]
+}
+
+###
+
+POST http://localhost:8000/api/questions/?type=NUMERICAL
+Content-Type: application/json
+
+{
+  "question_text": "What is 50 * 20?",
+  "correct_answer": 1000,
+  "explanations": [{"level": "Preliminary", "text": "50 * 20 = 1000."}]
+}
+
+###
+
+POST http://localhost:8000/api/questions/?type=IMAGE
+Content-Type: application/json
+
+{
+  "question_text": "Identify the monument shown in the image.",
+  "image_url": "https://example.com/image.jpg",
+  "correct_answer": "Ahsan Manzil",
+  "explanations": [{"level": "Preliminary", "text": "Ahsan Manzil is a historical site in Dhaka."}]
+}
+
+###
+
+POST http://localhost:8000/api/questions/?type=AUDIO_VIDEO
+Content-Type: application/json
+
+{
+  "question_text": "Identify the speaker in this audio.",
+  "audio_url": "https://example.com/speech.mp3",
+  "correct_answer": "Sheikh Mujibur Rahman",
+  "explanations": [{"level": "Preliminary", "text": "This is Sheikh Mujibur Rahman's speech."}]
+}
+
+###
+
+POST http://localhost:8000/api/questions/?type=CASE_STUDY
+Content-Type: application/json
+
+{
+  "question_text": "Analyze how Padma Bridge will impact southern Bangladesh.",
+  "correct_answer": "It will boost trade and connectivity.",
+  "explanations": [{"level": "Advanced", "text": "Improves transportation and economy."}]
+}
+
+###
+
+POST http://localhost:8000/api/questions/?type=DIAGRAM
+Content-Type: application/json
+
+{
+  "question_text": "Label the parts of this diagram.",
+  "diagram_url": "https://example.com/diagram.png",
+  "correct_answer": {"Central": "Dhaka", "South-East": "Chattogram"},
+  "explanations": [{"level": "Intermediate", "text": "This diagram represents major regions in Bangladesh."}]
+}
+
+###
+
+POST http://localhost:8000/api/questions/?type=CODE
+Content-Type: application/json
+
+{
+  "question_text": "Write a Python program to print Hello World.",
+  "correct_answer": "print('Hello World')",
+  "explanations": [{"level": "Preliminary", "text": "This program prints 'Hello World' to the console."}]
+}
+
+###
+
+POST http://localhost:8000/api/questions/?type=DRAG_DROP
+Content-Type: application/json
+
+{
+  "question_text": "Drag the rivers to their corresponding regions.",
+  "options_column_a": ["Padma", "Jamuna"],
+  "options_column_b": ["Central", "Northern"],
+  "correct_answer": {"Padma": "Central", "Jamuna": "Northern"},
+  "explanations": [{"level": "Preliminary", "text": "Padma flows through central Bangladesh, and Jamuna through the northern region."}]
+}
+
+###
+
+POST http://localhost:8000/api/questions/?type=ASSERTION_REASON
+Content-Type: application/json
+
+{
+  "question_text": "Assertion: Bangladesh has a tropical monsoon climate. Reason: Monsoon winds bring heavy rainfall.",
+  "correct_answer": "Both Assertion and Reason are true, and the Reason explains the Assertion.",
+  "explanations": [{"level": "Intermediate", "text": "Monsoon winds are the main cause of heavy rainfall in Bangladesh, leading to its tropical monsoon climate."}]
+}
+

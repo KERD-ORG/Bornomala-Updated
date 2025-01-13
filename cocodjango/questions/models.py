@@ -2,8 +2,6 @@
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from educational_organizations_app.models import EducationalOrganizations as Organization
-from django.db.models import JSONField
 
 
 class QuestionLevel(models.Model):
@@ -119,6 +117,7 @@ class ExamReference(models.Model):
             return f"{self.reference_name} ({self.year_of_exam})"
         return self.reference_name
 
+
 class Explanation(models.Model):
     """
     Model for storing explanations of different levels.
@@ -140,147 +139,224 @@ class Explanation(models.Model):
         null=True,
         help_text=_("Textual explanation for the question.")
     )
-    video = models.TextField(
+    video_url = models.URLField(
         _("Video Explanation"),
         blank=True,
         null=True,
-        help_text=_("Optional video file for the explanation.")
+        help_text=_("Optional video url for the explanation.")
     )
-    # video = models.FileField(
-    #     _("Video Explanation"),
-    #     upload_to='explanations/videos/',
-    #     blank=True,
-    #     null=True,
-    #     help_text=_("Optional video file for the explanation.")
-    # )
 
     def __str__(self):
         return f"{self.level} Explanation"
 
-class Question(models.Model):
-    """
-    The main Question entity with references to other models.
-    - question_level: e.g., Admission Test, Class VI, etc.
-    - target_organization: e.g., Comilla University
-    - target_group: Science, Commerce, or Arts
-    - target_subject: e.g., Physics
-    - question_type: MCQ, Descriptive, etc.
-    - topic / sub_topic / sub_sub_topic: hierarchical classification
-    - exam_references: ManyToMany linking to multiple exam references (past usage)
-    - question_status: 'New' or 'Reused'
-    - difficulty_level: e.g., 'Moderate'
-    """
+
+class BaseQuestion(models.Model):
     question_level = models.ForeignKey(
-        QuestionLevel,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
-    )
-    target_organization = models.ForeignKey(
-        Organization,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
+        'QuestionLevel', on_delete=models.SET_NULL, null=True, blank=True
     )
     target_group = models.ForeignKey(
-        TargetGroup,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
+        'TargetGroup', on_delete=models.SET_NULL, null=True, blank=True
     )
     target_subject = models.ForeignKey(
-        Subject,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
+        'Subject', on_delete=models.SET_NULL, null=True, blank=True
     )
     question_type = models.ForeignKey(
-        QuestionType,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
+        'QuestionType', on_delete=models.SET_NULL, null=True, blank=True
     )
-
     topic = models.ForeignKey(
-        Topic,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
+        'Topic', on_delete=models.SET_NULL, null=True, blank=True
     )
     sub_topic = models.ForeignKey(
-        SubTopic,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
+        'SubTopic', on_delete=models.SET_NULL, null=True, blank=True
     )
     sub_sub_topic = models.ForeignKey(
-        SubSubTopic,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
+        'SubSubTopic', on_delete=models.SET_NULL, null=True, blank=True
     )
-
-    exam_references = models.ManyToManyField(
-        ExamReference,
-        blank=True,
-        related_name="questions"
-    )
-
-    # Main content of the question
-    question_text = models.TextField(
-        _("Question Text"),
-        help_text=_("Type your question here.")
-    )
-
-    # Additional details
-    explanations = models.ManyToManyField(
-        Explanation,
-        blank=True,
-        null=True,
-        related_name="questions",
-        help_text=_("Explanations associated with the question.")
-    )
-
-    correct_answer = JSONField(
-        _("Correct Answer"),
-        blank=True,
-        null=True,
-        help_text=_("Stores the correct answer(s) in a flexible format based on the question type.")
-    )
-
-    question_status = models.ForeignKey(
-        'QuestionStatus',  # Reference to the QuestionStatus model
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        help_text="Status of the question, e.g., 'New', 'Reused', 'Approved'"
-    )
-
     difficulty_level = models.ForeignKey(
-        DifficultyLevel,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
+        'DifficultyLevel', on_delete=models.SET_NULL, null=True, blank=True
     )
+    question_status = models.ForeignKey(
+        'QuestionStatus', on_delete=models.SET_NULL, null=True, blank=True
+    )
+    exam_references = models.ManyToManyField(
+        'ExamReference', blank=True
+    )
+    explanations = models.ManyToManyField(Explanation, blank=True)
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True, help_text="Timestamp when the question was created."
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, help_text="Timestamp when the question was last updated."
+    )
+    # created_by = models.ForeignKey(
+    #     User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_questions',
+    #     help_text="User who created the question."
+    # )
+    # approved_by = models.ForeignKey(
+    #     User, on_delete=models.SET_NULL, null=True, blank=True, related_name='approved_questions',
+    #     help_text="User who approved the question."
+    # )
+
+    class Meta:
+        abstract = True
+
+
+class MCQSingleQuestion(BaseQuestion):
+    question_text = models.TextField()
+    options = models.JSONField()
+    correct_answer = models.IntegerField()
+    
+
 
     def __str__(self):
-        return f"[Q#{self.id}] {self.question_text[:60]}..."
+        return self.question_text[:50]
 
 
-class MCQOption(models.Model):
-    """
-    Stores multiple-choice options for a given Question (if it's an MCQ type).
-    Each Question can have 2-8 options. This is optional for other question types.
-    """
-    question = models.ForeignKey(
-        Question,
-        on_delete=models.CASCADE,
-        related_name='mcq_options'
-    )
-    option_text = models.CharField(max_length=255)
+class MCQMultiQuestion(BaseQuestion):
+    question_text = models.TextField()
+    options = models.JSONField()
+    correct_answer = models.JSONField()
+    
+
 
     def __str__(self):
-        return f"Option (Q#{self.question.id}): {self.option_text}"
+        return self.question_text[:50]
+
+
+# Fill in the Blanks Question
+class FillInTheBlanksQuestion(BaseQuestion):
+    question_text = models.TextField()
+    correct_answer = models.CharField(max_length=255)
+    
+
+
+    def __str__(self):
+        return self.question_text[:50]
+
+
+# True/False Question
+class TrueFalseQuestion(BaseQuestion):
+    question_text = models.TextField()
+    correct_answer = models.BooleanField()
+    
+
+
+    def __str__(self):
+        return self.question_text[:50]
+
+
+# Matching Question
+class MatchingQuestion(BaseQuestion):
+    question_text = models.TextField()
+    matching_pairs = models.JSONField()
+    
+
+
+    def __str__(self):
+        return self.question_text[:50]
+
+
+# Ordering/Sequence Question
+class OrderingQuestion(BaseQuestion):
+    question_text = models.TextField()
+    ordering_sequence = models.JSONField()
+    
+
+
+    def __str__(self):
+        return self.question_text[:50]
+
+
+# Numerical/Calculation Question
+class NumericalQuestion(BaseQuestion):
+    question_text = models.TextField()
+    correct_answer = models.FloatField()
+    
+
+
+    def __str__(self):
+        return self.question_text[:50]
+
+
+# Image-Based Question
+class ImageBasedQuestion(BaseQuestion):
+    question_text = models.TextField()
+    image_url = models.URLField()
+    correct_answer = models.CharField(max_length=255)
+    
+
+
+    def __str__(self):
+        return self.question_text[:50]
+
+
+# Audio/Video-Based Question
+class AudioVideoQuestion(BaseQuestion):
+    question_text = models.TextField()
+    audio_url = models.URLField(blank=True, null=True)
+    video_url = models.URLField(blank=True, null=True)
+    correct_answer = models.CharField(max_length=255)
+    
+
+
+    def __str__(self):
+        return self.question_text[:50]
+
+
+# Case Study Question
+class CaseStudyQuestion(BaseQuestion):
+    question_text = models.TextField()
+    correct_answer = models.TextField()
+    
+
+
+    def __str__(self):
+        return self.question_text[:50]
+
+
+# Diagram Labeling Question
+class DiagramLabelingQuestion(BaseQuestion):
+    question_text = models.TextField()
+    diagram_url = models.URLField()
+    correct_answer = models.JSONField()
+    
+
+
+    def __str__(self):
+        return self.question_text[:50]
+
+
+# Code/Programming Question
+class CodeProgrammingQuestion(BaseQuestion):
+    question_text = models.TextField()
+    correct_answer = models.TextField()
+    
+
+
+    def __str__(self):
+        return self.question_text[:50]
+
+
+# Drag-and-Drop Question
+class DragAndDropQuestion(BaseQuestion):
+    question_text = models.TextField()
+    options_column_a = models.JSONField()
+    options_column_b = models.JSONField()
+    correct_answer = models.JSONField()
+    
+
+
+    def __str__(self):
+        return self.question_text[:50]
+
+
+# Assertion-Reason Question
+class AssertionReasonQuestion(BaseQuestion):
+    question_text = models.TextField()
+    correct_answer = models.TextField()
+    
+
+
+    def __str__(self):
+        return self.question_text[:50]

@@ -5,17 +5,22 @@ from django.conf import settings
 from django.http import JsonResponse, HttpResponseNotAllowed
 from django.views.decorators.csrf import csrf_exempt
 
+from educational_organizations_app.models import EducationalOrganizations as Organization
 from .models import (
-    Organization, QuestionLevel, TargetGroup, Subject,
+    QuestionLevel, TargetGroup, Subject,
     QuestionType, Topic, SubTopic, SubSubTopic,
     DifficultyLevel, QuestionStatus, ExamReference,
-    Question
+    MCQSingleQuestion, MCQMultiQuestion, FillInTheBlanksQuestion, TrueFalseQuestion,
+    MatchingQuestion, OrderingQuestion, NumericalQuestion, ImageBasedQuestion,
+    AudioVideoQuestion, CaseStudyQuestion, DiagramLabelingQuestion,
+    CodeProgrammingQuestion, DragAndDropQuestion, AssertionReasonQuestion
+
 )
 from .serializers import (
     OrganizationSerializer, QuestionLevelSerializer, TargetGroupSerializer,
     SubjectSerializer, QuestionTypeSerializer, TopicSerializer,
     SubTopicSerializer, SubSubTopicSerializer, DifficultyLevelSerializer,
-    QuestionStatusSerializer, ExamReferenceSerializer, QuestionSerializer
+    QuestionStatusSerializer, ExamReferenceSerializer,QuestionSerializerFactory
 )
 
 # -------------------------
@@ -143,12 +148,57 @@ class ExamReferenceRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIVi
 # QUESTION
 # -------------------------
 class QuestionListCreateView(generics.ListCreateAPIView):
-    queryset = Question.objects.all()
-    serializer_class = QuestionSerializer
+    def get_queryset(self):
+        question_type = self.request.query_params.get('type')
+        model_mapping = {
+            'MCQ_SINGLE': MCQSingleQuestion,
+            'MCQ_MULTI': MCQMultiQuestion,
+            'FILL_BLANK': FillInTheBlanksQuestion,
+            'TRUE_FALSE': TrueFalseQuestion,
+            'MATCHING': MatchingQuestion,
+            'ORDERING': OrderingQuestion,
+            'NUMERICAL': NumericalQuestion,
+            'IMAGE': ImageBasedQuestion,
+            'AUDIO_VIDEO': AudioVideoQuestion,
+            'CASE_STUDY': CaseStudyQuestion,
+            'DIAGRAM': DiagramLabelingQuestion,
+            'CODE': CodeProgrammingQuestion,
+            'DRAG_DROP': DragAndDropQuestion,
+            'ASSERTION_REASON': AssertionReasonQuestion
+        }
+        return model_mapping.get(question_type, MCQSingleQuestion).objects.all()
 
+    def get_serializer_class(self):
+        question_type = self.request.query_params.get('type')
+        return QuestionSerializerFactory.get_serializer(question_type)
+
+
+# Dynamic RetrieveUpdateDestroy View
 class QuestionRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Question.objects.all()
-    serializer_class = QuestionSerializer
+    def get_queryset(self):
+        question_type = self.request.query_params.get('type')
+        model_mapping = {
+            'MCQ_SINGLE': MCQSingleQuestion,
+            'MCQ_MULTI': MCQMultiQuestion,
+            'FILL_BLANK': FillInTheBlanksQuestion,
+            'TRUE_FALSE': TrueFalseQuestion,
+            'MATCHING': MatchingQuestion,
+            'ORDERING': OrderingQuestion,
+            'NUMERICAL': NumericalQuestion,
+            'IMAGE': ImageBasedQuestion,
+            'AUDIO_VIDEO': AudioVideoQuestion,
+            'CASE_STUDY': CaseStudyQuestion,
+            'DIAGRAM': DiagramLabelingQuestion,
+            'CODE': CodeProgrammingQuestion,
+            'DRAG_DROP': DragAndDropQuestion,
+            'ASSERTION_REASON': AssertionReasonQuestion
+        }
+        return model_mapping.get(question_type, MCQSingleQuestion).objects.all()
+
+    def get_serializer_class(self):
+        question_type = self.request.query_params.get('type')
+        return QuestionSerializerFactory.get_serializer(question_type)
+
 
 @csrf_exempt
 def presign_url(request):

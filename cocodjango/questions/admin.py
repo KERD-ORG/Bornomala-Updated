@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import (
     QuestionLevel, TargetGroup, Subject, QuestionType,
     Topic, SubTopic, SubSubTopic, DifficultyLevel,
-    QuestionStatus, ExamReference, Explanation, Question, MCQOption
+    QuestionStatus, ExamReference, Explanation
 )
 
 # Registering each model
@@ -17,5 +17,3 @@ admin.site.register(DifficultyLevel)
 admin.site.register(QuestionStatus)
 admin.site.register(ExamReference)
 admin.site.register(Explanation)
-admin.site.register(Question)
-admin.site.register(MCQOption)
