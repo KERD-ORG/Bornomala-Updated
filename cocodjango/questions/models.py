@@ -130,7 +130,7 @@ class Explanation(models.Model):
     ]
 
     level = models.CharField(
-        max_length=15,
+        max_length=20,
         choices=LEVEL_CHOICES,
         help_text=_("The level of the explanation (Preliminary, Intermediate, Advanced).")
     )
@@ -140,13 +140,19 @@ class Explanation(models.Model):
         null=True,
         help_text=_("Textual explanation for the question.")
     )
-    video = models.FileField(
+    video = models.TextField(
         _("Video Explanation"),
-        upload_to='explanations/videos/',
         blank=True,
         null=True,
         help_text=_("Optional video file for the explanation.")
     )
+    # video = models.FileField(
+    #     _("Video Explanation"),
+    #     upload_to='explanations/videos/',
+    #     blank=True,
+    #     null=True,
+    #     help_text=_("Optional video file for the explanation.")
+    # )
 
     def __str__(self):
         return f"{self.level} Explanation"
@@ -230,6 +236,7 @@ class Question(models.Model):
     explanations = models.ManyToManyField(
         Explanation,
         blank=True,
+        null=True,
         related_name="questions",
         help_text=_("Explanations associated with the question.")
     )
