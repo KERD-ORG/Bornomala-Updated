@@ -55,7 +55,7 @@ const mainSchema = yup.object().shape({
 });
 
 const QuestionEditForm = forwardRef(
-  ({ initialData, onSubmit, onCancel, addRow, deleteRow, setLoading }, ref) => {
+  ({ initialData, onSubmit, onCancel, addRow, deleteRow }, ref) => {
     const {
       t,
       globalError,
@@ -63,6 +63,8 @@ const QuestionEditForm = forwardRef(
       setSuccessMessage,
       token,
       setToken,
+      loading,
+      setLoading,
     } = useCommonForm();
     const router = useRouter();
     const {
@@ -176,6 +178,11 @@ const QuestionEditForm = forwardRef(
       }
     }, [initialData, reset]);
 
+    const { fields, append, remove } = useFieldArray({
+      control,
+      name: "explanations",
+    });
+
     const onSubmitForm = async (data) => {
       try {
         const url = process.env.NEXT_PUBLIC_API_ENDPOINT_QUESTION;
@@ -230,8 +237,52 @@ const QuestionEditForm = forwardRef(
       }
     };
 
+    const handleVideoUpload = async (file, index) => {
+      if (!file || loading) return;
+      setLoading(true);
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await axios.put(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/upload/?filename=${file.name}`,
+          file,
+          {
+            headers: {
+              "Content-Type": file.type,
+              Authorization: `Token ${token}`,
+            },
+          }
+        );
+
+        setValue(`explanations.${index}.video`, response.data.video_link);
+        setValue(`explanations.${index}.filename`, file.name);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        setGlobalError(error.response?.data?.message || error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     return (
       <Form onSubmit={handleSubmit(onSubmitForm)}>
+        {globalError && (
+          <div
+            className="alert alert-danger alert-dismissible fade show"
+            role="alert"
+          >
+            <strong>{globalError}</strong>
+            <button
+              type="button"
+              className="btn-close"
+              aria-label="Close"
+              onClick={() => {
+                setGlobalError("");
+              }}
+            ></button>
+          </div>
+        )}
         <Row className="mb-3">
           <Col md={6}>
             <Form.Label>Target Organization:</Form.Label>
@@ -380,11 +431,13 @@ const QuestionEditForm = forwardRef(
                 render={({ field }) => (
                   <Form.Select {...field} isInvalid={!!errors?.sub_sub_topic}>
                     <option value="">-- Select Sub Subtopic --</option>
-                    {dropdownData.subSubTopics.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
+                    {dropdownData.subSubTopics
+                      .filter((val) => val.sub_topic == subTopic)
+                      .map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
                   </Form.Select>
                 )}
               />
@@ -503,7 +556,7 @@ const QuestionEditForm = forwardRef(
         )}
 
         {question_type && question_type.name === "MCQ" && (
-          <NestedMCQOptions control={control} errors={errors} qIndex={0} />
+          <NestedMCQOptions control={control} errors={errors} />
         )}
 
         {question_type && question_type.name && (
@@ -569,8 +622,103 @@ const QuestionEditForm = forwardRef(
           </Row>
         )}
 
-        {/* Continue adding other fields similarly using react-bootstrap components */}
-        <NestedExplanations control={control} errors={errors} qIndex={0} />
+        <Row className="">
+          <Col>
+            <h5>Explanations</h5>
+          </Col>
+        </Row>
+        {fields.map((field, index) => {
+          const filename = watch(`explanations.${index}.filename`);
+          const video = watch(`explanations.${index}.video`);
+
+          return (
+            <Row className="mb-3 px-3" key={field.id}>
+              <Col md={12} className="mb-2">
+                <Form.Label>{explanationLevels[index]} Explanation:</Form.Label>
+                <Controller
+                  name={`explanations.${index}.text`}
+                  control={control}
+                  render={({ field }) => (
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      {...field}
+                      isInvalid={!!errors?.explanations?.[index]?.text}
+                    />
+                  )}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors?.explanations?.[index]?.text?.message}
+                </Form.Control.Feedback>
+              </Col>
+
+              <Col md={12} className="mb-2">
+                <Form.Label>Explanation Video (optional):</Form.Label>
+                {video ? (
+                  <div>
+                    <a href={video} target="_blank" rel="noopener noreferrer">
+                      {filename || "View Uploaded Video"}
+                    </a>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() =>
+                        setValue(`explanations.${index}.video`, "")
+                      }
+                      className="ms-2"
+                    >
+                      Change File
+                    </Button>
+                  </div>
+                ) : (
+                  <Controller
+                    name={`explanations.${index}.file`}
+                    control={control}
+                    render={({ field }) => (
+                      <Form.Control
+                        type="file"
+                        disabled={loading}
+                        onChange={(e) =>
+                          handleVideoUpload(e.target.files[0], index)
+                        }
+                        isInvalid={!!errors?.explanations?.[index]?.video}
+                      />
+                    )}
+                  />
+                )}
+                <Form.Control.Feedback type="invalid">
+                  {errors?.explanations?.[index]?.video?.message}
+                </Form.Control.Feedback>
+              </Col>
+
+              <Col>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => remove(index)}
+                >
+                  Remove Explanation
+                </Button>
+              </Col>
+            </Row>
+          );
+        })}
+
+        <Row>
+          <Col>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={() =>
+                append({ text: "", file: null, video: "", filename: "" })
+              }
+              disabled={fields.length >= explanationLevels.length}
+            >
+              Add Explanation
+            </Button>
+          </Col>
+        </Row>
 
         <div className="d-flex justify-content-end gap-3 mt-3">
           <Button variant="secondary" onClick={onCancel}>
@@ -585,7 +733,7 @@ const QuestionEditForm = forwardRef(
   }
 );
 
-const NestedMCQOptions = ({ control, errors, qIndex }) => {
+const NestedMCQOptions = ({ control, errors }) => {
   const { fields, append, remove } = useFieldArray({
     control,
     name: `mcq_options`,
@@ -637,103 +785,6 @@ const NestedMCQOptions = ({ control, errors, qIndex }) => {
           Add Option
         </button>
       </div>
-    </div>
-  );
-};
-
-const NestedExplanations = ({ control, errors, qIndex }) => {
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: `explanations`,
-  });
-
-  const handleVideoUpload = async (file) => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/presign-url`,
-        {
-          params: { file_name: file.name },
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-          /* possibly pass auth token if needed */
-        }
-      );
-
-      await axios.put(data.url, file, {
-        headers: {
-          "Content-Type": file.type,
-        },
-      });
-      console.log(data.url);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  return (
-    <div className="mb-3">
-      <label className="form-label">Explanations:</label>
-      {fields.map((field, eIndex) => (
-        <div key={field.id} className="card mb-3">
-          <div className="card-body">
-            <h6 className="card-title">{field.level} Level Explanation</h6>
-            <Controller
-              name={`explanations.${eIndex}.text`}
-              control={control}
-              render={({ field }) => (
-                <textarea
-                  {...field}
-                  className="form-control mb-2"
-                  placeholder="Explanation text"
-                  rows={3}
-                />
-              )}
-            />
-            <div className="mb-2">
-              <label className="form-label">Video (optional):</label>
-              <Controller
-                name={`explanations.${eIndex}.video`}
-                control={control}
-                render={({ field }) => (
-                  <input
-                    type="file"
-                    accept="video/*"
-                    className="form-control"
-                    onChange={(e) => {
-                      // Store the selected file in form state
-                      handleVideoUpload(e.target.files[0]);
-                      field.onChange(e.target.files[0]);
-                    }}
-                  />
-                )}
-              />
-            </div>
-            <button
-              type="button"
-              className="btn btn-danger btn-sm"
-              onClick={() => remove(eIndex)}
-            >
-              Remove Explanation
-            </button>
-          </div>
-        </div>
-      ))}
-      <button
-        type="button"
-        className="btn btn-secondary btn-sm"
-        style={{ marginLeft: "10px" }}
-        disabled={fields.length >= 3}
-        onClick={() => {
-          append({
-            level: explanationLevels[fields.length] || explanationLevels[2],
-            text: "",
-            video: null,
-          });
-        }}
-      >
-        Add Explanation
-      </button>
     </div>
   );
 };

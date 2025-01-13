@@ -235,7 +235,11 @@ const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
           token,
         });
 
-        promises.push(promise);
+        promises.push(
+          promise
+            .then((val) => ({ ...val, index: i }))
+            .catch((err) => ({ ...err, index: i }))
+        );
       }
       if (promises.length === 0) {
         setGlobalError("You have to add at least 1 question");
@@ -244,8 +248,30 @@ const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
 
       // Execute all promises concurrently. If any single request fails, Promise.all will reject.
       const results = await Promise.all(promises);
+      console.log(results);
+      // Identify successful submissions
+      const successfulIndexes = results
+        .filter(
+          (result) =>
+            typeof result.status === "number" &&
+            result.status >= 200 &&
+            result.status < 300
+        )
+        .map((result) => result.index);
+
+      // Remove successful questions
+      successfulIndexes
+        .sort((a, b) => b - a)
+        .forEach((ind) => removeQuestion(ind));
+
+      // Handle failures
+      const failedResults = results.filter(
+        (result) => result.status === "error"
+      );
+
+      // console.log(results);
       let ind = -1;
-      const errorResult = results.forEach((result, index) => {
+      failedResults.forEach((result, index) => {
         if (ind != -1) return;
         if (result.status === "error") {
           ind = index;
@@ -518,10 +544,6 @@ export const QuestionModal = ({
   useEffect(() => {
     if (initialData) reset(initialData);
   }, [initialData, reset]);
-
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
 
   const handleVideoUpload = async (file, index) => {
     if (!file || loading) return;
