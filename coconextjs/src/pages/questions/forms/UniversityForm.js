@@ -34,30 +34,44 @@ const defaultValues = {
   //     topic: "",
   //     sub_topic: "",
   //     difficulty_level: "",
-  //     mcq_options: [{ option_text: "" }, { option_text: "" }],
+  //     options: [{ option_text: "" }, { option_text: "" }],
   //     explanations: [],
   //   },
   // ],
 };
 
 const questionSchema = yup.object().shape({
-  // question_text: yup.string().required("Question Text is required"),
-  // correct_answer: yup.string().required("Correct Answer is required"),
-  // target_subject: yup.string().required("Subject is required"),
-  // exam_references: yup.array(),
-  // question_type: yup.string().required("Question Type is required"),
-  // topic: yup.string().required("Topic is required"),
-  // sub_topic: yup.string(),
-  // difficulty_level: yup.string().required("Difficulty Level is required"),
-  // mcq_options: yup
-  //   .array()
-  //   .of(
-  //     yup.object({
-  //       option_text: yup.string().required("Option cannot be empty"),
-  //     })
-  //   )
-  //   .min(2, "At least two options are required"),
-  // target_group: yup.string().required("Target Group is required"),
+  question_text: yup.string().required("Question Text is required"),
+  correct_answer: yup.mixed().when("question_type", {
+    is: (val) => ["MCQ_SINGLE", "MCQ_MULTI"].includes(val),
+    then: () =>
+      yup
+        .array()
+        .transform((value) => (typeof value === "string" ? [] : value)) // Convert empty string to array
+        .of(yup.number().required("Select at least one correct answer"))
+        .min(1, "Select at least one correct answer"),
+    otherwise: () => yup.string().required("Correct Answer is required"),
+  }),
+  target_subject: yup.string().required("Subject is required"),
+  exam_references: yup.array(),
+  question_type: yup.string().required("Question Type is required"),
+  topic: yup.string().required("Topic is required"),
+  sub_topic: yup.string(),
+  difficulty_level: yup.string().required("Difficulty Level is required"),
+  options: yup.array().when("question_type", {
+    is: (val) => ["MCQ_SINGLE", "MCQ_MULTI"].includes(val),
+    then: () =>
+      yup
+        .array()
+        .of(
+          yup.object({
+            option_text: yup.string().required("Option text cannot be empty"),
+          })
+        )
+        .min(2, "At least two options are required"),
+    otherwise: () => yup.array().notRequired(),
+  }),
+  target_group: yup.string().required("Target Group is required"),
 });
 
 const mainSchema = yup.object().shape({
@@ -506,7 +520,7 @@ export const QuestionModal = ({
       topic: "",
       sub_topic: "",
       difficulty_level: "",
-      mcq_options: [{ option_text: "" }, { option_text: "" }],
+      options: [{ option_text: "" }, { option_text: "" }],
       explanations: [],
       sub_sub_topic: "",
     },
@@ -514,9 +528,7 @@ export const QuestionModal = ({
 
   const topic = watch("topic");
   const subTopic = watch("sub_topic");
-  const question_type = dropdownData.questionTypes.filter(
-    (val) => val.id == watch("question_type")
-  )[0];
+  const question_type = watch("question_type");
 
   useEffect(() => {
     if (show && !initialData) {
@@ -529,7 +541,7 @@ export const QuestionModal = ({
         topic: "",
         sub_topic: "",
         difficulty_level: "",
-        mcq_options: [{ option_text: "" }, { option_text: "" }],
+        options: [{ option_text: "" }, { option_text: "" }],
         explanations: [],
         sub_sub_topic: "",
       });
@@ -572,6 +584,106 @@ export const QuestionModal = ({
       setLoading(false);
     }
   };
+
+  const renderCorrectAnswerField = (questionType) => {
+    console.log(questionType);
+    switch (questionType) {
+      case "MCQ_SINGLE":
+      case "MCQ_MULTI":
+        return (
+          <Controller
+            name="correct_answer"
+            control={control}
+            render={({ field }) => (
+              <Form.Group>
+                {watch("options")?.map((option, index) => (
+                  <div key={index}>
+                    <Form.Check
+                      type={
+                        questionType === "MCQ_SINGLE" ? "radio" : "checkbox"
+                      }
+                      label={option.option_text || "(Option text is required)"}
+                      value={index}
+                      checked={field.value?.includes(index)}
+                      isInvalid={!option.option_text}
+                      onChange={(e) => {
+                        const selected = [...(field.value || [])];
+                        if (e.target.checked) {
+                          questionType === "MCQ_SINGLE"
+                            ? field.onChange([index])
+                            : field.onChange([...selected, index]);
+                        } else {
+                          field.onChange(
+                            selected.filter((val) => val !== index)
+                          );
+                        }
+                      }}
+                    />
+                    {!option.option_text && (
+                      <Form.Text className="text-danger">
+                        Option text cannot be empty.
+                      </Form.Text>
+                    )}
+                  </div>
+                ))}
+              </Form.Group>
+            )}
+          />
+        );
+      case "FILL_BLANK":
+      case "SHORT_ANSWER":
+      case "NUMERICAL":
+        return (
+          <Controller
+            name="correct_answer"
+            control={control}
+            render={({ field }) => (
+              <Form.Control
+                type={questionType === "NUMERICAL" ? "number" : "text"}
+                isInvalid={!!errors.correct_answer}
+                {...field}
+              />
+            )}
+          />
+        );
+      case "TRUE_FALSE":
+        return (
+          <Controller
+            name="correct_answer"
+            control={control}
+            render={({ field }) => (
+              <Form.Select isInvalid={!!errors.correct_answer} {...field}>
+                <option value="">-- Select --</option>
+                <option value="True">True</option>
+                <option value="False">False</option>
+              </Form.Select>
+            )}
+          />
+        );
+      case "ESSAY":
+      case "PROGRAMMING":
+        return (
+          <Controller
+            name="correct_answer"
+            control={control}
+            render={({ field }) => (
+              <Form.Control
+                as="textarea"
+                rows={4}
+                isInvalid={!!errors.correct_answer}
+                {...field}
+              />
+            )}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
   return (
     <Modal show={show} onHide={onHide} size="lg" backdrop="static">
@@ -762,122 +874,66 @@ export const QuestionModal = ({
           </Row>
 
           <Row className="mb-3">
-            <Col md={12}>
-              <Form.Group controlId={`question_type`}>
-                <Form.Label>Question Type:</Form.Label>
-                <Controller
-                  name={`question_type`}
-                  control={control}
-                  render={({ field }) => (
-                    <Form.Select {...field} isInvalid={!!errors?.question_type}>
-                      <option value="">-- Select Question Type --</option>
-                      {dropdownData.questionTypes.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </Form.Select>
-                  )}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors?.question_type?.message}
-                </Form.Control.Feedback>
-              </Form.Group>
+            <Col>
+              <Form.Label>Question Type:</Form.Label>
+              <Controller
+                name="question_type"
+                control={control}
+                render={({ field }) => (
+                  <Form.Select isInvalid={!!errors.question_type} {...field}>
+                    <option value="">-- Select Question Type --</option>
+                    <option value="MCQ_SINGLE">MCQ Single</option>
+                    <option value="MCQ_MULTI">MCQ Multiple</option>
+                    <option value="FILL_BLANK">Fill in the Blank</option>
+                    <option value="TRUE_FALSE">True/False</option>
+                    <option value="ESSAY">Essay</option>
+                    <option value="PROGRAMMING">Programming</option>
+                  </Form.Select>
+                )}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.question_type?.message}
+              </Form.Control.Feedback>
             </Col>
           </Row>
 
-          {question_type && question_type.name && (
-            <Row className="mb-3">
-              <Col>
-                <Form.Label>Question Text:</Form.Label>
-                <Controller
-                  name="question_text"
-                  control={control}
-                  render={({ field }) => (
-                    <Form.Control
-                      as="textarea"
-                      rows={4}
-                      isInvalid={!!errors.question_text}
-                      {...field}
-                    />
-                  )}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.question_text?.message}
-                </Form.Control.Feedback>
-              </Col>
-            </Row>
-          )}
-
-          {question_type && question_type.name === "MCQ" && (
-            <NestedMCQOptions control={control} errors={errors} />
-          )}
-
-          {question_type && question_type.name && (
-            <Row className="mb-3">
-              <Col>
-                <Form.Label>Answer:</Form.Label>
-                {[
-                  "Descriptive/Essay Questions",
-                  "Code or Programming Questions",
-                ].includes(question_type.name) && (
+          {question_type && (
+            <>
+              <Row className="mb-3">
+                <Col>
+                  <Form.Label>Question Text:</Form.Label>
                   <Controller
-                    name="correct_answer"
+                    name="question_text"
                     control={control}
                     render={({ field }) => (
                       <Form.Control
-                        as={"textarea"}
+                        as="textarea"
                         rows={4}
-                        isInvalid={!!errors.correct_answer}
+                        isInvalid={!!errors.question_text}
                         {...field}
                       />
                     )}
                   />
-                )}
-                {[
-                  "Short Answer Questions",
-                  "Fill-in-the-Blanks",
-                  "Numerical/Calculation Questions",
-                  "MCQ",
-                ].includes(question_type.name) && (
-                  <Controller
-                    name="correct_answer"
-                    control={control}
-                    render={({ field }) => (
-                      <Form.Control
-                        type={
-                          question_type.name ===
-                          "Numerical/Calculation Questions"
-                            ? "number"
-                            : "text"
-                        }
-                        isInvalid={!!errors.correct_answer}
-                        {...field}
-                      />
-                    )}
-                  />
-                )}
-                {question_type.name === "True/false" && (
-                  <Controller
-                    name="correct_answer"
-                    control={control}
-                    render={({ field }) => (
-                      <Form.Select
-                        isInvalid={!!errors.correct_answer}
-                        {...field}
-                      >
-                        <option value="">-- Select --</option>
-                        <option value="True">True</option>
-                        <option value="False">False</option>
-                      </Form.Select>
-                    )}
-                  />
-                )}
-                <Form.Control.Feedback type="invalid">
-                  {errors.correct_answer?.message}
-                </Form.Control.Feedback>
-              </Col>
-            </Row>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.question_text?.message}
+                  </Form.Control.Feedback>
+                </Col>
+              </Row>
+
+              {question_type.includes("MCQ") && (
+                <NestedMCQOptions control={control} errors={errors} />
+              )}
+
+              <Row className="mb-3">
+                <Col>
+                  <Form.Label>Answer:</Form.Label>
+                  {renderCorrectAnswerField(question_type)}
+                  <Form.Control.Feedback type="invalid">
+                    {errors.correct_answer?.message} sdasdas
+                  </Form.Control.Feedback>
+                </Col>
+              </Row>
+            </>
           )}
 
           {/* Continue adding other fields similarly using react-bootstrap components */}
@@ -997,7 +1053,7 @@ export const QuestionModal = ({
 const NestedMCQOptions = ({ control, errors }) => {
   const { fields, append, remove } = useFieldArray({
     control,
-    name: `mcq_options`,
+    name: `options`,
   });
 
   return (
@@ -1007,15 +1063,13 @@ const NestedMCQOptions = ({ control, errors }) => {
         {fields.map((field, oIndex) => (
           <div key={field.id} className="input-group mb-2">
             <Controller
-              name={`mcq_options.${oIndex}.option_text`}
+              name={`options.${oIndex}.option_text`}
               control={control}
               render={({ field }) => (
                 <input
                   {...field}
                   className={`form-control ${
-                    errors?.mcq_options?.[oIndex]?.option_text
-                      ? "is-invalid"
-                      : ""
+                    errors?.options?.[oIndex]?.option_text ? "is-invalid" : ""
                   }`}
                   placeholder={`Option ${oIndex + 1}`}
                 />
@@ -1030,9 +1084,9 @@ const NestedMCQOptions = ({ control, errors }) => {
                 Remove
               </button>
             )}
-            {errors?.mcq_options?.[oIndex]?.option_text.message && (
+            {errors?.options?.[oIndex]?.option_text.message && (
               <div className="invalid-feedback">
-                {errors?.mcq_options?.[oIndex]?.option_text.message}
+                {errors?.options?.[oIndex]?.option_text.message}
               </div>
             )}
           </div>
