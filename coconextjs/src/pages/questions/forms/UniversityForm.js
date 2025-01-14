@@ -56,8 +56,6 @@ const questionSchema = yup.object().shape({
           .number()
           .typeError("Correct Answer must be a number")
           .required("Correct Answer is required");
-      default:
-        return yup.string().required("Correct Answer is required");
     }
   }),
   matching_pairs: yup.object().when("question_type", {
@@ -65,19 +63,25 @@ const questionSchema = yup.object().shape({
     then: () =>
       yup
         .object()
+        // Transform the input: if it's a string, try to parse it as JSON.
+        .transform((value, originalValue) => {
+          if (typeof originalValue === "string") {
+            try {
+              const parsed = JSON.parse(originalValue);
+              return parsed;
+            } catch (e) {
+              // If parsing fails, return the original value to let validation catch the error.
+              return originalValue;
+            }
+          }
+          return value;
+        })
         .test(
           "valid-json-object",
           "Please enter a valid JSON object",
           (value) => {
-            try {
-              const parsed =
-                typeof value === "string" ? JSON.parse(value) : value;
-              return (
-                parsed && typeof parsed === "object" && !Array.isArray(parsed)
-              );
-            } catch (e) {
-              return false;
-            }
+            // After transformation, check if value is a valid non-array object.
+            return value && typeof value === "object" && !Array.isArray(value);
           }
         )
         .test(
@@ -86,7 +90,7 @@ const questionSchema = yup.object().shape({
           (value) => value && Object.keys(value).length > 0
         ),
     otherwise: () => yup.mixed().notRequired(),
-  }),
+  }), 
   ordering_sequence: yup.array().when("question_type", {
     is: (val) => val === "ORDERING",
     then: () =>
@@ -1049,6 +1053,11 @@ export const QuestionModal = ({
                   {errors.correct_answer && (
                     <Form.Text className="text-danger">
                       {errors.correct_answer.message}
+                    </Form.Text>
+                  )}
+                  {errors.matching_pairs && (
+                    <Form.Text className="text-danger">
+                      {errors.matching_pairs.message}
                     </Form.Text>
                   )}
                 </Col>
