@@ -6,7 +6,7 @@ from .models import (
     MCQSingleQuestion, MCQMultiQuestion, FillInTheBlanksQuestion, TrueFalseQuestion,
     MatchingQuestion, OrderingQuestion, NumericalQuestion, ImageBasedQuestion,
     AudioVideoQuestion, CaseStudyQuestion, DiagramLabelingQuestion,
-    CodeProgrammingQuestion, DragAndDropQuestion, AssertionReasonQuestion, Explanation,BaseQuestion
+    CodeProgrammingQuestion, DragAndDropQuestion, AssertionReasonQuestion, Explanation, BaseQuestion
 
 )
 from educational_organizations_app.models import EducationalOrganizations as Organization
@@ -177,6 +177,7 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
 
         return instance
 
+
 # Serializers for each Question Type
 class MCQSingleQuestionSerializer(BaseQuestionSerializer):
     explanations = ExplanationSerializer(many=True, required=False)
@@ -247,7 +248,8 @@ class AudioVideoQuestionSerializer(BaseQuestionSerializer):
 
     class Meta(BaseQuestionSerializer.Meta):
         model = AudioVideoQuestion
-        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'audio_url', 'video_url', 'correct_answer']
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'audio_url', 'video_url',
+                                                       'correct_answer']
 
 
 class CaseStudyQuestionSerializer(BaseQuestionSerializer):
@@ -279,7 +281,8 @@ class DragAndDropQuestionSerializer(BaseQuestionSerializer):
 
     class Meta(BaseQuestionSerializer.Meta):
         model = DragAndDropQuestion
-        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'options_column_a', 'options_column_b', 'correct_answer']
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'options_column_a', 'options_column_b',
+                                                       'correct_answer']
 
 
 class AssertionReasonQuestionSerializer(BaseQuestionSerializer):
@@ -290,24 +293,81 @@ class AssertionReasonQuestionSerializer(BaseQuestionSerializer):
         fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'correct_answer']
 
 
+class GenericQuestionSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    question_type = serializers.SerializerMethodField()
+    details = serializers.SerializerMethodField()
+
+    _class_to_type = {
+        'MCQSingleQuestion': 'MCQ_SINGLE',
+        'MCQMultiQuestion': 'MCQ_MULTI',
+        'FillInTheBlanksQuestion': 'FILL_BLANK',
+        'TrueFalseQuestion': 'TRUE_FALSE',
+        'MatchingQuestion': 'MATCHING',
+        'OrderingQuestion': 'ORDERING',
+        'NumericalQuestion': 'NUMERICAL',
+        'ImageBasedQuestion': 'IMAGE',
+        'AudioVideoQuestion': 'AUDIO_VIDEO',
+        'CaseStudyQuestion': 'CASE_STUDY',
+        'DiagramLabelingQuestion': 'DIAGRAM',
+        'CodeProgrammingQuestion': 'CODE',
+        'DragAndDropQuestion': 'DRAG_DROP',
+        'AssertionReasonQuestion': 'ASSERTION_REASON'
+    }
+
+    def get_question_type(self, obj):
+        class_name = obj.__class__.__name__
+        question_type = self._class_to_type.get(class_name, class_name)
+        print(f"Question type determined: {question_type}")
+        return question_type
+
+    def get_details(self, obj):
+        """Get the question details using the appropriate serializer"""
+        question_type = self.get_question_type(obj)
+        print(f"Getting serializer for type: {question_type}")
+
+        specific_serializer = QuestionSerializerFactory.get_serializer(question_type)
+        print(f"Specific serializer found: {specific_serializer}")
+
+        if specific_serializer:
+            try:
+                serialized_data = specific_serializer(obj, context=self.context).data
+                print(f"Serialized data: {serialized_data}")
+                return serialized_data
+            except Exception as e:
+                print(f"Error serializing {question_type}: {str(e)}")
+                return {"error": str(e)}
+        print(f"No serializer found for type: {question_type}")
+        return {}
+
+
 # Factory for Dynamic Serializer Selection
 class QuestionSerializerFactory:
-    @staticmethod
-    def get_serializer(question_type):
-        mapping = {
-            'MCQ_SINGLE': MCQSingleQuestionSerializer,
-            'MCQ_MULTI': MCQMultiQuestionSerializer,
-            'FILL_BLANK': FillInTheBlanksQuestionSerializer,
-            'TRUE_FALSE': TrueFalseQuestionSerializer,
-            'MATCHING': MatchingQuestionSerializer,
-            'ORDERING': OrderingQuestionSerializer,
-            'NUMERICAL': NumericalQuestionSerializer,
-            'IMAGE': ImageBasedQuestionSerializer,
-            'AUDIO_VIDEO': AudioVideoQuestionSerializer,
-            'CASE_STUDY': CaseStudyQuestionSerializer,
-            'DIAGRAM': DiagramLabelingQuestionSerializer,
-            'CODE': CodeProgrammingQuestionSerializer,
-            'DRAG_DROP': DragAndDropQuestionSerializer,
-            'ASSERTION_REASON': AssertionReasonQuestionSerializer
-        }
-        return mapping.get(question_type)
+    _serializer_mapping = {
+        'MCQ_SINGLE': MCQSingleQuestionSerializer,
+        'MCQ_MULTI': MCQMultiQuestionSerializer,
+        'FILL_BLANK': FillInTheBlanksQuestionSerializer,
+        'TRUE_FALSE': TrueFalseQuestionSerializer,
+        'MATCHING': MatchingQuestionSerializer,
+        'ORDERING': OrderingQuestionSerializer,
+        'NUMERICAL': NumericalQuestionSerializer,
+        'IMAGE': ImageBasedQuestionSerializer,
+        'AUDIO_VIDEO': AudioVideoQuestionSerializer,
+        'CASE_STUDY': CaseStudyQuestionSerializer,
+        'DIAGRAM': DiagramLabelingQuestionSerializer,
+        'CODE': CodeProgrammingQuestionSerializer,
+        'DRAG_DROP': DragAndDropQuestionSerializer,
+        'ASSERTION_REASON': AssertionReasonQuestionSerializer
+    }
+
+    @classmethod
+    def get_serializer(cls, question_type):
+        """Get the appropriate serializer for a specific question type"""
+        serializer = cls._serializer_mapping.get(question_type)
+        print(f"Factory returning serializer for {question_type}: {serializer}")
+        return serializer
+
+    @classmethod
+    def get_generic_serializer(cls):
+        """Get the generic serializer that can handle all question types"""
+        return GenericQuestionSerializer

@@ -1,4 +1,8 @@
 ### List All Questions by Type
+GET http://localhost:8000/api/questions/
+Content-Type: application/json
+
+### List All Questions by Type
 GET http://localhost:8000/api/questions/?type=MCQ_SINGLE
 Content-Type: application/json
 

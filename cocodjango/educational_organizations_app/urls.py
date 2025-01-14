@@ -15,4 +15,6 @@ urlpatterns = [
     path('organizations/', EducationalOrganizationView.as_view(), name='educational_organization_list'),
     path('organizations/<int:pk>/', EducationalOrganizationView.as_view(), name='educational_organization_detail'),
 
+    path('divisions/', DivisionListCreateAPIView.as_view(), name='division-list-create'),
+    path('divisions/<int:pk>/', DivisionDetailAPIView.as_view(), name='division-detail'),
 ]

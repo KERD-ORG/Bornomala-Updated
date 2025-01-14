@@ -165,3 +165,9 @@ class EducationalOrganizationsSerializer(serializers.ModelSerializer):
         if user:
             validated_data['updated_by'] = user
         return super().update(instance, validated_data)
+
+
+class DivisionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Division
+        fields = ['id', 'name']

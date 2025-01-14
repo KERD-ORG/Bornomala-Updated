@@ -148,3 +148,32 @@ curl -X POST "http://localhost:8000/api/organizations/" \
 -F "postal_code=12345" \
 -F "country_code=BD" \
 -F "document_file=/home/ahnaf/Downloads/icons8-node-js-144.png"
+
+
+### Get all divisions
+GET http://localhost:8000/api/divisions/
+Content-Type: application/json
+
+### Create a new division
+POST http://localhost:8000/api/divisions/
+Content-Type: application/json
+
+{
+  "name": "Mymensingh"
+}
+
+### Retrieve a specific division by ID
+GET http://localhost:8000/api/divisions/1/
+Content-Type: application/json
+
+### Update a division by ID
+PUT http://localhost:8000/api/divisions/1/
+Content-Type: application/json
+
+{
+  "name": "Dhaka"
+}
+
+### Delete a division by ID
+DELETE http://localhost:8000/api/divisions/1/
+Content-Type: application/json
