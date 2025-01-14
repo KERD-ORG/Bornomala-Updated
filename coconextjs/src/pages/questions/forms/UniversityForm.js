@@ -90,7 +90,7 @@ const questionSchema = yup.object().shape({
           (value) => value && Object.keys(value).length > 0
         ),
     otherwise: () => yup.mixed().notRequired(),
-  }), 
+  }),
   ordering_sequence: yup.array().when("question_type", {
     is: (val) => val === "ORDERING",
     then: () =>
@@ -1058,6 +1058,11 @@ export const QuestionModal = ({
                   {errors.matching_pairs && (
                     <Form.Text className="text-danger">
                       {errors.matching_pairs.message}
+                    </Form.Text>
+                  )}
+                  {errors.ordering_sequence && (
+                    <Form.Text className="text-danger">
+                      {errors.ordering_sequence.message}
                     </Form.Text>
                   )}
                 </Col>
