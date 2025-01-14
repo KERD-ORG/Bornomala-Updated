@@ -42,15 +42,67 @@ const defaultValues = {
 
 const questionSchema = yup.object().shape({
   question_text: yup.string().required("Question Text is required"),
-  correct_answer: yup.mixed().when("question_type", {
-    is: (val) => ["MCQ_SINGLE", "MCQ_MULTI"].includes(val),
+  correct_answer: yup.mixed().when("question_type", (question_type, schema) => {
+    switch (question_type[0]) {
+      case "MCQ_SINGLE":
+        return yup.string().required("Select one correct answer");
+      case "MCQ_MULTI":
+        return yup
+          .array()
+          .of(yup.string().required("Answer cannot be empty"))
+          .min(1, "Select at least one correct answer");
+      case "NUMERICAL":
+        return yup
+          .number()
+          .typeError("Correct Answer must be a number")
+          .required("Correct Answer is required");
+      default:
+        return yup.string().required("Correct Answer is required");
+    }
+  }),
+  matching_pairs: yup.object().when("question_type", {
+    is: (val) => val === "MATCHING",
+    then: () =>
+      yup
+        .object()
+        .test(
+          "valid-json-object",
+          "Please enter a valid JSON object",
+          (value) => {
+            try {
+              const parsed =
+                typeof value === "string" ? JSON.parse(value) : value;
+              return (
+                parsed && typeof parsed === "object" && !Array.isArray(parsed)
+              );
+            } catch (e) {
+              return false;
+            }
+          }
+        )
+        .test(
+          "non-empty-object",
+          "Matching pairs cannot be empty",
+          (value) => value && Object.keys(value).length > 0
+        ),
+    otherwise: () => yup.mixed().notRequired(),
+  }),
+  ordering_sequence: yup.array().when("question_type", {
+    is: (val) => val === "ORDERING",
     then: () =>
       yup
         .array()
-        .transform((value) => (typeof value === "string" ? [] : value)) // Convert empty string to array
-        .of(yup.number().required("Select at least one correct answer"))
-        .min(1, "Select at least one correct answer"),
-    otherwise: () => yup.string().required("Correct Answer is required"),
+        .transform((value) =>
+          typeof value === "string"
+            ? value
+                .split(",")
+                .map((item) => item.trim())
+                .filter(Boolean)
+            : value
+        )
+        .of(yup.string().required("Ordering items cannot be empty"))
+        .min(2, "At least two items are required"),
+    otherwise: () => yup.array().notRequired(),
   }),
   target_subject: yup.string().required("Subject is required"),
   exam_references: yup.array(),
@@ -227,6 +279,8 @@ const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
   };
 
   const onSubmitForm = async (data) => {
+    console.log(data);
+    return;
     setLoading(true);
     try {
       const promises = [];
@@ -586,9 +640,30 @@ export const QuestionModal = ({
   };
 
   const renderCorrectAnswerField = (questionType) => {
-    console.log(questionType);
     switch (questionType) {
       case "MCQ_SINGLE":
+        return (
+          <Controller
+            name="correct_answer"
+            control={control}
+            render={({ field }) => (
+              <Form.Group>
+                {watch("options")?.map((option, index) => (
+                  <div key={index}>
+                    <Form.Check
+                      type="radio"
+                      label={option.option_text || "(Option text is required)"}
+                      value={option.option_text}
+                      checked={field.value === option.option_text}
+                      isInvalid={!!errors.correct_answer}
+                      onChange={() => field.onChange(option.option_text)}
+                    />
+                  </div>
+                ))}
+              </Form.Group>
+            )}
+          />
+        );
       case "MCQ_MULTI":
         return (
           <Controller
@@ -599,31 +674,25 @@ export const QuestionModal = ({
                 {watch("options")?.map((option, index) => (
                   <div key={index}>
                     <Form.Check
-                      type={
-                        questionType === "MCQ_SINGLE" ? "radio" : "checkbox"
-                      }
+                      type="checkbox"
                       label={option.option_text || "(Option text is required)"}
-                      value={index}
-                      checked={field.value?.includes(index)}
-                      isInvalid={!option.option_text}
+                      value={option.option_text}
+                      checked={
+                        field.value
+                          ? field.value.includes(option.option_text)
+                          : false
+                      }
                       onChange={(e) => {
                         const selected = [...(field.value || [])];
                         if (e.target.checked) {
-                          questionType === "MCQ_SINGLE"
-                            ? field.onChange([index])
-                            : field.onChange([...selected, index]);
+                          field.onChange([...selected, option.option_text]);
                         } else {
                           field.onChange(
-                            selected.filter((val) => val !== index)
+                            selected.filter((val) => val !== option.option_text)
                           );
                         }
                       }}
                     />
-                    {!option.option_text && (
-                      <Form.Text className="text-danger">
-                        Option text cannot be empty.
-                      </Form.Text>
-                    )}
                   </div>
                 ))}
               </Form.Group>
@@ -671,6 +740,52 @@ export const QuestionModal = ({
                 as="textarea"
                 rows={4}
                 isInvalid={!!errors.correct_answer}
+                {...field}
+              />
+            )}
+          />
+        );
+      case "NUMERICAL":
+        return (
+          <Controller
+            name="correct_answer"
+            control={control}
+            render={({ field }) => (
+              <Form.Control
+                type="number"
+                isInvalid={!!errors.correct_answer}
+                {...field}
+              />
+            )}
+          />
+        );
+      case "MATCHING":
+        return (
+          <Controller
+            name="matching_pairs"
+            control={control}
+            render={({ field }) => (
+              <Form.Control
+                as="textarea"
+                placeholder='Enter pairs as JSON, e.g., {"Key":"Value"}'
+                rows={4}
+                isInvalid={!!errors.matching_pairs}
+                {...field}
+              />
+            )}
+          />
+        );
+      case "ORDERING":
+        return (
+          <Controller
+            name="ordering_sequence"
+            control={control}
+            render={({ field }) => (
+              <Form.Control
+                as="textarea"
+                placeholder="Enter items in order, separated by commas"
+                rows={4}
+                isInvalid={!!errors.ordering_sequence}
                 {...field}
               />
             )}
@@ -888,6 +1003,9 @@ export const QuestionModal = ({
                     <option value="TRUE_FALSE">True/False</option>
                     <option value="ESSAY">Essay</option>
                     <option value="PROGRAMMING">Programming</option>
+                    <option value="MATCHING">Matching</option>
+                    <option value="ORDERING">Ordering</option>
+                    <option value="NUMERICAL">Numerical</option>
                   </Form.Select>
                 )}
               />
@@ -928,9 +1046,11 @@ export const QuestionModal = ({
                 <Col>
                   <Form.Label>Answer:</Form.Label>
                   {renderCorrectAnswerField(question_type)}
-                  <Form.Control.Feedback type="invalid">
-                    {errors.correct_answer?.message} sdasdas
-                  </Form.Control.Feedback>
+                  {errors.correct_answer && (
+                    <Form.Text className="text-danger">
+                      {errors.correct_answer.message}
+                    </Form.Text>
+                  )}
                 </Col>
               </Row>
             </>
