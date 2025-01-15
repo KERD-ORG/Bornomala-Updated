@@ -35,10 +35,31 @@ class Subject(models.Model):
 
 
 class QuestionType(models.Model):
-    """
-    Examples: MCQ_SINGLE, MCQ_MULTI, DESCRIPTIVE, TRUE_FALSE, etc.
-    """
-    name = models.CharField(max_length=50, unique=True)
+
+    QUESTION_TYPE_CHOICES = [
+        ('MCQ_SINGLE', 'Multiple Choice (Single Answer)'),
+        ('MCQ_MULTI', 'Multiple Choice (Multiple Answers)'),
+        ('DESCRIPTIVE', 'Descriptive'),
+        ('TRUE_FALSE', 'True or False'),
+        ('FILL_BLANK', 'Fill in the Blank'),
+        ('MATCHING', 'Matching'),
+        ('ORDERING', 'Ordering/Sequence'),
+        ('NUMERICAL', 'Numerical'),
+        ('IMAGE', 'Image-Based'),
+        ('AUDIO_VIDEO', 'Audio/Video-Based'),
+        ('CASE_STUDY', 'Case Study'),
+        ('DIAGRAM', 'Diagram Labeling'),
+        ('CODE', 'Code/Programming'),
+        ('DRAG_DROP', 'Drag and Drop'),
+        ('ASSERTION_REASON', 'Assertion and Reason'),
+    ]
+
+    name = models.CharField(
+        max_length=50,
+        unique=True,
+        choices=QUESTION_TYPE_CHOICES,
+        help_text="Select the type of question."
+    )
 
     def __str__(self):
         return self.name
@@ -161,7 +182,8 @@ class BaseQuestion(models.Model):
         'Subject', on_delete=models.SET_NULL, null=True, blank=True
     )
     question_type = models.ForeignKey(
-        'QuestionType', on_delete=models.SET_NULL, null=True, blank=True
+        'QuestionType', on_delete=models.SET_NULL, null=True, blank=True,
+        help_text="Select the question type."
     )
     topic = models.ForeignKey(
         'Topic', on_delete=models.SET_NULL, null=True, blank=True
@@ -189,6 +211,7 @@ class BaseQuestion(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True, help_text="Timestamp when the question was last updated."
     )
+
     # created_by = models.ForeignKey(
     #     User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_questions',
     #     help_text="User who created the question."
@@ -201,13 +224,14 @@ class BaseQuestion(models.Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return f"{self.question_type} Question"
+
 
 class MCQSingleQuestion(BaseQuestion):
     question_text = models.TextField()
     options = models.JSONField()
     correct_answer = models.IntegerField()
-    
-
 
     def __str__(self):
         return self.question_text[:50]
@@ -217,8 +241,6 @@ class MCQMultiQuestion(BaseQuestion):
     question_text = models.TextField()
     options = models.JSONField()
     correct_answer = models.JSONField()
-    
-
 
     def __str__(self):
         return self.question_text[:50]
@@ -228,8 +250,6 @@ class MCQMultiQuestion(BaseQuestion):
 class FillInTheBlanksQuestion(BaseQuestion):
     question_text = models.TextField()
     correct_answer = models.CharField(max_length=255)
-    
-
 
     def __str__(self):
         return self.question_text[:50]
@@ -239,8 +259,6 @@ class FillInTheBlanksQuestion(BaseQuestion):
 class TrueFalseQuestion(BaseQuestion):
     question_text = models.TextField()
     correct_answer = models.BooleanField()
-    
-
 
     def __str__(self):
         return self.question_text[:50]
@@ -250,8 +268,6 @@ class TrueFalseQuestion(BaseQuestion):
 class MatchingQuestion(BaseQuestion):
     question_text = models.TextField()
     matching_pairs = models.JSONField()
-    
-
 
     def __str__(self):
         return self.question_text[:50]
@@ -261,8 +277,6 @@ class MatchingQuestion(BaseQuestion):
 class OrderingQuestion(BaseQuestion):
     question_text = models.TextField()
     ordering_sequence = models.JSONField()
-    
-
 
     def __str__(self):
         return self.question_text[:50]
@@ -272,8 +286,6 @@ class OrderingQuestion(BaseQuestion):
 class NumericalQuestion(BaseQuestion):
     question_text = models.TextField()
     correct_answer = models.FloatField()
-    
-
 
     def __str__(self):
         return self.question_text[:50]
@@ -284,8 +296,6 @@ class ImageBasedQuestion(BaseQuestion):
     question_text = models.TextField()
     image_url = models.URLField()
     correct_answer = models.CharField(max_length=255)
-    
-
 
     def __str__(self):
         return self.question_text[:50]
@@ -297,8 +307,6 @@ class AudioVideoQuestion(BaseQuestion):
     audio_url = models.URLField(blank=True, null=True)
     video_url = models.URLField(blank=True, null=True)
     correct_answer = models.CharField(max_length=255)
-    
-
 
     def __str__(self):
         return self.question_text[:50]
@@ -308,8 +316,6 @@ class AudioVideoQuestion(BaseQuestion):
 class CaseStudyQuestion(BaseQuestion):
     question_text = models.TextField()
     correct_answer = models.TextField()
-    
-
 
     def __str__(self):
         return self.question_text[:50]
@@ -320,8 +326,6 @@ class DiagramLabelingQuestion(BaseQuestion):
     question_text = models.TextField()
     diagram_url = models.URLField()
     correct_answer = models.JSONField()
-    
-
 
     def __str__(self):
         return self.question_text[:50]
@@ -331,8 +335,6 @@ class DiagramLabelingQuestion(BaseQuestion):
 class CodeProgrammingQuestion(BaseQuestion):
     question_text = models.TextField()
     correct_answer = models.TextField()
-    
-
 
     def __str__(self):
         return self.question_text[:50]
@@ -344,8 +346,6 @@ class DragAndDropQuestion(BaseQuestion):
     options_column_a = models.JSONField()
     options_column_b = models.JSONField()
     correct_answer = models.JSONField()
-    
-
 
     def __str__(self):
         return self.question_text[:50]
@@ -355,8 +355,6 @@ class DragAndDropQuestion(BaseQuestion):
 class AssertionReasonQuestion(BaseQuestion):
     question_text = models.TextField()
     correct_answer = models.TextField()
-    
-
 
     def __str__(self):
         return self.question_text[:50]

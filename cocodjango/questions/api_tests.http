@@ -105,7 +105,6 @@ Content-Type: application/json
 
 ### 18) Create Question Level
 POST {{base_url}}/question-levels/
-Authorization: Token {{token}}
 Content-Type: application/json
 
 {
@@ -114,7 +113,6 @@ Content-Type: application/json
 
 ### 19) Create Difficulty Level
 POST {{base_url}}/difficulty-levels/
-Authorization: Token {{token}}
 Content-Type: application/json
 
 {
@@ -123,7 +121,6 @@ Content-Type: application/json
 
 ### 20) Create Question Status
 POST {{base_url}}/question-statuses/
-Authorization: Token {{token}}
 Content-Type: application/json
 
 {
@@ -131,8 +128,11 @@ Content-Type: application/json
 }
 
 ### 21) Create Question Type
+GET {{base_url}}/question-types/
+Content-Type: application/json
+
+### 21) Create Question Type
 POST {{base_url}}/question-types/
-Authorization: Token {{token}}
 Content-Type: application/json
 
 {
@@ -141,7 +141,6 @@ Content-Type: application/json
 
 ### 22) Create Target Group
 POST {{base_url}}/target-groups/
-Authorization: Token {{token}}
 Content-Type: application/json
 
 {
@@ -150,7 +149,6 @@ Content-Type: application/json
 
 ### 23) Create Subject
 POST {{base_url}}/subjects/
-Authorization: Token {{token}}
 Content-Type: application/json
 
 {
@@ -159,7 +157,6 @@ Content-Type: application/json
 
 ### 24) Create Topic
 POST {{base_url}}/topics/
-Authorization: Token {{token}}
 Content-Type: application/json
 
 {
@@ -168,7 +165,6 @@ Content-Type: application/json
 
 ### 25) Create SubTopic
 POST {{base_url}}/subtopics/
-Authorization: Token {{token}}
 Content-Type: application/json
 
 {
@@ -178,82 +174,14 @@ Content-Type: application/json
 
 ### 26) Create Exam Reference
 GET {{base_url}}/exam-references/
-Authorization: Token {{token}}
 Content-Type: application/json
 
 
 ### 27) Create Exam Reference
 POST {{base_url}}/exam-references/
-Authorization: Token {{token}}
 Content-Type: application/json
 
 {
   "reference_name": "Reference One",
   "year_of_exam": 2019
 }
-
-#########################################
-## Questions API ##
-#########################################
-
-### 12) List Questions
-GET {{base_url}}/questions/
-Authorization: token {{token}}
-
-### 13) Get Question by ID
-GET {{base_url}}/questions/1/
-Authorization: token {{token}}
-
-### 14) Create Question
-POST {{base_url}}/questions/
-Authorization: token {{token}}
-Content-Type: application/json
-
-{
-  "question_text": "What is the capital of Bangladesh?",
-  "explanations": [
-        {
-            "level": "Preliminary",
-            "text": "Paris is the capital city of France.",
-            "video": null
-        },
-        {
-            "level": "Intermediate",
-            "text": "Paris has been the capital of France since 508 AD.",
-            "video": null
-        },
-        {
-            "level": "Advanced",
-            "text": "Paris is a global center for art, fashion, and culture, and has been the capital of France since the early Middle Ages.",
-            "video": null
-        }
-  ],
-  "correct_answer": "1",
-  "question_level": 1,
-  "target_organization": 2,
-  "target_group": 1,
-  "target_subject": 1,
-  "question_type": 1,
-  "topic": 2,
-  "sub_topic": 2,
-  "sub_sub_topic": null,
-  "exam_references": [2],
-  "question_status": 1,
-  "difficulty_level": 1,
-  "mcq_options": [
-    { "option_text": "Dhaka" },
-    { "option_text": "Chittagong" },
-    { "option_text": "Sylhet" },
-    { "option_text": "Khulna" }
-  ]
-}
-
-### 16) Update Question (Partial)
-PATCH {{base_url}}/questions/1/
-Authorization: token {{token}}
-Content-Type: application/json
-
-{
-  "question_text": "Partially Updated: What is the capital of Bangladesh?"
-}
-

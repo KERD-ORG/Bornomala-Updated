@@ -112,8 +112,9 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
     target_subject = serializers.PrimaryKeyRelatedField(
         queryset=Subject.objects.all(), required=False, allow_null=True
     )
-    question_type = serializers.PrimaryKeyRelatedField(
-        queryset=QuestionType.objects.all(), required=False, allow_null=True
+    question_type = serializers.SlugRelatedField(
+        queryset=QuestionType.objects.all(),
+        slug_field='name'
     )
     topic = serializers.PrimaryKeyRelatedField(
         queryset=Topic.objects.all(), required=False, allow_null=True

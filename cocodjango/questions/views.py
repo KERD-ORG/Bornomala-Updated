@@ -12,7 +12,7 @@ from django.http import JsonResponse, HttpResponseNotAllowed
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from educational_organizations_app.models import EducationalOrganizations as Organization
-from rest_framework import generics
+from rest_framework import generics,status
 from rest_framework.response import Response
 
 from .models import (
@@ -216,9 +216,32 @@ class QuestionListCreateView(generics.ListCreateAPIView):
             return QuestionSerializerFactory.get_generic_serializer()
         return QuestionSerializerFactory.get_serializer(question_type)
 
+    def create(self, request, *args, **kwargs):
+        question_type_param = self.request.query_params.get('type')
+        if not question_type_param:
+            return Response({"error": "The 'type' query parameter is required."},
+                            status=status.HTTP_400_BAD_REQUEST)
 
-# Dynamic RetrieveUpdateDestroy View
+        # Inject `question_type` into the request data
+        request.data['question_type'] = question_type_param
+
+        # Get the correct serializer
+        serializer_class = self.get_serializer_class()
+        serializer = serializer_class(data=request.data)
+
+        # Validate and save
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 class QuestionRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    View to handle retrieving, updating, and deleting questions dynamically based on question type.
+    """
+
     def get_queryset(self):
         question_type = self.request.query_params.get('type')
         model_mapping = {
@@ -237,11 +260,36 @@ class QuestionRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
             'DRAG_DROP': DragAndDropQuestion,
             'ASSERTION_REASON': AssertionReasonQuestion
         }
-        return model_mapping.get(question_type, MCQSingleQuestion).objects.all()
+        model = model_mapping.get(question_type, MCQSingleQuestion)
+        return model.objects.all()
 
     def get_serializer_class(self):
         question_type = self.request.query_params.get('type')
         return QuestionSerializerFactory.get_serializer(question_type)
+
+    def update(self, request, *args, **kwargs):
+        """
+        Update a question instance.
+        """
+        question_type_param = self.request.query_params.get('type')
+        partial = kwargs.pop('partial', False)  # Allow partial updates (PATCH)
+        instance = self.get_object()
+        request.data['question_type'] = question_type_param
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+
+        if serializer.is_valid():
+            self.perform_update(serializer)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        """
+        Delete a question instance.
+        """
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({"message": "Question deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
 
 @csrf_exempt
