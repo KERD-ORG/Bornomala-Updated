@@ -59,6 +59,18 @@ const questionSchema = yup.object().shape({
           .number()
           .typeError("Correct Answer must be a number")
           .required("Correct Answer is required");
+      case "DRAG_DROP":
+        return yup
+          .string()
+          .required("Correct answer mapping is required")
+          .test("is-json", "Correct answer must be a valid JSON", (value) => {
+            try {
+              JSON.parse(value);
+              return true;
+            } catch {
+              return false;
+            }
+          });
     }
   }),
   matching_pairs: yup.object().when("question_type", {
@@ -129,6 +141,40 @@ const questionSchema = yup.object().shape({
         )
         .min(2, "At least two options are required"),
     otherwise: () => yup.array().notRequired(),
+  }),
+  options_column_a: yup.array().when("question_type", {
+    is: (val) => val == "DRAG_DROP",
+    then: () =>
+      yup
+        .array()
+        .transform((value) =>
+          typeof value === "string"
+            ? value
+                .split(",")
+                .map((item) => item.trim())
+                .filter(Boolean)
+            : value
+        )
+        .of(yup.string().required())
+        .min(1, "At least one option required"),
+    otherwise: () => yup.mixed().notRequired(),
+  }),
+  options_column_b: yup.array().when("question_type", {
+    is: (val) => val == "DRAG_DROP",
+    then: () =>
+      yup
+        .array()
+        .transform((value) =>
+          typeof value === "string"
+            ? value
+                .split(",")
+                .map((item) => item.trim())
+                .filter(Boolean)
+            : value
+        )
+        .of(yup.string().required())
+        .min(1, "At least one option required"),
+    otherwise: () => yup.mixed().notRequired(),
   }),
   // target_group: yup.string().required("Target Group is required"),
 });
@@ -287,12 +333,6 @@ const UniversityQuestionForm = forwardRef(
       }
 
       return null;
-    };
-
-    const handleCancelClick = () => {
-      // reset all formdata
-      reset(defaultValues);
-      onCancel();
     };
 
     const onSubmitForm = async (data) => {
@@ -766,6 +806,8 @@ export const QuestionModal = ({
             )}
           />
         );
+      case "ASSERTION_REASON":
+      case "CASE_STUDY":
       case "CODE":
         return (
           <Controller
@@ -826,6 +868,74 @@ export const QuestionModal = ({
               />
             )}
           />
+        );
+      case "DRAG_DROP":
+        return (
+          <>
+            <Form.Group className="mb-3">
+              <Form.Label>Options Column A:</Form.Label>
+              <Controller
+                name="options_column_a"
+                control={control}
+                render={({ field }) => (
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter options separated by commas"
+                    isInvalid={!!errors.options_column_a}
+                    {...field}
+                  />
+                )}
+              />
+              {errors.options_column_a && (
+                <Form.Control.Feedback type="invalid">
+                  {errors.options_column_a.message}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Options Column B:</Form.Label>
+              <Controller
+                name="options_column_b"
+                control={control}
+                render={({ field }) => (
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter options separated by commas"
+                    isInvalid={!!errors.options_column_b}
+                    {...field}
+                  />
+                )}
+              />
+              {errors.options_column_b && (
+                <Form.Control.Feedback type="invalid">
+                  {errors.options_column_b.message}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Correct Answer Mapping (JSON):</Form.Label>
+              <Controller
+                name="correct_answer"
+                control={control}
+                render={({ field }) => (
+                  <Form.Control
+                    as="textarea"
+                    rows={4}
+                    placeholder='e.g., {"OptionA":"MatchA", "OptionB":"MatchB"}'
+                    isInvalid={!!errors.correct_answer}
+                    {...field}
+                  />
+                )}
+              />
+              {errors.correct_answer && (
+                <Form.Control.Feedback type="invalid">
+                  {errors.correct_answer.message}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
+          </>
         );
       default:
         return null;
@@ -1041,6 +1151,9 @@ export const QuestionModal = ({
                     <option value="MATCHING">Matching</option>
                     <option value="ORDERING">Ordering</option>
                     <option value="NUMERICAL">Numerical</option>
+                    <option value="DRAG_DROP">Drag and Drop</option>
+                    <option value="ASSERTION_REASON">Assertion Reason</option>
+                    <option value="CASE_STUDY">Case Study</option>
                   </Form.Select>
                 )}
               />

@@ -206,17 +206,6 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8000/api/questions/?type=CASE_STUDY
-Content-Type: application/json
-
-{
-  "question_text": "Analyze how Padma Bridge will impact southern Bangladesh.",
-  "correct_answer": "It will boost trade and connectivity.",
-  "explanations": [{"level": "Advanced", "text": "Improves transportation and economy."}]
-}
-
-###
-
 POST http://localhost:8000/api/questions/?type=DIAGRAM
 Content-Type: application/json
 
@@ -252,3 +241,13 @@ Content-Type: application/json
   "explanations": [{"level": "Intermediate", "text": "Monsoon winds are the main cause of heavy rainfall in Bangladesh, leading to its tropical monsoon climate."}]
 }
 
+###
+
+POST http://localhost:8000/api/questions/?type=CASE_STUDY
+Content-Type: application/json
+
+{
+  "question_text": "Analyze how Padma Bridge will impact southern Bangladesh.",
+  "correct_answer": "It will boost trade and connectivity.",
+  "explanations": [{"level": "Advanced", "text": "Improves transportation and economy."}]
+}
