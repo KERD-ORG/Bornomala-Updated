@@ -176,6 +176,16 @@ const questionSchema = yup.object().shape({
         .min(1, "At least one option required"),
     otherwise: () => yup.mixed().notRequired(),
   }),
+  image_url: yup.string().when("question_type", {
+    is: (val) => val === "IMAGE",
+    then: () => yup.string().required("Image upload is required"),
+    otherwise: () => yup.mixed().notRequired(),
+  }),
+  audio_url: yup.string().when("question_type", {
+    is: (val) => val === "AUDIO",
+    then: () => yup.string().required("Audio upload is required"),
+    otherwise: () => yup.mixed().notRequired(),
+  }),
   // target_group: yup.string().required("Target Group is required"),
 });
 
@@ -929,11 +939,183 @@ export const QuestionModal = ({
                   />
                 )}
               />
-              {errors.correct_answer && (
+            </Form.Group>
+          </>
+        );
+      case "IMAGE":
+        return (
+          <>
+            <Form.Group className="mb-3">
+              <Form.Label>Upload Image:</Form.Label>
+              <Controller
+                name="image_url" // field to store the image URL
+                control={control}
+                render={({ field }) => {
+                  // If an image URL already exists, display the image preview and a change option
+                  if (field.value) {
+                    return (
+                      <div>
+                        <div className="mb-2">
+                          <img
+                            src={field.value}
+                            alt="Uploaded"
+                            style={{ maxWidth: "100%", maxHeight: "300px" }}
+                          />
+                        </div>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => field.onChange("")}
+                        >
+                          Change Image
+                        </Button>
+                      </div>
+                    );
+                  }
+                  // Otherwise, display the file input for uploading a new image
+                  return (
+                    <Form.Control
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          setLoading(true);
+                          try {
+                            const response = await axios.put(
+                              `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/upload/?filename=${file.name}`,
+                              file,
+                              {
+                                headers: {
+                                  "Content-Type": file.type,
+                                  Authorization: `Token ${token}`,
+                                },
+                              }
+                            );
+                            // Set the returned media link (image URL) to the field value
+                            field.onChange(response.data.media_link);
+                          } catch (error) {
+                            console.error("Error uploading image:", error);
+                            setGlobalError(
+                              error.response?.data?.message || error.message
+                            );
+                          } finally {
+                            setLoading(false);
+                          }
+                        }
+                      }}
+                      isInvalid={!!errors.image_url}
+                    />
+                  );
+                }}
+              />
+              {errors.image_url && (
                 <Form.Control.Feedback type="invalid">
-                  {errors.correct_answer.message}
+                  {errors.image_url.message}
                 </Form.Control.Feedback>
               )}
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Correct Answer:</Form.Label>
+              <Controller
+                name="correct_answer"
+                control={control}
+                render={({ field }) => (
+                  <Form.Control
+                    as="textarea"
+                    rows={4}
+                    isInvalid={!!errors.correct_answer}
+                    {...field}
+                  />
+                )}
+              />
+            </Form.Group>
+          </>
+        );
+      case "AUDIO":
+        return (
+          <>
+            <Form.Group className="mb-3">
+              <Form.Label>Upload Audio:</Form.Label>
+              <Controller
+                name="audio_url" // field to store the audio URL
+                control={control}
+                render={({ field }) => {
+                  if (field.value) {
+                    return (
+                      <div>
+                        <audio
+                          controls
+                          src={field.value}
+                          style={{ display: "block", marginBottom: "10px" }}
+                        />
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => field.onChange("")}
+                        >
+                          Change Audio
+                        </Button>
+                      </div>
+                    );
+                  }
+                  return (
+                    <Form.Control
+                      type="file"
+                      accept="audio/*"
+                      onChange={async (e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          setLoading(true);
+                          try {
+                            const response = await axios.put(
+                              `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/upload/?filename=${file.name}`,
+                              file,
+                              {
+                                headers: {
+                                  "Content-Type": file.type,
+                                  Authorization: `Token ${token}`,
+                                },
+                              }
+                            );
+                            field.onChange(response.data.media_link);
+                          } catch (error) {
+                            console.error("Error uploading audio:", error);
+                            setGlobalError(
+                              error.response?.data?.message || error.message
+                            );
+                          } finally {
+                            setLoading(false);
+                          }
+                        }
+                      }}
+                      isInvalid={!!errors.audio_url}
+                    />
+                  );
+                }}
+              />
+              {errors.audio_url && (
+                <Form.Control.Feedback type="invalid">
+                  {errors.audio_url.message}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Correct Answer:</Form.Label>
+              <Controller
+                name="correct_answer"
+                control={control}
+                render={({ field }) => (
+                  <Form.Control
+                    as="textarea"
+                    rows={4}
+                    isInvalid={!!errors.correct_answer}
+                    {...field}
+                  />
+                )}
+              />
             </Form.Group>
           </>
         );
@@ -1154,6 +1336,8 @@ export const QuestionModal = ({
                     <option value="DRAG_DROP">Drag and Drop</option>
                     <option value="ASSERTION_REASON">Assertion Reason</option>
                     <option value="CASE_STUDY">Case Study</option>
+                    <option value="IMAGE">Image</option>
+                    <option value="AUDIO">Audio</option>
                   </Form.Select>
                 )}
               />
