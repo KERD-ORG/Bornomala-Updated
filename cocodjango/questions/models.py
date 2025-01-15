@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from educational_organizations_app.models import EducationalOrganizations as Organization
 
 
 class QuestionLevel(models.Model):
@@ -172,6 +173,10 @@ class Explanation(models.Model):
 
 
 class BaseQuestion(models.Model):
+    target_organization = models.ForeignKey(
+        Organization,on_delete=models.SET_NULL,null=True,blank=True
+    )
+
     question_level = models.ForeignKey(
         'QuestionLevel', on_delete=models.SET_NULL, null=True, blank=True
     )

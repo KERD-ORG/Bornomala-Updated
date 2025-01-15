@@ -132,10 +132,15 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
         queryset=QuestionStatus.objects.all(), required=False, allow_null=True
     )
 
+    target_organization = serializers.PrimaryKeyRelatedField(
+        queryset=Organization.objects.all(), allow_null=True, required=False
+    )
+
     class Meta:
         model = BaseQuestion
         fields = [
             'id', 'question_level', 'target_group', 'target_subject', 'question_type',
+            'target_organization',
             'topic', 'sub_topic', 'sub_sub_topic', 'difficulty_level', 'question_status',
             'exam_references', 'explanations', 'created_at', 'updated_at'
         ]

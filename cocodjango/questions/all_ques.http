@@ -86,9 +86,6 @@ Content-Type: application/json
 
 
 ### Create Questions for All Types
-
-###
-
 ###
 
 POST http://localhost:8000/api/questions/?type=MCQ_SINGLE
@@ -98,6 +95,7 @@ Content-Type: application/json
   "question_level": 1,
   "target_group": 1,
   "target_subject": 1,
+  "target_organization": 1,
   "topic": 1,
   "sub_topic": 1,
   "difficulty_level": 1,
