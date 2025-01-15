@@ -39,18 +39,6 @@ export default function EducationalOrganizationList() {
   } = useCommonForm();
 
   const { permissions, permissionsMap } = useUserPermissions();
-  const canAdd = permissions.some(
-    (permission) => permission.codename === "add_educationalorganizations"
-  );
-  const canEdit = permissions.some(
-    (permission) => permission.codename === "change_educationalorganizations"
-  );
-  const canDetails = permissions.some(
-    (permission) => permission.codename === "view_educationalorganizations"
-  );
-  const canDelete = permissions.some(
-    (permission) => permission.codename === "delete_educationalorganizations"
-  );
 
   const [showModal, setShowModal] = useState(false);
   const [formMode, setFormMode] = useState("create");
@@ -95,21 +83,18 @@ export default function EducationalOrganizationList() {
   };
 
   const openEditForm = (university) => {
-
     setFormMode("edit");
     setSelectedUniversity(university);
     setShowModal(true);
   };
 
   const openCloneForm = (university) => {
- 
     setFormMode("clone");
     setSelectedUniversity(university);
     setShowModal(true);
   };
 
   const openShowView = (university) => {
-   
     setFormMode("view");
     setSelectedUniversity(university);
     setShowModal(true);
@@ -148,7 +133,6 @@ export default function EducationalOrganizationList() {
         };
       }
     } catch (error) {
-
       let errorMessage = t("An error occurred while submitting the form.");
       if (error.response && error.response.data && error.response.data.error) {
         errorMessage = error.response.data.error;
@@ -194,9 +178,8 @@ export default function EducationalOrganizationList() {
   return (
     <Layout>
       <Head>
-       
         <title>{t("Educational Organizations")}</title>
-       
+
         <meta name="description" content="Learn more about us." />
       </Head>
 
@@ -228,7 +211,7 @@ export default function EducationalOrganizationList() {
       <div className="card">
         <div className="card-body">
           <div className="d-flex justify-content-end mb-3">
-           {permissionsMap.permissionlist.add_educationalorganizations && (
+            {permissionsMap.permissionlist.add_educationalorganizations && (
               <>
                 <button
                   data-tooltip-id="my-tooltip"

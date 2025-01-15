@@ -14,7 +14,10 @@ import * as yup from "yup";
 import { useRouter } from "next/router";
 import { getToken, useTranslation } from "../../../utils/commonImports";
 import useCommonForm from "../../../hooks/useCommonForm";
-import { fetchOrganizationCategoryList } from "../../../utils/apiService";
+import {
+  fetchDivisionList,
+  fetchOrganizationCategoryList,
+} from "../../../utils/apiService";
 
 const DIVISIONS = [
   { value: 1, label: "Dhaka" },
@@ -134,6 +137,8 @@ const UniversityForm = forwardRef(
       }
     }, [router]);
 
+    const [divisions, setDivisions] = useState([]);
+
     useEffect(() => {
       if (token) {
         fetchOrganizationCategoryList(
@@ -142,6 +147,14 @@ const UniversityForm = forwardRef(
           setGlobalError,
           setSuccessMessage,
           setOrganizationCategories
+        );
+
+        fetchDivisionList(
+          token,
+          router.locale || "en",
+          setGlobalError,
+          setSuccessMessage,
+          setDivisions
         );
       }
     }, [token]);
@@ -390,12 +403,12 @@ const UniversityForm = forwardRef(
                   }}
                 >
                   <option value="">{t("Select Division")}</option>
-                  {DIVISIONS.map((country) => (
+                  {divisions.map((country) => (
                     <option
-                      key={`${country.value}${country.label}`}
-                      value={country.value}
+                      key={`${country.id}`}
+                      value={country.id}
                     >
-                      {country.label}
+                      {country.name}
                     </option>
                   ))}
                 </select>

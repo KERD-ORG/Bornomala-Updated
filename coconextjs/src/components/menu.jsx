@@ -12,8 +12,8 @@ function Menu() {
     (permission) => permission.codename === "view_educationalorganizations"
   );
 
-  const canViewQuestion = permissions.some(
-    (permission) => permission.codename === "view_question"
+  const canViewQuestion = permissions.some((permission) =>
+    permission.codename.includes("question")
   );
 
   const isActive = (pathname) => router.pathname === pathname;

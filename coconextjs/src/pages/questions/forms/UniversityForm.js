@@ -34,448 +34,599 @@ const defaultValues = {
   //     topic: "",
   //     sub_topic: "",
   //     difficulty_level: "",
-  //     mcq_options: [{ option_text: "" }, { option_text: "" }],
+  //     options: [{ option_text: "" }, { option_text: "" }],
   //     explanations: [],
   //   },
   // ],
 };
 
 const questionSchema = yup.object().shape({
-  // question_text: yup.string().required("Question Text is required"),
-  // correct_answer: yup.string().required("Correct Answer is required"),
+  question_text: yup.string().required("Question Text is required"),
+  correct_answer: yup.mixed().when("question_type", (question_type, schema) => {
+    switch (question_type[0]) {
+      case "MCQ_SINGLE":
+        return yup
+          .number()
+          .typeError("Select a valid answer")
+          .required("Select one correct answer");
+      case "MCQ_MULTI":
+        return yup
+          .array()
+          .of(yup.number().typeError("Each answer must be a number"))
+          .min(1, "Select at least one correct answer");
+      case "NUMERICAL":
+        return yup
+          .number()
+          .typeError("Correct Answer must be a number")
+          .required("Correct Answer is required");
+      case "DRAG_DROP":
+        return yup
+          .string()
+          .required("Correct answer mapping is required")
+          .test("is-json", "Correct answer must be a valid JSON", (value) => {
+            try {
+              JSON.parse(value);
+              return true;
+            } catch {
+              return false;
+            }
+          });
+    }
+  }),
+  matching_pairs: yup.object().when("question_type", {
+    is: (val) => val === "MATCHING",
+    then: () =>
+      yup
+        .object()
+        // Transform the input: if it's a string, try to parse it as JSON.
+        .transform((value, originalValue) => {
+          if (typeof originalValue === "string") {
+            try {
+              const parsed = JSON.parse(originalValue);
+              return parsed;
+            } catch (e) {
+              // If parsing fails, return the original value to let validation catch the error.
+              return originalValue;
+            }
+          }
+          return value;
+        })
+        .test(
+          "valid-json-object",
+          "Please enter a valid JSON object",
+          (value) => {
+            // After transformation, check if value is a valid non-array object.
+            return value && typeof value === "object" && !Array.isArray(value);
+          }
+        )
+        .test(
+          "non-empty-object",
+          "Matching pairs cannot be empty",
+          (value) => value && Object.keys(value).length > 0
+        ),
+    otherwise: () => yup.mixed().notRequired(),
+  }),
+  ordering_sequence: yup.array().when("question_type", {
+    is: (val) => val === "ORDERING",
+    then: () =>
+      yup
+        .array()
+        .transform((value) =>
+          typeof value === "string"
+            ? value
+                .split(",")
+                .map((item) => item.trim())
+                .filter(Boolean)
+            : value
+        )
+        .of(yup.string().required("Ordering items cannot be empty"))
+        .min(2, "At least two items are required"),
+    otherwise: () => yup.array().notRequired(),
+  }),
   // target_subject: yup.string().required("Subject is required"),
   // exam_references: yup.array(),
   // question_type: yup.string().required("Question Type is required"),
   // topic: yup.string().required("Topic is required"),
   // sub_topic: yup.string(),
   // difficulty_level: yup.string().required("Difficulty Level is required"),
-  // mcq_options: yup
-  //   .array()
-  //   .of(
-  //     yup.object({
-  //       option_text: yup.string().required("Option cannot be empty"),
-  //     })
-  //   )
-  //   .min(2, "At least two options are required"),
+  options: yup.array().when("question_type", {
+    is: (val) => ["MCQ_SINGLE", "MCQ_MULTI"].includes(val),
+    then: () =>
+      yup
+        .array()
+        .of(
+          yup.object({
+            option_text: yup.string().required("Option text cannot be empty"),
+          })
+        )
+        .min(2, "At least two options are required"),
+    otherwise: () => yup.array().notRequired(),
+  }),
+  options_column_a: yup.array().when("question_type", {
+    is: (val) => val == "DRAG_DROP",
+    then: () =>
+      yup
+        .array()
+        .transform((value) =>
+          typeof value === "string"
+            ? value
+                .split(",")
+                .map((item) => item.trim())
+                .filter(Boolean)
+            : value
+        )
+        .of(yup.string().required())
+        .min(1, "At least one option required"),
+    otherwise: () => yup.mixed().notRequired(),
+  }),
+  options_column_b: yup.array().when("question_type", {
+    is: (val) => val == "DRAG_DROP",
+    then: () =>
+      yup
+        .array()
+        .transform((value) =>
+          typeof value === "string"
+            ? value
+                .split(",")
+                .map((item) => item.trim())
+                .filter(Boolean)
+            : value
+        )
+        .of(yup.string().required())
+        .min(1, "At least one option required"),
+    otherwise: () => yup.mixed().notRequired(),
+  }),
+  image_url: yup.string().when("question_type", {
+    is: (val) => val === "IMAGE",
+    then: () => yup.string().required("Image upload is required"),
+    otherwise: () => yup.mixed().notRequired(),
+  }),
+  audio_url: yup.string().when("question_type", {
+    is: (val) => val === "AUDIO",
+    then: () => yup.string().required("Audio upload is required"),
+    otherwise: () => yup.mixed().notRequired(),
+  }),
   // target_group: yup.string().required("Target Group is required"),
 });
 
 const mainSchema = yup.object().shape({
-  target_organization: yup.string().required("Organization is required"),
-  question_level: yup.string().required("Question Level is required"),
+  // target_organization: yup.string().required("Organization is required"),
+  // question_level: yup.string().required("Question Level is required"),
   questions: yup.array().of(questionSchema),
 });
 
-const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
-  const { token, globalError, setGlobalError } = useCommonForm();
-  const [modalShow, setModalShow] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(null);
+const UniversityQuestionForm = forwardRef(
+  ({ loading, setLoading, onCancel, onSubmit }, ref) => {
+    const { token, globalError, setGlobalError } = useCommonForm();
+    const [modalShow, setModalShow] = useState(false);
+    const [editingIndex, setEditingIndex] = useState(null);
 
-  const handleEditQuestion = (index) => {
-    setEditingIndex(index);
-    setModalShow(true);
-  };
+    const handleEditQuestion = (index) => {
+      setEditingIndex(index);
+      setModalShow(true);
+    };
 
-  const method = useForm({
-    resolver: yupResolver(mainSchema),
-    defaultValues,
-  });
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = method;
+    const method = useForm({
+      resolver: yupResolver(mainSchema),
+      defaultValues,
+    });
+    const {
+      control,
+      handleSubmit,
+      reset,
+      formState: { errors },
+    } = method;
 
-  const [dropdownData, setDropdownData] = React.useState({
-    questionLevels: [],
-    organizations: [],
-    targetGroups: [],
-    subjects: [],
-    questionTypes: [],
-    topics: [],
-    examReferences: [],
-    questionStatuses: [],
-    difficultyLevels: [],
-    subTopics: [],
-    subSubTopics: [],
-  });
+    const [dropdownData, setDropdownData] = React.useState({
+      questionLevels: [],
+      organizations: [],
+      targetGroups: [],
+      subjects: [],
+      questionTypes: [],
+      topics: [],
+      examReferences: [],
+      questionStatuses: [],
+      difficultyLevels: [],
+      subTopics: [],
+      subSubTopics: [],
+    });
 
-  const {
-    fields: questionFields,
-    append: appendQuestion,
-    remove: removeQuestion,
-  } = useFieldArray({
-    control,
-    name: "questions",
-  });
+    const {
+      fields: questionFields,
+      append: appendQuestion,
+      remove: removeQuestion,
+    } = useFieldArray({
+      control,
+      name: "questions",
+    });
 
-  const handleModalSubmit = (formData) => {
-    if (editingIndex !== null) {
-      removeQuestion(editingIndex);
-      appendQuestion(formData, {
-        shouldFocus: false,
-        focusName: `questions.${editingIndex}`,
-      });
-    } else {
-      appendQuestion(formData);
-    }
-    setModalShow(false);
-    setEditingIndex(null);
-  };
+    const handleModalSubmit = (formData) => {
+      if (editingIndex !== null) {
+        removeQuestion(editingIndex);
+        appendQuestion(formData, {
+          shouldFocus: false,
+          focusName: `questions.${editingIndex}`,
+        });
+      } else {
+        appendQuestion(formData);
+      }
+      setModalShow(false);
+      setEditingIndex(null);
+    };
 
-  useImperativeHandle(ref, () => ({
-    resetForm: () => reset(defaultValues),
-  }));
+    useImperativeHandle(ref, () => ({
+      resetForm: () => reset(defaultValues),
+    }));
 
-  useEffect(() => {
-    const fetchDropdownData = async () => {
-      if (!token) return;
-      const endpoints = {
-        questionLevels: "api/question-levels",
-        organizations: "api/organizations",
-        targetGroups: "api/target-groups",
-        subjects: "api/subjects",
-        questionTypes: "api/question-types",
-        topics: "api/topics",
-        examReferences: "api/exam-references",
-        questionStatuses: "api/question-statuses",
-        difficultyLevels: "api/difficulty-levels",
-        subTopics: "api/subtopics",
-        subSubTopics: "api/subsubtopics",
+    useEffect(() => {
+      const fetchDropdownData = async () => {
+        if (!token) return;
+        const endpoints = {
+          questionLevels: "api/question-levels",
+          organizations: "api/organizations",
+          targetGroups: "api/target-groups",
+          subjects: "api/subjects",
+          questionTypes: "api/question-types",
+          topics: "api/topics",
+          examReferences: "api/exam-references",
+          questionStatuses: "api/question-statuses",
+          difficultyLevels: "api/difficulty-levels",
+          subTopics: "api/subtopics",
+          subSubTopics: "api/subsubtopics",
+        };
+
+        try {
+          const promises = Object.entries(endpoints).map(([key, endpoint]) =>
+            executeAjaxOperationStandard({
+              url: `/${endpoint}/`,
+              method: "get",
+              token,
+            })
+          );
+
+          const results = await Promise.all(promises);
+          const newData = {};
+          let index = 0;
+          for (let key in endpoints) {
+            const response = results[index];
+            if (response && response.status >= 200 && response.status < 300) {
+              const data = response.data;
+              newData[key] = data.map((item) => ({
+                ...item,
+                value: item.id,
+                label: item.name || item.reference_name || item.title || "",
+              }));
+            } else {
+              newData[key] = [];
+            }
+            index++;
+          }
+          setDropdownData((prev) => ({ ...prev, ...newData }));
+        } catch (error) {
+          console.error("Error fetching dropdown data:", error);
+        }
       };
 
+      fetchDropdownData();
+    }, [token]);
+
+    const extractDetailedErrorMessage = (details, path = "") => {
+      if (!details || typeof details !== "object") return null;
+
+      for (const key in details) {
+        const currentPath = path ? `${path} -> ${key}` : key;
+
+        if (Array.isArray(details[key])) {
+          // Handle arrays that contain strings or objects
+          for (const item of details[key]) {
+            if (typeof item === "string") {
+              return `${currentPath}: ${item}`; // Found a string error
+            } else if (typeof item === "object") {
+              const nestedError = extractDetailedErrorMessage(
+                item,
+                currentPath
+              );
+              if (nestedError) return nestedError;
+            }
+          }
+        } else if (typeof details[key] === "object") {
+          // Handle nested objects
+          const nestedError = extractDetailedErrorMessage(
+            details[key],
+            currentPath
+          );
+          if (nestedError) return nestedError;
+        } else if (typeof details[key] === "string") {
+          // Direct string error
+          return `${currentPath}: ${details[key]}`;
+        }
+      }
+
+      return null;
+    };
+
+    const onSubmitForm = async (data) => {
+      // setLoading(true);
       try {
-        const promises = Object.entries(endpoints).map(([key, endpoint]) =>
-          executeAjaxOperationStandard({
-            url: `/${endpoint}/`,
-            method: "get",
+        const promises = [];
+        for (let i = 0; i < data.questions.length; i++) {
+          const formData = { ...data.questions[i] };
+          formData.explanations = formData.explanations.map((val, ind) => ({
+            ...val,
+            level: explanationLevels[ind],
+          }));
+
+          // Append top-level fields to each question's form data
+          //TODO: uncomment this
+          // formData["target_organization"] = data.target_organization;
+          // formData["question_level"] = data.question_level;
+
+          formData.options = formData.options.map((val) => val.option_text);
+          let type = formData.question_type;
+          delete formData["question_type"];
+          delete formData["difficulty_level"];
+          delete formData["topic"];
+          delete formData["sub_topic"];
+          delete formData["sub_sub_topic"];
+          delete formData["target_subject"];
+          delete formData["target_group"];
+          delete formData["exam_references"];
+
+          // Create a promise for each API call and push it to the array
+          const promise = executeAjaxOperationStandard({
+            url: `${process.env.NEXT_PUBLIC_API_ENDPOINT_QUESTION}?type=${type}`,
+            method: "post",
+            data: JSON.stringify(formData),
             token,
-          })
+          });
+
+          promises.push(
+            promise
+              .then((val) => ({ ...val, index: i }))
+              .catch((err) => ({ ...err, index: i }))
+          );
+        }
+        if (promises.length === 0) {
+          setGlobalError("You have to add at least 1 question");
+          return;
+        }
+
+        // Execute all promises concurrently. If any single request fails, Promise.all will reject.
+        const results = await Promise.all(promises);
+        console.log(results);
+        // Identify successful submissions
+        const successfulIndexes = results
+          .filter(
+            (result) =>
+              typeof result.status === "number" &&
+              result.status >= 200 &&
+              result.status < 300
+          )
+          .map((result) => result.index);
+
+        // Remove successful questions
+        successfulIndexes
+          .sort((a, b) => b - a)
+          .forEach((ind) => removeQuestion(ind));
+
+        // Handle failures
+        const failedResults = results.filter(
+          (result) => result.status === "error"
         );
 
-        const results = await Promise.all(promises);
-        const newData = {};
-        let index = 0;
-        for (let key in endpoints) {
-          const response = results[index];
-          if (response && response.status >= 200 && response.status < 300) {
-            const data = response.data;
-            newData[key] = data.map((item) => ({
-              ...item,
-              value: item.id,
-              label: item.name || item.reference_name || item.title || "",
-            }));
-          } else {
-            newData[key] = [];
+        // console.log(results);
+        let ind = -1;
+        failedResults.forEach((result, index) => {
+          if (ind != -1) return;
+          if (result.status === "error") {
+            ind = index;
           }
-          index++;
+        });
+
+        if (ind != -1) {
+          const { details, error } = results[ind];
+
+          // Extract the first error message with context
+          const detailedError = extractDetailedErrorMessage(details);
+          console.log(detailedError);
+          const errorMessage = detailedError
+            ? `Error in Question ${ind + 1}: ${detailedError}`
+            : response?.message ||
+              error?.message ||
+              `Error in Question ${
+                ind + 1
+              }: An error occurred while submitting the form.`;
+
+          setGlobalError(errorMessage);
+          return;
         }
-        setDropdownData((prev) => ({ ...prev, ...newData }));
+        window.location.reload();
+
+        // Process results if needed
+        console.log("All questions submitted successfully:", results);
       } catch (error) {
-        console.error("Error fetching dropdown data:", error);
+        // If one fails, all fail. Handle the error here.
+        console.error("An error occurred during question submission:", error);
+        let errorMessage = "An error occurred while submitting the form.";
+        if (error.message) {
+          errorMessage = error.message;
+        }
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.error
+        ) {
+          errorMessage = error.response.data.error;
+        }
+        setGlobalError(errorMessage);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchDropdownData();
-  }, [token]);
+    return (
+      <FormProvider {...method}>
+        <form
+          onSubmit={handleSubmit(onSubmitForm)}
+          className="container-fluid p-3"
+        >
+          {globalError && (
+            <div
+              className="alert alert-danger alert-dismissible fade show"
+              role="alert"
+            >
+              <strong>{globalError}</strong>
+              <button
+                type="button"
+                className="btn-close"
+                aria-label="Close"
+                onClick={() => {
+                  setGlobalError("");
+                }}
+              ></button>
+            </div>
+          )}
+          <div className="row g-4 mb-4">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-label fw-semibold">
+                  Target Organization
+                </label>
+                <Controller
+                  name="target_organization"
+                  control={control}
+                  render={({ field }) => (
+                    <select
+                      {...field}
+                      className={`form-select ${
+                        errors.target_organization ? "is-invalid" : ""
+                      }`}
+                    >
+                      <option value="">Select Organization</option>
+                      {dropdownData.organizations.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                />
+                {errors.target_organization && (
+                  <div className="invalid-feedback">
+                    {errors.target_organization.message}
+                  </div>
+                )}
+              </div>
+            </div>
 
-  const extractDetailedErrorMessage = (details, path = "") => {
-    if (!details || typeof details !== "object") return null;
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-label fw-semibold">Question Level</label>
+                <Controller
+                  name="question_level"
+                  control={control}
+                  render={({ field }) => (
+                    <select
+                      {...field}
+                      className={`form-select ${
+                        errors.question_level ? "is-invalid" : ""
+                      }`}
+                    >
+                      <option value="">Select Question Level</option>
+                      {dropdownData.questionLevels.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                />
+                {errors.question_level && (
+                  <div className="invalid-feedback">
+                    {errors.question_level.message}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
 
-    for (const key in details) {
-      const currentPath = path ? `${path} -> ${key}` : key;
+          <div className="question-list">
+            {questionFields.length === 0 ? (
+              <p className="text-muted">No questions added yet.</p>
+            ) : (
+              questionFields.map((question, index) => (
+                <div key={question.id} className="card mb-3 shadow-sm">
+                  <div className="card-body">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <h5 className="card-title mb-0">Question {index + 1}</h5>
+                      <div className="btn-group">
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary btn-sm"
+                          onClick={() => handleEditQuestion(index)}
+                        >
+                          <i className="bi bi-pencil me-1"></i>
+                          Edit
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-outline-danger btn-sm"
+                          onClick={() => removeQuestion(index)}
+                        >
+                          <i className="bi bi-trash me-1"></i>
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                    <p className="card-text text-muted mb-0">
+                      {question.question_text}
+                    </p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
 
-      if (Array.isArray(details[key])) {
-        // Handle arrays that contain strings or objects
-        for (const item of details[key]) {
-          if (typeof item === "string") {
-            return `${currentPath}: ${item}`; // Found a string error
-          } else if (typeof item === "object") {
-            const nestedError = extractDetailedErrorMessage(item, currentPath);
-            if (nestedError) return nestedError;
-          }
-        }
-      } else if (typeof details[key] === "object") {
-        // Handle nested objects
-        const nestedError = extractDetailedErrorMessage(
-          details[key],
-          currentPath
-        );
-        if (nestedError) return nestedError;
-      } else if (typeof details[key] === "string") {
-        // Direct string error
-        return `${currentPath}: ${details[key]}`;
-      }
-    }
-
-    return null;
-  };
-
-  const onSubmitForm = async (data) => {
-    setLoading(true);
-    try {
-      const promises = [];
-      for (let i = 0; i < data.questions.length; i++) {
-        const formData = { ...data.questions[i] };
-        formData.explanations = formData.explanations.map((val, ind) => ({
-          ...val,
-          level: explanationLevels[ind],
-        }));
-
-        // Append top-level fields to each question's form data
-        formData["target_organization"] = data.target_organization;
-        formData["question_level"] = data.question_level;
-
-        // Create a promise for each API call and push it to the array
-        const promise = executeAjaxOperationStandard({
-          url: process.env.NEXT_PUBLIC_API_ENDPOINT_QUESTION,
-          method: "post",
-          data: JSON.stringify(formData),
-          token,
-        });
-
-        promises.push(
-          promise
-            .then((val) => ({ ...val, index: i }))
-            .catch((err) => ({ ...err, index: i }))
-        );
-      }
-      if (promises.length === 0) {
-        setGlobalError("You have to add at least 1 question");
-        return;
-      }
-
-      // Execute all promises concurrently. If any single request fails, Promise.all will reject.
-      const results = await Promise.all(promises);
-      console.log(results);
-      // Identify successful submissions
-      const successfulIndexes = results
-        .filter(
-          (result) =>
-            typeof result.status === "number" &&
-            result.status >= 200 &&
-            result.status < 300
-        )
-        .map((result) => result.index);
-
-      // Remove successful questions
-      successfulIndexes
-        .sort((a, b) => b - a)
-        .forEach((ind) => removeQuestion(ind));
-
-      // Handle failures
-      const failedResults = results.filter(
-        (result) => result.status === "error"
-      );
-
-      // console.log(results);
-      let ind = -1;
-      failedResults.forEach((result, index) => {
-        if (ind != -1) return;
-        if (result.status === "error") {
-          ind = index;
-        }
-      });
-
-      if (ind != -1) {
-        const { details, error } = results[ind];
-
-        // Extract the first error message with context
-        const detailedError = extractDetailedErrorMessage(details);
-        console.log(detailedError);
-        const errorMessage = detailedError
-          ? `Error in Question ${ind + 1}: ${detailedError}`
-          : response?.message ||
-            error?.message ||
-            `Error in Question ${
-              ind + 1
-            }: An error occurred while submitting the form.`;
-
-        setGlobalError(errorMessage);
-        return;
-      }
-      // window.location.reload();
-      // Process results if needed
-      console.log("All questions submitted successfully:", results);
-    } catch (error) {
-      // If one fails, all fail. Handle the error here.
-      console.error("An error occurred during question submission:", error);
-      let errorMessage = "An error occurred while submitting the form.";
-      if (error.message) {
-        errorMessage = error.message;
-      }
-      if (error.response && error.response.data && error.response.data.error) {
-        errorMessage = error.response.data.error;
-      }
-      setGlobalError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <FormProvider {...method}>
-      <form
-        onSubmit={handleSubmit(onSubmitForm)}
-        className="container-fluid p-3"
-      >
-        {globalError && (
-          <div
-            className="alert alert-danger alert-dismissible fade show"
-            role="alert"
-          >
-            <strong>{globalError}</strong>
+          <div className="mb-4">
             <button
               type="button"
-              className="btn-close"
-              aria-label="Close"
+              className="btn btn-secondary d-flex align-items-center gap-2"
               onClick={() => {
-                setGlobalError("");
+                setModalShow(true);
+                setEditingIndex(null);
               }}
-            ></button>
-          </div>
-        )}
-        <div className="row g-4 mb-4">
-          <div className="col-md-6">
-            <div className="form-group">
-              <label className="form-label fw-semibold">
-                Target Organization
-              </label>
-              <Controller
-                name="target_organization"
-                control={control}
-                render={({ field }) => (
-                  <select
-                    {...field}
-                    className={`form-select ${
-                      errors.target_organization ? "is-invalid" : ""
-                    }`}
-                  >
-                    <option value="">Select Organization</option>
-                    {dropdownData.organizations.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              />
-              {errors.target_organization && (
-                <div className="invalid-feedback">
-                  {errors.target_organization.message}
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="col-md-6">
-            <div className="form-group">
-              <label className="form-label fw-semibold">Question Level</label>
-              <Controller
-                name="question_level"
-                control={control}
-                render={({ field }) => (
-                  <select
-                    {...field}
-                    className={`form-select ${
-                      errors.question_level ? "is-invalid" : ""
-                    }`}
-                  >
-                    <option value="">Select Question Level</option>
-                    {dropdownData.questionLevels.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              />
-              {errors.question_level && (
-                <div className="invalid-feedback">
-                  {errors.question_level.message}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="question-list">
-          {questionFields.length === 0 ? (
-            <p className="text-muted">No questions added yet.</p>
-          ) : (
-            questionFields.map((question, index) => (
-              <div key={question.id} className="card mb-3 shadow-sm">
-                <div className="card-body">
-                  <div className="d-flex justify-content-between align-items-center mb-3">
-                    <h5 className="card-title mb-0">Question {index + 1}</h5>
-                    <div className="btn-group">
-                      <button
-                        type="button"
-                        className="btn btn-outline-primary btn-sm"
-                        onClick={() => handleEditQuestion(index)}
-                      >
-                        <i className="bi bi-pencil me-1"></i>
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-outline-danger btn-sm"
-                        onClick={() => removeQuestion(index)}
-                      >
-                        <i className="bi bi-trash me-1"></i>
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-                  <p className="card-text text-muted mb-0">
-                    {question.question_text}
-                  </p>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-
-        <div className="mb-4">
-          <button
-            type="button"
-            className="btn btn-secondary d-flex align-items-center gap-2"
-            onClick={() => {
-              setModalShow(true);
-              setEditingIndex(null);
-            }}
-          >
-            <i className="bi bi-plus-lg"></i>
-            Add Question
-          </button>
-        </div>
-
-        <QuestionModal
-          show={modalShow}
-          onHide={() => setModalShow(false)}
-          onSubmit={handleModalSubmit}
-          dropdownData={dropdownData}
-          initialData={
-            editingIndex !== null ? questionFields[editingIndex] : null
-          }
-        />
-
-        <div className="row mt-4">
-          <div className="col-12">
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn btn-primary w-100 w-md-auto"
             >
-              Create Questions
+              <i className="bi bi-plus-lg"></i>
+              Add Question
             </button>
           </div>
-        </div>
-      </form>
-    </FormProvider>
-  );
-});
+
+          <QuestionModal
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            onSubmit={handleModalSubmit}
+            dropdownData={dropdownData}
+            initialData={
+              editingIndex !== null ? questionFields[editingIndex] : null
+            }
+          />
+
+          <div className="row mt-4">
+            <div className="col-12">
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn btn-primary w-100 w-md-auto"
+              >
+                Create Questions
+              </button>
+            </div>
+          </div>
+        </form>
+      </FormProvider>
+    );
+  }
+);
 
 export const QuestionModal = ({
   show,
@@ -506,7 +657,7 @@ export const QuestionModal = ({
       topic: "",
       sub_topic: "",
       difficulty_level: "",
-      mcq_options: [{ option_text: "" }, { option_text: "" }],
+      options: [{ option_text: "" }, { option_text: "" }],
       explanations: [],
       sub_sub_topic: "",
     },
@@ -514,9 +665,7 @@ export const QuestionModal = ({
 
   const topic = watch("topic");
   const subTopic = watch("sub_topic");
-  const question_type = dropdownData.questionTypes.filter(
-    (val) => val.id == watch("question_type")
-  )[0];
+  const question_type = watch("question_type");
 
   useEffect(() => {
     if (show && !initialData) {
@@ -529,7 +678,7 @@ export const QuestionModal = ({
         topic: "",
         sub_topic: "",
         difficulty_level: "",
-        mcq_options: [{ option_text: "" }, { option_text: "" }],
+        options: [{ option_text: "" }, { option_text: "" }],
         explanations: [],
         sub_sub_topic: "",
       });
@@ -572,6 +721,412 @@ export const QuestionModal = ({
       setLoading(false);
     }
   };
+
+  const renderCorrectAnswerField = (questionType) => {
+    switch (questionType) {
+      case "MCQ_SINGLE":
+        return (
+          <Controller
+            name="correct_answer"
+            control={control}
+            render={({ field }) => (
+              <Form.Group>
+                {watch("options")?.map((option, index) => (
+                  <div key={index}>
+                    <Form.Check
+                      type="radio"
+                      label={option.option_text || "(Option text is required)"}
+                      value={index}
+                      checked={field.value === index}
+                      isInvalid={!!errors.correct_answer}
+                      onChange={() => field.onChange(index)}
+                    />
+                  </div>
+                ))}
+              </Form.Group>
+            )}
+          />
+        );
+      case "MCQ_MULTI":
+        return (
+          <Controller
+            name="correct_answer"
+            control={control}
+            render={({ field }) => (
+              <Form.Group>
+                {watch("options")?.map((option, index) => (
+                  <div key={index}>
+                    <Form.Check
+                      type="checkbox"
+                      label={option.option_text || "(Option text is required)"}
+                      value={index} // Use index as value
+                      checked={
+                        field.value ? field.value.includes(index) : false
+                      }
+                      onChange={(e) => {
+                        const selected = [...(field.value || [])];
+                        const currentIndex = index; // current option's index
+                        if (e.target.checked) {
+                          // Add index if checked and not already present
+                          if (!selected.includes(currentIndex)) {
+                            selected.push(currentIndex);
+                          }
+                        } else {
+                          // Remove index if unchecked
+                          const idx = selected.indexOf(currentIndex);
+                          if (idx > -1) {
+                            selected.splice(idx, 1);
+                          }
+                        }
+                        field.onChange(selected);
+                      }}
+                    />
+                  </div>
+                ))}
+              </Form.Group>
+            )}
+          />
+        );
+      case "FILL_BLANK":
+      case "NUMERICAL":
+        return (
+          <Controller
+            name="correct_answer"
+            control={control}
+            render={({ field }) => (
+              <Form.Control
+                type={questionType === "NUMERICAL" ? "number" : "text"}
+                isInvalid={!!errors.correct_answer}
+                {...field}
+              />
+            )}
+          />
+        );
+      case "TRUE_FALSE":
+        return (
+          <Controller
+            name="correct_answer"
+            control={control}
+            render={({ field }) => (
+              <Form.Select isInvalid={!!errors.correct_answer} {...field}>
+                <option value="">-- Select --</option>
+                <option value="True">True</option>
+                <option value="False">False</option>
+              </Form.Select>
+            )}
+          />
+        );
+      case "ASSERTION_REASON":
+      case "CASE_STUDY":
+      case "CODE":
+        return (
+          <Controller
+            name="correct_answer"
+            control={control}
+            render={({ field }) => (
+              <Form.Control
+                as="textarea"
+                rows={4}
+                isInvalid={!!errors.correct_answer}
+                {...field}
+              />
+            )}
+          />
+        );
+      case "NUMERICAL":
+        return (
+          <Controller
+            name="correct_answer"
+            control={control}
+            render={({ field }) => (
+              <Form.Control
+                type="number"
+                isInvalid={!!errors.correct_answer}
+                {...field}
+              />
+            )}
+          />
+        );
+      case "MATCHING":
+        return (
+          <Controller
+            name="matching_pairs"
+            control={control}
+            render={({ field }) => (
+              <Form.Control
+                as="textarea"
+                placeholder='Enter pairs as JSON, e.g., {"Key":"Value"}'
+                rows={4}
+                isInvalid={!!errors.matching_pairs}
+                {...field}
+              />
+            )}
+          />
+        );
+      case "ORDERING":
+        return (
+          <Controller
+            name="ordering_sequence"
+            control={control}
+            render={({ field }) => (
+              <Form.Control
+                as="textarea"
+                placeholder="Enter items in order, separated by commas"
+                rows={4}
+                isInvalid={!!errors.ordering_sequence}
+                {...field}
+              />
+            )}
+          />
+        );
+      case "DRAG_DROP":
+        return (
+          <>
+            <Form.Group className="mb-3">
+              <Form.Label>Options Column A:</Form.Label>
+              <Controller
+                name="options_column_a"
+                control={control}
+                render={({ field }) => (
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter options separated by commas"
+                    isInvalid={!!errors.options_column_a}
+                    {...field}
+                  />
+                )}
+              />
+              {errors.options_column_a && (
+                <Form.Control.Feedback type="invalid">
+                  {errors.options_column_a.message}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Options Column B:</Form.Label>
+              <Controller
+                name="options_column_b"
+                control={control}
+                render={({ field }) => (
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter options separated by commas"
+                    isInvalid={!!errors.options_column_b}
+                    {...field}
+                  />
+                )}
+              />
+              {errors.options_column_b && (
+                <Form.Control.Feedback type="invalid">
+                  {errors.options_column_b.message}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Correct Answer Mapping (JSON):</Form.Label>
+              <Controller
+                name="correct_answer"
+                control={control}
+                render={({ field }) => (
+                  <Form.Control
+                    as="textarea"
+                    rows={4}
+                    placeholder='e.g., {"OptionA":"MatchA", "OptionB":"MatchB"}'
+                    isInvalid={!!errors.correct_answer}
+                    {...field}
+                  />
+                )}
+              />
+            </Form.Group>
+          </>
+        );
+      case "IMAGE":
+        return (
+          <>
+            <Form.Group className="mb-3">
+              <Form.Label>Upload Image:</Form.Label>
+              <Controller
+                name="image_url" // field to store the image URL
+                control={control}
+                render={({ field }) => {
+                  // If an image URL already exists, display the image preview and a change option
+                  if (field.value) {
+                    return (
+                      <div>
+                        <div className="mb-2">
+                          <img
+                            src={field.value}
+                            alt="Uploaded"
+                            style={{ maxWidth: "100%", maxHeight: "300px" }}
+                          />
+                        </div>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => field.onChange("")}
+                        >
+                          Change Image
+                        </Button>
+                      </div>
+                    );
+                  }
+                  // Otherwise, display the file input for uploading a new image
+                  return (
+                    <Form.Control
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          setLoading(true);
+                          try {
+                            const response = await axios.put(
+                              `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/upload/?filename=${file.name}`,
+                              file,
+                              {
+                                headers: {
+                                  "Content-Type": file.type,
+                                  Authorization: `Token ${token}`,
+                                },
+                              }
+                            );
+                            // Set the returned media link (image URL) to the field value
+                            field.onChange(response.data.media_link);
+                          } catch (error) {
+                            console.error("Error uploading image:", error);
+                            setGlobalError(
+                              error.response?.data?.message || error.message
+                            );
+                          } finally {
+                            setLoading(false);
+                          }
+                        }
+                      }}
+                      isInvalid={!!errors.image_url}
+                    />
+                  );
+                }}
+              />
+              {errors.image_url && (
+                <Form.Control.Feedback type="invalid">
+                  {errors.image_url.message}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Correct Answer:</Form.Label>
+              <Controller
+                name="correct_answer"
+                control={control}
+                render={({ field }) => (
+                  <Form.Control
+                    as="textarea"
+                    rows={4}
+                    isInvalid={!!errors.correct_answer}
+                    {...field}
+                  />
+                )}
+              />
+            </Form.Group>
+          </>
+        );
+      case "AUDIO":
+        return (
+          <>
+            <Form.Group className="mb-3">
+              <Form.Label>Upload Audio:</Form.Label>
+              <Controller
+                name="audio_url" // field to store the audio URL
+                control={control}
+                render={({ field }) => {
+                  if (field.value) {
+                    return (
+                      <div>
+                        <audio
+                          controls
+                          src={field.value}
+                          style={{ display: "block", marginBottom: "10px" }}
+                        />
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => field.onChange("")}
+                        >
+                          Change Audio
+                        </Button>
+                      </div>
+                    );
+                  }
+                  return (
+                    <Form.Control
+                      type="file"
+                      accept="audio/*"
+                      onChange={async (e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          setLoading(true);
+                          try {
+                            const response = await axios.put(
+                              `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/upload/?filename=${file.name}`,
+                              file,
+                              {
+                                headers: {
+                                  "Content-Type": file.type,
+                                  Authorization: `Token ${token}`,
+                                },
+                              }
+                            );
+                            field.onChange(response.data.media_link);
+                          } catch (error) {
+                            console.error("Error uploading audio:", error);
+                            setGlobalError(
+                              error.response?.data?.message || error.message
+                            );
+                          } finally {
+                            setLoading(false);
+                          }
+                        }
+                      }}
+                      isInvalid={!!errors.audio_url}
+                    />
+                  );
+                }}
+              />
+              {errors.audio_url && (
+                <Form.Control.Feedback type="invalid">
+                  {errors.audio_url.message}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Correct Answer:</Form.Label>
+              <Controller
+                name="correct_answer"
+                control={control}
+                render={({ field }) => (
+                  <Form.Control
+                    as="textarea"
+                    rows={4}
+                    isInvalid={!!errors.correct_answer}
+                    {...field}
+                  />
+                )}
+              />
+            </Form.Group>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
   return (
     <Modal show={show} onHide={onHide} size="lg" backdrop="static">
@@ -762,122 +1317,85 @@ export const QuestionModal = ({
           </Row>
 
           <Row className="mb-3">
-            <Col md={12}>
-              <Form.Group controlId={`question_type`}>
-                <Form.Label>Question Type:</Form.Label>
-                <Controller
-                  name={`question_type`}
-                  control={control}
-                  render={({ field }) => (
-                    <Form.Select {...field} isInvalid={!!errors?.question_type}>
-                      <option value="">-- Select Question Type --</option>
-                      {dropdownData.questionTypes.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </Form.Select>
-                  )}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors?.question_type?.message}
-                </Form.Control.Feedback>
-              </Form.Group>
+            <Col>
+              <Form.Label>Question Type:</Form.Label>
+              <Controller
+                name="question_type"
+                control={control}
+                render={({ field }) => (
+                  <Form.Select isInvalid={!!errors.question_type} {...field}>
+                    <option value="">-- Select Question Type --</option>
+                    <option value="MCQ_SINGLE">MCQ Single</option>
+                    <option value="MCQ_MULTI">MCQ Multiple</option>
+                    <option value="FILL_BLANK">Fill in the Blank</option>
+                    <option value="TRUE_FALSE">True/False</option>
+                    <option value="CODE">Programming</option>
+                    <option value="MATCHING">Matching</option>
+                    <option value="ORDERING">Ordering</option>
+                    <option value="NUMERICAL">Numerical</option>
+                    <option value="DRAG_DROP">Drag and Drop</option>
+                    <option value="ASSERTION_REASON">Assertion Reason</option>
+                    <option value="CASE_STUDY">Case Study</option>
+                    <option value="IMAGE">Image</option>
+                    <option value="AUDIO">Audio</option>
+                  </Form.Select>
+                )}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.question_type?.message}
+              </Form.Control.Feedback>
             </Col>
           </Row>
 
-          {question_type && question_type.name && (
-            <Row className="mb-3">
-              <Col>
-                <Form.Label>Question Text:</Form.Label>
-                <Controller
-                  name="question_text"
-                  control={control}
-                  render={({ field }) => (
-                    <Form.Control
-                      as="textarea"
-                      rows={4}
-                      isInvalid={!!errors.question_text}
-                      {...field}
-                    />
-                  )}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.question_text?.message}
-                </Form.Control.Feedback>
-              </Col>
-            </Row>
-          )}
-
-          {question_type && question_type.name === "MCQ" && (
-            <NestedMCQOptions control={control} errors={errors} />
-          )}
-
-          {question_type && question_type.name && (
-            <Row className="mb-3">
-              <Col>
-                <Form.Label>Answer:</Form.Label>
-                {[
-                  "Descriptive/Essay Questions",
-                  "Code or Programming Questions",
-                ].includes(question_type.name) && (
+          {question_type && (
+            <>
+              <Row className="mb-3">
+                <Col>
+                  <Form.Label>Question Text:</Form.Label>
                   <Controller
-                    name="correct_answer"
+                    name="question_text"
                     control={control}
                     render={({ field }) => (
                       <Form.Control
-                        as={"textarea"}
+                        as="textarea"
                         rows={4}
-                        isInvalid={!!errors.correct_answer}
+                        isInvalid={!!errors.question_text}
                         {...field}
                       />
                     )}
                   />
-                )}
-                {[
-                  "Short Answer Questions",
-                  "Fill-in-the-Blanks",
-                  "Numerical/Calculation Questions",
-                  "MCQ",
-                ].includes(question_type.name) && (
-                  <Controller
-                    name="correct_answer"
-                    control={control}
-                    render={({ field }) => (
-                      <Form.Control
-                        type={
-                          question_type.name ===
-                          "Numerical/Calculation Questions"
-                            ? "number"
-                            : "text"
-                        }
-                        isInvalid={!!errors.correct_answer}
-                        {...field}
-                      />
-                    )}
-                  />
-                )}
-                {question_type.name === "True/false" && (
-                  <Controller
-                    name="correct_answer"
-                    control={control}
-                    render={({ field }) => (
-                      <Form.Select
-                        isInvalid={!!errors.correct_answer}
-                        {...field}
-                      >
-                        <option value="">-- Select --</option>
-                        <option value="True">True</option>
-                        <option value="False">False</option>
-                      </Form.Select>
-                    )}
-                  />
-                )}
-                <Form.Control.Feedback type="invalid">
-                  {errors.correct_answer?.message}
-                </Form.Control.Feedback>
-              </Col>
-            </Row>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.question_text?.message}
+                  </Form.Control.Feedback>
+                </Col>
+              </Row>
+
+              {question_type.includes("MCQ") && (
+                <NestedMCQOptions control={control} errors={errors} />
+              )}
+
+              <Row className="mb-3">
+                <Col>
+                  <Form.Label>Answer:</Form.Label>
+                  {renderCorrectAnswerField(question_type)}
+                  {errors.correct_answer && (
+                    <Form.Text className="text-danger">
+                      {errors.correct_answer.message}
+                    </Form.Text>
+                  )}
+                  {errors.matching_pairs && (
+                    <Form.Text className="text-danger">
+                      {errors.matching_pairs.message}
+                    </Form.Text>
+                  )}
+                  {errors.ordering_sequence && (
+                    <Form.Text className="text-danger">
+                      {errors.ordering_sequence.message}
+                    </Form.Text>
+                  )}
+                </Col>
+              </Row>
+            </>
           )}
 
           {/* Continue adding other fields similarly using react-bootstrap components */}
@@ -997,7 +1515,7 @@ export const QuestionModal = ({
 const NestedMCQOptions = ({ control, errors }) => {
   const { fields, append, remove } = useFieldArray({
     control,
-    name: `mcq_options`,
+    name: `options`,
   });
 
   return (
@@ -1007,15 +1525,13 @@ const NestedMCQOptions = ({ control, errors }) => {
         {fields.map((field, oIndex) => (
           <div key={field.id} className="input-group mb-2">
             <Controller
-              name={`mcq_options.${oIndex}.option_text`}
+              name={`options.${oIndex}.option_text`}
               control={control}
               render={({ field }) => (
                 <input
                   {...field}
                   className={`form-control ${
-                    errors?.mcq_options?.[oIndex]?.option_text
-                      ? "is-invalid"
-                      : ""
+                    errors?.options?.[oIndex]?.option_text ? "is-invalid" : ""
                   }`}
                   placeholder={`Option ${oIndex + 1}`}
                 />
@@ -1030,9 +1546,9 @@ const NestedMCQOptions = ({ control, errors }) => {
                 Remove
               </button>
             )}
-            {errors?.mcq_options?.[oIndex]?.option_text.message && (
+            {errors?.options?.[oIndex]?.option_text.message && (
               <div className="invalid-feedback">
-                {errors?.mcq_options?.[oIndex]?.option_text.message}
+                {errors?.options?.[oIndex]?.option_text.message}
               </div>
             )}
           </div>

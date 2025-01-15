@@ -337,11 +337,11 @@ def upload(request):
     """
     Handle PUT to store the file locally in MEDIA_ROOT.
     Example usage:
-        PUT /upload?filename=myvideo.mp4
+        PUT /upload?filename=myfile.ext
         (Use raw binary data in the request body)
     """
     if request.method == 'PUT':
-        file_name = request.GET.get('filename', 'default.mp4')
+        file_name = request.GET.get('filename', 'default.bin')
         unique_name = f"{int(time.time())}_{uuid.uuid4()}_{file_name}"
         full_path = os.path.join(settings.MEDIA_ROOT, unique_name)
 
@@ -356,14 +356,14 @@ def upload(request):
             with open(full_path, 'wb') as f:
                 f.write(request.body)
 
-            # Build a URL for retrieving the uploaded video
-            video_url = request.build_absolute_uri(
-                reverse('get_video', args=[unique_name])
+            # Build a URL for retrieving the uploaded file using the new endpoint
+            file_url = request.build_absolute_uri(
+                reverse('get_media', args=[unique_name])
             )
 
             return JsonResponse({
                 'message': 'File uploaded successfully.',
-                'video_link': video_url
+                'media_link': file_url
             }, status=201)
 
         except Exception as e:
@@ -379,18 +379,24 @@ def upload(request):
 
 
 @csrf_exempt
-def get_video(request, filename):
+def get_media(request, filename):
     """
-    When a user accesses /media/<filename>, serve the video file if it exists.
+    Serve any media file from MEDIA_ROOT if it exists.
     """
     full_path = os.path.join(settings.MEDIA_ROOT, filename)
 
     if not os.path.exists(full_path):
         return HttpResponseNotFound('File not found.')
 
-    # Read the file from disk
-    with open(full_path, 'rb') as f:
-        file_data = f.read()
+    # Determine the MIME type based on the file extension
+    mime_type, _ = mimetypes.guess_type(full_path)
+    # Fallback to a generic binary stream if type is unknown
+    content_type = mime_type if mime_type else 'application/octet-stream'
 
-    # Use a generic video MIME type or detect based on extension
-    return HttpResponse(file_data, content_type='video/mp4')
+    # Read the file from disk
+    try:
+        with open(full_path, 'rb') as f:
+            file_data = f.read()
+        return HttpResponse(file_data, content_type=content_type)
+    except Exception as e:
+        return HttpResponse(f'Error reading file: {str(e)}', status=500)

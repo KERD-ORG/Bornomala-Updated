@@ -12,7 +12,7 @@ from .views import (
     QuestionStatusListCreateView, QuestionStatusRetrieveUpdateDestroyView,
     ExamReferenceListCreateView, ExamReferenceRetrieveUpdateDestroyView,
     QuestionListCreateView, QuestionRetrieveUpdateDestroyView, upload,
-presign_url,fake_upload, get_video
+presign_url,fake_upload, get_media
 )
 
 urlpatterns = [
@@ -56,5 +56,5 @@ urlpatterns = [
     path('fake-upload', fake_upload, name='fake-upload'),
 
     path('upload/', upload, name='upload'),
-    path('media/<str:filename>/', get_video, name='get_video'),
+    path('media/<str:filename>/', get_media, name='get_media'),
 ]
