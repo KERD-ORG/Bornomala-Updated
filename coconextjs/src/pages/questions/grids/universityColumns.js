@@ -172,7 +172,7 @@ const UniversityColumns = ({
       resizable: true,
       sortable: true,
       renderCell({ row }) {
-        return <span>{row.details.correct_answer}</span>;
+        return <span>{JSON.stringify(row.details.correct_answer)}</span>;
       },
     },
     {

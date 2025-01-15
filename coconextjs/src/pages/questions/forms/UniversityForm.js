@@ -45,11 +45,14 @@ const questionSchema = yup.object().shape({
   correct_answer: yup.mixed().when("question_type", (question_type, schema) => {
     switch (question_type[0]) {
       case "MCQ_SINGLE":
-        return yup.string().required("Select one correct answer");
+        return yup
+          .number()
+          .typeError("Select a valid answer")
+          .required("Select one correct answer");
       case "MCQ_MULTI":
         return yup
           .array()
-          .of(yup.string().required("Answer cannot be empty"))
+          .of(yup.number().typeError("Each answer must be a number"))
           .min(1, "Select at least one correct answer");
       case "NUMERICAL":
         return yup
@@ -136,418 +139,451 @@ const mainSchema = yup.object().shape({
   questions: yup.array().of(questionSchema),
 });
 
-const UniversityQuestionForm = forwardRef(({ loading, setLoading }, ref) => {
-  const { token, globalError, setGlobalError } = useCommonForm();
-  const [modalShow, setModalShow] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(null);
+const UniversityQuestionForm = forwardRef(
+  ({ loading, setLoading, onCancel, onSubmit }, ref) => {
+    const { token, globalError, setGlobalError } = useCommonForm();
+    const [modalShow, setModalShow] = useState(false);
+    const [editingIndex, setEditingIndex] = useState(null);
 
-  const handleEditQuestion = (index) => {
-    setEditingIndex(index);
-    setModalShow(true);
-  };
+    const handleEditQuestion = (index) => {
+      setEditingIndex(index);
+      setModalShow(true);
+    };
 
-  const method = useForm({
-    resolver: yupResolver(mainSchema),
-    defaultValues,
-  });
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = method;
+    const method = useForm({
+      resolver: yupResolver(mainSchema),
+      defaultValues,
+    });
+    const {
+      control,
+      handleSubmit,
+      reset,
+      formState: { errors },
+    } = method;
 
-  const [dropdownData, setDropdownData] = React.useState({
-    questionLevels: [],
-    organizations: [],
-    targetGroups: [],
-    subjects: [],
-    questionTypes: [],
-    topics: [],
-    examReferences: [],
-    questionStatuses: [],
-    difficultyLevels: [],
-    subTopics: [],
-    subSubTopics: [],
-  });
+    const [dropdownData, setDropdownData] = React.useState({
+      questionLevels: [],
+      organizations: [],
+      targetGroups: [],
+      subjects: [],
+      questionTypes: [],
+      topics: [],
+      examReferences: [],
+      questionStatuses: [],
+      difficultyLevels: [],
+      subTopics: [],
+      subSubTopics: [],
+    });
 
-  const {
-    fields: questionFields,
-    append: appendQuestion,
-    remove: removeQuestion,
-  } = useFieldArray({
-    control,
-    name: "questions",
-  });
+    const {
+      fields: questionFields,
+      append: appendQuestion,
+      remove: removeQuestion,
+    } = useFieldArray({
+      control,
+      name: "questions",
+    });
 
-  const handleModalSubmit = (formData) => {
-    if (editingIndex !== null) {
-      removeQuestion(editingIndex);
-      appendQuestion(formData, {
-        shouldFocus: false,
-        focusName: `questions.${editingIndex}`,
-      });
-    } else {
-      appendQuestion(formData);
-    }
-    setModalShow(false);
-    setEditingIndex(null);
-  };
+    const handleModalSubmit = (formData) => {
+      if (editingIndex !== null) {
+        removeQuestion(editingIndex);
+        appendQuestion(formData, {
+          shouldFocus: false,
+          focusName: `questions.${editingIndex}`,
+        });
+      } else {
+        appendQuestion(formData);
+      }
+      setModalShow(false);
+      setEditingIndex(null);
+    };
 
-  useImperativeHandle(ref, () => ({
-    resetForm: () => reset(defaultValues),
-  }));
+    useImperativeHandle(ref, () => ({
+      resetForm: () => reset(defaultValues),
+    }));
 
-  useEffect(() => {
-    const fetchDropdownData = async () => {
-      if (!token) return;
-      const endpoints = {
-        questionLevels: "api/question-levels",
-        organizations: "api/organizations",
-        targetGroups: "api/target-groups",
-        subjects: "api/subjects",
-        questionTypes: "api/question-types",
-        topics: "api/topics",
-        examReferences: "api/exam-references",
-        questionStatuses: "api/question-statuses",
-        difficultyLevels: "api/difficulty-levels",
-        subTopics: "api/subtopics",
-        subSubTopics: "api/subsubtopics",
+    useEffect(() => {
+      const fetchDropdownData = async () => {
+        if (!token) return;
+        const endpoints = {
+          questionLevels: "api/question-levels",
+          organizations: "api/organizations",
+          targetGroups: "api/target-groups",
+          subjects: "api/subjects",
+          questionTypes: "api/question-types",
+          topics: "api/topics",
+          examReferences: "api/exam-references",
+          questionStatuses: "api/question-statuses",
+          difficultyLevels: "api/difficulty-levels",
+          subTopics: "api/subtopics",
+          subSubTopics: "api/subsubtopics",
+        };
+
+        try {
+          const promises = Object.entries(endpoints).map(([key, endpoint]) =>
+            executeAjaxOperationStandard({
+              url: `/${endpoint}/`,
+              method: "get",
+              token,
+            })
+          );
+
+          const results = await Promise.all(promises);
+          const newData = {};
+          let index = 0;
+          for (let key in endpoints) {
+            const response = results[index];
+            if (response && response.status >= 200 && response.status < 300) {
+              const data = response.data;
+              newData[key] = data.map((item) => ({
+                ...item,
+                value: item.id,
+                label: item.name || item.reference_name || item.title || "",
+              }));
+            } else {
+              newData[key] = [];
+            }
+            index++;
+          }
+          setDropdownData((prev) => ({ ...prev, ...newData }));
+        } catch (error) {
+          console.error("Error fetching dropdown data:", error);
+        }
       };
 
+      fetchDropdownData();
+    }, [token]);
+
+    const extractDetailedErrorMessage = (details, path = "") => {
+      if (!details || typeof details !== "object") return null;
+
+      for (const key in details) {
+        const currentPath = path ? `${path} -> ${key}` : key;
+
+        if (Array.isArray(details[key])) {
+          // Handle arrays that contain strings or objects
+          for (const item of details[key]) {
+            if (typeof item === "string") {
+              return `${currentPath}: ${item}`; // Found a string error
+            } else if (typeof item === "object") {
+              const nestedError = extractDetailedErrorMessage(
+                item,
+                currentPath
+              );
+              if (nestedError) return nestedError;
+            }
+          }
+        } else if (typeof details[key] === "object") {
+          // Handle nested objects
+          const nestedError = extractDetailedErrorMessage(
+            details[key],
+            currentPath
+          );
+          if (nestedError) return nestedError;
+        } else if (typeof details[key] === "string") {
+          // Direct string error
+          return `${currentPath}: ${details[key]}`;
+        }
+      }
+
+      return null;
+    };
+
+    const handleCancelClick = () => {
+      // reset all formdata
+      reset(defaultValues);
+      onCancel();
+    };
+
+    const onSubmitForm = async (data) => {
+      // setLoading(true);
       try {
-        const promises = Object.entries(endpoints).map(([key, endpoint]) =>
-          executeAjaxOperationStandard({
-            url: `/${endpoint}/`,
-            method: "get",
+        const promises = [];
+        for (let i = 0; i < data.questions.length; i++) {
+          const formData = { ...data.questions[i] };
+          formData.explanations = formData.explanations.map((val, ind) => ({
+            ...val,
+            level: explanationLevels[ind],
+          }));
+
+          // Append top-level fields to each question's form data
+          //TODO: uncomment this
+          // formData["target_organization"] = data.target_organization;
+          // formData["question_level"] = data.question_level;
+
+          formData.options = formData.options.map((val) => val.option_text);
+          let type = formData.question_type;
+          delete formData["question_type"];
+          delete formData["difficulty_level"];
+          delete formData["topic"];
+          delete formData["sub_topic"];
+          delete formData["sub_sub_topic"];
+          delete formData["target_subject"];
+          delete formData["target_group"];
+          delete formData["exam_references"];
+
+          console.log(formData);
+          return;
+
+          // Create a promise for each API call and push it to the array
+          const promise = executeAjaxOperationStandard({
+            url: `${process.env.NEXT_PUBLIC_API_ENDPOINT_QUESTION}?type=${type}`,
+            method: "post",
+            data: JSON.stringify(formData),
             token,
-          })
+          });
+
+          promises.push(
+            promise
+              .then((val) => ({ ...val, index: i }))
+              .catch((err) => ({ ...err, index: i }))
+          );
+        }
+        if (promises.length === 0) {
+          setGlobalError("You have to add at least 1 question");
+          return;
+        }
+
+        // Execute all promises concurrently. If any single request fails, Promise.all will reject.
+        const results = await Promise.all(promises);
+        console.log(results);
+        // Identify successful submissions
+        const successfulIndexes = results
+          .filter(
+            (result) =>
+              typeof result.status === "number" &&
+              result.status >= 200 &&
+              result.status < 300
+          )
+          .map((result) => result.index);
+
+        // Remove successful questions
+        successfulIndexes
+          .sort((a, b) => b - a)
+          .forEach((ind) => removeQuestion(ind));
+
+        // Handle failures
+        const failedResults = results.filter(
+          (result) => result.status === "error"
         );
 
-        const results = await Promise.all(promises);
-        const newData = {};
-        let index = 0;
-        for (let key in endpoints) {
-          const response = results[index];
-          if (response && response.status >= 200 && response.status < 300) {
-            const data = response.data;
-            newData[key] = data.map((item) => ({
-              ...item,
-              value: item.id,
-              label: item.name || item.reference_name || item.title || "",
-            }));
-          } else {
-            newData[key] = [];
+        // console.log(results);
+        let ind = -1;
+        failedResults.forEach((result, index) => {
+          if (ind != -1) return;
+          if (result.status === "error") {
+            ind = index;
           }
-          index++;
+        });
+
+        if (ind != -1) {
+          const { details, error } = results[ind];
+
+          // Extract the first error message with context
+          const detailedError = extractDetailedErrorMessage(details);
+          console.log(detailedError);
+          const errorMessage = detailedError
+            ? `Error in Question ${ind + 1}: ${detailedError}`
+            : response?.message ||
+              error?.message ||
+              `Error in Question ${
+                ind + 1
+              }: An error occurred while submitting the form.`;
+
+          setGlobalError(errorMessage);
+          return;
         }
-        setDropdownData((prev) => ({ ...prev, ...newData }));
+        // window.location.reload();
+        handleCancelClick();
+        onSubmit(
+          response.data.message || t("Form submitted successfully."),
+          true
+        );
+        // Process results if needed
+        console.log("All questions submitted successfully:", results);
       } catch (error) {
-        console.error("Error fetching dropdown data:", error);
+        // If one fails, all fail. Handle the error here.
+        console.error("An error occurred during question submission:", error);
+        let errorMessage = "An error occurred while submitting the form.";
+        if (error.message) {
+          errorMessage = error.message;
+        }
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.error
+        ) {
+          errorMessage = error.response.data.error;
+        }
+        setGlobalError(errorMessage);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchDropdownData();
-  }, [token]);
+    return (
+      <FormProvider {...method}>
+        <form
+          onSubmit={handleSubmit(onSubmitForm)}
+          className="container-fluid p-3"
+        >
+          {globalError && (
+            <div
+              className="alert alert-danger alert-dismissible fade show"
+              role="alert"
+            >
+              <strong>{globalError}</strong>
+              <button
+                type="button"
+                className="btn-close"
+                aria-label="Close"
+                onClick={() => {
+                  setGlobalError("");
+                }}
+              ></button>
+            </div>
+          )}
+          <div className="row g-4 mb-4">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-label fw-semibold">
+                  Target Organization
+                </label>
+                <Controller
+                  name="target_organization"
+                  control={control}
+                  render={({ field }) => (
+                    <select
+                      {...field}
+                      className={`form-select ${
+                        errors.target_organization ? "is-invalid" : ""
+                      }`}
+                    >
+                      <option value="">Select Organization</option>
+                      {dropdownData.organizations.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                />
+                {errors.target_organization && (
+                  <div className="invalid-feedback">
+                    {errors.target_organization.message}
+                  </div>
+                )}
+              </div>
+            </div>
 
-  const extractDetailedErrorMessage = (details, path = "") => {
-    if (!details || typeof details !== "object") return null;
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-label fw-semibold">Question Level</label>
+                <Controller
+                  name="question_level"
+                  control={control}
+                  render={({ field }) => (
+                    <select
+                      {...field}
+                      className={`form-select ${
+                        errors.question_level ? "is-invalid" : ""
+                      }`}
+                    >
+                      <option value="">Select Question Level</option>
+                      {dropdownData.questionLevels.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                />
+                {errors.question_level && (
+                  <div className="invalid-feedback">
+                    {errors.question_level.message}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
 
-    for (const key in details) {
-      const currentPath = path ? `${path} -> ${key}` : key;
+          <div className="question-list">
+            {questionFields.length === 0 ? (
+              <p className="text-muted">No questions added yet.</p>
+            ) : (
+              questionFields.map((question, index) => (
+                <div key={question.id} className="card mb-3 shadow-sm">
+                  <div className="card-body">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <h5 className="card-title mb-0">Question {index + 1}</h5>
+                      <div className="btn-group">
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary btn-sm"
+                          onClick={() => handleEditQuestion(index)}
+                        >
+                          <i className="bi bi-pencil me-1"></i>
+                          Edit
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-outline-danger btn-sm"
+                          onClick={() => removeQuestion(index)}
+                        >
+                          <i className="bi bi-trash me-1"></i>
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                    <p className="card-text text-muted mb-0">
+                      {question.question_text}
+                    </p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
 
-      if (Array.isArray(details[key])) {
-        // Handle arrays that contain strings or objects
-        for (const item of details[key]) {
-          if (typeof item === "string") {
-            return `${currentPath}: ${item}`; // Found a string error
-          } else if (typeof item === "object") {
-            const nestedError = extractDetailedErrorMessage(item, currentPath);
-            if (nestedError) return nestedError;
-          }
-        }
-      } else if (typeof details[key] === "object") {
-        // Handle nested objects
-        const nestedError = extractDetailedErrorMessage(
-          details[key],
-          currentPath
-        );
-        if (nestedError) return nestedError;
-      } else if (typeof details[key] === "string") {
-        // Direct string error
-        return `${currentPath}: ${details[key]}`;
-      }
-    }
-
-    return null;
-  };
-
-  const onSubmitForm = async (data) => {
-    console.log(data);
-    return;
-    setLoading(true);
-    try {
-      const promises = [];
-      for (let i = 0; i < data.questions.length; i++) {
-        const formData = { ...data.questions[i] };
-        formData.explanations = formData.explanations.map((val, ind) => ({
-          ...val,
-          level: explanationLevels[ind],
-        }));
-
-        // Append top-level fields to each question's form data
-        formData["target_organization"] = data.target_organization;
-        formData["question_level"] = data.question_level;
-
-        // Create a promise for each API call and push it to the array
-        const promise = executeAjaxOperationStandard({
-          url: process.env.NEXT_PUBLIC_API_ENDPOINT_QUESTION,
-          method: "post",
-          data: JSON.stringify(formData),
-          token,
-        });
-
-        promises.push(
-          promise
-            .then((val) => ({ ...val, index: i }))
-            .catch((err) => ({ ...err, index: i }))
-        );
-      }
-      if (promises.length === 0) {
-        setGlobalError("You have to add at least 1 question");
-        return;
-      }
-
-      // Execute all promises concurrently. If any single request fails, Promise.all will reject.
-      const results = await Promise.all(promises);
-      console.log(results);
-      // Identify successful submissions
-      const successfulIndexes = results
-        .filter(
-          (result) =>
-            typeof result.status === "number" &&
-            result.status >= 200 &&
-            result.status < 300
-        )
-        .map((result) => result.index);
-
-      // Remove successful questions
-      successfulIndexes
-        .sort((a, b) => b - a)
-        .forEach((ind) => removeQuestion(ind));
-
-      // Handle failures
-      const failedResults = results.filter(
-        (result) => result.status === "error"
-      );
-
-      // console.log(results);
-      let ind = -1;
-      failedResults.forEach((result, index) => {
-        if (ind != -1) return;
-        if (result.status === "error") {
-          ind = index;
-        }
-      });
-
-      if (ind != -1) {
-        const { details, error } = results[ind];
-
-        // Extract the first error message with context
-        const detailedError = extractDetailedErrorMessage(details);
-        console.log(detailedError);
-        const errorMessage = detailedError
-          ? `Error in Question ${ind + 1}: ${detailedError}`
-          : response?.message ||
-            error?.message ||
-            `Error in Question ${
-              ind + 1
-            }: An error occurred while submitting the form.`;
-
-        setGlobalError(errorMessage);
-        return;
-      }
-      // window.location.reload();
-      // Process results if needed
-      console.log("All questions submitted successfully:", results);
-    } catch (error) {
-      // If one fails, all fail. Handle the error here.
-      console.error("An error occurred during question submission:", error);
-      let errorMessage = "An error occurred while submitting the form.";
-      if (error.message) {
-        errorMessage = error.message;
-      }
-      if (error.response && error.response.data && error.response.data.error) {
-        errorMessage = error.response.data.error;
-      }
-      setGlobalError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <FormProvider {...method}>
-      <form
-        onSubmit={handleSubmit(onSubmitForm)}
-        className="container-fluid p-3"
-      >
-        {globalError && (
-          <div
-            className="alert alert-danger alert-dismissible fade show"
-            role="alert"
-          >
-            <strong>{globalError}</strong>
+          <div className="mb-4">
             <button
               type="button"
-              className="btn-close"
-              aria-label="Close"
+              className="btn btn-secondary d-flex align-items-center gap-2"
               onClick={() => {
-                setGlobalError("");
+                setModalShow(true);
+                setEditingIndex(null);
               }}
-            ></button>
-          </div>
-        )}
-        <div className="row g-4 mb-4">
-          <div className="col-md-6">
-            <div className="form-group">
-              <label className="form-label fw-semibold">
-                Target Organization
-              </label>
-              <Controller
-                name="target_organization"
-                control={control}
-                render={({ field }) => (
-                  <select
-                    {...field}
-                    className={`form-select ${
-                      errors.target_organization ? "is-invalid" : ""
-                    }`}
-                  >
-                    <option value="">Select Organization</option>
-                    {dropdownData.organizations.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              />
-              {errors.target_organization && (
-                <div className="invalid-feedback">
-                  {errors.target_organization.message}
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="col-md-6">
-            <div className="form-group">
-              <label className="form-label fw-semibold">Question Level</label>
-              <Controller
-                name="question_level"
-                control={control}
-                render={({ field }) => (
-                  <select
-                    {...field}
-                    className={`form-select ${
-                      errors.question_level ? "is-invalid" : ""
-                    }`}
-                  >
-                    <option value="">Select Question Level</option>
-                    {dropdownData.questionLevels.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              />
-              {errors.question_level && (
-                <div className="invalid-feedback">
-                  {errors.question_level.message}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="question-list">
-          {questionFields.length === 0 ? (
-            <p className="text-muted">No questions added yet.</p>
-          ) : (
-            questionFields.map((question, index) => (
-              <div key={question.id} className="card mb-3 shadow-sm">
-                <div className="card-body">
-                  <div className="d-flex justify-content-between align-items-center mb-3">
-                    <h5 className="card-title mb-0">Question {index + 1}</h5>
-                    <div className="btn-group">
-                      <button
-                        type="button"
-                        className="btn btn-outline-primary btn-sm"
-                        onClick={() => handleEditQuestion(index)}
-                      >
-                        <i className="bi bi-pencil me-1"></i>
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-outline-danger btn-sm"
-                        onClick={() => removeQuestion(index)}
-                      >
-                        <i className="bi bi-trash me-1"></i>
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-                  <p className="card-text text-muted mb-0">
-                    {question.question_text}
-                  </p>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-
-        <div className="mb-4">
-          <button
-            type="button"
-            className="btn btn-secondary d-flex align-items-center gap-2"
-            onClick={() => {
-              setModalShow(true);
-              setEditingIndex(null);
-            }}
-          >
-            <i className="bi bi-plus-lg"></i>
-            Add Question
-          </button>
-        </div>
-
-        <QuestionModal
-          show={modalShow}
-          onHide={() => setModalShow(false)}
-          onSubmit={handleModalSubmit}
-          dropdownData={dropdownData}
-          initialData={
-            editingIndex !== null ? questionFields[editingIndex] : null
-          }
-        />
-
-        <div className="row mt-4">
-          <div className="col-12">
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn btn-primary w-100 w-md-auto"
             >
-              Create Questions
+              <i className="bi bi-plus-lg"></i>
+              Add Question
             </button>
           </div>
-        </div>
-      </form>
-    </FormProvider>
-  );
-});
+
+          <QuestionModal
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            onSubmit={handleModalSubmit}
+            dropdownData={dropdownData}
+            initialData={
+              editingIndex !== null ? questionFields[editingIndex] : null
+            }
+          />
+
+          <div className="row mt-4">
+            <div className="col-12">
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn btn-primary w-100 w-md-auto"
+              >
+                Create Questions
+              </button>
+            </div>
+          </div>
+        </form>
+      </FormProvider>
+    );
+  }
+);
 
 export const QuestionModal = ({
   show,
@@ -657,10 +693,10 @@ export const QuestionModal = ({
                     <Form.Check
                       type="radio"
                       label={option.option_text || "(Option text is required)"}
-                      value={option.option_text}
-                      checked={field.value === option.option_text}
+                      value={index}
+                      checked={field.value === index}
                       isInvalid={!!errors.correct_answer}
-                      onChange={() => field.onChange(option.option_text)}
+                      onChange={() => field.onChange(index)}
                     />
                   </div>
                 ))}
@@ -680,21 +716,26 @@ export const QuestionModal = ({
                     <Form.Check
                       type="checkbox"
                       label={option.option_text || "(Option text is required)"}
-                      value={option.option_text}
+                      value={index} // Use index as value
                       checked={
-                        field.value
-                          ? field.value.includes(option.option_text)
-                          : false
+                        field.value ? field.value.includes(index) : false
                       }
                       onChange={(e) => {
                         const selected = [...(field.value || [])];
+                        const currentIndex = index; // current option's index
                         if (e.target.checked) {
-                          field.onChange([...selected, option.option_text]);
+                          // Add index if checked and not already present
+                          if (!selected.includes(currentIndex)) {
+                            selected.push(currentIndex);
+                          }
                         } else {
-                          field.onChange(
-                            selected.filter((val) => val !== option.option_text)
-                          );
+                          // Remove index if unchecked
+                          const idx = selected.indexOf(currentIndex);
+                          if (idx > -1) {
+                            selected.splice(idx, 1);
+                          }
                         }
+                        field.onChange(selected);
                       }}
                     />
                   </div>
