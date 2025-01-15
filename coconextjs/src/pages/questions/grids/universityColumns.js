@@ -172,7 +172,7 @@ const UniversityColumns = ({
       resizable: true,
       sortable: true,
       renderCell({ row }) {
-        return <span>{JSON.stringify(row.details.correct_answer)}</span>;
+        return <span>{JSON.stringify(row.details.ordering_sequence || row.details.matching_pairs || row.details.correct_answer)}</span>;
       },
     },
     {
@@ -194,7 +194,7 @@ const UniversityColumns = ({
         const { row } = props;
         return (
           <>
-            {permissionsMap.permissionlist.change_question && (
+            {permissionsMap.permissionlist.change_questiontype && (
               <button
                 className="btn btn-sm btn-icon"
                 data-tooltip-id="my-tooltip"
@@ -205,7 +205,7 @@ const UniversityColumns = ({
                 <i className="bx bx-edit text-warning"></i>
               </button>
             )}
-            {permissionsMap.permissionlist.add_question && (
+            {permissionsMap.permissionlist.add_questiontype && (
               <button
                 className="btn btn-icon"
                 data-tooltip-id="my-tooltip"
@@ -216,7 +216,7 @@ const UniversityColumns = ({
                 <i className="bx bx-copy text-success"></i>
               </button>
             )}
-            {permissionsMap.permissionlist.view_question && (
+            {permissionsMap.permissionlist.view_questiontype && (
               <button
                 className="btn btn-icon"
                 data-tooltip-id="my-tooltip"
@@ -227,7 +227,7 @@ const UniversityColumns = ({
                 <i className="bx bx-detail text-info"></i>
               </button>
             )}
-            {permissionsMap.permissionlist.delete_question && (
+            {permissionsMap.permissionlist.delete_questiontype && (
               <button
                 className="btn btn-sm btn-icon"
                 data-tooltip-id="my-tooltip"

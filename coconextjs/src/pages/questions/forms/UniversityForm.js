@@ -111,12 +111,12 @@ const questionSchema = yup.object().shape({
         .min(2, "At least two items are required"),
     otherwise: () => yup.array().notRequired(),
   }),
-  target_subject: yup.string().required("Subject is required"),
-  exam_references: yup.array(),
-  question_type: yup.string().required("Question Type is required"),
-  topic: yup.string().required("Topic is required"),
-  sub_topic: yup.string(),
-  difficulty_level: yup.string().required("Difficulty Level is required"),
+  // target_subject: yup.string().required("Subject is required"),
+  // exam_references: yup.array(),
+  // question_type: yup.string().required("Question Type is required"),
+  // topic: yup.string().required("Topic is required"),
+  // sub_topic: yup.string(),
+  // difficulty_level: yup.string().required("Difficulty Level is required"),
   options: yup.array().when("question_type", {
     is: (val) => ["MCQ_SINGLE", "MCQ_MULTI"].includes(val),
     then: () =>
@@ -130,12 +130,12 @@ const questionSchema = yup.object().shape({
         .min(2, "At least two options are required"),
     otherwise: () => yup.array().notRequired(),
   }),
-  target_group: yup.string().required("Target Group is required"),
+  // target_group: yup.string().required("Target Group is required"),
 });
 
 const mainSchema = yup.object().shape({
-  target_organization: yup.string().required("Organization is required"),
-  question_level: yup.string().required("Question Level is required"),
+  // target_organization: yup.string().required("Organization is required"),
+  // question_level: yup.string().required("Question Level is required"),
   questions: yup.array().of(questionSchema),
 });
 
@@ -322,9 +322,6 @@ const UniversityQuestionForm = forwardRef(
           delete formData["target_group"];
           delete formData["exam_references"];
 
-          console.log(formData);
-          return;
-
           // Create a promise for each API call and push it to the array
           const promise = executeAjaxOperationStandard({
             url: `${process.env.NEXT_PUBLIC_API_ENDPOINT_QUESTION}?type=${type}`,
@@ -393,12 +390,8 @@ const UniversityQuestionForm = forwardRef(
           setGlobalError(errorMessage);
           return;
         }
-        // window.location.reload();
-        handleCancelClick();
-        onSubmit(
-          response.data.message || t("Form submitted successfully."),
-          true
-        );
+        window.location.reload();
+
         // Process results if needed
         console.log("All questions submitted successfully:", results);
       } catch (error) {
@@ -745,7 +738,6 @@ export const QuestionModal = ({
           />
         );
       case "FILL_BLANK":
-      case "SHORT_ANSWER":
       case "NUMERICAL":
         return (
           <Controller
@@ -774,8 +766,7 @@ export const QuestionModal = ({
             )}
           />
         );
-      case "ESSAY":
-      case "PROGRAMMING":
+      case "CODE":
         return (
           <Controller
             name="correct_answer"
@@ -1046,8 +1037,7 @@ export const QuestionModal = ({
                     <option value="MCQ_MULTI">MCQ Multiple</option>
                     <option value="FILL_BLANK">Fill in the Blank</option>
                     <option value="TRUE_FALSE">True/False</option>
-                    <option value="ESSAY">Essay</option>
-                    <option value="PROGRAMMING">Programming</option>
+                    <option value="CODE">Programming</option>
                     <option value="MATCHING">Matching</option>
                     <option value="ORDERING">Ordering</option>
                     <option value="NUMERICAL">Numerical</option>

@@ -213,7 +213,7 @@ export default function QuestionList() {
       <div className="card">
         <div className="card-body">
           <div className="d-flex justify-content-end mb-3">
-            {permissionsMap.permissionlist.add_question && (
+            {permissionsMap.permissionlist.add_questiontype && (
               <>
                 <button
                   data-tooltip-id="my-tooltip"

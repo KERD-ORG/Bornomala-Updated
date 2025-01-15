@@ -170,6 +170,18 @@ Content-Type: application/json
 
 ###
 
+
+POST http://localhost:8000/api/questions/?type=CODE
+Content-Type: application/json
+
+{
+  "question_text": "Write a Python program to print Hello World.",
+  "correct_answer": "print('Hello World')",
+  "explanations": [{"level": "Preliminary", "text": "This program prints 'Hello World' to the console."}]
+}
+
+###
+
 POST http://localhost:8000/api/questions/?type=IMAGE
 Content-Type: application/json
 
@@ -217,16 +229,6 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8000/api/questions/?type=CODE
-Content-Type: application/json
-
-{
-  "question_text": "Write a Python program to print Hello World.",
-  "correct_answer": "print('Hello World')",
-  "explanations": [{"level": "Preliminary", "text": "This program prints 'Hello World' to the console."}]
-}
-
-###
 
 POST http://localhost:8000/api/questions/?type=DRAG_DROP
 Content-Type: application/json

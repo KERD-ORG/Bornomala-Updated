@@ -40,7 +40,7 @@ export const fetchCountryList = async (
   }
 };
 
-export const fetchStateList = async (
+export const fetchDivisionList = async (
   token,
   locale,
   setGlobalError,
@@ -49,7 +49,7 @@ export const fetchStateList = async (
 ) => {
   try {
     const response = await executeAjaxOperationStandard({
-      url: process.env.NEXT_PUBLIC_API_ENDPOINT_STATE_LIST,
+      url: process.env.NEXT_PUBLIC_API_ENDPOINT_DIVISION_LIST,
       method: "get",
       token,
       locale: locale || "en", // Include country_code in params for state list
@@ -60,23 +60,18 @@ export const fetchStateList = async (
         parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
       response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
     ) {
-      if (response.data && response.data.data && response.data.data.states) {
-        const statesArray = JSON.parse(response.data.data.states);
-        const stateOptions = statesArray.map((state) => ({
-          label: state.fields.name,
-          value: state.pk,
-          country_code: state.fields.country_code,
-        }));
-        setStates(stateOptions);
+      console.log(response.data);
+      if (response.data) {
+        setStates(response.data);
       } else {
         setStates([]);
       }
     } else {
-      setGlobalError("Failed to fetch state list");
+      setGlobalError("Failed to fetch division list");
     }
   } catch (error) {
-    console.error("Error fetching state list:", error);
-    setGlobalError("Error fetching state list");
+    console.error("Error fetching division list:", error);
+    setGlobalError("Error fetching division list");
   }
 };
 
