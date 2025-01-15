@@ -72,7 +72,7 @@ const UniversityColumns = ({
       sortable: true,
       resizable: true,
       renderCell({ row }) {
-        return <span>{formatDate(row.updated_at)}</span>;
+        return <span>{formatDate(row.details.updated_at)}</span>;
       },
     },
     {
@@ -80,60 +80,90 @@ const UniversityColumns = ({
       name: t("Question Level"),
       resizable: true,
       sortable: true,
+      renderCell({ row }) {
+        return <span>{row.details.question_level_name}</span>;
+      },
     },
     {
       key: "target_group_name",
       name: t("Target Group"),
       resizable: true,
       sortable: true,
+      renderCell({ row }) {
+        return <span>{row.details.target_group_name}</span>;
+      },
     },
     {
       key: "subject_name",
       name: t("Subject"),
       resizable: true,
       sortable: true,
+      renderCell({ row }) {
+        return <span>{row.details.target_subject_name}</span>;
+      },
     },
     {
-      key: "question_type_name",
+      key: "question_type",
       name: t("Question Type"),
       resizable: true,
       sortable: true,
+      // renderCell({ row }) {
+      //   return <span>{row.details.question_type_name}</span>;
+      // },
     },
     {
       key: "topic_name",
       name: t("Topic"),
       resizable: true,
       sortable: true,
+      renderCell({ row }) {
+        return <span>{row.details.topic_name}</span>;
+      },
     },
     {
       key: "sub_topic_name",
       name: t("Sub Topic"),
       resizable: true,
       sortable: true,
+      renderCell({ row }) {
+        return <span>{row.details.sub_topic_name}</span>;
+      },
     },
     {
       key: "sub_sub_topic_name",
       name: t("Sub Sub Topic"),
       resizable: true,
       sortable: true,
+      renderCell({ row }) {
+        return <span>{row.details.sub_sub_topic_name}</span>;
+      },
     },
     {
       key: "difficulty_level_name",
       name: t("Difficulty Level"),
       resizable: true,
       sortable: true,
+      renderCell({ row }) {
+        return <span>{row.details.difficulty_level_name}</span>;
+      },
     },
     {
       key: "target_organization_name",
       name: t("Target Organization"),
       resizable: true,
       sortable: true,
+      renderCell({ row }) {
+        return <span>{row.details.target_organization_name}</span>;
+      },
     },
     {
       key: "question_text",
       name: t("Question Text"),
       resizable: true,
       sortable: true,
+      renderCell({ row }) {
+        return <span>{row.details.question_text}</span>;
+      },
       width: "180px",
     },
     {
@@ -141,17 +171,18 @@ const UniversityColumns = ({
       name: t("Correct Answer"),
       resizable: true,
       sortable: true,
+      renderCell({ row }) {
+        return <span>{row.details.correct_answer}</span>;
+      },
     },
     {
-      key: "mcq_options",
+      key: "options",
       name: t("MCQ Options"),
       resizable: true,
       sortable: false,
       renderCell({ row }) {
         // Render MCQ options as a comma-separated list or similar
-        return row.mcq_options
-          ? row.mcq_options.map(opt => opt.option_text).join(", ")
-          : "";
+        return row.details.options ? row.details.options.join(", ") : "";
       },
     },
     {

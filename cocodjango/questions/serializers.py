@@ -103,42 +103,76 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
         queryset=ExamReference.objects.all(), many=True, required=False
     )
 
+    # Primary key fields with related names
     question_level = serializers.PrimaryKeyRelatedField(
         queryset=QuestionLevel.objects.all(), required=False, allow_null=True
     )
+    question_level_name = serializers.CharField(source='question_level.name', read_only=True)
+
     target_group = serializers.PrimaryKeyRelatedField(
         queryset=TargetGroup.objects.all(), required=False, allow_null=True
     )
+    target_group_name = serializers.CharField(source='target_group.name', read_only=True)
+
     target_subject = serializers.PrimaryKeyRelatedField(
         queryset=Subject.objects.all(), required=False, allow_null=True
     )
+    target_subject_name = serializers.CharField(source='target_subject.name', read_only=True)
+
     question_type = serializers.PrimaryKeyRelatedField(
         queryset=QuestionType.objects.all(), required=False, allow_null=True
     )
+    question_type_name = serializers.CharField(source='question_type.name', read_only=True)
+
     topic = serializers.PrimaryKeyRelatedField(
         queryset=Topic.objects.all(), required=False, allow_null=True
     )
+    topic_name = serializers.CharField(source='topic.name', read_only=True)
+
     sub_topic = serializers.PrimaryKeyRelatedField(
         queryset=SubTopic.objects.all(), required=False, allow_null=True
     )
+    sub_topic_name = serializers.CharField(source='sub_topic.name', read_only=True)
+
     sub_sub_topic = serializers.PrimaryKeyRelatedField(
         queryset=SubSubTopic.objects.all(), required=False, allow_null=True
     )
+    sub_sub_topic_name = serializers.CharField(source='sub_sub_topic.name', read_only=True)
+
     difficulty_level = serializers.PrimaryKeyRelatedField(
         queryset=DifficultyLevel.objects.all(), required=False, allow_null=True
     )
+    difficulty_level_name = serializers.CharField(source='difficulty_level.name', read_only=True)
+
     question_status = serializers.PrimaryKeyRelatedField(
         queryset=QuestionStatus.objects.all(), required=False, allow_null=True
     )
+    question_status_name = serializers.CharField(source='question_status.name', read_only=True)
 
     class Meta:
         model = BaseQuestion
         fields = [
-            'id', 'question_level', 'target_group', 'target_subject', 'question_type',
-            'topic', 'sub_topic', 'sub_sub_topic', 'difficulty_level', 'question_status',
-            'exam_references', 'explanations', 'created_at', 'updated_at'
+            'id',
+            'question_level', 'question_level_name',
+            'target_group', 'target_group_name',
+            'target_subject', 'target_subject_name',
+            'question_type', 'question_type_name',
+            'topic', 'topic_name',
+            'sub_topic', 'sub_topic_name',
+            'sub_sub_topic', 'sub_sub_topic_name',
+            'difficulty_level', 'difficulty_level_name',
+            'question_status', 'question_status_name',
+            'exam_references', 'explanations',
+            'created_at', 'updated_at'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at']
+        read_only_fields = [
+            'id', 'created_at', 'updated_at',
+            'question_level_name', 'target_group_name', 'target_subject_name',
+            'question_type_name', 'topic_name', 'sub_topic_name',
+            'sub_sub_topic_name', 'difficulty_level_name', 'question_status_name'
+        ]
+
+    
 
     def create(self, validated_data):
         explanations_data = validated_data.pop('explanations', [])
