@@ -123,12 +123,12 @@ const questionSchema = yup.object().shape({
         .min(2, "At least two items are required"),
     otherwise: () => yup.array().notRequired(),
   }),
-  // target_subject: yup.string().required("Subject is required"),
-  // exam_references: yup.array(),
-  // question_type: yup.string().required("Question Type is required"),
-  // topic: yup.string().required("Topic is required"),
-  // sub_topic: yup.string(),
-  // difficulty_level: yup.string().required("Difficulty Level is required"),
+  target_subject: yup.string().required("Subject is required"),
+  exam_references: yup.array(),
+  question_type: yup.string().required("Question Type is required"),
+  topic: yup.string().required("Topic is required"),
+  sub_topic: yup.string(),
+  difficulty_level: yup.string().required("Difficulty Level is required"),
   options: yup.array().when("question_type", {
     is: (val) => ["MCQ_SINGLE", "MCQ_MULTI"].includes(val),
     then: () =>
@@ -186,12 +186,12 @@ const questionSchema = yup.object().shape({
     then: () => yup.string().required("Audio upload is required"),
     otherwise: () => yup.mixed().notRequired(),
   }),
-  // target_group: yup.string().required("Target Group is required"),
+  target_group: yup.string().required("Target Group is required"),
 });
 
 const mainSchema = yup.object().shape({
-  // target_organization: yup.string().required("Organization is required"),
-  // question_level: yup.string().required("Question Level is required"),
+  target_organization: yup.string().required("Organization is required"),
+  question_level: yup.string().required("Question Level is required"),
   questions: yup.array().of(questionSchema),
 });
 
@@ -346,6 +346,8 @@ const UniversityQuestionForm = forwardRef(
     };
 
     const onSubmitForm = async (data) => {
+      // console.log(data);
+      // return;
       // setLoading(true);
       try {
         const promises = [];
@@ -357,20 +359,21 @@ const UniversityQuestionForm = forwardRef(
           }));
 
           // Append top-level fields to each question's form data
-          //TODO: uncomment this
-          // formData["target_organization"] = data.target_organization;
-          // formData["question_level"] = data.question_level;
+
+          formData["target_organization"] = data.target_organization;
+          formData["question_level"] = data.question_level;
 
           formData.options = formData.options.map((val) => val.option_text);
           let type = formData.question_type;
+
           delete formData["question_type"];
-          delete formData["difficulty_level"];
-          delete formData["topic"];
-          delete formData["sub_topic"];
-          delete formData["sub_sub_topic"];
-          delete formData["target_subject"];
-          delete formData["target_group"];
-          delete formData["exam_references"];
+          // delete formData["difficulty_level"];
+          // delete formData["topic"];
+          // delete formData["sub_topic"];
+          // delete formData["sub_sub_topic"];
+          // delete formData["target_subject"];
+          // delete formData["target_group"];
+          // delete formData["exam_references"];
 
           // Create a promise for each API call and push it to the array
           const promise = executeAjaxOperationStandard({
@@ -712,7 +715,7 @@ export const QuestionModal = ({
         }
       );
 
-      setValue(`explanations.${index}.video`, response.data.video_link);
+      setValue(`explanations.${index}.video`, response.data.media_link);
       setValue(`explanations.${index}.filename`, file.name);
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -858,7 +861,13 @@ export const QuestionModal = ({
                 placeholder='Enter pairs as JSON, e.g., {"Key":"Value"}'
                 rows={4}
                 isInvalid={!!errors.matching_pairs}
-                {...field}
+                value={
+                  typeof field.value === "object"
+                    ? JSON.stringify(field.value, null, 2) // Convert object to a formatted JSON string
+                    : field.value
+                }
+                onChange={(e) => field.onChange(e.target.value)} // Allow user to edit raw JSON text
+                // {...field}
               />
             )}
           />
@@ -1407,6 +1416,7 @@ export const QuestionModal = ({
           {fields.map((field, index) => {
             const filename = watch(`explanations.${index}.filename`);
             const video = watch(`explanations.${index}.video`);
+            console.log(video);
 
             return (
               <Row className="mb-3 px-3" key={field.id}>

@@ -146,24 +146,24 @@ const DataGridComponent = forwardRef(
       );
     };
 
-    const sortedRows = useMemo(() => {
-      if (!rows) return [];
-      if (sortColumns.length === 0) return Array.from(new Set(rows));
+    // const sortedRows = useMemo(() => {
+    //   if (!rows) return [];
+    //   if (sortColumns.length === 0) return Array.from(new Set(rows));
 
-      const uniqueRows = Array.from(
-        new Set(rows.map((row) => JSON.stringify(row)))
-      ).map((row) => JSON.parse(row));
-      const sortedData = [...uniqueRows];
-      const { columnKey, direction } = sortColumns[0];
+    //   const uniqueRows = Array.from(
+    //     new Set(rows.map((row) => JSON.stringify(row)))
+    //   ).map((row) => JSON.parse(row));
+    //   const sortedData = [...uniqueRows];
+    //   const { columnKey, direction } = sortColumns[0];
 
-      sortedData.sort((a, b) => {
-        if (a[columnKey] > b[columnKey]) return direction === "ASC" ? 1 : -1;
-        if (a[columnKey] < b[columnKey]) return direction === "ASC" ? -1 : 1;
-        return 0;
-      });
+    //   sortedData.sort((a, b) => {
+    //     if (a[columnKey] > b[columnKey]) return direction === "ASC" ? 1 : -1;
+    //     if (a[columnKey] < b[columnKey]) return direction === "ASC" ? -1 : 1;
+    //     return 0;
+    //   });
 
-      return sortedData;
-    }, [rows, sortColumns]);
+    //   return sortedData;
+    // }, [rows, sortColumns]);
 
     useImperativeHandle(
       ref,
@@ -197,13 +197,13 @@ const DataGridComponent = forwardRef(
             key: column.key,
             headerRenderer: () => renderHeaderCell(column),
           }))}
-          rows={sortedRows}
+          rows={rows}
           rowKeyGetter={(row, index) => {
             if (row.id === undefined || row.id === null) {
               // Generate a unique key using index and other fallback methods
-              return `row-${index}-${Math.random().toString(36).substr(2, 9)}`;
+              return `row-${index}-${Date.now()}`;
             }
-            return row.id;
+            return `${row.id}${row.question_type}`;
           }}
           rowHeight={40}
           onScroll={handleScroll}

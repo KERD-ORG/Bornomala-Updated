@@ -103,11 +103,11 @@ export default function QuestionList() {
     setShowModal(true);
   };
 
-  const deleteUniversity = async (id) => {
+  const deleteUniversity = async (id, type) => {
     try {
       setLoading(true);
       const response = await executeAjaxOperationStandard({
-        url: `${process.env.NEXT_PUBLIC_API_ENDPOINT_QUESTION}${id}/`,
+        url: `${process.env.NEXT_PUBLIC_API_ENDPOINT_QUESTION}${id}/?type=${type}`,
         method: "DELETE",
         token,
         locale: router.locale || "en",

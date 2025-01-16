@@ -10,7 +10,7 @@ const UniversityColumns = ({
   deleteUniversity,
   t,
 }) => {
-  const confirmDelete = (id) => {
+  const confirmDelete = (id, type) => {
     Swal.fire({
       title: t("Are you sure?"),
       text: t("You will not be able to recover this question!"),
@@ -28,7 +28,7 @@ const UniversityColumns = ({
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await deleteUniversity(id);
+          const response = await deleteUniversity(id, type);
           if (response.status === "success") {
             Swal.fire(t("Deleted!"), response.message, "success");
           } else {
@@ -72,7 +72,11 @@ const UniversityColumns = ({
       sortable: true,
       resizable: true,
       renderCell({ row }) {
-        return <span>{formatDate(row.details.updated_at)}</span>;
+        return (
+          <span>
+            {row && row.details ? formatDate(row.details.updated_at) : ""}
+          </span>
+        );
       },
     },
     {
@@ -172,7 +176,15 @@ const UniversityColumns = ({
       resizable: true,
       sortable: true,
       renderCell({ row }) {
-        return <span>{JSON.stringify(row.details.ordering_sequence || row.details.matching_pairs || row.details.correct_answer)}</span>;
+        return (
+          <span>
+            {JSON.stringify(
+              row.details.ordering_sequence ||
+                row.details.matching_pairs ||
+                row.details.correct_answer
+            )}
+          </span>
+        );
       },
     },
     {
@@ -233,7 +245,7 @@ const UniversityColumns = ({
                 data-tooltip-id="my-tooltip"
                 data-tooltip-content={t("Delete")}
                 data-tooltip-place="top"
-                onClick={() => confirmDelete(row.id)}
+                onClick={() => confirmDelete(row.id, row.question_type)}
               >
                 <i className="bx bx-trash text-danger"></i>
               </button>
