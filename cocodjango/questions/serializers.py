@@ -106,45 +106,93 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
     question_level = serializers.PrimaryKeyRelatedField(
         queryset=QuestionLevel.objects.all(), required=False, allow_null=True
     )
+    question_level_name = serializers.SerializerMethodField()
+
     target_group = serializers.PrimaryKeyRelatedField(
         queryset=TargetGroup.objects.all(), required=False, allow_null=True
     )
+    target_group_name = serializers.SerializerMethodField()
+
     target_subject = serializers.PrimaryKeyRelatedField(
         queryset=Subject.objects.all(), required=False, allow_null=True
     )
+    target_subject_name = serializers.SerializerMethodField()
+
     question_type = serializers.SlugRelatedField(
         queryset=QuestionType.objects.all(),
         slug_field='name'
     )
+
     topic = serializers.PrimaryKeyRelatedField(
         queryset=Topic.objects.all(), required=False, allow_null=True
     )
+    topic_name = serializers.SerializerMethodField()
+
     sub_topic = serializers.PrimaryKeyRelatedField(
         queryset=SubTopic.objects.all(), required=False, allow_null=True
     )
+    sub_topic_name = serializers.SerializerMethodField()
+
     sub_sub_topic = serializers.PrimaryKeyRelatedField(
         queryset=SubSubTopic.objects.all(), required=False, allow_null=True
     )
+    sub_sub_topic_name = serializers.SerializerMethodField()
+
     difficulty_level = serializers.PrimaryKeyRelatedField(
         queryset=DifficultyLevel.objects.all(), required=False, allow_null=True
     )
+    difficulty_level_name = serializers.SerializerMethodField()
+
     question_status = serializers.PrimaryKeyRelatedField(
         queryset=QuestionStatus.objects.all(), required=False, allow_null=True
     )
+    question_status_name = serializers.SerializerMethodField()
 
     target_organization = serializers.PrimaryKeyRelatedField(
         queryset=Organization.objects.all(), allow_null=True, required=False
     )
+    target_organization_name = serializers.SerializerMethodField()
 
     class Meta:
         model = BaseQuestion
         fields = [
-            'id', 'question_level', 'target_group', 'target_subject', 'question_type',
-            'target_organization',
-            'topic', 'sub_topic', 'sub_sub_topic', 'difficulty_level', 'question_status',
-            'exam_references', 'explanations', 'created_at', 'updated_at'
+            'id', 'question_level', 'question_level_name', 'target_group', 'target_group_name',
+            'target_subject', 'target_subject_name', 'question_type',
+            'target_organization', 'target_organization_name',
+            'topic', 'topic_name', 'sub_topic', 'sub_topic_name', 
+            'sub_sub_topic', 'sub_sub_topic_name', 'difficulty_level', 'difficulty_level_name', 
+            'question_status', 'question_status_name', 'exam_references', 
+            'explanations', 'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
+
+    # Methods to retrieve 'name' fields
+    def get_question_level_name(self, obj):
+        return obj.question_level.name if obj.question_level else None
+
+    def get_target_group_name(self, obj):
+        return obj.target_group.name if obj.target_group else None
+
+    def get_target_subject_name(self, obj):
+        return obj.target_subject.name if obj.target_subject else None
+
+    def get_topic_name(self, obj):
+        return obj.topic.name if obj.topic else None
+
+    def get_sub_topic_name(self, obj):
+        return obj.sub_topic.name if obj.sub_topic else None
+
+    def get_sub_sub_topic_name(self, obj):
+        return obj.sub_sub_topic.name if obj.sub_sub_topic else None
+
+    def get_difficulty_level_name(self, obj):
+        return obj.difficulty_level.name if obj.difficulty_level else None
+
+    def get_question_status_name(self, obj):
+        return obj.question_status.name if obj.question_status else None
+
+    def get_target_organization_name(self, obj):
+        return obj.target_organization.name if obj.target_organization else None
 
     def create(self, validated_data):
         explanations_data = validated_data.pop('explanations', [])
