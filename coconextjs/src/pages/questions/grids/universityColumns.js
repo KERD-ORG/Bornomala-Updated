@@ -193,9 +193,18 @@ const UniversityColumns = ({
       resizable: true,
       sortable: false,
       renderCell({ row }) {
-        // Render MCQ options as a comma-separated list or similar
-        return row.details.options ? row.details.options.join(", ") : "";
-      },
+  return row.details.options
+    ? row.details.options
+        .map((option) => {
+          if (typeof option === "string") return option;
+          if (typeof option === "object" && option.option_text) return option.option_text;
+          return "";  // Fallback for malformed data
+        })
+        .filter(Boolean) // Remove empty strings
+        .join(", ")
+    : "";
+}
+
     },
     {
       key: "action",

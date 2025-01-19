@@ -293,11 +293,11 @@ const QuestionEditForm = forwardRef(
           });
         }
         if (initialData.details.options) {
-          initialData.details.options = initialData.details.options.map(
-            (option) => ({
-              option_text: option,
-            })
-          );
+          initialData.details.options = initialData.details.options.map((option) => {
+            if (typeof option === 'string') return { option_text: option };
+            if (typeof option === 'object' && option.option_text) return option;
+            return { option_text: "" };  // Fallback for any unexpected format
+          });
         }
         reset({
           target_organization: initialData.details.target_organization || "",
@@ -434,6 +434,7 @@ const QuestionEditForm = forwardRef(
                 <Form.Group>
                   {watch("options")?.map((option, index) => (
                     <div key={index}>
+                      {/*{console.log(option)}*/}
                       <Form.Check
                         type="radio"
                         label={
