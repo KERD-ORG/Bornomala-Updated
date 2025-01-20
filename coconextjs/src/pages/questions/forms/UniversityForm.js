@@ -397,7 +397,6 @@ const UniversityQuestionForm = forwardRef(
 
         // Execute all promises concurrently. If any single request fails, Promise.all will reject.
         const results = await Promise.all(promises);
-        console.log(results);
         // Identify successful submissions
         const successfulIndexes = results
           .filter(
@@ -432,7 +431,6 @@ const UniversityQuestionForm = forwardRef(
 
           // Extract the first error message with context
           const detailedError = extractDetailedErrorMessage(details);
-          console.log(detailedError);
           const errorMessage = detailedError
             ? `Error in Question ${ind + 1}: ${detailedError}`
             : response?.message ||
@@ -1336,19 +1334,11 @@ export const QuestionModal = ({
                 render={({ field }) => (
                   <Form.Select isInvalid={!!errors.question_type} {...field}>
                     <option value="">-- Select Question Type --</option>
-                    <option value="MCQ_SINGLE">MCQ Single</option>
-                    <option value="MCQ_MULTI">MCQ Multiple</option>
-                    <option value="FILL_BLANK">Fill in the Blank</option>
-                    <option value="TRUE_FALSE">True/False</option>
-                    <option value="CODE">Programming</option>
-                    <option value="MATCHING">Matching</option>
-                    <option value="ORDERING">Ordering</option>
-                    <option value="NUMERICAL">Numerical</option>
-                    <option value="DRAG_DROP">Drag and Drop</option>
-                    <option value="ASSERTION_REASON">Assertion Reason</option>
-                    <option value="CASE_STUDY">Case Study</option>
-                    <option value="IMAGE">Image</option>
-                    <option value="AUDIO">Audio</option>
+                    {dropdownData.questionTypes.map((val) => (
+                      <option key={val.id} value={val.name}>
+                        {val.name}
+                      </option>
+                    ))}
                   </Form.Select>
                 )}
               />
