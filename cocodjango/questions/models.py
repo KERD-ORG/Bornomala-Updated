@@ -234,7 +234,7 @@ class BaseQuestion(models.Model):
 
 
 class MCQSingleQuestion(BaseQuestion):
-    question_text = models.TextField()
+    question_text = models.TextField(null=True, blank=True)
     options = models.JSONField()
     correct_answer = models.IntegerField()
 
@@ -243,7 +243,7 @@ class MCQSingleQuestion(BaseQuestion):
 
 
 class MCQMultiQuestion(BaseQuestion):
-    question_text = models.TextField()
+    question_text = models.TextField(null=True, blank=True)
     options = models.JSONField()
     correct_answer = models.JSONField()
 
@@ -253,7 +253,7 @@ class MCQMultiQuestion(BaseQuestion):
 
 # Fill in the Blanks Question
 class FillInTheBlanksQuestion(BaseQuestion):
-    question_text = models.TextField()
+    question_text = models.TextField(null=True, blank=True)
     correct_answer = models.CharField(max_length=255)
 
     def __str__(self):
@@ -262,7 +262,7 @@ class FillInTheBlanksQuestion(BaseQuestion):
 
 # True/False Question
 class TrueFalseQuestion(BaseQuestion):
-    question_text = models.TextField()
+    question_text = models.TextField(null=True, blank=True)
     correct_answer = models.BooleanField()
 
     def __str__(self):
@@ -271,7 +271,7 @@ class TrueFalseQuestion(BaseQuestion):
 
 # Matching Question
 class MatchingQuestion(BaseQuestion):
-    question_text = models.TextField()
+    question_text = models.TextField(null=True, blank=True)
     matching_pairs = models.JSONField()
 
     def __str__(self):
@@ -280,7 +280,7 @@ class MatchingQuestion(BaseQuestion):
 
 # Ordering/Sequence Question
 class OrderingQuestion(BaseQuestion):
-    question_text = models.TextField()
+    question_text = models.TextField(null=True, blank=True)
     ordering_sequence = models.JSONField()
 
     def __str__(self):
@@ -289,7 +289,7 @@ class OrderingQuestion(BaseQuestion):
 
 # Numerical/Calculation Question
 class NumericalQuestion(BaseQuestion):
-    question_text = models.TextField()
+    question_text = models.TextField(null=True, blank=True)
     correct_answer = models.FloatField()
 
     def __str__(self):
@@ -298,7 +298,7 @@ class NumericalQuestion(BaseQuestion):
 
 # Image-Based Question
 class ImageBasedQuestion(BaseQuestion):
-    question_text = models.TextField()
+    question_text = models.TextField(null=True, blank=True)
     image_url = models.URLField()
     correct_answer = models.CharField(max_length=255)
 
@@ -308,7 +308,7 @@ class ImageBasedQuestion(BaseQuestion):
 
 # Audio/Video-Based Question
 class AudioVideoQuestion(BaseQuestion):
-    question_text = models.TextField()
+    question_text = models.TextField(null=True, blank=True)
     audio_url = models.URLField(blank=True, null=True)
     video_url = models.URLField(blank=True, null=True)
     correct_answer = models.CharField(max_length=255)
@@ -319,7 +319,7 @@ class AudioVideoQuestion(BaseQuestion):
 
 # Case Study Question
 class CaseStudyQuestion(BaseQuestion):
-    question_text = models.TextField()
+    question_text = models.TextField(null=True, blank=True)
     correct_answer = models.TextField()
 
     def __str__(self):
@@ -328,7 +328,7 @@ class CaseStudyQuestion(BaseQuestion):
 
 # Diagram Labeling Question
 class DiagramLabelingQuestion(BaseQuestion):
-    question_text = models.TextField()
+    question_text = models.TextField(null=True, blank=True)
     diagram_url = models.URLField()
     correct_answer = models.JSONField()
 
@@ -338,7 +338,7 @@ class DiagramLabelingQuestion(BaseQuestion):
 
 # Code/Programming Question
 class CodeProgrammingQuestion(BaseQuestion):
-    question_text = models.TextField()
+    question_text = models.TextField(null=True, blank=True)
     correct_answer = models.TextField()
 
     def __str__(self):
@@ -347,7 +347,7 @@ class CodeProgrammingQuestion(BaseQuestion):
 
 # Drag-and-Drop Question
 class DragAndDropQuestion(BaseQuestion):
-    question_text = models.TextField()
+    question_text = models.TextField(null=True, blank=True)
     options_column_a = models.JSONField()
     options_column_b = models.JSONField()
     correct_answer = models.JSONField()
@@ -358,7 +358,7 @@ class DragAndDropQuestion(BaseQuestion):
 
 # Assertion-Reason Question
 class AssertionReasonQuestion(BaseQuestion):
-    question_text = models.TextField()
+    question_text = models.TextField(null=True, blank=True)
     correct_answer = models.TextField()
 
     def __str__(self):

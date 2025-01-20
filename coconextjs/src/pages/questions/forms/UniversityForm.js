@@ -17,7 +17,6 @@ import useCommonForm from "@/hooks/useCommonForm";
 import { executeAjaxOperationStandard } from "@/utils/fetcher";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import axios from "axios";
-import { BiTrash } from "react-icons/bi"; // or use Bootstrap Icons <i className="bi bi-trash"></i>
 
 const MAX_OPTIONS = 8;
 const explanationLevels = ["Preliminary", "Intermediate", "Advanced"];
@@ -60,52 +59,9 @@ const questionSchema = yup.object().shape({
           .number()
           .typeError("Correct Answer must be a number")
           .required("Correct Answer is required");
-      case "DRAG_DROP":
-        return yup
-          .string()
-          .required("Correct answer mapping is required")
-          .test("is-json", "Correct answer must be a valid JSON", (value) => {
-            try {
-              JSON.parse(value);
-              return true;
-            } catch {
-              return false;
-            }
-          });
+      case "MATCHING":
+        return yup.string().required("Correct answer mapping is required");
     }
-  }),
-  matching_pairs: yup.object().when("question_type", {
-    is: (val) => val === "MATCHING",
-    then: () =>
-      yup
-        .object()
-        // Transform the input: if it's a string, try to parse it as JSON.
-        .transform((value, originalValue) => {
-          if (typeof originalValue === "string") {
-            try {
-              const parsed = JSON.parse(originalValue);
-              return parsed;
-            } catch (e) {
-              // If parsing fails, return the original value to let validation catch the error.
-              return originalValue;
-            }
-          }
-          return value;
-        })
-        .test(
-          "valid-json-object",
-          "Please enter a valid JSON object",
-          (value) => {
-            // After transformation, check if value is a valid non-array object.
-            return value && typeof value === "object" && !Array.isArray(value);
-          }
-        )
-        .test(
-          "non-empty-object",
-          "Matching pairs cannot be empty",
-          (value) => value && Object.keys(value).length > 0
-        ),
-    otherwise: () => yup.mixed().notRequired(),
   }),
   ordering_sequence: yup.array().when("question_type", {
     is: (val) => val === "ORDERING",
@@ -144,7 +100,7 @@ const questionSchema = yup.object().shape({
     otherwise: () => yup.array().notRequired(),
   }),
   options_column_a: yup.array().when("question_type", {
-    is: (val) => val == "DRAG_DROP",
+    is: (val) => val == "MATCHING",
     then: () =>
       yup
         .array()
@@ -161,7 +117,7 @@ const questionSchema = yup.object().shape({
     otherwise: () => yup.mixed().notRequired(),
   }),
   options_column_b: yup.array().when("question_type", {
-    is: (val) => val == "DRAG_DROP",
+    is: (val) => val == "MATCHING",
     then: () =>
       yup
         .array()
@@ -180,6 +136,11 @@ const questionSchema = yup.object().shape({
   image_url: yup.string().when("question_type", {
     is: (val) => val === "IMAGE",
     then: () => yup.string().required("Image upload is required"),
+    otherwise: () => yup.mixed().notRequired(),
+  }),
+  diagram_url: yup.string().when("question_type", {
+    is: (val) => val === "DIAGRAM",
+    then: () => yup.string().required("Diagram upload is required"),
     otherwise: () => yup.mixed().notRequired(),
   }),
   audio_url: yup.string().when("question_type", {
@@ -368,13 +329,6 @@ const UniversityQuestionForm = forwardRef(
           let type = formData.question_type;
 
           delete formData["question_type"];
-          // delete formData["difficulty_level"];
-          // delete formData["topic"];
-          // delete formData["sub_topic"];
-          // delete formData["sub_sub_topic"];
-          // delete formData["target_subject"];
-          // delete formData["target_group"];
-          // delete formData["exam_references"];
 
           // Create a promise for each API call and push it to the array
           const promise = executeAjaxOperationStandard({
@@ -756,6 +710,7 @@ export const QuestionModal = ({
                   <option value="">-- Select --</option>
                   <option value="True">True</option>
                   <option value="False">False</option>
+                  <option value="Not-given">Not-given</option>
                 </Form.Select>
               )}
             />
@@ -799,28 +754,6 @@ export const QuestionModal = ({
             />
           </>
         );
-      case "MATCHING":
-        return (
-          <Controller
-            name="matching_pairs"
-            control={control}
-            render={({ field }) => (
-              <Form.Control
-                as="textarea"
-                placeholder='Enter pairs as JSON, e.g., {"Key":"Value"}'
-                rows={4}
-                isInvalid={!!errors.matching_pairs}
-                value={
-                  typeof field.value === "object"
-                    ? JSON.stringify(field.value, null, 2) // Convert object to a formatted JSON string
-                    : field.value
-                }
-                onChange={(e) => field.onChange(e.target.value)} // Allow user to edit raw JSON text
-                // {...field}
-              />
-            )}
-          />
-        );
       case "ORDERING":
         return (
           <>
@@ -840,7 +773,7 @@ export const QuestionModal = ({
             />
           </>
         );
-      case "DRAG_DROP":
+      case "MATCHING":
         return (
           <>
             <Form.Group className="mb-3">
@@ -886,7 +819,7 @@ export const QuestionModal = ({
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Correct Answer Mapping (JSON):</Form.Label>
+              <Form.Label>Correct Answer Mapping:</Form.Label>
               <Controller
                 name="correct_answer"
                 control={control}
@@ -894,7 +827,7 @@ export const QuestionModal = ({
                   <Form.Control
                     as="textarea"
                     rows={4}
-                    placeholder='e.g., {"OptionA":"MatchA", "OptionB":"MatchB"}'
+                    placeholder="e.g., [1, 2], [3, 4]"
                     isInvalid={!!errors.correct_answer}
                     {...field}
                   />
@@ -903,13 +836,16 @@ export const QuestionModal = ({
             </Form.Group>
           </>
         );
+      case "DIAGRAM":
       case "IMAGE":
         return (
           <>
             <Form.Group className="mb-3">
-              <Form.Label>Upload Image:</Form.Label>
+              <Form.Label>
+                Upload {questionType === "DIAGRAM" ? "Diagram" : "Image"}:
+              </Form.Label>
               <Controller
-                name="image_url" // field to store the image URL
+                name={questionType === "DIAGRAM" ? "diagram_url" : "image_url"} // field to store the image URL
                 control={control}
                 render={({ field }) => {
                   // If an image URL already exists, display the image preview and a change option
@@ -965,14 +901,26 @@ export const QuestionModal = ({
                           }
                         }
                       }}
-                      isInvalid={!!errors.image_url}
+                      isInvalid={
+                        !!errors[
+                          questionType === "DIAGRAM"
+                            ? "diagram_url"
+                            : "image_url"
+                        ]
+                      }
                     />
                   );
                 }}
               />
-              {errors.image_url && (
+              {errors[
+                questionType === "DIAGRAM" ? "diagram_url" : "image_url"
+              ] && (
                 <Form.Control.Feedback type="invalid">
-                  {errors.image_url.message}
+                  {
+                    errors[
+                      questionType === "DIAGRAM" ? "diagram_url" : "image_url"
+                    ].message
+                  }
                 </Form.Control.Feedback>
               )}
             </Form.Group>

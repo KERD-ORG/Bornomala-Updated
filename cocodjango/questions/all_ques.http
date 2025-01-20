@@ -214,14 +214,15 @@ Content-Type: application/json
   "question_level": 1,
   "target_group": 1,
   "target_subject": 1,
-    "target_organization": 1,
+  "target_organization": 1,
   "topic": 1,
   "sub_topic": 1,
   "difficulty_level": 1,
   "question_status": 1,
   "exam_references": [1],
-  "question_text": "Match cultural items with their regions of origin.",
-  "matching_pairs": {"Jamdani": "Dhaka", "Nakshi Kantha": "Rajshahi"},
+  "options_column_a": ["Padma", "Jamuna"],
+  "options_column_b": ["Central", "Northern"],
+  "correct_answer": "[1, 2], [2, 3]",
   "explanations": [{"level": "Intermediate", "text": "Jamdani from Dhaka, Nakshi Kantha from Rajshahi."}]
 }
 
@@ -280,7 +281,6 @@ Content-Type: application/json
   "difficulty_level": 1,
   "question_status": 1,
   "exam_references": [1],
-  "question_text": "Identify the monument shown in the image.",
   "image_url": "https://example.com/image.jpg",
   "correct_answer": "Ahsan Manzil",
   "explanations": [{"level": "Preliminary", "text": "Ahsan Manzil is a historical site in Dhaka."}]
@@ -301,7 +301,6 @@ Content-Type: application/json
   "difficulty_level": 1,
   "question_status": 1,
   "exam_references": [1],
-  "question_text": "Identify the speaker in this audio.",
   "audio_url": "https://example.com/speech.mp3",
   "correct_answer": "Sheikh Mujibur Rahman",
   "explanations": [{"level": "Preliminary", "text": "This is Sheikh Mujibur Rahman's speech."}]
