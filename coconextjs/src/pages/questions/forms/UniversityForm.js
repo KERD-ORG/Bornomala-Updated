@@ -732,7 +732,7 @@ export const QuestionModal = ({
       case "NUMERICAL":
         return (
           <>
-          <Form.Label>Answer</Form.Label>
+            <Form.Label>Answer</Form.Label>
             <Controller
               name="correct_answer"
               control={control}
@@ -1361,80 +1361,105 @@ export const QuestionModal = ({
           {fields.map((field, index) => {
             const filename = watch(`explanations.${index}.filename`);
             const video = watch(`explanations.${index}.video`);
-            console.log(video);
 
             return (
-              <Row className="mb-3 px-3" key={field.id}>
-                <Col md={12} className="mb-2">
-                  <Form.Label>
-                    {explanationLevels[index]} Explanation:
-                  </Form.Label>
-                  <Controller
-                    name={`explanations.${index}.text`}
-                    control={control}
-                    render={({ field }) => (
-                      <Form.Control
-                        as="textarea"
-                        rows={3}
-                        {...field}
-                        isInvalid={!!errors?.explanations?.[index]?.text}
-                      />
-                    )}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors?.explanations?.[index]?.text?.message}
-                  </Form.Control.Feedback>
-                </Col>
+              <div
+                className="position-relative border rounded p-3 m-3 mt-0"
+                key={field.id}
+              >
+                {/* Remove Explanation Icon */}
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => remove(index)}
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    zIndex: 2,
+                    padding: "0.15rem 0.3rem",
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  <i className="bx bx-x"></i>{" "}
+                  {/* Replace with your preferred icon */}
+                </Button>
 
-                <Col md={12} className="mb-2">
-                  <Form.Label>Explanation Video (optional):</Form.Label>
-                  {video ? (
-                    <div>
-                      <a href={video} target="_blank" rel="noopener noreferrer">
-                        {filename || "View Uploaded Video"}
-                      </a>
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() =>
-                          setValue(`explanations.${index}.video`, "")
-                        }
-                        className="ms-2"
-                      >
-                        Change File
-                      </Button>
-                    </div>
-                  ) : (
+                {/* Explanation Text Input */}
+                <Row className="mb-3">
+                  <Col>
+                    <Form.Label className="mb-2">
+                      {explanationLevels[index]} Explanation:
+                    </Form.Label>
+
                     <Controller
-                      name={`explanations.${index}.file`}
+                      name={`explanations.${index}.text`}
                       control={control}
                       render={({ field }) => (
                         <Form.Control
-                          type="file"
-                          disabled={loading}
-                          onChange={(e) =>
-                            handleVideoUpload(e.target.files[0], index)
-                          }
-                          isInvalid={!!errors?.explanations?.[index]?.video}
+                          as="textarea"
+                          rows={3}
+                          {...field}
+                          isInvalid={!!errors?.explanations?.[index]?.text}
                         />
                       )}
                     />
-                  )}
-                  <Form.Control.Feedback type="invalid">
-                    {errors?.explanations?.[index]?.video?.message}
-                  </Form.Control.Feedback>
-                </Col>
+                    <Form.Control.Feedback type="invalid">
+                      {errors?.explanations?.[index]?.text?.message}
+                    </Form.Control.Feedback>
+                  </Col>
+                </Row>
 
-                <Col>
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => remove(index)}
-                  >
-                    Remove Explanation
-                  </Button>
-                </Col>
-              </Row>
+                {/* Explanation Video Input */}
+                <Row className="mb-3 align-items-center">
+                  <Col md={4}>
+                    <Form.Label className="mb-0">
+                      Explanation Video (optional):
+                    </Form.Label>
+                  </Col>
+                  <Col md={8}>
+                    {video ? (
+                      <div>
+                        <a
+                          href={video}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {filename || "View Uploaded Video"}
+                        </a>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() =>
+                            setValue(`explanations.${index}.video`, "")
+                          }
+                          className="ms-2"
+                        >
+                          Change File
+                        </Button>
+                      </div>
+                    ) : (
+                      <Controller
+                        name={`explanations.${index}.file`}
+                        control={control}
+                        render={({ field }) => (
+                          <Form.Control
+                            type="file"
+                            disabled={loading}
+                            onChange={(e) =>
+                              handleVideoUpload(e.target.files[0], index)
+                            }
+                            isInvalid={!!errors?.explanations?.[index]?.video}
+                          />
+                        )}
+                      />
+                    )}
+                    <Form.Control.Feedback type="invalid">
+                      {errors?.explanations?.[index]?.video?.message}
+                    </Form.Control.Feedback>
+                  </Col>
+                </Row>
+              </div>
             );
           })}
 
