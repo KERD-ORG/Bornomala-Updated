@@ -8,7 +8,6 @@ import { executeAjaxOperationStandard } from "@/utils/fetcher";
 import { useRouter } from "next/router";
 import Select from "react-select";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { sub } from "date-fns";
 import axios from "axios";
 
 const MAX_OPTIONS = 8;
@@ -293,11 +292,14 @@ const QuestionEditForm = forwardRef(
           });
         }
         if (initialData.details.options) {
-          initialData.details.options = initialData.details.options.map((option) => {
-            if (typeof option === 'string') return { option_text: option };
-            if (typeof option === 'object' && option.option_text) return option;
-            return { option_text: "" };  // Fallback for any unexpected format
-          });
+          initialData.details.options = initialData.details.options.map(
+            (option) => {
+              if (typeof option === "string") return { option_text: option };
+              if (typeof option === "object" && option.option_text)
+                return option;
+              return { option_text: "" }; // Fallback for any unexpected format
+            }
+          );
         }
         reset({
           target_organization: initialData.details.target_organization || "",
@@ -425,74 +427,6 @@ const QuestionEditForm = forwardRef(
 
     const renderCorrectAnswerField = (questionType) => {
       switch (questionType) {
-        case "MCQ_SINGLE":
-          return (
-            <Controller
-              name="correct_answer"
-              control={control}
-              render={({ field }) => (
-                <Form.Group>
-                  {watch("options")?.map((option, index) => (
-                    <div key={index}>
-                      {/*{console.log(option)}*/}
-                      <Form.Check
-                        type="radio"
-                        label={
-                          option.option_text || "(Option text is required)"
-                        }
-                        value={index}
-                        checked={field.value === index}
-                        isInvalid={!!errors.correct_answer}
-                        onChange={() => field.onChange(index)}
-                      />
-                    </div>
-                  ))}
-                </Form.Group>
-              )}
-            />
-          );
-        case "MCQ_MULTI":
-          return (
-            <Controller
-              name="correct_answer"
-              control={control}
-              render={({ field }) => (
-                <Form.Group>
-                  {watch("options")?.map((option, index) => (
-                    <div key={index}>
-                      <Form.Check
-                        type="checkbox"
-                        label={
-                          option.option_text || "(Option text is required)"
-                        }
-                        value={index} // Use index as value
-                        checked={
-                          field.value ? field.value.includes(index) : false
-                        }
-                        onChange={(e) => {
-                          const selected = [...(field.value || [])];
-                          const currentIndex = index; // current option's index
-                          if (e.target.checked) {
-                            // Add index if checked and not already present
-                            if (!selected.includes(currentIndex)) {
-                              selected.push(currentIndex);
-                            }
-                          } else {
-                            // Remove index if unchecked
-                            const idx = selected.indexOf(currentIndex);
-                            if (idx > -1) {
-                              selected.splice(idx, 1);
-                            }
-                          }
-                          field.onChange(selected);
-                        }}
-                      />
-                    </div>
-                  ))}
-                </Form.Group>
-              )}
-            />
-          );
         case "FILL_BLANK":
         case "NUMERICAL":
           return (
@@ -943,7 +877,7 @@ const QuestionEditForm = forwardRef(
         </Row>
 
         <Row className="mb-3">
-          <Col md={4}>
+          <Col md={6}>
             <Form.Group controlId={`topic`}>
               <Form.Label>Topic:</Form.Label>
               <Controller
@@ -966,7 +900,7 @@ const QuestionEditForm = forwardRef(
             </Form.Group>
           </Col>
 
-          <Col md={4}>
+          <Col md={6}>
             <Form.Group controlId={`sub_topic`}>
               <Form.Label>Subtopic:</Form.Label>
               <Controller
@@ -991,16 +925,18 @@ const QuestionEditForm = forwardRef(
               </Form.Control.Feedback>
             </Form.Group>
           </Col>
+        </Row>
 
+        <Row className="mb-3">
           <Col md={4}>
-            <Form.Group controlId={`sub_sub_topic`}>
-              <Form.Label>Sub Sub Topic:</Form.Label>
+            <Form.Group controlId={`sub_sub_topic1`}>
+              <Form.Label>Sub Sub Topic 1:</Form.Label>
               <Controller
-                name={`sub_sub_topic`}
+                name={`sub_sub_topic1`}
                 control={control}
                 disabled={!sub_topic}
                 render={({ field }) => (
-                  <Form.Select {...field} isInvalid={!!errors?.sub_sub_topic}>
+                  <Form.Select {...field} isInvalid={!!errors?.sub_sub_topic1}>
                     <option value="">-- Select Sub Subtopic --</option>
                     {dropdownData.subSubTopics
                       .filter((val) => val.sub_topic == subTopic)
@@ -1013,7 +949,57 @@ const QuestionEditForm = forwardRef(
                 )}
               />
               <Form.Control.Feedback type="invalid">
-                {errors?.sub_sub_topic?.message}
+                {errors?.sub_sub_topic1?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Col>
+          <Col md={4}>
+            <Form.Group controlId={`sub_sub_topic2`}>
+              <Form.Label>Sub Sub Topic 2:</Form.Label>
+              <Controller
+                name={`sub_sub_topic2`}
+                control={control}
+                disabled={!sub_topic}
+                render={({ field }) => (
+                  <Form.Select {...field} isInvalid={!!errors?.sub_sub_topic2}>
+                    <option value="">-- Select Sub Subtopic --</option>
+                    {dropdownData.subSubTopics
+                      .filter((val) => val.sub_topic == subTopic)
+                      .map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                  </Form.Select>
+                )}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors?.sub_sub_topic2?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Col>
+          <Col md={4}>
+            <Form.Group controlId={`sub_sub_topic3`}>
+              <Form.Label>Sub Sub Topic 3:</Form.Label>
+              <Controller
+                name={`sub_sub_topic3`}
+                control={control}
+                disabled={!sub_topic}
+                render={({ field }) => (
+                  <Form.Select {...field} isInvalid={!!errors?.sub_sub_topic3}>
+                    <option value="">-- Select Sub Subtopic --</option>
+                    {dropdownData.subSubTopics
+                      .filter((val) => val.sub_topic == subTopic)
+                      .map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                  </Form.Select>
+                )}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors?.sub_sub_topic3?.message}
               </Form.Control.Feedback>
             </Form.Group>
           </Col>
@@ -1113,7 +1099,7 @@ const QuestionEditForm = forwardRef(
           <>
             <Row className="mb-3">
               <Col>
-                <Form.Label>Question Text:</Form.Label>
+                <Form.Label>Question: </Form.Label>
                 <Controller
                   name="question_text"
                   control={control}
@@ -1133,12 +1119,16 @@ const QuestionEditForm = forwardRef(
             </Row>
 
             {question_type.includes("MCQ") && (
-              <NestedMCQOptions control={control} errors={errors} />
+              <NestedMCQOptions
+                control={control}
+                errors={errors}
+                watch={watch}
+                setValue={setValue}
+              />
             )}
 
             <Row className="mb-3">
               <Col>
-                <Form.Label>Answer:</Form.Label>
                 {renderCorrectAnswerField(question_type)}
                 {errors.correct_answer && (
                   <Form.Text className="text-danger">
@@ -1170,75 +1160,99 @@ const QuestionEditForm = forwardRef(
           const video = watch(`explanations.${index}.video`);
 
           return (
-            <Row className="mb-3 px-3" key={field.id}>
-              <Col md={12} className="mb-2">
-                <Form.Label>{explanationLevels[index]} Explanation:</Form.Label>
-                <Controller
-                  name={`explanations.${index}.text`}
-                  control={control}
-                  render={({ field }) => (
-                    <Form.Control
-                      as="textarea"
-                      rows={3}
-                      {...field}
-                      isInvalid={!!errors?.explanations?.[index]?.text}
-                    />
-                  )}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors?.explanations?.[index]?.text?.message}
-                </Form.Control.Feedback>
-              </Col>
+            <div
+              className="position-relative border rounded p-3 m-3 mt-0"
+              key={field.id}
+            >
+              {/* Remove Explanation Icon */}
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => remove(index)}
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "10px",
+                  zIndex: 2,
+                  padding: "0.15rem 0.3rem",
+                  fontSize: "0.75rem",
+                }}
+              >
+                <i className="bx bx-x"></i>{" "}
+                {/* Replace with your preferred icon */}
+              </Button>
 
-              <Col md={12} className="mb-2">
-                <Form.Label>Explanation Video (optional):</Form.Label>
-                {video ? (
-                  <div>
-                    <a href={video} target="_blank" rel="noopener noreferrer">
-                      {filename || "View Uploaded Video"}
-                    </a>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() =>
-                        setValue(`explanations.${index}.video`, "")
-                      }
-                      className="ms-2"
-                    >
-                      Change File
-                    </Button>
-                  </div>
-                ) : (
+              {/* Explanation Text Input */}
+              <Row className="mb-3">
+                <Col>
+                  <Form.Label className="mb-2">
+                    {explanationLevels[index]} Explanation:
+                  </Form.Label>
+
                   <Controller
-                    name={`explanations.${index}.file`}
+                    name={`explanations.${index}.text`}
                     control={control}
                     render={({ field }) => (
                       <Form.Control
-                        type="file"
-                        disabled={loading}
-                        onChange={(e) =>
-                          handleVideoUpload(e.target.files[0], index)
-                        }
-                        isInvalid={!!errors?.explanations?.[index]?.video}
+                        as="textarea"
+                        rows={3}
+                        {...field}
+                        isInvalid={!!errors?.explanations?.[index]?.text}
                       />
                     )}
                   />
-                )}
-                <Form.Control.Feedback type="invalid">
-                  {errors?.explanations?.[index]?.video?.message}
-                </Form.Control.Feedback>
-              </Col>
+                  <Form.Control.Feedback type="invalid">
+                    {errors?.explanations?.[index]?.text?.message}
+                  </Form.Control.Feedback>
+                </Col>
+              </Row>
 
-              <Col>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => remove(index)}
-                >
-                  Remove Explanation
-                </Button>
-              </Col>
-            </Row>
+              {/* Explanation Video Input */}
+              <Row className="mb-3 align-items-center">
+                <Col md={4}>
+                  <Form.Label className="mb-0">
+                    Explanation Video (optional):
+                  </Form.Label>
+                </Col>
+                <Col md={8}>
+                  {video ? (
+                    <div>
+                      <a href={video} target="_blank" rel="noopener noreferrer">
+                        {filename || "View Uploaded Video"}
+                      </a>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() =>
+                          setValue(`explanations.${index}.video`, "")
+                        }
+                        className="ms-2"
+                      >
+                        Change File
+                      </Button>
+                    </div>
+                  ) : (
+                    <Controller
+                      name={`explanations.${index}.file`}
+                      control={control}
+                      render={({ field }) => (
+                        <Form.Control
+                          type="file"
+                          disabled={loading}
+                          onChange={(e) =>
+                            handleVideoUpload(e.target.files[0], index)
+                          }
+                          isInvalid={!!errors?.explanations?.[index]?.video}
+                        />
+                      )}
+                    />
+                  )}
+                  <Form.Control.Feedback type="invalid">
+                    {errors?.explanations?.[index]?.video?.message}
+                  </Form.Control.Feedback>
+                </Col>
+              </Row>
+            </div>
           );
         })}
 
@@ -1271,18 +1285,79 @@ const QuestionEditForm = forwardRef(
   }
 );
 
-const NestedMCQOptions = ({ control, errors }) => {
+const NestedMCQOptions = ({ control, errors, watch, setValue }) => {
+  const questionType = watch("question_type");
+
+  // Use ?? instead of ||
+  const correctAnswerValue =
+    watch("correct_answer") ?? (questionType === "MCQ_MULTI" ? [] : null);
+
   const { fields, append, remove } = useFieldArray({
     control,
-    name: `options`,
+    name: "options",
   });
 
+  const handleSetCorrectAnswer = (index) => {
+    if (questionType === "MCQ_SINGLE") {
+      setValue("correct_answer", index);
+    } else if (questionType === "MCQ_MULTI") {
+      let newAnswers = Array.isArray(correctAnswerValue)
+        ? [...correctAnswerValue]
+        : [];
+      if (newAnswers.includes(index)) {
+        // unselect if already in correct answers
+        newAnswers = newAnswers.filter((i) => i !== index);
+      } else {
+        newAnswers.push(index);
+      }
+      setValue("correct_answer", newAnswers);
+    }
+  };
+
+  const handleRemoveOption = (removeIndex) => {
+    if (questionType === "MCQ_SINGLE") {
+      if (correctAnswerValue === removeIndex) {
+        // Removed the correct one
+        setValue("correct_answer", null);
+      } else if (correctAnswerValue > removeIndex) {
+        // Shift if removed index is before current correct index
+        setValue("correct_answer", correctAnswerValue - 1);
+      }
+    } else if (questionType === "MCQ_MULTI") {
+      let newAnswers = Array.isArray(correctAnswerValue)
+        ? [...correctAnswerValue]
+        : [];
+      // Remove that index if it's selected
+      newAnswers = newAnswers.filter((idx) => idx !== removeIndex);
+      // Shift anything above removeIndex
+      newAnswers = newAnswers.map((idx) => (idx > removeIndex ? idx - 1 : idx));
+      setValue("correct_answer", newAnswers);
+    }
+
+    remove(removeIndex);
+  };
+
+  const isOptionCorrect = (index) => {
+    if (questionType === "MCQ_SINGLE") {
+      return correctAnswerValue === index;
+    }
+    if (questionType === "MCQ_MULTI") {
+      return (
+        Array.isArray(correctAnswerValue) && correctAnswerValue.includes(index)
+      );
+    }
+    return false;
+  };
+
   return (
-    <div className="row mb-3">
-      <div className="col-12">
-        <label className="form-label">MCQ Options:</label>
-        {fields.map((field, oIndex) => (
-          <div key={field.id} className="input-group mb-2">
+    <div className="mb-3">
+      <label className="form-label fw-semibold">MCQ Options:</label>
+
+      {fields.map((field, oIndex) => {
+        const selected = isOptionCorrect(oIndex);
+        return (
+          <div className="input-group mb-2" key={field.id}>
+            {/* Option Text Input */}
             <Controller
               name={`options.${oIndex}.option_text`}
               control={control}
@@ -1296,31 +1371,51 @@ const NestedMCQOptions = ({ control, errors }) => {
                 />
               )}
             />
+
+            {/* If you only want to allow removal if length > 2 */}
             {fields.length > 2 && (
-              <button
-                type="button"
-                className="btn btn-danger btn-sm"
-                onClick={() => remove(oIndex)}
+              <Button
+                style={{ padding: "0.5rem 0.3rem" }}
+                variant="danger"
+                size="sm"
+                onClick={() => handleRemoveOption(oIndex)}
               >
-                Remove
-              </button>
+                <i className="bx bx-trash"></i>
+              </Button>
             )}
-            {errors?.options?.[oIndex]?.option_text.message && (
-              <div className="invalid-feedback d-block">
-                {errors?.options?.[oIndex]?.option_text.message}
+
+            {/* Mark this option as correct */}
+            <Button
+              style={{ padding: "0.5rem 0.3rem" }}
+              variant={selected ? "success" : "outline-secondary"}
+              onClick={() => handleSetCorrectAnswer(oIndex)}
+            >
+              {selected ? (
+                <i className="bx bxs-check-square"></i>
+              ) : (
+                <i className="bx bx-check-square"></i>
+              )}
+            </Button>
+
+            {errors?.options?.[oIndex]?.option_text && (
+              <div className="invalid-feedback">
+                {errors.options[oIndex].option_text.message}
               </div>
             )}
           </div>
-        ))}
-        <button
-          type="button"
-          className="btn btn-secondary btn-sm"
-          onClick={() => append({ option_text: "" })}
-          disabled={fields.length >= MAX_OPTIONS}
-        >
-          Add Option
-        </button>
-      </div>
+        );
+      })}
+
+      {/* Button to add a new MCQ option */}
+      <Button
+        type="button"
+        variant="secondary"
+        size="sm"
+        onClick={() => append({ option_text: "" })}
+        disabled={fields.length >= MAX_OPTIONS}
+      >
+        Add Option
+      </Button>
     </div>
   );
 };
@@ -1332,5 +1427,3 @@ QuestionEditForm.propTypes = {
 };
 
 export default QuestionEditForm;
-
-// NestedMCQOptions and NestedExplanations components remain similar to previous examples, but without the qIndex prop if not required.
