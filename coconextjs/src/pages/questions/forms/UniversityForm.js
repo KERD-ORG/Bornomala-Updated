@@ -1131,7 +1131,7 @@ export const QuestionModal = ({
           </Row>
 
           <Row className="mb-3">
-            <Col md={4}>
+            <Col md={6}>
               <Form.Group controlId={`topic`}>
                 <Form.Label>Topic:</Form.Label>
                 <Controller
@@ -1154,7 +1154,7 @@ export const QuestionModal = ({
               </Form.Group>
             </Col>
 
-            <Col md={4}>
+            <Col md={6}>
               <Form.Group controlId={`sub_topic`}>
                 <Form.Label>Subtopic:</Form.Label>
                 <Controller
@@ -1179,16 +1179,21 @@ export const QuestionModal = ({
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
+          </Row>
 
+          <Row className="mb-3">
             <Col md={4}>
-              <Form.Group controlId={`sub_sub_topic`}>
-                <Form.Label>Sub Sub Topic:</Form.Label>
+              <Form.Group controlId={`sub_sub_topic1`}>
+                <Form.Label>Sub Sub Topic 1:</Form.Label>
                 <Controller
-                  name={`sub_sub_topic`}
+                  name={`sub_sub_topic1`}
                   control={control}
                   disabled={!subTopic}
                   render={({ field }) => (
-                    <Form.Select {...field} isInvalid={!!errors?.sub_sub_topic}>
+                    <Form.Select
+                      {...field}
+                      isInvalid={!!errors?.sub_sub_topic1}
+                    >
                       <option value="">-- Select Sub Subtopic --</option>
                       {dropdownData.subSubTopics
                         .filter((val) => val.sub_topic == subTopic)
@@ -1201,7 +1206,63 @@ export const QuestionModal = ({
                   )}
                 />
                 <Form.Control.Feedback type="invalid">
-                  {errors?.sub_sub_topic?.message}
+                  {errors?.sub_sub_topic1?.message}
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+            <Col md={4}>
+              <Form.Group controlId={`sub_sub_topic2`}>
+                <Form.Label>Sub Sub Topic 2:</Form.Label>
+                <Controller
+                  name={`sub_sub_topic2`}
+                  control={control}
+                  disabled={!subTopic}
+                  render={({ field }) => (
+                    <Form.Select
+                      {...field}
+                      isInvalid={!!errors?.sub_sub_topic2}
+                    >
+                      <option value="">-- Select Sub Subtopic --</option>
+                      {dropdownData.subSubTopics
+                        .filter((val) => val.sub_topic == subTopic)
+                        .map((opt) => (
+                          <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  )}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors?.sub_sub_topic2?.message}
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+            <Col md={4}>
+              <Form.Group controlId={`sub_sub_topic3`}>
+                <Form.Label>Sub Sub Topic 3:</Form.Label>
+                <Controller
+                  name={`sub_sub_topic3`}
+                  control={control}
+                  disabled={!subTopic}
+                  render={({ field }) => (
+                    <Form.Select
+                      {...field}
+                      isInvalid={!!errors?.sub_sub_topic3}
+                    >
+                      <option value="">-- Select Sub Subtopic --</option>
+                      {dropdownData.subSubTopics
+                        .filter((val) => val.sub_topic == subTopic)
+                        .map((opt) => (
+                          <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </option>
+                        ))}
+                    </Form.Select>
+                  )}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors?.sub_sub_topic3?.message}
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
@@ -1582,7 +1643,9 @@ const NestedMCQOptions = ({ control, errors, watch, setValue }) => {
             {/* If you only want to allow removal if length > 2 */}
             {fields.length > 2 && (
               <Button
+                style={{ padding: "0.5rem 0.3rem" }}
                 variant="danger"
+                size="sm"
                 onClick={() => handleRemoveOption(oIndex)}
               >
                 <i className="bx bx-trash"></i>
@@ -1591,6 +1654,7 @@ const NestedMCQOptions = ({ control, errors, watch, setValue }) => {
 
             {/* Mark this option as correct */}
             <Button
+              style={{ padding: "0.5rem 0.3rem" }}
               variant={selected ? "success" : "outline-secondary"}
               onClick={() => handleSetCorrectAnswer(oIndex)}
             >
