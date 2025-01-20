@@ -746,48 +746,58 @@ export const QuestionModal = ({
         );
       case "TRUE_FALSE":
         return (
-          <Controller
-            name="correct_answer"
-            control={control}
-            render={({ field }) => (
-              <Form.Select isInvalid={!!errors.correct_answer} {...field}>
-                <option value="">-- Select --</option>
-                <option value="True">True</option>
-                <option value="False">False</option>
-              </Form.Select>
-            )}
-          />
+          <>
+            <Form.Label>Correct Answer:</Form.Label>
+            <Controller
+              name="correct_answer"
+              control={control}
+              render={({ field }) => (
+                <Form.Select isInvalid={!!errors.correct_answer} {...field}>
+                  <option value="">-- Select --</option>
+                  <option value="True">True</option>
+                  <option value="False">False</option>
+                </Form.Select>
+              )}
+            />
+          </>
         );
       case "ASSERTION_REASON":
       case "CASE_STUDY":
+      case "DESCRIPTIVE":
       case "CODE":
         return (
-          <Controller
-            name="correct_answer"
-            control={control}
-            render={({ field }) => (
-              <Form.Control
-                as="textarea"
-                rows={4}
-                isInvalid={!!errors.correct_answer}
-                {...field}
-              />
-            )}
-          />
+          <>
+            <Form.Label>Answer:</Form.Label>
+            <Controller
+              name="correct_answer"
+              control={control}
+              render={({ field }) => (
+                <Form.Control
+                  as="textarea"
+                  rows={4}
+                  isInvalid={!!errors.correct_answer}
+                  {...field}
+                />
+              )}
+            />
+          </>
         );
       case "NUMERICAL":
         return (
-          <Controller
-            name="correct_answer"
-            control={control}
-            render={({ field }) => (
-              <Form.Control
-                type="number"
-                isInvalid={!!errors.correct_answer}
-                {...field}
-              />
-            )}
-          />
+          <>
+            <Form.Label>Correct Answer:</Form.Label>
+            <Controller
+              name="correct_answer"
+              control={control}
+              render={({ field }) => (
+                <Form.Control
+                  type="number"
+                  isInvalid={!!errors.correct_answer}
+                  {...field}
+                />
+              )}
+            />
+          </>
         );
       case "MATCHING":
         return (
@@ -813,19 +823,22 @@ export const QuestionModal = ({
         );
       case "ORDERING":
         return (
-          <Controller
-            name="ordering_sequence"
-            control={control}
-            render={({ field }) => (
-              <Form.Control
-                as="textarea"
-                placeholder="Enter items in order, separated by commas"
-                rows={4}
-                isInvalid={!!errors.ordering_sequence}
-                {...field}
-              />
-            )}
-          />
+          <>
+            <Form.Label>Correct Answer:</Form.Label>
+            <Controller
+              name="ordering_sequence"
+              control={control}
+              render={({ field }) => (
+                <Form.Control
+                  as="textarea"
+                  placeholder="Enter items in order, separated by commas"
+                  rows={4}
+                  isInvalid={!!errors.ordering_sequence}
+                  {...field}
+                />
+              )}
+            />
+          </>
         );
       case "DRAG_DROP":
         return (
@@ -981,7 +994,7 @@ export const QuestionModal = ({
             </Form.Group>
           </>
         );
-      case "AUDIO":
+      case "AUDIO_VIDEO":
         return (
           <>
             <Form.Group className="mb-3">
@@ -1350,26 +1363,37 @@ export const QuestionModal = ({
 
           {question_type && (
             <>
-              <Row className="mb-3">
-                <Col>
-                  <Form.Label>Question: </Form.Label>
-                  <Controller
-                    name="question_text"
-                    control={control}
-                    render={({ field }) => (
-                      <Form.Control
-                        as="textarea"
-                        rows={4}
-                        isInvalid={!!errors.question_text}
-                        {...field}
-                      />
-                    )}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.question_text?.message}
-                  </Form.Control.Feedback>
-                </Col>
-              </Row>
+              {[
+                "MCQ_SINGLE",
+                "MCQ_MULTI",
+                "CODE",
+                "DESCRIPTIVE",
+                "FILL_BLANK",
+                "NUMERICAL",
+                "ORDERING",
+                "TRUE_FALSE",
+              ].includes(question_type) && (
+                <Row className="mb-3">
+                  <Col>
+                    <Form.Label>Question: </Form.Label>
+                    <Controller
+                      name="question_text"
+                      control={control}
+                      render={({ field }) => (
+                        <Form.Control
+                          as="textarea"
+                          rows={4}
+                          isInvalid={!!errors.question_text}
+                          {...field}
+                        />
+                      )}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.question_text?.message}
+                    </Form.Control.Feedback>
+                  </Col>
+                </Row>
+              )}
 
               {question_type.includes("MCQ") && (
                 <NestedMCQOptions
