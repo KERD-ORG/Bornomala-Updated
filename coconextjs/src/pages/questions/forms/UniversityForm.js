@@ -17,6 +17,7 @@ import useCommonForm from "@/hooks/useCommonForm";
 import { executeAjaxOperationStandard } from "@/utils/fetcher";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import axios from "axios";
+import { BiTrash } from "react-icons/bi"; // or use Bootstrap Icons <i className="bi bi-trash"></i>
 
 const MAX_OPTIONS = 8;
 const explanationLevels = ["Preliminary", "Intermediate", "Advanced"];
@@ -727,83 +728,23 @@ export const QuestionModal = ({
 
   const renderCorrectAnswerField = (questionType) => {
     switch (questionType) {
-      case "MCQ_SINGLE":
-        return (
-          <Controller
-            name="correct_answer"
-            control={control}
-            render={({ field }) => (
-              <Form.Group>
-                {watch("options")?.map((option, index) => (
-                  <div key={index}>
-                    <Form.Check
-                      type="radio"
-                      label={option.option_text || "(Option text is required)"}
-                      value={index}
-                      checked={field.value === index}
-                      isInvalid={!!errors.correct_answer}
-                      onChange={() => field.onChange(index)}
-                    />
-                  </div>
-                ))}
-              </Form.Group>
-            )}
-          />
-        );
-      case "MCQ_MULTI":
-        return (
-          <Controller
-            name="correct_answer"
-            control={control}
-            render={({ field }) => (
-              <Form.Group>
-                {watch("options")?.map((option, index) => (
-                  <div key={index}>
-                    <Form.Check
-                      type="checkbox"
-                      label={option.option_text || "(Option text is required)"}
-                      value={index} // Use index as value
-                      checked={
-                        field.value ? field.value.includes(index) : false
-                      }
-                      onChange={(e) => {
-                        const selected = [...(field.value || [])];
-                        const currentIndex = index; // current option's index
-                        if (e.target.checked) {
-                          // Add index if checked and not already present
-                          if (!selected.includes(currentIndex)) {
-                            selected.push(currentIndex);
-                          }
-                        } else {
-                          // Remove index if unchecked
-                          const idx = selected.indexOf(currentIndex);
-                          if (idx > -1) {
-                            selected.splice(idx, 1);
-                          }
-                        }
-                        field.onChange(selected);
-                      }}
-                    />
-                  </div>
-                ))}
-              </Form.Group>
-            )}
-          />
-        );
       case "FILL_BLANK":
       case "NUMERICAL":
         return (
-          <Controller
-            name="correct_answer"
-            control={control}
-            render={({ field }) => (
-              <Form.Control
-                type={questionType === "NUMERICAL" ? "number" : "text"}
-                isInvalid={!!errors.correct_answer}
-                {...field}
-              />
-            )}
-          />
+          <>
+          <Form.Label>Answer</Form.Label>
+            <Controller
+              name="correct_answer"
+              control={control}
+              render={({ field }) => (
+                <Form.Control
+                  type={questionType === "NUMERICAL" ? "number" : "text"}
+                  isInvalid={!!errors.correct_answer}
+                  {...field}
+                />
+              )}
+            />
+          </>
         );
       case "TRUE_FALSE":
         return (
@@ -1360,7 +1301,7 @@ export const QuestionModal = ({
             <>
               <Row className="mb-3">
                 <Col>
-                  <Form.Label>Question Text:</Form.Label>
+                  <Form.Label>Question: </Form.Label>
                   <Controller
                     name="question_text"
                     control={control}
@@ -1380,12 +1321,16 @@ export const QuestionModal = ({
               </Row>
 
               {question_type.includes("MCQ") && (
-                <NestedMCQOptions control={control} errors={errors} />
+                <NestedMCQOptions
+                  control={control}
+                  errors={errors}
+                  watch={watch}
+                  setValue={setValue}
+                />
               )}
 
               <Row className="mb-3">
                 <Col>
-                  <Form.Label>Answer:</Form.Label>
                   {renderCorrectAnswerField(question_type)}
                   {errors.correct_answer && (
                     <Form.Text className="text-danger">
@@ -1522,18 +1467,79 @@ export const QuestionModal = ({
   );
 };
 
-const NestedMCQOptions = ({ control, errors }) => {
+const NestedMCQOptions = ({ control, errors, watch, setValue }) => {
+  const questionType = watch("question_type");
+
+  // Use ?? instead of ||
+  const correctAnswerValue =
+    watch("correct_answer") ?? (questionType === "MCQ_MULTI" ? [] : null);
+
   const { fields, append, remove } = useFieldArray({
     control,
-    name: `options`,
+    name: "options",
   });
 
+  const handleSetCorrectAnswer = (index) => {
+    if (questionType === "MCQ_SINGLE") {
+      setValue("correct_answer", index);
+    } else if (questionType === "MCQ_MULTI") {
+      let newAnswers = Array.isArray(correctAnswerValue)
+        ? [...correctAnswerValue]
+        : [];
+      if (newAnswers.includes(index)) {
+        // unselect if already in correct answers
+        newAnswers = newAnswers.filter((i) => i !== index);
+      } else {
+        newAnswers.push(index);
+      }
+      setValue("correct_answer", newAnswers);
+    }
+  };
+
+  const handleRemoveOption = (removeIndex) => {
+    if (questionType === "MCQ_SINGLE") {
+      if (correctAnswerValue === removeIndex) {
+        // Removed the correct one
+        setValue("correct_answer", null);
+      } else if (correctAnswerValue > removeIndex) {
+        // Shift if removed index is before current correct index
+        setValue("correct_answer", correctAnswerValue - 1);
+      }
+    } else if (questionType === "MCQ_MULTI") {
+      let newAnswers = Array.isArray(correctAnswerValue)
+        ? [...correctAnswerValue]
+        : [];
+      // Remove that index if it's selected
+      newAnswers = newAnswers.filter((idx) => idx !== removeIndex);
+      // Shift anything above removeIndex
+      newAnswers = newAnswers.map((idx) => (idx > removeIndex ? idx - 1 : idx));
+      setValue("correct_answer", newAnswers);
+    }
+
+    remove(removeIndex);
+  };
+
+  const isOptionCorrect = (index) => {
+    if (questionType === "MCQ_SINGLE") {
+      return correctAnswerValue === index;
+    }
+    if (questionType === "MCQ_MULTI") {
+      return (
+        Array.isArray(correctAnswerValue) && correctAnswerValue.includes(index)
+      );
+    }
+    return false;
+  };
+
   return (
-    <div className="row mb-3">
-      <div className="col-12">
-        <label className="form-label">MCQ Options:</label>
-        {fields.map((field, oIndex) => (
-          <div key={field.id} className="input-group mb-2">
+    <div className="mb-3">
+      <label className="form-label fw-semibold">MCQ Options:</label>
+
+      {fields.map((field, oIndex) => {
+        const selected = isOptionCorrect(oIndex);
+        return (
+          <div className="input-group mb-2" key={field.id}>
+            {/* Option Text Input */}
             <Controller
               name={`options.${oIndex}.option_text`}
               control={control}
@@ -1547,31 +1553,48 @@ const NestedMCQOptions = ({ control, errors }) => {
                 />
               )}
             />
+
+            {/* If you only want to allow removal if length > 2 */}
             {fields.length > 2 && (
-              <button
-                type="button"
-                className="btn btn-danger btn-sm"
-                onClick={() => remove(oIndex)}
+              <Button
+                variant="danger"
+                onClick={() => handleRemoveOption(oIndex)}
               >
-                Remove
-              </button>
+                <i className="bx bx-trash"></i>
+              </Button>
             )}
-            {errors?.options?.[oIndex]?.option_text.message && (
+
+            {/* Mark this option as correct */}
+            <Button
+              variant={selected ? "success" : "outline-secondary"}
+              onClick={() => handleSetCorrectAnswer(oIndex)}
+            >
+              {selected ? (
+                <i className="bx bxs-check-square"></i>
+              ) : (
+                <i className="bx bx-check-square"></i>
+              )}
+            </Button>
+
+            {errors?.options?.[oIndex]?.option_text && (
               <div className="invalid-feedback">
-                {errors?.options?.[oIndex]?.option_text.message}
+                {errors.options[oIndex].option_text.message}
               </div>
             )}
           </div>
-        ))}
-        <button
-          type="button"
-          className="btn btn-secondary btn-sm"
-          onClick={() => append({ option_text: "" })}
-          disabled={fields.length >= MAX_OPTIONS}
-        >
-          Add Option
-        </button>
-      </div>
+        );
+      })}
+
+      {/* Button to add a new MCQ option */}
+      <Button
+        type="button"
+        variant="secondary"
+        size="sm"
+        onClick={() => append({ option_text: "" })}
+        disabled={fields.length >= MAX_OPTIONS}
+      >
+        Add Option
+      </Button>
     </div>
   );
 };
