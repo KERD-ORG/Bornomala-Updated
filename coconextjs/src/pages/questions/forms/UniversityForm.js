@@ -24,24 +24,10 @@ const explanationLevels = ["Preliminary", "Intermediate", "Advanced"];
 const defaultValues = {
   target_organization: "",
   question_level: "",
-  // questions: [
-  //   {
-  //     question_text: "",
-  //     correct_answer: "",
-  //     target_subject: "",
-  //     exam_references: [],
-  //     question_type: "",
-  //     topic: "",
-  //     sub_topic: "",
-  //     difficulty_level: "",
-  //     options: [{ option_text: "" }, { option_text: "" }],
-  //     explanations: [],
-  //   },
-  // ],
 };
 
 const questionSchema = yup.object().shape({
-  question_text: yup.string().required("Question Text is required"),
+  question_text: yup.string(), //required("Question Text is required"),
   correct_answer: yup.mixed().when("question_type", (question_type, schema) => {
     switch (question_type[0]) {
       case "MCQ_SINGLE":
@@ -61,6 +47,8 @@ const questionSchema = yup.object().shape({
           .required("Correct Answer is required");
       case "MATCHING":
         return yup.string().required("Correct answer mapping is required");
+      default:
+        return yup.string().notRequired();
     }
   }),
   ordering_sequence: yup.array().when("question_type", {
@@ -946,38 +934,42 @@ export const QuestionModal = ({
         return (
           <>
             <Form.Group className="mb-3">
-              <Form.Label>Upload Audio:</Form.Label>
+              <Form.Label>Upload Audio/Video:</Form.Label>
               <Controller
-                name="audio_url" // field to store the audio URL
+                name="audio_url" // still using the same field name
                 control={control}
                 render={({ field }) => {
+                  // If we already have a URL, show a preview and "Change" button.
                   if (field.value) {
                     return (
-                      <div>
-                        <audio
-                          controls
-                          src={field.value}
-                          style={{ display: "block", marginBottom: "10px" }}
-                        />
+                      <div className="d-align-center gap-2">
+                        <a href={field.value}>Click to see media file</a>
                         <Button
                           variant="secondary"
                           size="sm"
-                          onClick={() => field.onChange("")}
+                          onClick={() => {
+                            // Clear the field value and reset mediaType so user can upload new file
+                            field.onChange("");
+                            setMediaType("");
+                          }}
                         >
-                          Change Audio
+                          Change Media
                         </Button>
                       </div>
                     );
                   }
+
+                  // Otherwise, render the file input to upload audio or video
                   return (
                     <Form.Control
                       type="file"
-                      accept="audio/*"
+                      accept="audio/*,video/*"
                       onChange={async (e) => {
                         const file = e.target.files[0];
                         if (file) {
                           setLoading(true);
                           try {
+                            // Same API logic (PUT request)
                             const response = await axios.put(
                               `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/upload/?filename=${file.name}`,
                               file,
@@ -988,9 +980,11 @@ export const QuestionModal = ({
                                 },
                               }
                             );
+
+                            // Store the returned media link in the form
                             field.onChange(response.data.media_link);
                           } catch (error) {
-                            console.error("Error uploading audio:", error);
+                            console.error("Error uploading media:", error);
                             setGlobalError(
                               error.response?.data?.message || error.message
                             );

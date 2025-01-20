@@ -34,7 +34,7 @@ const defaultValues = {
 const mainSchema = yup.object().shape({
   target_organization: yup.string().required("Organization is required"),
   question_level: yup.string().required("Question Level is required"),
-  question_text: yup.string().required("Question Text is required"),
+  question_text: yup.string(), //required("Question Text is required"),
   correct_answer: yup.mixed().when("question_type", (question_type, schema) => {
     switch (question_type[0]) {
       case "MCQ_SINGLE":
@@ -52,52 +52,11 @@ const mainSchema = yup.object().shape({
           .number()
           .typeError("Correct Answer must be a number")
           .required("Correct Answer is required");
-      case "DRAG_DROP":
-        return yup
-          .string()
-          .required("Correct answer mapping is required")
-          .test("is-json", "Correct answer must be a valid JSON", (value) => {
-            try {
-              JSON.parse(value);
-              return true;
-            } catch {
-              return false;
-            }
-          });
+      case "MATCHING":
+        return yup.string().required("Correct answer mapping is required");
+      default:
+        return yup.string().notRequired();
     }
-  }),
-  matching_pairs: yup.object().when("question_type", {
-    is: (val) => val === "MATCHING",
-    then: () =>
-      yup
-        .object()
-        // Transform the input: if it's a string, try to parse it as JSON.
-        .transform((value, originalValue) => {
-          if (typeof originalValue === "string") {
-            try {
-              const parsed = JSON.parse(originalValue);
-              return parsed;
-            } catch (e) {
-              // If parsing fails, return the original value to let validation catch the error.
-              return originalValue;
-            }
-          }
-          return value;
-        })
-        .test(
-          "valid-json-object",
-          "Please enter a valid JSON object",
-          (value) => {
-            // After transformation, check if value is a valid non-array object.
-            return value && typeof value === "object" && !Array.isArray(value);
-          }
-        )
-        .test(
-          "non-empty-object",
-          "Matching pairs cannot be empty",
-          (value) => value && Object.keys(value).length > 0
-        ),
-    otherwise: () => yup.mixed().notRequired(),
   }),
   ordering_sequence: yup.array().when("question_type", {
     is: (val) => val === "ORDERING",
@@ -136,7 +95,7 @@ const mainSchema = yup.object().shape({
     otherwise: () => yup.array().notRequired(),
   }),
   options_column_a: yup.array().when("question_type", {
-    is: (val) => val == "DRAG_DROP",
+    is: (val) => val == "MATCHING",
     then: () =>
       yup
         .array()
@@ -153,7 +112,7 @@ const mainSchema = yup.object().shape({
     otherwise: () => yup.mixed().notRequired(),
   }),
   options_column_b: yup.array().when("question_type", {
-    is: (val) => val == "DRAG_DROP",
+    is: (val) => val == "MATCHING",
     then: () =>
       yup
         .array()
@@ -172,6 +131,11 @@ const mainSchema = yup.object().shape({
   image_url: yup.string().when("question_type", {
     is: (val) => val === "IMAGE",
     then: () => yup.string().required("Image upload is required"),
+    otherwise: () => yup.mixed().notRequired(),
+  }),
+  diagram_url: yup.string().when("question_type", {
+    is: (val) => val === "DIAGRAM",
+    then: () => yup.string().required("Diagram upload is required"),
     otherwise: () => yup.mixed().notRequired(),
   }),
   audio_url: yup.string().when("question_type", {
@@ -321,6 +285,7 @@ const QuestionEditForm = forwardRef(
           options_column_b: initialData.details.options_column_b || [],
           image_url: initialData.details.image_url || "",
           audio_url: initialData.details.audio_url || "",
+          diagram_url: initialData.details.diagram_url || "",
           options: initialData.details.options || [
             { option_text: "" },
             { option_text: "" },
@@ -361,13 +326,6 @@ const QuestionEditForm = forwardRef(
             parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START) &&
           response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END)
         ) {
-          // deleteRow(response.data.id);
-          // addRow(response.data);
-          // onCancel();
-          // onSubmit(
-          //   response.data.message || t("Question updated successfully."),
-          //   true
-          // );
           window.location.reload();
         } else {
           if (response.details) {
@@ -378,7 +336,6 @@ const QuestionEditForm = forwardRef(
               });
             });
           }
-          //setGlobalError(response.message);
           setSuccessMessage("");
         }
       } catch (error) {
@@ -457,6 +414,7 @@ const QuestionEditForm = forwardRef(
                     <option value="">-- Select --</option>
                     <option value="True">True</option>
                     <option value="False">False</option>
+                    <option value="Not-given">Not-given</option>
                   </Form.Select>
                 )}
               />
@@ -500,28 +458,6 @@ const QuestionEditForm = forwardRef(
               />
             </>
           );
-        case "MATCHING":
-          return (
-            <Controller
-              name="matching_pairs"
-              control={control}
-              render={({ field }) => (
-                <Form.Control
-                  as="textarea"
-                  placeholder='Enter pairs as JSON, e.g., {"Key":"Value"}'
-                  rows={4}
-                  isInvalid={!!errors.matching_pairs}
-                  value={
-                    typeof field.value === "object"
-                      ? JSON.stringify(field.value, null, 2) // Convert object to a formatted JSON string
-                      : field.value
-                  }
-                  onChange={(e) => field.onChange(e.target.value)} // Allow user to edit raw JSON text
-                  // {...field}
-                />
-              )}
-            />
-          );
         case "ORDERING":
           return (
             <>
@@ -541,7 +477,7 @@ const QuestionEditForm = forwardRef(
               />
             </>
           );
-        case "DRAG_DROP":
+        case "MATCHING":
           return (
             <>
               <Form.Group className="mb-3">
@@ -587,7 +523,7 @@ const QuestionEditForm = forwardRef(
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>Correct Answer Mapping (JSON):</Form.Label>
+                <Form.Label>Correct Answer Mapping:</Form.Label>
                 <Controller
                   name="correct_answer"
                   control={control}
@@ -595,7 +531,7 @@ const QuestionEditForm = forwardRef(
                     <Form.Control
                       as="textarea"
                       rows={4}
-                      placeholder='e.g., {"OptionA":"MatchA", "OptionB":"MatchB"}'
+                      placeholder="e.g., [1, 2], [3, 4]"
                       isInvalid={!!errors.correct_answer}
                       {...field}
                     />
@@ -604,13 +540,18 @@ const QuestionEditForm = forwardRef(
               </Form.Group>
             </>
           );
+        case "DIAGRAM":
         case "IMAGE":
           return (
             <>
               <Form.Group className="mb-3">
-                <Form.Label>Upload Image:</Form.Label>
+                <Form.Label>
+                  Upload {questionType === "DIAGRAM" ? "Diagram" : "Image"}:
+                </Form.Label>
                 <Controller
-                  name="image_url" // field to store the image URL
+                  name={
+                    questionType === "DIAGRAM" ? "diagram_url" : "image_url"
+                  } // field to store the image URL
                   control={control}
                   render={({ field }) => {
                     // If an image URL already exists, display the image preview and a change option
@@ -666,14 +607,26 @@ const QuestionEditForm = forwardRef(
                             }
                           }
                         }}
-                        isInvalid={!!errors.image_url}
+                        isInvalid={
+                          !!errors[
+                            questionType === "DIAGRAM"
+                              ? "diagram_url"
+                              : "image_url"
+                          ]
+                        }
                       />
                     );
                   }}
                 />
-                {errors.image_url && (
+                {errors[
+                  questionType === "DIAGRAM" ? "diagram_url" : "image_url"
+                ] && (
                   <Form.Control.Feedback type="invalid">
-                    {errors.image_url.message}
+                    {
+                      errors[
+                        questionType === "DIAGRAM" ? "diagram_url" : "image_url"
+                      ].message
+                    }
                   </Form.Control.Feedback>
                 )}
               </Form.Group>
@@ -699,38 +652,42 @@ const QuestionEditForm = forwardRef(
           return (
             <>
               <Form.Group className="mb-3">
-                <Form.Label>Upload Audio:</Form.Label>
+                <Form.Label>Upload Audio/Video:</Form.Label>
                 <Controller
-                  name="audio_url" // field to store the audio URL
+                  name="audio_url" // still using the same field name
                   control={control}
                   render={({ field }) => {
+                    // If we already have a URL, show a preview and "Change" button.
                     if (field.value) {
                       return (
-                        <div>
-                          <audio
-                            controls
-                            src={field.value}
-                            style={{ display: "block", marginBottom: "10px" }}
-                          />
+                        <div className="d-align-center gap-2">
+                          <a href={field.value}>Click to see media file</a>
                           <Button
                             variant="secondary"
                             size="sm"
-                            onClick={() => field.onChange("")}
+                            onClick={() => {
+                              // Clear the field value and reset mediaType so user can upload new file
+                              field.onChange("");
+                              setMediaType("");
+                            }}
                           >
-                            Change Audio
+                            Change Media
                           </Button>
                         </div>
                       );
                     }
+
+                    // Otherwise, render the file input to upload audio or video
                     return (
                       <Form.Control
                         type="file"
-                        accept="audio/*"
+                        accept="audio/*,video/*"
                         onChange={async (e) => {
                           const file = e.target.files[0];
                           if (file) {
                             setLoading(true);
                             try {
+                              // Same API logic (PUT request)
                               const response = await axios.put(
                                 `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/upload/?filename=${file.name}`,
                                 file,
@@ -741,9 +698,11 @@ const QuestionEditForm = forwardRef(
                                   },
                                 }
                               );
+
+                              // Store the returned media link in the form
                               field.onChange(response.data.media_link);
                             } catch (error) {
-                              console.error("Error uploading audio:", error);
+                              console.error("Error uploading media:", error);
                               setGlobalError(
                                 error.response?.data?.message || error.message
                               );
