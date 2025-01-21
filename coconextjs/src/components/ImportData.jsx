@@ -1,471 +1,182 @@
-import useCommonForm from "@/hooks/useCommonForm";
 import React, { useEffect, useRef, useState } from "react";
-import DataGridComponent from "./DataGridComponent";
-import { executeAjaxOperationStandard } from "@/utils/fetcher";
 import CustomAlert from "@/utils/CustomAlert";
 import { CircularProgress } from "@mui/material";
-import * as yup from "yup";
-import { useFormik } from "formik";
+import UniversityColumns from "@/pages/questions/grids/universityColumns";
+import { useUserPermissions } from "@/contexts/UserPermissionsContext";
+import useCommonForm from "@/hooks/useCommonForm";
+import DataGrid from "react-data-grid";
+import UniversityDetails from "@/pages/educational_organizations/UniversityDetails";
+import CommonModal from "./CommonModal";
+import QuestionEditForm from "@/pages/questions/forms/EditForm";
+import { executeAjaxOperationStandard } from "@/utils/fetcher";
+import { Button, Modal } from "react-bootstrap";
 
-const defaultThumbnail = process.env.NEXT_PUBLIC_LOGO_DEFAULT_THUMBNAIL;
-
-function ImportData({ type, closeModal, show }) {
+const ImportData = ({ type, closeModal, show }) => {
+  // State management
+  const formRef = useRef();
+  const { t, token } = useCommonForm();
+  const { permissionsMap } = useUserPermissions();
   const [file, setFile] = useState(null);
-  const [images, setImages] = useState(null);
   const [initialData, setInitialData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [globalError, setGlobalError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const fileRef = useRef(null);
-  const {
-    t,
-    router,
-    loading,
-    setLoading,
-    globalError,
-    setGlobalError,
-    successMessage,
-    setSuccessMessage,
-    token,
-    setToken,
-  } = useCommonForm();
-
-  const fileSchema = yup.object().shape({
-    file: yup
-      .mixed()
-      .test(
-        "fileType",
-        t("Please upload a CSV or Excel file."),
-        (value) =>
-          !value ||
-          [
-            "text/csv",
-            "application/vnd.ms-excel",
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          ].includes(value.type)
-      )
-      .nullable()
-      .required(t("Please upload a CSV or Excel file.")),
-    images: yup
-      .mixed()
-      .test(
-        "fileType",
-        t("Please upload images in PNG or JPEG format."),
-        (value) => {
-          if (!value) return true;
-          for (let i = 0; i < value.length; i++) {
-            if (!["image/jpeg", "image/png"].includes(value[i].type)) {
-              return false;
-            }
-          }
-          return true;
-        }
-      )
-      .nullable(),
+  const [showModal, setShowModal] = useState(false);
+  const [formMode, setFormMode] = useState("create");
+  const [selectedUniversity, setSelectedUniversity] = useState(null);
+  const [dropdownData, setDropdownData] = useState({
+    subjects: [],
+    questionTypes: [],
+    topics: [],
+    examReferences: [],
+    difficultyLevels: [],
+    subTopics: [],
+    organizations: [],
+    questionLevels: [],
+    targetGroups: [],
+    subSubTopics: [],
   });
 
-  const renderDocumentCell = (row) => {
-    if (!row) return;
-    const imageUrl = row.logo_url;
-    return (
-      <img
-        src={imageUrl}
-        alt="University Logo"
-        onError={(e) => {
-          e.target.src = defaultThumbnail;
-        }}
-        // onClick={() => handleLogoClick(row)}
-        style={{
-          width: "50px",
-          height: "30px",
-          borderRadius: "2px",
-          border: "1px solid #000000",
-          cursor: "pointer",
-        }}
-      />
+  useEffect(() => {
+    const fetchDropdownData = async () => {
+      if (!token) return;
+      const endpoints = {
+        questionLevels: "api/question-levels",
+        organizations: "api/organizations",
+        targetGroups: "api/target-groups",
+        subjects: "api/subjects",
+        questionTypes: "api/question-types",
+        topics: "api/topics",
+        examReferences: "api/exam-references",
+        questionStatuses: "api/question-statuses",
+        difficultyLevels: "api/difficulty-levels",
+        subTopics: "api/subtopics",
+      };
+
+      try {
+        const promises = Object.entries(endpoints).map(([key, endpoint]) =>
+          executeAjaxOperationStandard({
+            url: `/${endpoint}/`,
+            method: "get",
+            token,
+          })
+        );
+
+        const results = await Promise.all(promises);
+        const newData = {};
+        let index = 0;
+        for (let key in endpoints) {
+          const response = results[index];
+          if (response && response.status >= 200 && response.status < 300) {
+            const data = response.data;
+            newData[key] = data.map((item) => ({
+              ...item,
+              value: item.id,
+              label: item.name || item.reference_name || item.title || "",
+            }));
+          } else {
+            newData[key] = [];
+          }
+          index++;
+        }
+        setDropdownData((prev) => ({ ...prev, ...newData }));
+      } catch (error) {
+        console.error("Error fetching dropdown data:", error);
+      }
+    };
+
+    fetchDropdownData();
+  }, [token]);
+
+  const openEditForm = (university) => {
+    console.log(university);
+    setFormMode("edit");
+    setSelectedUniversity(university);
+    setShowModal(true);
+  };
+
+  const openShowView = (university) => {
+    setFormMode("view");
+    setSelectedUniversity(university);
+    setShowModal(true);
+  };
+
+  const deleteUniversity = async (id, type) => {
+    setInitialData(
+      initialData.map((val) => val.id != id && val.question_type != type)
     );
   };
 
-  function getColumns(type, t) {
-    switch (type) {
-      case "educational_organizations_app":
-        return [
-          {
-            key: "logo_url",
-            name: t("Logo"),
-            width: "80px",
-            resizable: true,
-            frozen: true,
-            renderCell(props) {
-              const { row } = props;
-              return (
-                <span style={{ padding: "5px" }}>
-                  {renderDocumentCell(row)}
-                </span>
-              );
-            },
-          },
-          {
-            key: "name",
-            name: t("Name"),
-            width: "130px",
-            resizable: true,
-            sortable: true,
-          },
-
-          {
-            key: "under_category",
-            name: t("Category"),
-            width: "95px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "web_address",
-            name: t("Web Address"),
-            width: "180px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "country_code",
-            name: t("Country"),
-            width: "130px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "state_province",
-            name: t("State"),
-            width: "130px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "city",
-            name: t("City"),
-            width: "100px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "address_line1",
-            name: t("Address Line 1"),
-            width: "150px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "address_line2",
-            name: t("Address Line 2"),
-            width: "150px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "postal_code",
-            name: t("Postal Code"),
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "status",
-            name: t("Status"),
-            width: "100px",
-            resizable: true,
-            renderCell(props) {
-              const { row } = props;
-              let status = row.status;
-              if (typeof row.status === "string") {
-                status = row.status.toLowerCase() === "true";
-              }
-              return (
-                <span
-                  className={`badge badge-pill ${
-                    status ? "bg-success" : "bg-danger"
-                  }`}
-                  style={{ borderRadius: "2px", fontSize: "10px" }}
-                >
-                  {status ? t("Active") : t("Inactive")}
-                </span>
-              );
-            },
-            sortable: true,
-          },
-        ];
-      case "campus_app":
-        return [
-          {
-            key: "campus_name",
-            name: t("Campus Name"),
-            width: "130px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "educational_organization",
-            name: t("Educational Organization"),
-            width: "95px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "country_code",
-            name: t("Country"),
-            width: "130px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "state_province",
-            name: t("State"),
-            width: "130px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "city",
-            name: t("City"),
-            width: "100px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "address_line1",
-            name: t("Address Line 1"),
-            width: "150px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "address_line2",
-            name: t("Address Line 2"),
-            width: "150px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "postal_code",
-            name: t("Postal Code"),
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "status",
-            name: t("Status"),
-            width: "100px",
-            resizable: true,
-            renderCell(props) {
-              const { row } = props;
-              let status = row.staus;
-              if (typeof row.status === "string") {
-                status = row.status.toLowerCase() === "true";
-              }
-              return (
-                <span
-                  className={`badge badge-pill ${
-                    status ? "bg-success" : "bg-danger"
-                  }`}
-                  style={{ borderRadius: "2px", fontSize: "10px" }}
-                >
-                  {status ? t("Active") : t("Inactive")}
-                </span>
-              );
-            },
-            sortable: true,
-          },
-        ];
-      case "college_app":
-        return [
-          {
-            key: "name",
-            name: t("Name"),
-            width: "130px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "campus",
-            name: t("Campus"),
-            width: "95px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "web_address",
-            name: t("Web Address"),
-            width: "180px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "country_code",
-            name: t("Country"),
-            width: "130px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "state_province",
-            name: t("State"),
-            width: "130px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "city",
-            name: t("City"),
-            width: "100px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "address_line1",
-            name: t("Address Line 1"),
-            width: "150px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "address_line2",
-            name: t("Address Line 2"),
-            width: "150px",
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "postal_code",
-            name: t("Postal Code"),
-            resizable: true,
-            sortable: true,
-          },
-          {
-            key: "status",
-            name: t("Status"),
-            width: "100px",
-            resizable: true,
-            renderCell(props) {
-              const { row } = props;
-              let status = row.status;
-              if (typeof row.status === "string") {
-                status = row.status.toLowerCase() === "true";
-              }
-              return (
-                <span
-                  className={`badge badge-pill ${
-                    status ? "bg-success" : "bg-danger"
-                  }`}
-                  style={{ borderRadius: "2px", fontSize: "10px" }}
-                >
-                  {status ? t("Active") : t("Inactive")}
-                </span>
-              );
-            },
-            sortable: true,
-          },
-        ];
-    }
-  }
-
-  const universityColumns = getColumns(type, t);
-
-  const formik = useFormik({
-    initialValues: {
-      file: null,
-      images: [],
-    },
-    validationSchema: fileSchema,
-    onSubmit: (values) => {
-      handleImport(values.file, values.images, false);
-    },
+  const universityColumns = UniversityColumns({
+    permissionsMap,
+    openEditForm,
+    openShowView,
+    deleteUniversity,
+    t,
   });
 
+  // Reset component state when modal visibility changes
   useEffect(() => {
+    resetComponent();
+  }, [show]);
+
+  const resetComponent = () => {
     setGlobalError("");
     setSuccessMessage("");
     setFile(null);
-    setImages([]);
     setInitialData([]);
-    formik.setFieldValue("file", null);
-    formik.setFieldValue("images", []);
     if (fileRef.current) {
       fileRef.current.value = "";
     }
-  }, [show]);
-
-  useEffect(() => {
-    if (file) {
-      handleImport(file, images, true);
-    }
-  }, [file]);
-
-  useEffect(() => {
-    if (images) {
-      const temp = initialData.map((val) => {
-        for (let i = 0; i < images.length; i++) {
-          if (images[i].name === val.logo_file) {
-            const imageUrl = URL.createObjectURL(images[i]);
-            return { ...val, logo_url: imageUrl };
-          }
-        }
-        return { ...val, logo_url: null };
-      });
-      setInitialData(temp);
-    }
-  }, [images]);
-
-  const handleFileDrop = (acceptedFiles) => {
-    formik.setFieldValue("file", acceptedFiles[0]);
-    setFile(acceptedFiles[0]);
   };
 
-  const handleImagesDrop = (acceptedFiles) => {
-    formik.setFieldValue("images", acceptedFiles);
-    // console.log(acceptedFiles);
-    setImages(acceptedFiles);
-  };
+  // Parse the JSON file
+  const parseFile = (file) => {
+    if (!file) return;
 
-  const handleImport = async (file, images, preview) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    if (images) {
-      Array.from(images).forEach((image) =>
-        formData.append("document_file", image)
-      );
-    }
-    formData.append("type", type);
-    formData.append("preview", preview);
     setLoading(true);
-    const response = await executeAjaxOperationStandard({
-      url: process.env.NEXT_PUBLIC_API_ENDPOINT_IMPORT_DATA,
-      method: "POST",
-      token,
-      formData,
-      locale: router.locale || "en",
-    });
-    setLoading(false);
-    if (
-      response.status >=
-        parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
-      response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
-    ) {
-      if (preview) {
-        setInitialData(response.data);
-      } else {
-        setSuccessMessage(t("Data imported successfully!"));
-        setTimeout(() => {
-          window.location.reload();
-        }, 750);
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const rawData = JSON.parse(event.target.result);
+        const parsedData = rawData.map((item) => {
+          const { id, question_type, ...details } = item;
+          return {
+            id,
+            question_type,
+            details,
+          };
+        });
+        console.log("Parsed Data:", parsedData);
+        setInitialData(parsedData);
+        setSuccessMessage("File parsed successfully!");
+      } catch (error) {
+        console.error("Error parsing JSON file:", error);
+        setGlobalError(
+          "Error parsing the file. Please ensure it is a valid JSON file."
+        );
+      } finally {
+        setLoading(false);
       }
-    } else {
-      setGlobalError(response.message);
-    }
+    };
+    reader.onerror = () => {
+      console.error("Error reading the file.");
+      setGlobalError("Error reading the file. Please try again.");
+      setLoading(false);
+    };
+    reader.readAsText(file);
   };
 
   return (
     <>
+      {/* Alert Messages */}
       {globalError && (
         <CustomAlert
           message={globalError}
           dismissable={true}
-          timer={parseInt(process.env.NEXT_PUBLIC_ALERT_TIME)}
+          timer={5000}
           onClose={() => setGlobalError("")}
           type="danger"
         />
@@ -474,54 +185,34 @@ function ImportData({ type, closeModal, show }) {
         <CustomAlert
           message={successMessage}
           dismissable={true}
-          timer={parseInt(process.env.NEXT_PUBLIC_ALERT_TIME)}
+          timer={5000}
           onClose={() => setSuccessMessage("")}
           type="success"
         />
       )}
-      <form onSubmit={formik.handleSubmit}>
+
+      {/* File Upload Form */}
+      <form>
         <div className="row">
           <div className="col-md-12">
-            <label htmlFor="file">{t("CSV/EXCEL File")}</label>
+            <label htmlFor="file">JSON File</label>
             <input
               ref={fileRef}
               type="file"
-              accept=".csv, .xlsx, .xls"
-              className={`form-control mt-1 ${
-                formik.errors.file && formik.touched.file ? "is-invalid" : ""
-              }`}
+              accept=".json"
+              className="form-control mt-1"
               id="file"
               name="file"
-              onChange={(event) => handleFileDrop(event.target.files)}
+              onChange={(event) => {
+                const file = event.target.files[0];
+                setFile(file);
+                parseFile(file);
+              }}
             />
-            {formik.errors.file && formik.touched.file ? (
-              <div className="invalid-feedback">{formik.errors.file}</div>
-            ) : null}
           </div>
-          {type === "educational_organizations_app" && formik.values.file && (
-            <div className="col-md-12 mt-3">
-              <label htmlFor="images">{t("Images")}</label>
-              <input
-                type="file"
-                multiple
-                accept="image/jpeg, image/png"
-                className={`form-control mt-1 ${
-                  formik.errors.images && formik.touched.images
-                    ? "is-invalid"
-                    : ""
-                }`}
-                id="images"
-                name="images"
-                onChange={(event) =>
-                  handleImagesDrop(event.currentTarget.files)
-                }
-              />
-              {formik.errors.images && formik.touched.images ? (
-                <div className="invalid-feedback">{formik.errors.images}</div>
-              ) : null}
-            </div>
-          )}
         </div>
+
+        {/* Loading Indicator */}
         {loading ? (
           <div
             style={{
@@ -529,43 +220,77 @@ function ImportData({ type, closeModal, show }) {
               display: "flex",
               justifyContent: "center",
             }}
-            c
           >
             <CircularProgress />
           </div>
         ) : (
           <div className="mt-4">
             {initialData.length > 0 && (
-              <>
-                <DataGridComponent
-                  endpoint={
-                    process.env
-                      .NEXT_PUBLIC_API_ENDPOINT_EDUCATIONAL_ORAGANIZATION
+              <DataGrid
+                style={{ height: 430, resize: "vertical" }}
+                columns={universityColumns.map((column) => ({
+                  ...column,
+                  key: column.key,
+                  headerRenderer: () => renderHeaderCell(column),
+                }))}
+                rows={initialData}
+                rowKeyGetter={(row, index) => {
+                  if (row.id === undefined || row.id === null) {
+                    // Generate a unique key using index and other fallback methods
+                    return `row-${index}-${Date.now()}`;
                   }
-                  columns={universityColumns}
-                  initialData={initialData}
-                  offset={0}
-                  limit={parseInt(process.env.NEXT_PUBLIC_ITEM_PER_PAGE)}
-                  t={t}
-                />
-
-                <div className="mt-4 d-flex">
-                  <button
-                    className="btn btn-secondary btn-sm create-new btn-primary"
-                    style={{ marginLeft: "auto" }}
-                    type="submit"
-                    disabled={loading}
-                  >
-                    {t("Import")}
-                  </button>
-                </div>
-              </>
+                  return `${row.id}${row.question_type}`;
+                }}
+                rowHeight={40}
+                // onScroll={handleScroll}
+                // onSortColumnsChange={handleSort}
+                // sortColumns={sortColumns}
+                className="fill-grid"
+              />
             )}
           </div>
         )}
       </form>
+
+      <Modal show={showModal} size="lg" onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {formMode === "edit" ? "Update Question" : "Question Details"}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {formMode === "edit" ? (
+            <div>
+              <QuestionEditForm
+                ref={formRef}
+                type={"import"}
+                initialData={selectedUniversity}
+                onSubmit={(data) => {
+                  setInitialData(
+                    initialData.map((val) => {
+                      if (val.id == selectedUniversity.id) {
+                        return { ...val, details: data };
+                      }
+                      return val;
+                    })
+                  );
+                  setShowModal(false);
+                  setSelectedUniversity(null);
+                }}
+                formMode={formMode}
+                onCancel={() => {
+                  setShowModal(false);
+                  setSelectedUniversity(null);
+                }}
+              />
+            </div>
+          ) : (
+            <UniversityDetails university={selectedUniversity} />
+          )}
+        </Modal.Body>
+      </Modal>
     </>
   );
-}
+};
 
 export default ImportData;

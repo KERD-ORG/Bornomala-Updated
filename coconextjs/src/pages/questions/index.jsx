@@ -230,7 +230,7 @@ export default function QuestionList() {
                     </span>
                   </span>
                 </button>
-                {/* <button
+                <button
                   data-tooltip-id="import-tooltip"
                   data-tooltip-content={t("Import Data")}
                   data-tooltip-place="top"
@@ -244,7 +244,7 @@ export default function QuestionList() {
                       {t("Import Data")}
                     </span>
                   </span>
-                </button> */}
+                </button>
               </>
             )}
             <Tooltip id="my-tooltip" />

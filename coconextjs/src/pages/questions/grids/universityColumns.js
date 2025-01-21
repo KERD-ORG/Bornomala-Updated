@@ -46,6 +46,7 @@ const UniversityColumns = ({
   };
 
   const formatDate = (dateString) => {
+    if (!dateString) return "";
     const dateObject = new Date(dateString);
     const year = dateObject.getFullYear();
     const month = (1 + dateObject.getMonth()).toString().padStart(2, "0");
@@ -193,18 +194,18 @@ const UniversityColumns = ({
       resizable: true,
       sortable: false,
       renderCell({ row }) {
-  return row.details.options
-    ? row.details.options
-        .map((option) => {
-          if (typeof option === "string") return option;
-          if (typeof option === "object" && option.option_text) return option.option_text;
-          return "";  // Fallback for malformed data
-        })
-        .filter(Boolean) // Remove empty strings
-        .join(", ")
-    : "";
-}
-
+        return row.details.options
+          ? row.details.options
+              .map((option) => {
+                if (typeof option === "string") return option;
+                if (typeof option === "object" && option.option_text)
+                  return option.option_text;
+                return ""; // Fallback for malformed data
+              })
+              .filter(Boolean) // Remove empty strings
+              .join(", ")
+          : "";
+      },
     },
     {
       key: "action",
@@ -221,7 +222,10 @@ const UniversityColumns = ({
                 data-tooltip-id="my-tooltip"
                 data-tooltip-content={t("Edit")}
                 data-tooltip-place="top"
-                onClick={() => openEditForm(row)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  openEditForm(row);
+                }}
               >
                 <i className="bx bx-edit text-warning"></i>
               </button>

@@ -147,7 +147,7 @@ const mainSchema = yup.object().shape({
 });
 
 const QuestionEditForm = forwardRef(
-  ({ initialData, onSubmit, onCancel, addRow, deleteRow }, ref) => {
+  ({ initialData, onSubmit, onCancel, addRow, deleteRow, type = "" }, ref) => {
     const {
       t,
       globalError,
@@ -300,6 +300,10 @@ const QuestionEditForm = forwardRef(
     });
 
     const onSubmitForm = async (data) => {
+      if (type === "import") {
+        onSubmit(data);
+        return;
+      }
       try {
         const url = process.env.NEXT_PUBLIC_API_ENDPOINT_QUESTION;
         const method = "put";
@@ -1267,8 +1271,8 @@ const NestedMCQOptions = ({ control, errors, watch, setValue }) => {
   const questionType = watch("question_type");
 
   // Use ?? instead of ||
-  const correctAnswerValue =
-    watch("correct_answer") ?? (questionType === "MCQ_MULTI" ? [] : null);
+  const correctAnswerValue = watch("correct_answer") ?? [];
+  
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -1317,7 +1321,7 @@ const NestedMCQOptions = ({ control, errors, watch, setValue }) => {
 
   const isOptionCorrect = (index) => {
     if (questionType === "MCQ_SINGLE") {
-      return correctAnswerValue === index;
+      return correctAnswerValue[0] === index;
     }
     if (questionType === "MCQ_MULTI") {
       return (
@@ -1332,7 +1336,7 @@ const NestedMCQOptions = ({ control, errors, watch, setValue }) => {
       <label className="form-label fw-semibold">MCQ Options:</label>
 
       {fields.map((field, oIndex) => {
-        const selected = isOptionCorrect(oIndex);
+        const selected = isOptionCorrect(oIndex+1);
         return (
           <div className="input-group mb-2" key={field.id}>
             {/* Option Text Input */}
