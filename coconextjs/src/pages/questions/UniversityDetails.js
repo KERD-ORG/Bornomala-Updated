@@ -2,74 +2,166 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 
-const QuestionDetails = ({ university:question }) => {
+const QuestionDetails = ({ university: question }) => {
   const { t } = useTranslation();
 
   if (!question) return null;
+
+  // Extract top-level fields
+  const { id, question_type } = question;
+
+  // Extract nested details object
+  const details = question.details || {};
+
+  // Helper to render arrays elegantly
+  const renderArrayField = (arrayData) => {
+    if (!arrayData || arrayData.length === 0) return t("N/A");
+    return (
+      <ul>
+        {arrayData.map((item, idx) => (
+          <li key={idx}>{item}</li>
+        ))}
+      </ul>
+    );
+  };
+
+  // Helper to render "options" array (which might have objects with `option_text`)
+  const renderOptions = (options) => {
+    if (!options || options.length === 0) return t("No options available");
+    return (
+      <ul>
+        {options.map((option, index) => (
+          <li key={index}>{option.option_text}</li>
+        ))}
+      </ul>
+    );
+  };
+
+  // Because `correct_answer` may be an array (e.g., [2]), safely convert to string
+  const renderCorrectAnswer = (correctAnswer) => {
+    if (!correctAnswer) return t("N/A");
+    if (Array.isArray(correctAnswer)) {
+      return correctAnswer.join(", ");
+    }
+    return correctAnswer;
+  };
 
   return (
     <div className="container">
       <div className="row">
         <div className="col-md-8">
           <ul className="list-group list-group-flush">
+            {/* Top-level fields */}
             <li className="list-group-item">
-              <strong>{t("ID")}:</strong> {question.id}
+              <strong>{t("ID")}:</strong> {id}
             </li>
             <li className="list-group-item">
-              <strong>{t("Updated At")}:</strong>{" "}
-              {new Date(question.updated_at).toLocaleString()}
+              <strong>{t("Question Type")}:</strong> {question_type}
             </li>
+
+            {/* If you have an updated_at at top-level, add it here:
+                <li className="list-group-item">
+                  <strong>{t("Updated At")}:</strong> 
+                  {new Date(question.updated_at).toLocaleString()}
+                </li> 
+            */}
+
+            {/* Fields from details object (regular fields) */}
+            <li className="list-group-item">
+              <strong>{t("Question Text")}:</strong>{" "}
+              {details.question_text || t("N/A")}
+            </li>
+            <li className="list-group-item">
+              <strong>{t("Correct Answer")}:</strong>{" "}
+              {renderCorrectAnswer(details.correct_answer)}
+            </li>
+
+            {/* Dropdown-based or name-suffixed fields */}
             <li className="list-group-item">
               <strong>{t("Question Level")}:</strong>{" "}
-              {question.question_level_name}
+              {details.question_level_name || t("N/A")}
             </li>
             <li className="list-group-item">
-              <strong>{t("Target Group")}:</strong> {question.target_group_name}
-            </li>
-            <li className="list-group-item">
-              <strong>{t("Subject")}:</strong> {question.subject_name}
-            </li>
-            <li className="list-group-item">
-              <strong>{t("Question Type")}:</strong>{" "}
-              {question.question_type_name}
-            </li>
-            <li className="list-group-item">
-              <strong>{t("Topic")}:</strong> {question.topic_name}
-            </li>
-            <li className="list-group-item">
-              <strong>{t("Sub Topic")}:</strong> {question.sub_topic_name}
-            </li>
-            <li className="list-group-item">
-              <strong>{t("Sub Sub Topic")}:</strong>{" "}
-              {question.sub_sub_topic_name}
-            </li>
-            <li className="list-group-item">
-              <strong>{t("Difficulty Level")}:</strong>{" "}
-              {question.difficulty_level_name}
+              <strong>{t("Target Group")}:</strong>{" "}
+              {details.target_group_name || t("N/A")}
             </li>
             <li className="list-group-item">
               <strong>{t("Target Organization")}:</strong>{" "}
-              {question.target_organization_name}
+              {details.target_organization_name || t("N/A")}
             </li>
             <li className="list-group-item">
-              <strong>{t("Question Text")}:</strong> {question.question_text}
+              <strong>{t("Subject")}:</strong>{" "}
+              {details.target_subject_name || t("N/A")}
             </li>
             <li className="list-group-item">
-              <strong>{t("Correct Answer")}:</strong> {question.correct_answer}
+              <strong>{t("Topic")}:</strong> {details.topic_name || t("N/A")}
             </li>
             <li className="list-group-item">
-              <strong>{t("MCQ Options")}:</strong>
-              {question.mcq_options && question.mcq_options.length > 0 ? (
-                <ul>
-                  {question.mcq_options.map((option, index) => (
-                    <li key={index}>{option.option_text}</li>
-                  ))}
-                </ul>
+              <strong>{t("Sub Topic")}:</strong>{" "}
+              {details.sub_topic_name || t("N/A")}
+            </li>
+            <li className="list-group-item">
+              <strong>{t("Difficulty Level")}:</strong>{" "}
+              {details.difficulty_level_name || t("N/A")}
+            </li>
+
+            {/* Handling arrays in details (exam_references_name, etc.) */}
+            <li className="list-group-item">
+              <strong>{t("Exam References")}:</strong>{" "}
+              {Array.isArray(details.exam_references_name) &&
+              details.exam_references_name.length > 0
+                ? details.exam_references_name.join(", ")
+                : t("N/A")}
+            </li>
+
+            {/* Options (MCQ, etc.) */}
+            <li className="list-group-item">
+              <strong>{t("Options")}:</strong> {renderOptions(details.options)}
+            </li>
+
+            {/* Matching / Column-based questions */}
+            <li className="list-group-item">
+              <strong>{t("Options Column A")}:</strong>{" "}
+              {renderArrayField(details.options_column_a)}
+            </li>
+            <li className="list-group-item">
+              <strong>{t("Options Column B")}:</strong>{" "}
+              {renderArrayField(details.options_column_b)}
+            </li>
+
+            {/* Media URLs */}
+            <li className="list-group-item">
+              <strong>{t("Image URL")}:</strong>{" "}
+              {details.image_url ? (
+                <a href={details.image_url} target="_blank" rel="noreferrer">
+                  {details.image_url}
+                </a>
               ) : (
-                t("No options available")
+                t("N/A")
               )}
             </li>
-            {/* You can include additional fields like explanations if needed */}
+            <li className="list-group-item">
+              <strong>{t("Diagram URL")}:</strong>{" "}
+              {details.diagram_url ? (
+                <a href={details.diagram_url} target="_blank" rel="noreferrer">
+                  {details.diagram_url}
+                </a>
+              ) : (
+                t("N/A")
+              )}
+            </li>
+            <li className="list-group-item">
+              <strong>{t("Audio URL")}:</strong>{" "}
+              {details.audio_url ? (
+                <a href={details.audio_url} target="_blank" rel="noreferrer">
+                  {details.audio_url}
+                </a>
+              ) : (
+                t("N/A")
+              )}
+            </li>
+
+            {/* Additional fields can be added here as needed */}
           </ul>
         </div>
       </div>

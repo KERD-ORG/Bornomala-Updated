@@ -5,11 +5,63 @@ import UniversityColumns from "@/pages/questions/grids/universityColumns";
 import { useUserPermissions } from "@/contexts/UserPermissionsContext";
 import useCommonForm from "@/hooks/useCommonForm";
 import DataGrid from "react-data-grid";
-import UniversityDetails from "@/pages/educational_organizations/UniversityDetails";
-import CommonModal from "./CommonModal";
 import QuestionEditForm from "@/pages/questions/forms/EditForm";
 import { executeAjaxOperationStandard } from "@/utils/fetcher";
-import { Button, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
+import QuestionDetails from "@/pages/questions/UniversityDetails";
+
+const pkToDropdownMap = {
+  target_organization: "organizations",
+  question_level: "questionLevels",
+  target_subject: "subjects",
+  exam_references: "examReferences", // note: exam_references can be an array
+  topic: "topics",
+  sub_topic: "subTopics",
+  difficulty_level: "difficultyLevels",
+  target_group: "targetGroups",
+};
+
+/**
+ * Adds "<field>_name" or "<field>_name" array to the details object
+ * based on the dropdownData lookups.
+ *
+ * @param {Object} details - The details object from each row in your data.
+ * @param {Object} dropdownData - The object containing all dropdown arrays.
+ * @returns {Object} Updated details with "<field>_name" suffix fields included.
+ */
+function addDropdownNames(details, dropdownData) {
+  // Make a copy so we don't mutate the original object
+  const updatedDetails = { ...details };
+
+  Object.entries(pkToDropdownMap).forEach(([detailField, dropdownKey]) => {
+    // If this record has that detailField (e.g. "topic", "target_organization", etc.)
+    if (detailField in updatedDetails && updatedDetails[detailField]) {
+      const fieldValue = updatedDetails[detailField];
+      const dropdownArray = dropdownData[dropdownKey] || [];
+
+      // Handle array-valued fields (e.g., exam_references)
+      if (Array.isArray(fieldValue)) {
+        // Map each id in the array to a label
+        updatedDetails[`${detailField}_name`] = fieldValue.map((val) => {
+          const match = dropdownArray.find((item) => {
+            // Convert to number if needed
+            return item.value === parseInt(val, 10);
+          });
+          return match ? match.label : "N/A";
+        });
+      } else {
+        // Single-valued field
+        const match = dropdownArray.find((item) => {
+          // Convert to number if needed
+          return item.value === parseInt(fieldValue, 10);
+        });
+        updatedDetails[`${detailField}_name`] = match ? match.label : "N/A";
+      }
+    }
+  });
+
+  return updatedDetails;
+}
 
 const ImportData = ({ type, closeModal, show }) => {
   // State management
@@ -89,6 +141,10 @@ const ImportData = ({ type, closeModal, show }) => {
     fetchDropdownData();
   }, [token]);
 
+  useEffect(() => {
+    console.log(dropdownData);
+  }, [dropdownData]);
+
   const openEditForm = (university) => {
     console.log(university);
     setFormMode("edit");
@@ -142,14 +198,21 @@ const ImportData = ({ type, closeModal, show }) => {
     reader.onload = (event) => {
       try {
         const rawData = JSON.parse(event.target.result);
+        // Add the dropdown-based names to the details
         const parsedData = rawData.map((item) => {
+          // Get the standard fields
           const { id, question_type, ...details } = item;
+
+          // Augment 'details' with the suffix fields
+          const augmentedDetails = addDropdownNames(details, dropdownData);
+
           return {
             id,
             question_type,
-            details,
+            details: augmentedDetails,
           };
         });
+
         console.log("Parsed Data:", parsedData);
         setInitialData(parsedData);
         setSuccessMessage("File parsed successfully!");
@@ -286,7 +349,7 @@ const ImportData = ({ type, closeModal, show }) => {
               />
             </div>
           ) : (
-            <UniversityDetails university={selectedUniversity} />
+            <QuestionDetails university={selectedUniversity} />
           )}
         </Modal.Body>
       </Modal>

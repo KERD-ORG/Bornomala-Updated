@@ -249,7 +249,10 @@ const UniversityColumns = ({
                 data-tooltip-id="my-tooltip"
                 data-tooltip-content={t("Details")}
                 data-tooltip-place="top"
-                onClick={() => openShowView(row)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  openShowView(row);
+                }}
               >
                 <i className="bx bx-detail text-info"></i>
               </button>
