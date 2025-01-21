@@ -104,7 +104,7 @@ const ImportData = ({ type, closeModal, show }) => {
 
   const deleteUniversity = async (id, type) => {
     setInitialData(
-      initialData.map((val) => val.id != id && val.question_type != type)
+      initialData.filter((val) => val.id != id && val.question_type != type)
     );
   };
 
@@ -113,6 +113,7 @@ const ImportData = ({ type, closeModal, show }) => {
     openEditForm,
     openShowView,
     deleteUniversity,
+    type: "import",
     t,
   });
 

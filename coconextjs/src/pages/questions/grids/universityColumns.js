@@ -8,6 +8,7 @@ const UniversityColumns = ({
   openShowView,
   permissionsMap,
   deleteUniversity,
+  type = "",
   t,
 }) => {
   const confirmDelete = (id, type) => {
@@ -230,17 +231,18 @@ const UniversityColumns = ({
                 <i className="bx bx-edit text-warning"></i>
               </button>
             )}
-            {permissionsMap.permissionlist.add_questiontype && (
-              <button
-                className="btn btn-icon"
-                data-tooltip-id="my-tooltip"
-                data-tooltip-content={t("Clone")}
-                data-tooltip-place="top"
-                onClick={() => openCloneForm(row)}
-              >
-                <i className="bx bx-copy text-success"></i>
-              </button>
-            )}
+            {permissionsMap.permissionlist.add_questiontype &&
+              type !== "import" && (
+                <button
+                  className="btn btn-icon"
+                  data-tooltip-id="my-tooltip"
+                  data-tooltip-content={t("Clone")}
+                  data-tooltip-place="top"
+                  onClick={() => openCloneForm(row)}
+                >
+                  <i className="bx bx-copy text-success"></i>
+                </button>
+              )}
             {permissionsMap.permissionlist.view_questiontype && (
               <button
                 className="btn btn-icon"
@@ -258,7 +260,14 @@ const UniversityColumns = ({
                 data-tooltip-id="my-tooltip"
                 data-tooltip-content={t("Delete")}
                 data-tooltip-place="top"
-                onClick={() => confirmDelete(row.id, row.question_type)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (type === "import") {
+                    deleteUniversity(row.id, row.question_type);
+                  } else {
+                    confirmDelete(row.id, row.question_type);
+                  }
+                }}
               >
                 <i className="bx bx-trash text-danger"></i>
               </button>
