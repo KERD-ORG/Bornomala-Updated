@@ -4,7 +4,7 @@
     "target_organization": "1",
     "question_level": "1",
     "question_text": "What is the capital of France?",
-    "correct_answer": [2],
+    "correct_answer": 2,
     "ordering_sequence": null,
     "target_subject": "1",
     "exam_references": [1],
