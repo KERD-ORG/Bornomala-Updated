@@ -15,7 +15,7 @@ import {
   EXPLANATION_LEVELS,
   FetchDropdownData,
   QuestionSchema,
-} from "@/utils/utils";
+} from "@/pages/questions/utils";
 
 const defaultValues = {
   target_organization: "",

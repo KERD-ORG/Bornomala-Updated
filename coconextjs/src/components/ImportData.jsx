@@ -142,12 +142,7 @@ const ImportData = ({ type, closeModal, show }) => {
     fetchDropdownData();
   }, [token]);
 
-  useEffect(() => {
-    console.log(dropdownData);
-  }, [dropdownData]);
-
   const openEditForm = (university) => {
-    console.log(university);
     setFormMode("edit");
     setSelectedUniversity(university);
     setShowModal(true);

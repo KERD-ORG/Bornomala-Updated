@@ -23,7 +23,7 @@ import {
   FetchDropdownData,
   QuestionSchema,
   ExtractDetailedErrorMessage,
-} from "@/utils/utils";
+} from "@/pages/questions/utils";
 import RenderCorrectAnswerField from "./RenderCorrectAnswerField";
 import NestedMCQOptions from "./NestedMCQOptions";
 

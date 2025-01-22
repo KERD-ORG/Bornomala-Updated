@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { executeAjaxOperationStandard } from "./fetcher";
+import { executeAjaxOperationStandard } from "../../utils/fetcher";
 
 export const MAX_OPTIONS = 8;
 export const EXPLANATION_LEVELS = ["Preliminary", "Intermediate", "Advanced"];

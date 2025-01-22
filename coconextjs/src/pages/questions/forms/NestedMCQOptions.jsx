@@ -1,4 +1,4 @@
-import { MAX_OPTIONS } from "@/utils/utils";
+import { MAX_OPTIONS } from "@/pages/questions/utils";
 import React from "react";
 import { Button } from "react-bootstrap";
 import { Controller, useFieldArray } from "react-hook-form";
