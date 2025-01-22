@@ -278,7 +278,7 @@ const ImportData = ({ type, closeModal, show }) => {
         formData.options = formData.options
           ? formData.options.map((val) => val.option_text)
           : [];
-        let type = formData.question_type;
+        let type = initialData[i].question_type;
 
         delete formData["question_type"];
 
