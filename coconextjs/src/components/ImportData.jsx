@@ -7,8 +7,10 @@ import useCommonForm from "@/hooks/useCommonForm";
 import DataGrid from "react-data-grid";
 import QuestionEditForm from "@/pages/questions/forms/EditForm";
 import { executeAjaxOperationStandard } from "@/utils/fetcher";
-import { Modal } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import QuestionDetails from "@/pages/questions/UniversityDetails";
+
+const explanationLevels = ["Preliminary", "Intermediate", "Advanced"];
 
 const pkToDropdownMap = {
   target_organization: "organizations",
@@ -66,12 +68,11 @@ function addDropdownNames(details, dropdownData) {
 const ImportData = ({ type, closeModal, show }) => {
   // State management
   const formRef = useRef();
-  const { t, token } = useCommonForm();
+  const { t, token, globalError, setGlobalError, loading, setLoading } =
+    useCommonForm();
   const { permissionsMap } = useUserPermissions();
   const [file, setFile] = useState(null);
   const [initialData, setInitialData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [globalError, setGlobalError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const fileRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
@@ -233,6 +234,133 @@ const ImportData = ({ type, closeModal, show }) => {
     reader.readAsText(file);
   };
 
+  const extractDetailedErrorMessage = (details, path = "") => {
+    if (!details || typeof details !== "object") return null;
+
+    for (const key in details) {
+      const currentPath = path ? `${path} -> ${key}` : key;
+
+      if (Array.isArray(details[key])) {
+        // Handle arrays that contain strings or objects
+        for (const item of details[key]) {
+          if (typeof item === "string") {
+            return `${currentPath}: ${item}`; // Found a string error
+          } else if (typeof item === "object") {
+            const nestedError = extractDetailedErrorMessage(item, currentPath);
+            if (nestedError) return nestedError;
+          }
+        }
+      } else if (typeof details[key] === "object") {
+        // Handle nested objects
+        const nestedError = extractDetailedErrorMessage(
+          details[key],
+          currentPath
+        );
+        if (nestedError) return nestedError;
+      } else if (typeof details[key] === "string") {
+        // Direct string error
+        return `${currentPath}: ${details[key]}`;
+      }
+    }
+
+    return null;
+  };
+
+  const handleImport = async (e) => {
+    e.preventDefault();
+    try {
+      const promises = [];
+      for (let i = 0; i < initialData.length; i++) {
+        const formData = { ...initialData[i].details };
+
+        formData.explanations = formData.explanations
+          ? formData.explanations.map((val, ind) => ({
+              ...val,
+              level: explanationLevels[ind],
+            }))
+          : [];
+
+        formData.options = formData.options
+          ? formData.options.map((val) => val.option_text)
+          : [];
+        let type = formData.question_type;
+
+        delete formData["question_type"];
+
+        const promise = executeAjaxOperationStandard({
+          url: `${process.env.NEXT_PUBLIC_API_ENDPOINT_QUESTION}?type=${type}`,
+          method: "post",
+          data: JSON.stringify(formData),
+          token,
+        });
+
+        promises.push(
+          promise
+            .then((val) => ({ ...val, index: i }))
+            .catch((err) => ({ ...err, index: i }))
+        );
+      }
+
+      const results = await Promise.all(promises);
+      // Identify successful submissions
+      const successfulIndexes = results
+        .filter(
+          (result) =>
+            typeof result.status === "number" &&
+            result.status >= 200 &&
+            result.status < 300
+        )
+        .map((result) => result.index);
+
+      // Remove successful questions
+      successfulIndexes
+        .sort((a, b) => b - a)
+        .forEach((ind) => removeQuestion(ind));
+
+      // Handle failures
+      const failedResults = results.filter(
+        (result) => result.status === "error"
+      );
+
+      // console.log(results);
+      let ind = -1;
+      failedResults.forEach((result, index) => {
+        if (ind != -1) return;
+        if (result.status === "error") {
+          ind = index;
+        }
+      });
+
+      if (ind != -1) {
+        const { details, error } = results[ind];
+
+        // Extract the first error message with context
+        const detailedError = extractDetailedErrorMessage(details);
+        const errorMessage = detailedError
+          ? `Error in Question ${ind + 1}: ${detailedError}`
+          : response?.message ||
+            error?.message ||
+            `Error in Question ${
+              ind + 1
+            }: An error occurred while submitting the form.`;
+
+        setGlobalError(errorMessage);
+        return;
+      }
+      window.location.reload();
+    } catch (error) {
+      console.error("An error occurred during question submission:", error);
+      let errorMessage = "An error occurred while submitting the form.";
+      if (error.message) {
+        errorMessage = error.message;
+      }
+      if (error.response && error.response.data && error.response.data.error) {
+        errorMessage = error.response.data.error;
+      }
+      setGlobalError(errorMessage);
+    }
+  };
+
   return (
     <>
       {/* Alert Messages */}
@@ -290,27 +418,34 @@ const ImportData = ({ type, closeModal, show }) => {
         ) : (
           <div className="mt-4">
             {initialData.length > 0 && (
-              <DataGrid
-                style={{ height: 430, resize: "vertical" }}
-                columns={universityColumns.map((column) => ({
-                  ...column,
-                  key: column.key,
-                  headerRenderer: () => renderHeaderCell(column),
-                }))}
-                rows={initialData}
-                rowKeyGetter={(row, index) => {
-                  if (row.id === undefined || row.id === null) {
-                    // Generate a unique key using index and other fallback methods
-                    return `row-${index}-${Date.now()}`;
-                  }
-                  return `${row.id}${row.question_type}`;
-                }}
-                rowHeight={40}
-                // onScroll={handleScroll}
-                // onSortColumnsChange={handleSort}
-                // sortColumns={sortColumns}
-                className="fill-grid"
-              />
+              <>
+                <DataGrid
+                  style={{ height: 430, resize: "vertical" }}
+                  columns={universityColumns.map((column) => ({
+                    ...column,
+                    key: column.key,
+                    headerRenderer: () => renderHeaderCell(column),
+                  }))}
+                  rows={initialData}
+                  rowKeyGetter={(row, index) => {
+                    if (row.id === undefined || row.id === null) {
+                      // Generate a unique key using index and other fallback methods
+                      return `row-${index}-${Date.now()}`;
+                    }
+                    return `${row.id}${row.question_type}`;
+                  }}
+                  rowHeight={40}
+                  // onScroll={handleScroll}
+                  // onSortColumnsChange={handleSort}
+                  // sortColumns={sortColumns}
+                  className="fill-grid"
+                />
+                <div className="d-flex mt-4 justify-content-end">
+                  <Button onClick={handleImport} type="primary">
+                    Import
+                  </Button>
+                </div>
+              </>
             )}
           </div>
         )}
