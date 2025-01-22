@@ -297,6 +297,7 @@ const ImportData = ({ type, closeModal, show }) => {
       }
 
       const results = await Promise.all(promises);
+
       // Identify successful submissions
       const successfulIndexes = results
         .filter(
@@ -307,26 +308,26 @@ const ImportData = ({ type, closeModal, show }) => {
         )
         .map((result) => result.index);
 
-      // Remove successful questions
-      successfulIndexes
-        .sort((a, b) => b - a)
-        .forEach((ind) => removeQuestion(ind));
+      // Filter out successful questions
+      const filteredData = initialData.filter(
+        (_, index) => !successfulIndexes.includes(index)
+      );
+      setInitialData(filteredData);
 
       // Handle failures
       const failedResults = results.filter(
         (result) => result.status === "error"
       );
 
-      // console.log(results);
       let ind = -1;
       failedResults.forEach((result, index) => {
-        if (ind != -1) return;
+        if (ind !== -1) return;
         if (result.status === "error") {
           ind = index;
         }
       });
 
-      if (ind != -1) {
+      if (ind !== -1) {
         const { details, error } = results[ind];
 
         // Extract the first error message with context
