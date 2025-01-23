@@ -272,7 +272,9 @@ class TrueFalseQuestion(BaseQuestion):
 # Matching Question
 class MatchingQuestion(BaseQuestion):
     question_text = models.TextField(null=True, blank=True)
-    matching_pairs = models.JSONField()
+    options_column_a = models.JSONField()
+    options_column_b = models.JSONField()
+    correct_answer = models.JSONField()
 
     def __str__(self):
         return self.question_text[:50]

@@ -220,9 +220,10 @@ Content-Type: application/json
   "difficulty_level": 1,
   "question_status": 1,
   "exam_references": [1],
+  "question_text": "Drag the rivers to their corresponding regions.",
   "options_column_a": ["Padma", "Jamuna"],
   "options_column_b": ["Central", "Northern"],
-  "correct_answer": "[1, 2], [2, 3]",
+  "correct_answer": [[1, 2], [2, 3]],
   "explanations": [{"level": "Intermediate", "text": "Jamdani from Dhaka, Nakshi Kantha from Rajshahi."}]
 }
 

@@ -270,7 +270,8 @@ class MatchingQuestionSerializer(BaseQuestionSerializer):
 
     class Meta(BaseQuestionSerializer.Meta):
         model = MatchingQuestion
-        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'matching_pairs']
+        fields = BaseQuestionSerializer.Meta.fields + ['id', 'question_text', 'options_column_a', 'options_column_b',
+                                                       'correct_answer']
 
 
 class OrderingQuestionSerializer(BaseQuestionSerializer):
