@@ -399,6 +399,7 @@ export const QuestionModal = ({
 }) => {
   const { token, setGlobalError } = useCommonForm();
   const [loading, setLoading] = useState(false);
+  const [translateToBengali, setTranslateToBengali] = useState(false);
 
   const {
     control,
@@ -712,26 +713,52 @@ export const QuestionModal = ({
           {question_type && (
             <>
               {CONTAINS_QUESTION.includes(question_type) && (
-                <Row className="mb-3">
-                  <Col>
-                    <Form.Label>Question: </Form.Label>
-                    <Controller
-                      name="question_text"
-                      control={control}
-                      render={({ field }) => (
-                        <Form.Control
-                          as="textarea"
-                          rows={4}
-                          isInvalid={!!errors.question_text}
-                          {...field}
-                        />
-                      )}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.question_text?.message}
-                    </Form.Control.Feedback>
-                  </Col>
-                </Row>
+                <>
+                  <Row className="mb-3">
+                    <Col>
+                      <Form.Label>Question: </Form.Label>
+                      <Controller
+                        name="question_text"
+                        control={control}
+                        render={({ field }) => (
+                          <Form.Control
+                            as="textarea"
+                            rows={4}
+                            isInvalid={!!errors.question_text}
+                            {...field}
+                          />
+                        )}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.question_text?.message}
+                      </Form.Control.Feedback>
+                    </Col>
+                  </Row>
+                  {translateToBengali && (
+                    <Row>
+                      <Col>
+                        <Form.Group className="mt-3">
+                          <Form.Label>Translation in Bengali:</Form.Label>
+                          <Controller
+                            name="question_text_bn"
+                            control={control}
+                            render={({ field }) => (
+                              <Form.Control
+                                as="textarea"
+                                rows={4}
+                                isInvalid={!!errors.question_text_bn}
+                                {...field}
+                              />
+                            )}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.question_text_bn?.message}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  )}
+                </>
               )}
 
               {question_type.includes("MCQ") && (
@@ -749,6 +776,7 @@ export const QuestionModal = ({
                     errors={errors}
                     control={control}
                     questionType={question_type}
+                    translateToBengali={translateToBengali}
                   />
                   {errors.correct_answer && (
                     <Form.Text className="text-danger">
@@ -900,12 +928,30 @@ export const QuestionModal = ({
           </Row>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={onHide}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={() => handleSubmit(onSubmit)()}>
-            {initialData ? "Save Changes" : "Add Question"}
-          </Button>
+          <div className="d-flex align-items-center w-100">
+            {/* Checkbox for Translation */}
+            <Form.Check
+              type="checkbox"
+              id="translateToBengali"
+              label="Translate to Bengali"
+              className="me-auto"
+              checked={translateToBengali}
+              onChange={(e) => setTranslateToBengali(e.target.checked)}
+            />
+
+            {/* Cancel and Add Question Buttons */}
+            <div>
+              <Button variant="secondary" onClick={onHide} className="me-2">
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() => handleSubmit(onSubmit)()}
+              >
+                {initialData ? "Save Changes" : "Add Question"}
+              </Button>
+            </div>
+          </div>
         </Modal.Footer>
       </Form>
     </Modal>
