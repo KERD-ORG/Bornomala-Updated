@@ -135,15 +135,16 @@ const UniversityColumns = ({
         return <span>{row.details.sub_topic_name}</span>;
       },
     },
-    {
-      key: "sub_sub_topic_name",
-      name: t("Sub Sub Topic"),
-      resizable: true,
-      sortable: true,
-      renderCell({ row }) {
-        return <span>{row.details.sub_sub_topic_name}</span>;
-      },
-    },
+    // {
+    //   key: "sub_sub_topic_name",
+    //   name: t("Sub Sub Topic"),
+    //   resizable: true,
+    //   sortable: true,
+    //   width: "200px",
+    //   renderCell({ row }) {
+    //     return <span>{row.details.sub_sub_topic_name}</span>;
+    //   },
+    // },
     {
       key: "difficulty_level_name",
       name: t("Difficulty Level"),

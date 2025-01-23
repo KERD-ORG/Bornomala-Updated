@@ -102,6 +102,8 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
     exam_references = serializers.PrimaryKeyRelatedField(
         queryset=ExamReference.objects.all(), many=True, required=False
     )
+    exam_references_name = serializers.SerializerMethodField()
+
 
     question_level = serializers.PrimaryKeyRelatedField(
         queryset=QuestionLevel.objects.all(), required=False, allow_null=True
@@ -134,7 +136,10 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
     sub_topic_name = serializers.SerializerMethodField()
 
     sub_sub_topic = serializers.PrimaryKeyRelatedField(
-        queryset=SubSubTopic.objects.all(), required=False, allow_null=True
+        queryset=SubSubTopic.objects.all(),
+        many=True,
+        required=False,
+        allow_empty=True
     )
     sub_sub_topic_name = serializers.SerializerMethodField()
 
@@ -161,7 +166,7 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
             'target_organization', 'target_organization_name',
             'topic', 'topic_name', 'sub_topic', 'sub_topic_name', 
             'sub_sub_topic', 'sub_sub_topic_name', 'difficulty_level', 'difficulty_level_name', 
-            'question_status', 'question_status_name', 'exam_references', 
+            'question_status', 'question_status_name', 'exam_references', 'exam_references_name',
             'explanations', 'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
@@ -178,12 +183,18 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
 
     def get_topic_name(self, obj):
         return obj.topic.name if obj.topic else None
+    
+    def get_exam_references_name(self, obj):
+        return ", ".join(
+            [f"{exam.reference_name} ({exam.year_of_exam})" for exam in obj.exam_references.all()]
+        ) if obj.exam_references.exists() else None
+
 
     def get_sub_topic_name(self, obj):
         return obj.sub_topic.name if obj.sub_topic else None
 
     def get_sub_sub_topic_name(self, obj):
-        return obj.sub_sub_topic.name if obj.sub_sub_topic else None
+        return ", ".join([sub_sub_topic.name for sub_sub_topic in obj.sub_sub_topic.all()]) if obj.sub_sub_topic.exists() else None
 
     def get_difficulty_level_name(self, obj):
         return obj.difficulty_level.name if obj.difficulty_level else None
@@ -197,9 +208,13 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         explanations_data = validated_data.pop('explanations', [])
         exam_references_data = validated_data.pop('exam_references', [])
+        sub_sub_topics_data = validated_data.pop('sub_sub_topic', [])
 
         # Create the base question instance
         question = self.Meta.model.objects.create(**validated_data)
+
+        if sub_sub_topics_data:
+            question.sub_sub_topic.set(sub_sub_topics_data)
 
         # Add explanations
         for explanation_data in explanations_data:
@@ -215,10 +230,14 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         explanations_data = validated_data.pop('explanations', None)
         exam_references_data = validated_data.pop('exam_references', None)
+        sub_sub_topics_data = validated_data.pop('sub_sub_topic', None)
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
+
+        if sub_sub_topics_data is not None:
+            instance.sub_sub_topic.set(sub_sub_topics_data)
 
         if explanations_data is not None:
             instance.explanations.clear()

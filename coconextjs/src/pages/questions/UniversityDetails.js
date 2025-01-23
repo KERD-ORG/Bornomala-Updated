@@ -101,6 +101,10 @@ const QuestionDetails = ({ university: question }) => {
               {details.sub_topic_name || t("N/A")}
             </li>
             <li className="list-group-item">
+              <strong>{t("Sub Sub Topic")}:</strong>{" "}
+              {details.sub_sub_topic_name || t("N/A")}
+            </li>
+            <li className="list-group-item">
               <strong>{t("Difficulty Level")}:</strong>{" "}
               {details.difficulty_level_name || t("N/A")}
             </li>
@@ -108,10 +112,7 @@ const QuestionDetails = ({ university: question }) => {
             {/* Handling arrays in details (exam_references_name, etc.) */}
             <li className="list-group-item">
               <strong>{t("Exam References")}:</strong>{" "}
-              {Array.isArray(details.exam_references_name) &&
-              details.exam_references_name.length > 0
-                ? details.exam_references_name.join(", ")
-                : t("N/A")}
+              {details.exam_references_name}
             </li>
 
             {/* Options (MCQ, etc.) */}

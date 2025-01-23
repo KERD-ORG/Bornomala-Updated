@@ -196,9 +196,10 @@ class BaseQuestion(models.Model):
     sub_topic = models.ForeignKey(
         'SubTopic', on_delete=models.SET_NULL, null=True, blank=True
     )
-    sub_sub_topic = models.ForeignKey(
-        'SubSubTopic', on_delete=models.SET_NULL, null=True, blank=True
-    )
+    # sub_sub_topic = models.ForeignKey(
+    #     'SubSubTopic', on_delete=models.SET_NULL, null=True, blank=True
+    # )
+    sub_sub_topic = models.ManyToManyField('SubSubTopic', blank=True, null=True)
     difficulty_level = models.ForeignKey(
         'DifficultyLevel', on_delete=models.SET_NULL, null=True, blank=True
     )
@@ -274,7 +275,7 @@ class MatchingQuestion(BaseQuestion):
     question_text = models.TextField(null=True, blank=True)
     options_column_a = models.JSONField()
     options_column_b = models.JSONField()
-    correct_answer = models.JSONField()
+    correct_answer = models.CharField(max_length=512)
 
     def __str__(self):
         return self.question_text[:50]

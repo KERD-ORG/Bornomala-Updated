@@ -12,6 +12,7 @@ import axios from "axios";
 import NestedMCQOptions from "./NestedMCQOptions";
 import RenderCorrectAnswerField from "./RenderCorrectAnswerField";
 import {
+  CONTAINS_QUESTION,
   EXPLANATION_LEVELS,
   FetchDropdownData,
   QuestionSchema,
@@ -31,7 +32,7 @@ const defaultValues = {
   options: [{ option_text: "" }, { option_text: "" }],
   explanations: [],
   target_group: "",
-  sub_sub_topic: "",
+  sub_sub_topic: [],
 };
 
 // Define validation schema as needed for editing a question
@@ -82,7 +83,7 @@ const QuestionEditForm = forwardRef(
     });
 
     const topic = watch("topic");
-    const sub_topic = watch("sub_topic");
+    const subTopic = watch("sub_topic");
     const question_type = watch("question_type");
 
     useImperativeHandle(ref, () => ({
@@ -131,8 +132,7 @@ const QuestionEditForm = forwardRef(
           difficulty_level: initialData.details.difficulty_level || "",
           explanations: initialData.details.explanations || [],
           target_group: initialData.details.target_group || "",
-          sub_sub_topic: initialData.details.sub_sub_topic || "",
-          matching_pairs: initialData.details.matching_pairs || {},
+          sub_sub_topic: initialData.details.sub_sub_topic || [],
           ordering_sequence: initialData.details.ordering_sequence || [],
           options_column_a: initialData.details.options_column_a || [],
           options_column_b: initialData.details.options_column_b || [],
@@ -228,8 +228,8 @@ const QuestionEditForm = forwardRef(
             },
           }
         );
-
-        setValue(`explanations.${index}.video`, response.data.media_link);
+        console.log(response);
+        setValue(`explanations.${index}.video_url`, response.data.media_link);
         setValue(`explanations.${index}.filename`, file.name);
       } catch (error) {
         console.error("Error uploading file:", error);
@@ -374,8 +374,8 @@ const QuestionEditForm = forwardRef(
               <Form.Label>Subtopic:</Form.Label>
               <Controller
                 name={`sub_topic`}
-                disabled={!topic}
                 control={control}
+                disabled={!topic}
                 render={({ field }) => (
                   <Form.Select {...field} isInvalid={!!errors?.sub_topic}>
                     <option value="">-- Select Subtopic --</option>
@@ -397,106 +397,37 @@ const QuestionEditForm = forwardRef(
         </Row>
 
         <Row className="mb-3">
-          <Col md={4}>
-            <Form.Group controlId={`sub_sub_topic1`}>
-              <Form.Label>Sub Sub Topic 1:</Form.Label>
-              <Controller
-                name={`sub_sub_topic1`}
-                control={control}
-                disabled={!sub_topic}
-                render={({ field }) => (
-                  <Form.Select {...field} isInvalid={!!errors?.sub_sub_topic1}>
-                    <option value="">-- Select Sub Subtopic --</option>
-                    {dropdownData.subSubTopics
-                      .filter((val) => val.sub_topic == subTopic)
-                      .map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                  </Form.Select>
-                )}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors?.sub_sub_topic1?.message}
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Col>
-          <Col md={4}>
-            <Form.Group controlId={`sub_sub_topic2`}>
-              <Form.Label>Sub Sub Topic 2:</Form.Label>
-              <Controller
-                name={`sub_sub_topic2`}
-                control={control}
-                disabled={!sub_topic}
-                render={({ field }) => (
-                  <Form.Select {...field} isInvalid={!!errors?.sub_sub_topic2}>
-                    <option value="">-- Select Sub Subtopic --</option>
-                    {dropdownData.subSubTopics
-                      .filter((val) => val.sub_topic == subTopic)
-                      .map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                  </Form.Select>
-                )}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors?.sub_sub_topic2?.message}
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Col>
-          <Col md={4}>
-            <Form.Group controlId={`sub_sub_topic3`}>
-              <Form.Label>Sub Sub Topic 3:</Form.Label>
-              <Controller
-                name={`sub_sub_topic3`}
-                control={control}
-                disabled={!sub_topic}
-                render={({ field }) => (
-                  <Form.Select {...field} isInvalid={!!errors?.sub_sub_topic3}>
-                    <option value="">-- Select Sub Subtopic --</option>
-                    {dropdownData.subSubTopics
-                      .filter((val) => val.sub_topic == subTopic)
-                      .map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                  </Form.Select>
-                )}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors?.sub_sub_topic3?.message}
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Row className="mb-3">
           <Col md={6}>
-            <Form.Group controlId={`difficulty_level`}>
-              <Form.Label>Difficulty:</Form.Label>
+            <Form.Group controlId={`sub_sub_topic`}>
+              <Form.Label>Sub Sub Topic:</Form.Label>
               <Controller
-                name={`difficulty_level`}
+                name="sub_sub_topic"
                 control={control}
-                render={({ field }) => (
-                  <Form.Select
-                    {...field}
-                    isInvalid={!!errors?.difficulty_level}
-                  >
-                    <option value="">-- Select Difficulty --</option>
-                    {dropdownData.difficultyLevels.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </Form.Select>
-                )}
+                render={({ field }) => {
+                  const { onChange, value, ref } = field;
+                  return (
+                    <Select
+                      inputRef={ref}
+                      isMulti
+                      isDisabled={!subTopic}
+                      options={dropdownData.subSubTopics.filter(
+                        (val) => val.sub_topic == subTopic
+                      )}
+                      value={dropdownData.subSubTopics.filter((option) =>
+                        value?.includes(option.value)
+                      )}
+                      onChange={(selectedOptions) =>
+                        onChange(selectedOptions.map((option) => option.value))
+                      }
+                      classNamePrefix={
+                        errors.sub_sub_topic ? "is-invalid" : "select"
+                      }
+                    />
+                  );
+                }}
               />
               <Form.Control.Feedback type="invalid">
-                {errors?.difficulty_level?.message}
+                {errors?.sub_sub_topic?.message}
               </Form.Control.Feedback>
             </Form.Group>
           </Col>
@@ -534,7 +465,7 @@ const QuestionEditForm = forwardRef(
         </Row>
 
         <Row className="mb-3">
-          <Col>
+          <Col md={6}>
             <Form.Label>Question Type:</Form.Label>
             <Controller
               name="question_type"
@@ -554,20 +485,36 @@ const QuestionEditForm = forwardRef(
               {errors.question_type?.message}
             </Form.Control.Feedback>
           </Col>
+          <Col md={6}>
+            <Form.Group controlId={`difficulty_level`}>
+              <Form.Label>Difficulty:</Form.Label>
+              <Controller
+                name={`difficulty_level`}
+                control={control}
+                render={({ field }) => (
+                  <Form.Select
+                    {...field}
+                    isInvalid={!!errors?.difficulty_level}
+                  >
+                    <option value="">-- Select Difficulty --</option>
+                    {dropdownData.difficultyLevels.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </Form.Select>
+                )}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors?.difficulty_level?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Col>
         </Row>
 
         {question_type && (
           <>
-            {[
-              "MCQ_SINGLE",
-              "MCQ_MULTI",
-              "CODE",
-              "DESCRIPTIVE",
-              "FILL_BLANK",
-              "NUMERICAL",
-              "ORDERING",
-              "TRUE_FALSE",
-            ].includes(question_type) && (
+            {CONTAINS_QUESTION.includes(question_type) && (
               <Row className="mb-3">
                 <Col>
                   <Form.Label>Question: </Form.Label>
@@ -633,7 +580,7 @@ const QuestionEditForm = forwardRef(
         </Row>
         {fields.map((field, index) => {
           const filename = watch(`explanations.${index}.filename`);
-          const video = watch(`explanations.${index}.video`);
+          const video = watch(`explanations.${index}.video_url`);
 
           return (
             <div
@@ -700,7 +647,7 @@ const QuestionEditForm = forwardRef(
                         variant="secondary"
                         size="sm"
                         onClick={() =>
-                          setValue(`explanations.${index}.video`, "")
+                          setValue(`explanations.${index}.video_url`, "")
                         }
                         className="ms-2"
                       >
@@ -718,13 +665,13 @@ const QuestionEditForm = forwardRef(
                           onChange={(e) =>
                             handleVideoUpload(e.target.files[0], index)
                           }
-                          isInvalid={!!errors?.explanations?.[index]?.video}
+                          isInvalid={!!errors?.explanations?.[index]?.video_url}
                         />
                       )}
                     />
                   )}
                   <Form.Control.Feedback type="invalid">
-                    {errors?.explanations?.[index]?.video?.message}
+                    {errors?.explanations?.[index]?.video_url?.message}
                   </Form.Control.Feedback>
                 </Col>
               </Row>
@@ -749,7 +696,13 @@ const QuestionEditForm = forwardRef(
         </Row>
 
         <div className="d-flex justify-content-end gap-3 mt-3">
-          <Button variant="secondary" onClick={onCancel}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              reset(defaultValues); // Reset the form to default values
+              onCancel(); // Call the onCancel callback
+            }}
+          >
             Cancel
           </Button>
           <Button variant="primary" type="submit">

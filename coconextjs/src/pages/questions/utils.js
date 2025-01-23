@@ -4,6 +4,19 @@ import { executeAjaxOperationStandard } from "../../utils/fetcher";
 export const MAX_OPTIONS = 8;
 export const EXPLANATION_LEVELS = ["Preliminary", "Intermediate", "Advanced"];
 
+export const CONTAINS_QUESTION = [
+  "MCQ_SINGLE",
+  "MCQ_MULTI",
+  "CODE",
+  "DESCRIPTIVE",
+  "FILL_BLANK",
+  "NUMERICAL",
+  "ORDERING",
+  "TRUE_FALSE",
+  "ASSERTION_REASON",
+  "CASE_STUDY",
+];
+
 export const QuestionSchema = yup.object().shape({
   question_text: yup.string(), //required("Question Text is required"),
   correct_answer: yup.mixed().when("question_type", (question_type, schema) => {

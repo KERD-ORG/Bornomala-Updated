@@ -1,9 +1,11 @@
+import useCommonForm from "@/hooks/useCommonForm";
+import axios from "axios";
 import React from "react";
-import { Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { Controller } from "react-hook-form";
 
 const RenderCorrectAnswerField = ({ questionType, errors, control }) => {
-  
+  const { loading, setLoading, token, t, setGlobalError } = useCommonForm();
   switch (questionType) {
     case "FILL_BLANK":
     case "NUMERICAL":
