@@ -140,7 +140,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:8000/api/questions/1/?type=MCQ_SINGLE
+#DELETE http://localhost:8000/api/questions/1/?type=MCQ_SINGLE
 
 
 

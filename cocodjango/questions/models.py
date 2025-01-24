@@ -3,6 +3,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from educational_organizations_app.models import EducationalOrganizations as Organization
+from django.contrib.auth.models import User
 
 
 class QuestionLevel(models.Model):
@@ -199,7 +200,7 @@ class BaseQuestion(models.Model):
     # sub_sub_topic = models.ForeignKey(
     #     'SubSubTopic', on_delete=models.SET_NULL, null=True, blank=True
     # )
-    sub_sub_topic = models.ManyToManyField('SubSubTopic', blank=True, null=True)
+    sub_sub_topic = models.ManyToManyField('SubSubTopic', blank=True)
     difficulty_level = models.ForeignKey(
         'DifficultyLevel', on_delete=models.SET_NULL, null=True, blank=True
     )
@@ -218,10 +219,10 @@ class BaseQuestion(models.Model):
         auto_now=True, help_text="Timestamp when the question was last updated."
     )
 
-    # created_by = models.ForeignKey(
-    #     User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_questions',
-    #     help_text="User who created the question."
-    # )
+    created_by = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True,
+        help_text="User who created the question."
+    )
     # approved_by = models.ForeignKey(
     #     User, on_delete=models.SET_NULL, null=True, blank=True, related_name='approved_questions',
     #     help_text="User who approved the question."
@@ -231,7 +232,7 @@ class BaseQuestion(models.Model):
         abstract = True
 
     def __str__(self):
-        return f"{self.question_type} Question"
+        return f"{self.question_type} Question by {self.created_by or 'Unknown'}"
 
 
 class MCQSingleQuestion(BaseQuestion):

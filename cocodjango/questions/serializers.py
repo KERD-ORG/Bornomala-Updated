@@ -11,6 +11,8 @@ from .models import (
 )
 from educational_organizations_app.models import EducationalOrganizations as Organization
 from rest_framework import serializers
+from django.contrib.auth.models import User
+
 
 
 class ExplanationSerializer(serializers.ModelSerializer):
@@ -137,9 +139,7 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
 
     sub_sub_topic = serializers.PrimaryKeyRelatedField(
         queryset=SubSubTopic.objects.all(),
-        many=True,
-        required=False,
-        allow_empty=True
+        many=True, required=False
     )
     sub_sub_topic_name = serializers.SerializerMethodField()
 
@@ -158,10 +158,14 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
     )
     target_organization_name = serializers.SerializerMethodField()
 
+    created_by = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), required=False, allow_null=True
+    )
+    created_by_name = serializers.SerializerMethodField()
     class Meta:
         model = BaseQuestion
         fields = [
-            'id', 'question_level', 'question_level_name', 'target_group', 'target_group_name',
+            'id', 'created_by', 'created_by_name','question_level', 'question_level_name', 'target_group', 'target_group_name',
             'target_subject', 'target_subject_name', 'question_type',
             'target_organization', 'target_organization_name',
             'topic', 'topic_name', 'sub_topic', 'sub_topic_name', 
@@ -204,6 +208,9 @@ class BaseQuestionSerializer(serializers.ModelSerializer):
 
     def get_target_organization_name(self, obj):
         return obj.target_organization.name if obj.target_organization else None
+
+    def get_created_by_name(self, obj):
+        return f"{obj.created_by.first_name} {obj.created_by.last_name}" if obj.created_by else None
 
     def create(self, validated_data):
         explanations_data = validated_data.pop('explanations', [])

@@ -22,72 +22,13 @@ Accept-Encoding: br,deflate,gzip,x-gzip
   "explanations": [{"level": "Intermediate", "text": "Jamdani from Dhaka, Nakshi Kantha from Rajshahi."}]
 }
 
-<> 2025-01-23T002649.400.json
+<> 2025-01-24T092418.400.json
 
 ###
 
-DELETE http://localhost:8000/api/questions/1/?type=MATCHING
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2025-01-23T000225.500.html
-
-###
-
-DELETE http://localhost:8000/api/questions/1/?type=MATCHING
+POST http://localhost:8000/api/questions/?type=ASSERTION_REASON
 Content-Type: application/json
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2025-01-23T000124.500.html
-
-###
-
-DELETE http://localhost:8000/api//questions/1/?type=MATCHING
-Content-Type: application/json
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2025-01-23T000058.404.html
-
-###
-
-DELETE http://localhost:8000/api//questions/1/?type=MATCHING
-Content-Type: application/json
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2025-01-23T000050.404.html
-
-###
-
-DELETE http://localhost:8000/api/questions/?type=MATCHING
-Content-Type: application/json
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2025-01-22T235910.405.json
-
-###
-
-DELETE http://localhost:8000/api/questions/?type=MATCHING
-Content-Type: application/json
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2025-01-22T235857.405.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=MATCHING
-Content-Type: application/json
-Content-Length: 565
+Content-Length: 589
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
@@ -96,52 +37,22 @@ Accept-Encoding: br,deflate,gzip,x-gzip
   "question_level": 1,
   "target_group": 1,
   "target_subject": 1,
-  "target_organization": 1,
+    "target_organization": 1,
   "topic": 1,
   "sub_topic": 1,
   "difficulty_level": 1,
   "question_status": 1,
   "exam_references": [1],
-  "question_text": "Drag the rivers to their corresponding regions.",
-  "options_column_a": ["Padma", "Jamuna"],
-  "options_column_b": ["Central", "Northern"],
-  "correct_answer": {"Padma": "Central", "Jamuna": "Northern"},
-  "explanations": [{"level": "Preliminary", "text": "Padma flows through central Bangladesh, and Jamuna through the northern region."}]
+  "question_text": "Assertion: Bangladesh has a tropical monsoon climate. Reason: Monsoon winds bring heavy rainfall.",
+  "correct_answer": "Both Assertion and Reason are true, and the Reason explains the Assertion.",
+  "explanations": [{"level": "Intermediate", "text": "Monsoon winds are the main cause of heavy rainfall in Bangladesh, leading to its tropical monsoon climate."}]
 }
 
-<> 2025-01-22T235023.500.html
+<> 2025-01-24T092352-4.201.json
 
 ###
 
-POST http://localhost:8000/api/questions/?type=MATCHING
-Content-Type: application/json
-Content-Length: 565
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "target_organization": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "Drag the rivers to their corresponding regions.",
-  "options_column_a": ["Padma", "Jamuna"],
-  "options_column_b": ["Central", "Northern"],
-  "correct_answer": {"Padma": "Central", "Jamuna": "Northern"},
-  "explanations": [{"level": "Preliminary", "text": "Padma flows through central Bangladesh, and Jamuna through the northern region."}]
-}
-
-<> 2025-01-22T235015.500.html
-
-###
-
-POST http://localhost:8000/api/questions/?type=MATCHING
+POST http://localhost:8000/api/questions/?type=DRAG_DROP
 Content-Type: application/json
 Content-Length: 567
 Connection: Keep-Alive
@@ -165,13 +76,196 @@ Accept-Encoding: br,deflate,gzip,x-gzip
   "explanations": [{"level": "Preliminary", "text": "Padma flows through central Bangladesh, and Jamuna through the northern region."}]
 }
 
-<> 2025-01-22T234504.400.json
+<> 2025-01-24T092352-3.201.json
+
+###
+
+POST http://localhost:8000/api/questions/?type=CODE
+Content-Type: application/json
+Content-Length: 424
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "Write a Python program to print Hello World.",
+  "correct_answer": "print('Hello World')",
+  "explanations": [{"level": "Preliminary", "text": "This program prints 'Hello World' to the console."}]
+}
+
+<> 2025-01-24T092352-2.201.json
+
+###
+
+POST http://localhost:8000/api/questions/?type=DIAGRAM
+Content-Type: application/json
+Content-Length: 494
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "Label the parts of this diagram.",
+  "diagram_url": "https://example.com/diagram.png",
+  "correct_answer": {"Central": "Dhaka", "South-East": "Chattogram"},
+  "explanations": [{"level": "Intermediate", "text": "This diagram represents major regions in Bangladesh."}]
+}
+
+<> 2025-01-24T092352-1.201.json
+
+###
+
+POST http://localhost:8000/api/questions/?type=CASE_STUDY
+Content-Type: application/json
+Content-Length: 438
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "Analyze how Padma Bridge will impact southern Bangladesh.",
+  "correct_answer": "It will boost trade and connectivity.",
+  "explanations": [{"level": "Advanced", "text": "Improves transportation and economy."}]
+}
+
+<> 2025-01-24T092352.201.json
+
+###
+
+POST http://localhost:8000/api/questions/?type=AUDIO_VIDEO
+Content-Type: application/json
+Content-Length: 397
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "audio_url": "https://example.com/speech.mp3",
+  "correct_answer": "Sheikh Mujibur Rahman",
+  "explanations": [{"level": "Preliminary", "text": "This is Sheikh Mujibur Rahman's speech."}]
+}
+
+<> 2025-01-24T092351-6.201.json
+
+###
+
+POST http://localhost:8000/api/questions/?type=IMAGE
+Content-Type: application/json
+Content-Length: 391
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "image_url": "https://example.com/image.jpg",
+  "correct_answer": "Ahsan Manzil",
+  "explanations": [{"level": "Preliminary", "text": "Ahsan Manzil is a historical site in Dhaka."}]
+}
+
+<> 2025-01-24T092351-5.201.json
+
+###
+
+POST http://localhost:8000/api/questions/?type=NUMERICAL
+Content-Type: application/json
+Content-Length: 344
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "What is 50 * 20?",
+  "correct_answer": 1000,
+  "explanations": [{"level": "Preliminary", "text": "50 * 20 = 1000."}]
+}
+
+<> 2025-01-24T092351-4.201.json
+
+###
+
+POST http://localhost:8000/api/questions/?type=ORDERING
+Content-Type: application/json
+Content-Length: 440
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "Arrange these events in chronological order.",
+  "ordering_sequence": ["Language Movement", "Liberation War", "Constitution"],
+  "explanations": [{"level": "Advanced", "text": "Correct order: 1952, 1971, 1972."}]
+}
+
+<> 2025-01-24T092351-3.201.json
 
 ###
 
 POST http://localhost:8000/api/questions/?type=MATCHING
 Content-Type: application/json
-Content-Length: 439
+Content-Length: 509
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
@@ -186,87 +280,115 @@ Accept-Encoding: br,deflate,gzip,x-gzip
   "difficulty_level": 1,
   "question_status": 1,
   "exam_references": [1],
+  "question_text": "Drag the rivers to their corresponding regions.",
   "options_column_a": ["Padma", "Jamuna"],
   "options_column_b": ["Central", "Northern"],
-  "correct_answer": "[1, 2], [2, 3]",
+  "correct_answer": [[1, 2], [2, 3]],
   "explanations": [{"level": "Intermediate", "text": "Jamdani from Dhaka, Nakshi Kantha from Rajshahi."}]
 }
 
-<> 2025-01-22T233403.400.json
+<> 2025-01-24T092351.400.json
 
 ###
 
-POST http://localhost:8000/api/educational_organizations/
-Authorization: token 126a19efc731cde7a839645828f03bd8e53f73a2
+POST http://localhost:8000/api/questions/?type=TRUE_FALSE
 Content-Type: application/json
-Content-Length: 423
+Content-Length: 390
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
 
 {
-  "name": "Dhaka University",
-  "under_category": 1,
-  "web_address": "https://du.ac.bd",
-  "statement": "Top public university in Bangladesh",
-  "document": null,
-  "status": true,
-  "address_line1": "Administrative Office",
-  "address_line2": "Nilkhet Rd",
-  "division": 1,
-  "district": "Dhaka",
-  "postal_code": "1000",
-  "first_name": "Registrar",
-  "middle_name": "",
-  "last_name": "",
-  "email": "info@du.ac.bd"
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "Bangladesh became independent in 1971.",
+  "correct_answer": true,
+  "explanations": [{"level": "Preliminary", "text": "Bangladesh gained independence in 1971."}]
 }
 
-<> 2025-01-22T225523.400.json
+<> 2025-01-24T092351-2.201.json
 
 ###
 
-POST http://localhost:8000/api/categories/
-Authorization: token 126a19efc731cde7a839645828f03bd8e53f73a2
+POST http://localhost:8000/api/questions/?type=FILL_BLANK
 Content-Type: application/json
-Content-Length: 84
+Content-Length: 410
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
 
 {
-  "name": "Universities",
-  "description": "All public and private universities"
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "The Sundarbans is famous for the ________ tiger.",
+  "correct_answer": "Bengal",
+  "explanations": [{"level": "Preliminary", "text": "The Bengal tiger is native to the Sundarbans."}]
 }
 
-<> 2025-01-22T225522.201.json
+<> 2025-01-24T092351-1.201.json
 
 ###
 
-GET http://localhost:8000/api/educational_organizations/
-Authorization: token 126a19efc731cde7a839645828f03bd8e53f73a2
+POST http://localhost:8000/api/questions/?type=MCQ_MULTI
+Content-Type: application/json
+Content-Length: 452
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
 
-<> 2025-01-22T225522-1.200.json
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "Which are major rivers in Bangladesh?",
+  "options": ["Padma", "Jamuna", "Teesta", "Amazon"],
+  "correct_answer": [1, 2, 3],
+  "explanations": [{"level": "Preliminary", "text": "Padma, Jamuna, and Teesta are major rivers."}]
+}
+
+<> 2025-01-24T092351.201.json
 
 ###
 
-GET http://localhost:8000/api/categories/
-Authorization: token 126a19efc731cde7a839645828f03bd8e53f73a2
+PATCH http://localhost:8000/api/questions/1/?type=MCQ_SINGLE
 Content-Type: application/json
+Content-Length: 123
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
 
-<> 2025-01-22T225522.200.json
+{
+    "question_text": "Updated question text?",
+    "explanations": [{"level": "Preliminary","text": "New explanation"}]
+}
+
+<> 2025-01-24T092350-5.200.json
 
 ###
 
-POST http://localhost:8000/api/questions/?type=MATCHING
+PUT http://localhost:8000/api/questions/1/?type=MCQ_SINGLE
 Content-Type: application/json
-Content-Length: 439
+Content-Length: 512
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
@@ -281,108 +403,13 @@ Accept-Encoding: br,deflate,gzip,x-gzip
   "difficulty_level": 1,
   "question_status": 1,
   "exam_references": [1],
-  "options_column_a": ["Padma", "Jamuna"],
-  "options_column_b": ["Central", "Northern"],
-  "correct_answer": "[1, 2], [2, 3]",
-  "explanations": [{"level": "Intermediate", "text": "Jamdani from Dhaka, Nakshi Kantha from Rajshahi."}]
+  "question_text": "Who is the Father of the Nation of Bangladesh?",
+  "options": ["Sheikh Mujibur Rahman", "Ziaur Rahman", "A. K. Fazlul Huq", "Huseyn Shaheed Suhrawardy"],
+  "correct_answer": 1,
+  "explanations": [{"level": "Preliminary", "text": "Sheikh Mujibur Rahman led Bangladesh to independence."}]
 }
 
-<> 2025-01-22T225522.400.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=MATCHING
-Content-Type: application/json
-Content-Length: 439
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "target_organization": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "options_column_a": ["Padma", "Jamuna"],
-  "options_column_b": ["Central", "Northern"],
-  "correct_answer": "[1, 2], [2, 3]",
-  "explanations": [{"level": "Intermediate", "text": "Jamdani from Dhaka, Nakshi Kantha from Rajshahi."}]
-}
-
-<> 2025-01-22T225515.400.json
-
-###
-
-POST http://localhost:8000/api/educational_organizations/
-Authorization: token 126a19efc731cde7a839645828f03bd8e53f73a2
-Content-Type: application/json
-Content-Length: 423
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "name": "Dhaka University",
-  "under_category": 1,
-  "web_address": "https://du.ac.bd",
-  "statement": "Top public university in Bangladesh",
-  "document": null,
-  "status": true,
-  "address_line1": "Administrative Office",
-  "address_line2": "Nilkhet Rd",
-  "division": 1,
-  "district": "Dhaka",
-  "postal_code": "1000",
-  "first_name": "Registrar",
-  "middle_name": "",
-  "last_name": "",
-  "email": "info@du.ac.bd"
-}
-
-<> 2025-01-16T002923.201.json
-
-###
-
-GET http://localhost:8000/api/educational_organizations/
-Authorization: token 126a19efc731cde7a839645828f03bd8e53f73a2
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2025-01-16T002920.200.json
-
-###
-
-POST http://localhost:8000/api/categories/
-Authorization: token 126a19efc731cde7a839645828f03bd8e53f73a2
-Content-Type: application/json
-Content-Length: 84
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "name": "Universities",
-  "description": "All public and private universities"
-}
-
-<> 2025-01-16T002904.201.json
-
-###
-
-GET http://localhost:8000/api/categories/
-Authorization: token 126a19efc731cde7a839645828f03bd8e53f73a2
-Content-Type: application/json
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2025-01-16T002859.200.json
+<> 2025-01-24T092350-4.200.json
 
 ###
 
@@ -409,59 +436,137 @@ Accept-Encoding: br,deflate,gzip,x-gzip
   "explanations": [{"level": "Preliminary", "text": "Sheikh Mujibur Rahman led Bangladesh to independence."}]
 }
 
-<> 2025-01-16T002525.400.json
+<> 2025-01-24T092350.201.json
 
 ###
 
-POST http://localhost:8000/api/questions/?type=MCQ_SINGLE
+GET http://localhost:8000/api/questions/?type=ASSERTION_REASON
 Content-Type: application/json
-Content-Length: 484
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
 
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "Who is the Father of the Nation of Bangladesh?",
-  "options": ["Sheikh Mujibur Rahman", "Ziaur Rahman", "A. K. Fazlul Huq", "Huseyn Shaheed Suhrawardy"],
-  "correct_answer": 1,
-  "explanations": [{"level": "Preliminary", "text": "Sheikh Mujibur Rahman led Bangladesh to independence."}]
-}
-
-<> 2025-01-16T002404.201.json
+<> 2025-01-24T092350-3.200.json
 
 ###
 
-POST http://localhost:8000/api/questions/?type=MCQ_SINGLE
+GET http://localhost:8000/api/questions/?type=DRAG_DROP
 Content-Type: application/json
-Content-Length: 484
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
 
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "Who is the Father of the Nation of Bangladesh?",
-  "options": ["Sheikh Mujibur Rahman", "Ziaur Rahman", "A. K. Fazlul Huq", "Huseyn Shaheed Suhrawardy"],
-  "correct_answer": 1,
-  "explanations": [{"level": "Preliminary", "text": "Sheikh Mujibur Rahman led Bangladesh to independence."}]
-}
+<> 2025-01-24T092350-2.200.json
 
-<> 2025-01-16T002303.500.html
+###
+
+GET http://localhost:8000/api/questions/?type=CODE
+Content-Type: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-01-24T092350-1.200.json
+
+###
+
+GET http://localhost:8000/api/questions/?type=DIAGRAM
+Content-Type: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-01-24T092350.200.json
+
+###
+
+GET http://localhost:8000/api/questions/?type=CASE_STUDY
+Content-Type: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-01-24T092349-6.200.json
+
+###
+
+GET http://localhost:8000/api/questions/?type=AUDIO_VIDEO
+Content-Type: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-01-24T092349-5.200.json
+
+###
+
+GET http://localhost:8000/api/questions/?type=IMAGE
+Content-Type: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-01-24T092349-4.200.json
+
+###
+
+GET http://localhost:8000/api/questions/?type=NUMERICAL
+Content-Type: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-01-24T092349-3.200.json
+
+###
+
+GET http://localhost:8000/api/questions/?type=ORDERING
+Content-Type: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-01-24T092349-2.200.json
+
+###
+
+GET http://localhost:8000/api/questions/?type=MATCHING
+Content-Type: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-01-24T092349-1.200.json
+
+###
+
+GET http://localhost:8000/api/questions/?type=TRUE_FALSE
+Content-Type: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-01-24T092349.200.json
+
+###
+
+GET http://localhost:8000/api/questions/?type=FILL_BLANK
+Content-Type: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-01-24T092348-3.200.json
+
+###
+
+GET http://localhost:8000/api/questions/?type=MCQ_MULTI
+Content-Type: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2025-01-24T092348-2.200.json
 
 ###
 
@@ -471,20 +576,23 @@ Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
 
-<> 2025-01-15T235251.200.json
+<> 2025-01-24T092348-1.200.json
 
 ###
 
-DELETE http://localhost:8000/api/questions/1/?type=MCQ_SINGLE
+GET http://localhost:8000/api/questions/
+Content-Type: application/json
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
 
+<> 2025-01-24T092348.200.json
+
 ###
 
-PUT http://localhost:8000/api/questions/1/?type=MCQ_SINGLE
+POST http://localhost:8000/api/questions/?type=MCQ_SINGLE
 Content-Type: application/json
-Content-Length: 484
+Content-Length: 512
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
@@ -493,6 +601,7 @@ Accept-Encoding: br,deflate,gzip,x-gzip
   "question_level": 1,
   "target_group": 1,
   "target_subject": 1,
+  "target_organization": 1,
   "topic": 1,
   "sub_topic": 1,
   "difficulty_level": 1,
@@ -504,13 +613,13 @@ Accept-Encoding: br,deflate,gzip,x-gzip
   "explanations": [{"level": "Preliminary", "text": "Sheikh Mujibur Rahman led Bangladesh to independence."}]
 }
 
-<> 2025-01-15T234925.200.json
+<> 2025-01-24T092233.201.json
 
 ###
 
-PUT http://localhost:8000/api/questions/1/?type=MCQ_SINGLE
+POST http://localhost:8000/api/questions/?type=MCQ_SINGLE
 Content-Type: application/json
-Content-Length: 484
+Content-Length: 512
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
@@ -519,6 +628,7 @@ Accept-Encoding: br,deflate,gzip,x-gzip
   "question_level": 1,
   "target_group": 1,
   "target_subject": 1,
+  "target_organization": 1,
   "topic": 1,
   "sub_topic": 1,
   "difficulty_level": 1,
@@ -530,13 +640,13 @@ Accept-Encoding: br,deflate,gzip,x-gzip
   "explanations": [{"level": "Preliminary", "text": "Sheikh Mujibur Rahman led Bangladesh to independence."}]
 }
 
-<> 2025-01-15T234918.400.json
+<> 2025-01-24T092051.500.html
 
 ###
 
-PUT http://localhost:8000/api/questions/1/?type=MCQ_SINGLE
+POST http://localhost:8000/api/questions/?type=ASSERTION_REASON
 Content-Type: application/json
-Content-Length: 484
+Content-Length: 589
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
@@ -545,18 +655,336 @@ Accept-Encoding: br,deflate,gzip,x-gzip
   "question_level": 1,
   "target_group": 1,
   "target_subject": 1,
+    "target_organization": 1,
   "topic": 1,
   "sub_topic": 1,
   "difficulty_level": 1,
   "question_status": 1,
   "exam_references": [1],
-  "question_text": "Who is the Father of the Nation of Bangladesh?",
-  "options": ["Sheikh Mujibur Rahman", "Ziaur Rahman", "A. K. Fazlul Huq", "Huseyn Shaheed Suhrawardy"],
-  "correct_answer": 1,
-  "explanations": [{"level": "Preliminary", "text": "Sheikh Mujibur Rahman led Bangladesh to independence."}]
+  "question_text": "Assertion: Bangladesh has a tropical monsoon climate. Reason: Monsoon winds bring heavy rainfall.",
+  "correct_answer": "Both Assertion and Reason are true, and the Reason explains the Assertion.",
+  "explanations": [{"level": "Intermediate", "text": "Monsoon winds are the main cause of heavy rainfall in Bangladesh, leading to its tropical monsoon climate."}]
 }
 
-<> 2025-01-15T234729.400.json
+<> 2025-01-24T091919.500.html
+
+###
+
+POST http://localhost:8000/api/questions/?type=DRAG_DROP
+Content-Type: application/json
+Content-Length: 567
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "Drag the rivers to their corresponding regions.",
+  "options_column_a": ["Padma", "Jamuna"],
+  "options_column_b": ["Central", "Northern"],
+  "correct_answer": {"Padma": "Central", "Jamuna": "Northern"},
+  "explanations": [{"level": "Preliminary", "text": "Padma flows through central Bangladesh, and Jamuna through the northern region."}]
+}
+
+<> 2025-01-24T091917.500.html
+
+###
+
+POST http://localhost:8000/api/questions/?type=CODE
+Content-Type: application/json
+Content-Length: 424
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "Write a Python program to print Hello World.",
+  "correct_answer": "print('Hello World')",
+  "explanations": [{"level": "Preliminary", "text": "This program prints 'Hello World' to the console."}]
+}
+
+<> 2025-01-24T091916-1.500.html
+
+###
+
+POST http://localhost:8000/api/questions/?type=DIAGRAM
+Content-Type: application/json
+Content-Length: 494
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "Label the parts of this diagram.",
+  "diagram_url": "https://example.com/diagram.png",
+  "correct_answer": {"Central": "Dhaka", "South-East": "Chattogram"},
+  "explanations": [{"level": "Intermediate", "text": "This diagram represents major regions in Bangladesh."}]
+}
+
+<> 2025-01-24T091916.500.html
+
+###
+
+POST http://localhost:8000/api/questions/?type=CASE_STUDY
+Content-Type: application/json
+Content-Length: 438
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "Analyze how Padma Bridge will impact southern Bangladesh.",
+  "correct_answer": "It will boost trade and connectivity.",
+  "explanations": [{"level": "Advanced", "text": "Improves transportation and economy."}]
+}
+
+<> 2025-01-24T091915.500.html
+
+###
+
+POST http://localhost:8000/api/questions/?type=AUDIO_VIDEO
+Content-Type: application/json
+Content-Length: 397
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "audio_url": "https://example.com/speech.mp3",
+  "correct_answer": "Sheikh Mujibur Rahman",
+  "explanations": [{"level": "Preliminary", "text": "This is Sheikh Mujibur Rahman's speech."}]
+}
+
+<> 2025-01-24T091913.500.html
+
+###
+
+POST http://localhost:8000/api/questions/?type=IMAGE
+Content-Type: application/json
+Content-Length: 391
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "image_url": "https://example.com/image.jpg",
+  "correct_answer": "Ahsan Manzil",
+  "explanations": [{"level": "Preliminary", "text": "Ahsan Manzil is a historical site in Dhaka."}]
+}
+
+<> 2025-01-24T091911.500.html
+
+###
+
+POST http://localhost:8000/api/questions/?type=NUMERICAL
+Content-Type: application/json
+Content-Length: 344
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "What is 50 * 20?",
+  "correct_answer": 1000,
+  "explanations": [{"level": "Preliminary", "text": "50 * 20 = 1000."}]
+}
+
+<> 2025-01-24T091910.500.html
+
+###
+
+POST http://localhost:8000/api/questions/?type=ORDERING
+Content-Type: application/json
+Content-Length: 440
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "Arrange these events in chronological order.",
+  "ordering_sequence": ["Language Movement", "Liberation War", "Constitution"],
+  "explanations": [{"level": "Advanced", "text": "Correct order: 1952, 1971, 1972."}]
+}
+
+<> 2025-01-24T091908.500.html
+
+###
+
+POST http://localhost:8000/api/questions/?type=MATCHING
+Content-Type: application/json
+Content-Length: 509
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+  "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "Drag the rivers to their corresponding regions.",
+  "options_column_a": ["Padma", "Jamuna"],
+  "options_column_b": ["Central", "Northern"],
+  "correct_answer": [[1, 2], [2, 3]],
+  "explanations": [{"level": "Intermediate", "text": "Jamdani from Dhaka, Nakshi Kantha from Rajshahi."}]
+}
+
+<> 2025-01-24T091907.400.json
+
+###
+
+POST http://localhost:8000/api/questions/?type=TRUE_FALSE
+Content-Type: application/json
+Content-Length: 390
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "Bangladesh became independent in 1971.",
+  "correct_answer": true,
+  "explanations": [{"level": "Preliminary", "text": "Bangladesh gained independence in 1971."}]
+}
+
+<> 2025-01-24T091906.500.html
+
+###
+
+POST http://localhost:8000/api/questions/?type=FILL_BLANK
+Content-Type: application/json
+Content-Length: 410
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "The Sundarbans is famous for the ________ tiger.",
+  "correct_answer": "Bengal",
+  "explanations": [{"level": "Preliminary", "text": "The Bengal tiger is native to the Sundarbans."}]
+}
+
+<> 2025-01-24T091905.500.html
+
+###
+
+POST http://localhost:8000/api/questions/?type=MCQ_MULTI
+Content-Type: application/json
+Content-Length: 452
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "question_level": 1,
+  "target_group": 1,
+  "target_subject": 1,
+    "target_organization": 1,
+  "topic": 1,
+  "sub_topic": 1,
+  "difficulty_level": 1,
+  "question_status": 1,
+  "exam_references": [1],
+  "question_text": "Which are major rivers in Bangladesh?",
+  "options": ["Padma", "Jamuna", "Teesta", "Amazon"],
+  "correct_answer": [1, 2, 3],
+  "explanations": [{"level": "Preliminary", "text": "Padma, Jamuna, and Teesta are major rivers."}]
+}
+
+<> 2025-01-24T091904-1.500.html
 
 ###
 
@@ -572,62 +1000,13 @@ Accept-Encoding: br,deflate,gzip,x-gzip
     "explanations": [{"level": "Preliminary","text": "New explanation"}]
 }
 
-<> 2025-01-15T234549.200.json
+<> 2025-01-24T091904.500.html
 
 ###
 
 PUT http://localhost:8000/api/questions/1/?type=MCQ_SINGLE
 Content-Type: application/json
-Content-Length: 123
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-    "question_text": "Updated question text?",
-    "explanations": [{"level": "Preliminary","text": "New explanation"}]
-}
-
-<> 2025-01-15T234324.400.json
-
-###
-
-PUT http://localhost:8000/api/questions/1/?type=MCQ_SINGLE
-Content-Type: application/json
-Content-Length: 100
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-    "question_text": "Updated question text?",
-    "explanations": [{"text": "New explanation"}]
-}
-
-<> 2025-01-15T234221.400.json
-
-###
-
-PUT http://localhost:8000/api/questions/1/?type=MCQ_SINGLE
-Content-Type: application/json
-Content-Length: 127
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-    "question_text": "Updated question text?",
-    "difficulty_level": 2,
-    "explanations": [{"text": "New explanation"}]
-}
-
-<> 2025-01-15T234145.400.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=MCQ_MULTI
-Content-Type: application/json
-Content-Length: 422
+Content-Length: 512
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
@@ -636,24 +1015,25 @@ Accept-Encoding: br,deflate,gzip,x-gzip
   "question_level": 1,
   "target_group": 1,
   "target_subject": 1,
+  "target_organization": 1,
   "topic": 1,
   "sub_topic": 1,
   "difficulty_level": 1,
   "question_status": 1,
   "exam_references": [1],
-  "question_text": "Which are major rivers in Bangladesh?",
-  "options": ["Padma", "Jamuna", "Teesta", "Amazon"],
-  "correct_answer": [1, 2, 3],
-  "explanations": [{"level": "Preliminary", "text": "Padma, Jamuna, and Teesta are major rivers."}]
+  "question_text": "Who is the Father of the Nation of Bangladesh?",
+  "options": ["Sheikh Mujibur Rahman", "Ziaur Rahman", "A. K. Fazlul Huq", "Huseyn Shaheed Suhrawardy"],
+  "correct_answer": 1,
+  "explanations": [{"level": "Preliminary", "text": "Sheikh Mujibur Rahman led Bangladesh to independence."}]
 }
 
-<> 2025-01-15T233111.201.json
+<> 2025-01-24T091903-1.500.html
 
 ###
 
-POST http://localhost:8000/api/questions/?type=MCQ_MULTI
+POST http://localhost:8000/api/questions/?type=MCQ_SINGLE
 Content-Type: application/json
-Content-Length: 422
+Content-Length: 512
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
@@ -662,385 +1042,19 @@ Accept-Encoding: br,deflate,gzip,x-gzip
   "question_level": 1,
   "target_group": 1,
   "target_subject": 1,
+  "target_organization": 1,
   "topic": 1,
   "sub_topic": 1,
   "difficulty_level": 1,
   "question_status": 1,
   "exam_references": [1],
-  "question_text": "Which are major rivers in Bangladesh?",
-  "options": ["Padma", "Jamuna", "Teesta", "Amazon"],
-  "correct_answer": [1, 2, 3],
-  "explanations": [{"level": "Preliminary", "text": "Padma, Jamuna, and Teesta are major rivers."}]
+  "question_text": "Who is the Father of the Nation of Bangladesh?",
+  "options": ["Sheikh Mujibur Rahman", "Ziaur Rahman", "A. K. Fazlul Huq", "Huseyn Shaheed Suhrawardy"],
+  "correct_answer": 1,
+  "explanations": [{"level": "Preliminary", "text": "Sheikh Mujibur Rahman led Bangladesh to independence."}]
 }
 
-<> 2025-01-15T232840.201.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=MCQ_MULTI
-Content-Type: application/json
-Content-Length: 422
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "Which are major rivers in Bangladesh?",
-  "options": ["Padma", "Jamuna", "Teesta", "Amazon"],
-  "correct_answer": [1, 2, 3],
-  "explanations": [{"level": "Preliminary", "text": "Padma, Jamuna, and Teesta are major rivers."}]
-}
-
-<> 2025-01-15T232833.201.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=MCQ_MULTI
-Content-Type: application/json
-Content-Length: 422
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "Which are major rivers in Bangladesh?",
-  "options": ["Padma", "Jamuna", "Teesta", "Amazon"],
-  "correct_answer": [1, 2, 3],
-  "explanations": [{"level": "Preliminary", "text": "Padma, Jamuna, and Teesta are major rivers."}]
-}
-
-<> 2025-01-15T232831.201.json
-
-###
-
-GET http://localhost:8000/api/questions/
-Content-Type: application/json
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2025-01-15T232108.200.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=ASSERTION_REASON
-Content-Type: application/json
-Content-Length: 559
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "Assertion: Bangladesh has a tropical monsoon climate. Reason: Monsoon winds bring heavy rainfall.",
-  "correct_answer": "Both Assertion and Reason are true, and the Reason explains the Assertion.",
-  "explanations": [{"level": "Intermediate", "text": "Monsoon winds are the main cause of heavy rainfall in Bangladesh, leading to its tropical monsoon climate."}]
-}
-
-<> 2025-01-15T232009.201.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=ASSERTION_REASON
-Content-Type: application/json
-Content-Length: 559
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "Assertion: Bangladesh has a tropical monsoon climate. Reason: Monsoon winds bring heavy rainfall.",
-  "correct_answer": "Both Assertion and Reason are true, and the Reason explains the Assertion.",
-  "explanations": [{"level": "Intermediate", "text": "Monsoon winds are the main cause of heavy rainfall in Bangladesh, leading to its tropical monsoon climate."}]
-}
-
-<> 2025-01-15T231719-1.201.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=DRAG_DROP
-Content-Type: application/json
-Content-Length: 537
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "Drag the rivers to their corresponding regions.",
-  "options_column_a": ["Padma", "Jamuna"],
-  "options_column_b": ["Central", "Northern"],
-  "correct_answer": {"Padma": "Central", "Jamuna": "Northern"},
-  "explanations": [{"level": "Preliminary", "text": "Padma flows through central Bangladesh, and Jamuna through the northern region."}]
-}
-
-<> 2025-01-15T231719.201.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=CODE
-Content-Type: application/json
-Content-Length: 394
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "Write a Python program to print Hello World.",
-  "correct_answer": "print('Hello World')",
-  "explanations": [{"level": "Preliminary", "text": "This program prints 'Hello World' to the console."}]
-}
-
-<> 2025-01-15T231718-6.201.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=DIAGRAM
-Content-Type: application/json
-Content-Length: 464
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "Label the parts of this diagram.",
-  "diagram_url": "https://example.com/diagram.png",
-  "correct_answer": {"Central": "Dhaka", "South-East": "Chattogram"},
-  "explanations": [{"level": "Intermediate", "text": "This diagram represents major regions in Bangladesh."}]
-}
-
-<> 2025-01-15T231718-5.201.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=CASE_STUDY
-Content-Type: application/json
-Content-Length: 408
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "Analyze how Padma Bridge will impact southern Bangladesh.",
-  "correct_answer": "It will boost trade and connectivity.",
-  "explanations": [{"level": "Advanced", "text": "Improves transportation and economy."}]
-}
-
-<> 2025-01-15T231718-4.201.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=AUDIO_VIDEO
-Content-Type: application/json
-Content-Length: 425
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "Identify the speaker in this audio.",
-  "audio_url": "https://example.com/speech.mp3",
-  "correct_answer": "Sheikh Mujibur Rahman",
-  "explanations": [{"level": "Preliminary", "text": "This is Sheikh Mujibur Rahman's speech."}]
-}
-
-<> 2025-01-15T231718-3.201.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=IMAGE
-Content-Type: application/json
-Content-Length: 425
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "Identify the monument shown in the image.",
-  "image_url": "https://example.com/image.jpg",
-  "correct_answer": "Ahsan Manzil",
-  "explanations": [{"level": "Preliminary", "text": "Ahsan Manzil is a historical site in Dhaka."}]
-}
-
-<> 2025-01-15T231718-2.201.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=NUMERICAL
-Content-Type: application/json
-Content-Length: 314
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "What is 50 * 20?",
-  "correct_answer": 1000,
-  "explanations": [{"level": "Preliminary", "text": "50 * 20 = 1000."}]
-}
-
-<> 2025-01-15T231718-1.201.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=ORDERING
-Content-Type: application/json
-Content-Length: 410
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "Arrange these events in chronological order.",
-  "ordering_sequence": ["Language Movement", "Liberation War", "Constitution"],
-  "explanations": [{"level": "Advanced", "text": "Correct order: 1952, 1971, 1972."}]
-}
-
-<> 2025-01-15T231718.201.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=MATCHING
-Content-Type: application/json
-Content-Length: 427
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "Match cultural items with their regions of origin.",
-  "matching_pairs": {"Jamdani": "Dhaka", "Nakshi Kantha": "Rajshahi"},
-  "explanations": [{"level": "Intermediate", "text": "Jamdani from Dhaka, Nakshi Kantha from Rajshahi."}]
-}
-
-<> 2025-01-15T231717-4.201.json
-
-###
-
-POST http://localhost:8000/api/questions/?type=TRUE_FALSE
-Content-Type: application/json
-Content-Length: 360
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "question_level": 1,
-  "target_group": 1,
-  "target_subject": 1,
-  "topic": 1,
-  "sub_topic": 1,
-  "difficulty_level": 1,
-  "question_status": 1,
-  "exam_references": [1],
-  "question_text": "Bangladesh became independent in 1971.",
-  "correct_answer": true,
-  "explanations": [{"level": "Preliminary", "text": "Bangladesh gained independence in 1971."}]
-}
-
-<> 2025-01-15T231717-3.201.json
+<> 2025-01-24T091903.500.html
 
 ###
 
