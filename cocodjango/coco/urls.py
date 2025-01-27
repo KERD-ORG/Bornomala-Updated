@@ -66,6 +66,7 @@ urlpatterns = [
     # path('sticky-note', include("django_admin_sticky_notes.urls")),
     path('api/', include('newsletter_app.urls')),
     path('api/', include('questions.urls')),
+    path('api/', include('circular.urls')),
 ]
   
 if settings.DEBUG:

@@ -81,7 +81,8 @@ INSTALLED_APPS = [
     "program_app",
     "recommendation_app",
     'newsletter_app',
-    'questions'
+    'questions',
+    'circular'
 ]
 PHONENUMBER_DEFAULT_REGION = 'US' 
 

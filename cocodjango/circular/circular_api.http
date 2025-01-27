@@ -1,0 +1,186 @@
+### circularcategories API
+
+### List all circularcategories
+GET http://127.0.0.1:8000/api/circularcategories/
+
+### Create a new category
+POST http://127.0.0.1:8000/api/circularcategories/
+Content-Type: application/json
+
+{
+    "name": "Jobs",
+    "description": "Job-related circulars",
+    "parent_category": null
+}
+
+### Retrieve a specific category
+GET http://127.0.0.1:8000/api/circularcategories/1/
+
+### Update a category
+PUT http://127.0.0.1:8000/api/circularcategories/1/
+Content-Type: application/json
+
+{
+    "name": "Scholarships",
+    "description": "Scholarship-related circulars"
+}
+
+### #DELETE a category
+#DELETE http://127.0.0.1:8000/api/circularcategories/1/
+
+
+### Circulars API
+
+### List all circulars
+GET http://127.0.0.1:8000/api/circulars/
+
+### Filter circulars by category
+GET http://127.0.0.1:8000/api/circulars/?category_id=1
+
+### Create a new circular
+POST http://127.0.0.1:8000/api/circulars/
+Content-Type: application/json
+
+{
+    "title": "Software Engineer Job",
+    "category_id": 1,
+    "description": "We are hiring a software engineer.",
+    "organization_name": "TechCorp",
+    "publication_date": "2025-01-01",
+    "deadline": "2025-01-31",
+    "start_date": "2025-02-01",
+    "end_date": "2025-03-01",
+    "location": "Remote",
+    "eligibility_criteria": "Bachelor's degree in CS",
+    "status": "Open",
+    "link_to_circular": "https://example.com/job-details"
+}
+
+### Retrieve a specific circular
+GET http://127.0.0.1:8000/api/circulars/1/
+
+### Update a circular
+PUT http://127.0.0.1:8000/api/circulars/1/
+Content-Type: application/json
+
+{
+    "title": "Updated Job Title",
+    "category_id": 1,
+    "description": "Updated description.",
+    "organization_name": "Updated Organization",
+    "publication_date": "2025-01-01",
+    "deadline": "2025-01-31",
+    "start_date": "2025-02-01",
+    "end_date": "2025-03-01",
+    "location": "Updated Location",
+    "eligibility_criteria": "Updated eligibility criteria.",
+    "status": "Open",
+    "link_to_circular": "https://updated-link.com/job-details"
+}
+
+### #DELETE a circular
+#DELETE http://127.0.0.1:8000/api/circulars/1/
+
+
+### Attachments API
+
+### List all attachments
+GET http://127.0.0.1:8000/api/attachments/
+
+### Filter attachments by circular
+GET http://127.0.0.1:8000/api/attachments/?circular_id=1
+
+### Create a new attachment
+POST http://127.0.0.1:8000/api/attachments/
+Content-Type: application/json
+
+{
+    "circular": 1,
+    "file_type": "PDF",
+    "file_name": "job_details.pdf",
+    "file_path": "/media/attachments/job_details.pdf"
+}
+
+### Retrieve a specific attachment
+GET http://127.0.0.1:8000/api/attachments/1/
+
+### Update an attachment
+PUT http://127.0.0.1:8000/api/attachments/1/
+Content-Type: application/json
+
+{
+    "file_name": "updated_job_details.pdf"
+}
+
+### #DELETE an attachment
+#DELETE http://127.0.0.1:8000/api/attachments/1/
+
+
+### Tags API
+
+### List all tags
+GET http://127.0.0.1:8000/api/tags/
+
+### Filter tags by circular
+GET http://127.0.0.1:8000/api/tags/?circular_id=1
+
+### Create a new tag
+POST http://127.0.0.1:8000/api/tags/
+Content-Type: application/json
+
+{
+    "name": "Remote Job",
+    "circular": 1
+}
+
+### Retrieve a specific tag
+GET http://127.0.0.1:8000/api/tags/1/
+
+### Update a tag
+PUT http://127.0.0.1:8000/api/tags/1/
+Content-Type: application/json
+
+{
+    "name": "On-site Job",
+      "circular": 1
+
+}
+
+### #DELETE a tag
+#DELETE http://127.0.0.1:8000/api/tags/1/
+
+
+### Subscriptions API
+
+### List subscriptions for a specific user
+GET http://127.0.0.1:8000/api/subscriptions/?user_id=1
+
+### Create a new subscription
+POST http://127.0.0.1:8000/api/subscriptions/
+Content-Type: application/json
+
+{
+    "user": 1,
+    "category": 1
+}
+
+
+### Notifications API
+
+### List notifications for a user
+GET http://127.0.0.1:8000/api/notifications/?user_id=1
+
+### List unread notifications for a user
+GET http://127.0.0.1:8000/api/notifications/unread/?user_id=1
+
+### Mark a notification as read
+POST http://127.0.0.1:8000/api/notifications/unread/1/
+
+
+### Analytics API
+
+### List all analytics
+GET http://127.0.0.1:8000/api/analytics/
+
+### Increment views for a circular
+POST http://127.0.0.1:8000/api/analytics/1/increment/

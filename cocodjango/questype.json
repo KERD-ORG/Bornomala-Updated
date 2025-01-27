@@ -1,0 +1,107 @@
+[
+    {
+        "model": "questions.questiontype",
+        "pk": 1,
+        "fields": {
+            "name": "MCQ_SINGLE"
+        }
+    },
+    {
+        "model": "questions.questiontype",
+        "pk": 2,
+        "fields": {
+            "name": "MCQ_MULTI"
+        }
+    },
+    {
+        "model": "questions.questiontype",
+        "pk": 3,
+        "fields": {
+            "name": "DESCRIPTIVE"
+        }
+    },
+    {
+        "model": "questions.questiontype",
+        "pk": 4,
+        "fields": {
+            "name": "TRUE_FALSE"
+        }
+    },
+    {
+        "model": "questions.questiontype",
+        "pk": 5,
+        "fields": {
+            "name": "FILL_BLANK"
+        }
+    },
+    {
+        "model": "questions.questiontype",
+        "pk": 6,
+        "fields": {
+            "name": "MATCHING"
+        }
+    },
+    {
+        "model": "questions.questiontype",
+        "pk": 7,
+        "fields": {
+            "name": "ORDERING"
+        }
+    },
+    {
+        "model": "questions.questiontype",
+        "pk": 8,
+        "fields": {
+            "name": "NUMERICAL"
+        }
+    },
+    {
+        "model": "questions.questiontype",
+        "pk": 9,
+        "fields": {
+            "name": "IMAGE"
+        }
+    },
+    {
+        "model": "questions.questiontype",
+        "pk": 10,
+        "fields": {
+            "name": "AUDIO_VIDEO"
+        }
+    },
+    {
+        "model": "questions.questiontype",
+        "pk": 11,
+        "fields": {
+            "name": "CASE_STUDY"
+        }
+    },
+    {
+        "model": "questions.questiontype",
+        "pk": 12,
+        "fields": {
+            "name": "DIAGRAM"
+        }
+    },
+    {
+        "model": "questions.questiontype",
+        "pk": 13,
+        "fields": {
+            "name": "CODE"
+        }
+    },
+    {
+        "model": "questions.questiontype",
+        "pk": 14,
+        "fields": {
+            "name": "DRAG_DROP"
+        }
+    },
+    {
+        "model": "questions.questiontype",
+        "pk": 15,
+        "fields": {
+            "name": "ASSERTION_REASON"
+        }
+    }
+]
