@@ -155,6 +155,14 @@ function Menu() {
             </a>
           </li>
         )}
+        {canViewQuestion && (
+          <li className={`menu-item ${isActive("/circulars") ? "active" : ""}`}>
+            <a href={localizedPath("/circulars")} className="menu-link">
+              <i className="menu-icon tf-icons bx bx-clipboard" />
+              <div>{t("Circulars")}</div>
+            </a>
+          </li>
+        )}
       </ul>
     </aside>
   );
