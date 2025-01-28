@@ -45,7 +45,7 @@ Content-Type: application/json
     "title": "Software Engineer Job",
     "category_id": 1,
     "description": "We are hiring a software engineer.",
-    "organization_name": "TechCorp",
+    "organization": 1,
     "publication_date": "2025-01-01",
     "deadline": "2025-01-31",
     "start_date": "2025-02-01",
@@ -54,6 +54,7 @@ Content-Type: application/json
     "eligibility_criteria": "Bachelor's degree in CS",
     "status": "Open",
     "link_to_circular": "https://example.com/job-details"
+    "attachment": file
 }
 
 ### Retrieve a specific circular
@@ -67,7 +68,7 @@ Content-Type: application/json
     "title": "Updated Job Title",
     "category_id": 1,
     "description": "Updated description.",
-    "organization_name": "Updated Organization",
+    "organization": 1,
     "publication_date": "2025-01-01",
     "deadline": "2025-01-31",
     "start_date": "2025-02-01",
@@ -75,7 +76,8 @@ Content-Type: application/json
     "location": "Updated Location",
     "eligibility_criteria": "Updated eligibility criteria.",
     "status": "Open",
-    "link_to_circular": "https://updated-link.com/job-details"
+    "link_to_circular": "https://updated-link.com/job-details",
+    "attachment": file
 }
 
 ### #DELETE a circular

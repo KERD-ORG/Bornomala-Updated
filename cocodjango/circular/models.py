@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from educational_organizations_app.models import EducationalOrganizations as Organization
 
 
 class CircularCategory(models.Model):
@@ -14,7 +15,7 @@ class Circular(models.Model):
     title = models.CharField(max_length=200)
     category = models.ForeignKey(CircularCategory, on_delete=models.CASCADE, related_name='circulars')
     description = models.TextField()
-    organization_name = models.CharField(max_length=200)
+    organization = models.ForeignKey(Organization,on_delete=models.SET_NULL,null=True,blank=True)
     publication_date = models.DateField()
     deadline = models.DateField()
     start_date = models.DateField(null=True, blank=True)
@@ -26,14 +27,24 @@ class Circular(models.Model):
         choices=[('Open', 'Open'), ('Closed', 'Closed'), ('Upcoming', 'Upcoming')]
     )
     link_to_circular = models.URLField(blank=True)
+    attachment = models.FileField(upload_to='attachments/', null=True, blank=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True, help_text="Timestamp when the question was created."
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, help_text="Timestamp when the question was last updated."
+    )
+
+    def __str__(self):
+        return self.title
 
 
-class Attachment(models.Model):
-    circular = models.ForeignKey(Circular, on_delete=models.CASCADE, related_name='attachments')
-    file_type = models.CharField(max_length=10)  # E.g., PDF, Image
-    file_name = models.CharField(max_length=200)
-    file_path = models.FileField(upload_to='attachments/')
-    uploaded_date = models.DateTimeField(auto_now_add=True)
+# class Attachment(models.Model):
+#     circular = models.ForeignKey(Circular, on_delete=models.CASCADE, related_name='attachments')
+#     file_type = models.CharField(max_length=10)  # E.g., PDF, Image
+#     file_name = models.CharField(max_length=200)
+#     file_path = models.FileField(upload_to='attachments/')
+#     uploaded_date = models.DateTimeField(auto_now_add=True)
 
 
 class Subscription(models.Model):

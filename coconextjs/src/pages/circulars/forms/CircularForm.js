@@ -13,13 +13,26 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useRouter } from "next/router";
-import { getToken, useTranslation } from "../../../utils/commonImports";
+import { getToken } from "../../../utils/commonImports";
 import useCommonForm from "../../../hooks/useCommonForm";
 import {
   fetchCircularCategory,
-  fetchDivisionList,
-  fetchOrganizationCategoryList,
+  fetchEducationalOrganizations,
 } from "../../../utils/apiService";
+import { Button } from "react-bootstrap";
+
+function formatToYYYYMMDD(value) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (isNaN(date.getTime())) {
+    return value; // Let the backend reject it or handle it
+  }
+  // Convert to UTC or local depending on your use-case
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
 
 const CircularForm = forwardRef(
   (
@@ -46,61 +59,70 @@ const CircularForm = forwardRef(
 
     const schema = yup
       .object()
-      // .shape({
-      //   title: yup.string().required(t("Title is required")),
-      //   category_id: yup
-      //     .number()
-      //     .typeError(t("Category is required"))
-      //     .required(t("Category is required")),
-      //   description: yup.string().required(t("Description is required")),
-      //   organization: yup
-      //     .number()
-      //     .typeError(t("Organization is required"))
-      //     .required(t("Organization is required")),
-      //   publication_date: yup
-      //     .date()
-      //     .typeError(t("Invalid publication date"))
-      //     .required(t("Publication date is required")),
-      //   deadline: yup
-      //     .date()
-      //     .typeError(t("Invalid deadline"))
-      //     .required(t("Deadline is required")),
-      //   start_date: yup
-      //     .date()
-      //     .typeError(t("Invalid start date"))
-      //     .required(t("Start date is required")),
-      //   end_date: yup
-      //     .date()
-      //     .typeError(t("Invalid end date"))
-      //     .required(t("End date is required")),
-      //   location: yup.string().required(t("Location is required")),
-      //   eligibility_criteria: yup.string().required(t("Eligibility Criteria is required")),
-      //   status: yup
-      //     .string()
-      //     .oneOf(["Open", "Closed", "Upcoming"], t("Invalid status"))
-      //     .required(t("Status is required")),
-      //   link_to_circular: yup
-      //     .string()
-      //     .url(t("Invalid URL"))
-      //     .required(t("Link to circular is required.")),
-      //   attachment: yup
-      //     .mixed()
-      //     .test(
-      //       "fileSize",
-      //       t("File too large"),
-      //       // Example file size limit = 2MB
-      //       (value) => !value || (value && value.size <= 2 * 1024 * 1024)
-      //     )
-      //     .nullable(),
-      // })
+      .shape({
+        title: yup.string().required(t("Title is required")),
+        category_id: yup
+          .number()
+          .typeError(t("Category is required"))
+          .required(t("Category is required")),
+        description: yup.string().required(t("Description is required")),
+        organization: yup
+          .number()
+          .typeError(t("Organization is required"))
+          .required(t("Organization is required")),
+        publication_date: yup
+          .date()
+          .typeError(t("Invalid publication date"))
+          .required(t("Publication date is required")),
+        deadline: yup
+          .date()
+          .typeError(t("Invalid deadline"))
+          .required(t("Deadline is required")),
+        start_date: yup
+          .date()
+          .typeError(t("Invalid start date"))
+          .required(t("Start date is required")),
+        end_date: yup
+          .date()
+          .typeError(t("Invalid end date"))
+          .required(t("End date is required")),
+        location: yup.string().required(t("Location is required")),
+        eligibility_criteria: yup
+          .string()
+          .required(t("Eligibility Criteria is required")),
+        status: yup
+          .string()
+          .oneOf(["Open", "Closed", "Upcoming"], t("Invalid status"))
+          .required(t("Status is required")),
+        link_to_circular: yup
+          .string()
+          .url(t("Invalid URL"))
+          .required(t("Link to circular is required.")),
+        attachment: yup
+          .mixed()
+          .test(
+            "fileSize",
+            t("File too large"),
+            // Example file size limit = 2MB
+            (value) => !value || (value && value.size <= 2 * 1024 * 1024)
+          )
+          .nullable(),
+      })
       // Custom test to ensure start_date <= end_date if both exist
       .test(
         "startDateBeforeEndDate",
-        t("Start date must be before end date"),
-        function (values) {
-          const { start_date, end_date } = values;
-          if (!start_date || !end_date) return true;
-          return new Date(start_date) <= new Date(end_date);
+        "Start date must be before end date",
+        function (value) {
+          const { start_date, end_date } = value;
+          if (!start_date || !end_date) return true; // Skip if either is missing
+          if (new Date(start_date) <= new Date(end_date)) {
+            return true;
+          }
+          // If test fails, create an error on end_date
+          return this.createError({
+            path: "end_date",
+            message: "Start date must be before end date",
+          });
         }
       );
 
@@ -124,7 +146,7 @@ const CircularForm = forwardRef(
       attachment: null,
     };
     const [formData, setFormData] = useState(defaultFormData);
-    const [showFileUpload, setShowFileUpload] = useState(false);
+    const [showFileUpload, setShowFileUpload] = useState(true);
 
     const {
       register,
@@ -151,7 +173,7 @@ const CircularForm = forwardRef(
 
     useEffect(() => {
       if (token) {
-        fetchOrganizationCategoryList(
+        fetchEducationalOrganizations(
           token,
           router.locale || "en",
           setGlobalError,
@@ -170,10 +192,12 @@ const CircularForm = forwardRef(
 
     useEffect(() => {
       if (initialData) {
-        console.log(initialData)
+        if (initialData?.attachment_url) {
+          setShowFileUpload(false);
+        }
         const newFormData = {
           title: initialData.title || "",
-          category_id: initialData.category_id || "",
+          category_id: initialData.category.id || "",
           description: initialData.description || "",
           organization: initialData.organization || "",
           publication_date: initialData.publication_date || "",
@@ -200,11 +224,12 @@ const CircularForm = forwardRef(
     }, [initialData, setValue]);
 
     const onSubmitForm = async (data) => {
-      console.log(data);
-      // return
-      // setLoading(true);
-
+      setLoading(true);
       try {
+        data.publication_date = formatToYYYYMMDD(data.publication_date);
+        data.deadline = formatToYYYYMMDD(data.deadline);
+        data.start_date = formatToYYYYMMDD(data.start_date);
+        data.end_date = formatToYYYYMMDD(data.end_date);
         let url = `${process.env.NEXT_PUBLIC_API_ENDPOINT_CIRCULARS}`;
         let method = "POST";
         if (formMode === "edit" && initialData && initialData.id) {
@@ -584,17 +609,41 @@ const CircularForm = forwardRef(
         <div className="row mb-3">
           <div className="col-md-12">
             <label className="form-label">{t("Attachment (Optional)")}</label>
-            <input
-              type="file"
-              className={`form-control form-control-sm ${
-                errors.attachment ? "is-invalid" : ""
-              }`}
-              {...register("attachment")}
-              onChange={(e) => {
-                const file = e.target.files?.[0] || null;
-                setFormData({ ...formData, attachment: file });
-              }}
-            />
+            {formMode === "edit" &&
+              !showFileUpload &&
+              initialData?.attachment_url && (
+                <div className="d-flex align-items-center mb-2">
+                  <a
+                    href={`${process.env.NEXT_PUBLIC_API_BASE_URL}${initialData.attachment_url}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="me-3"
+                  >
+                    {t("Click here to see the file content")}
+                  </a>
+                  {/** Secondary button from react-bootstrap in the same row */}
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => setShowFileUpload(true)}
+                  >
+                    {t("Change")}
+                  </Button>
+                </div>
+              )}
+            {showFileUpload && (
+              <input
+                type="file"
+                className={`form-control form-control-sm ${
+                  errors.attachment ? "is-invalid" : ""
+                }`}
+                {...register("attachment")}
+                onChange={(e) => {
+                  const file = e.target.files?.[0] || null;
+                  setFormData({ ...formData, attachment: file });
+                }}
+              />
+            )}
             {errors.attachment && (
               <div className="invalid-feedback">
                 {errors.attachment.message}

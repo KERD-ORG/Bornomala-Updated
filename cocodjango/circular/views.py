@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from .serializers import *
+from rest_framework.parsers import MultiPartParser, FormParser
 
 # Category APIs
 class CircularCategoryAPIView(APIView):
@@ -41,6 +42,8 @@ class CircularCategoryDetailAPIView(APIView):
 
 # Circular APIs
 class CircularAPIView(APIView):
+    parser_classes = (MultiPartParser, FormParser)  # enable file uploads
+
     def get(self, request):
         circulars = Circular.objects.all()
         category_id = request.query_params.get('category_id')
@@ -50,6 +53,10 @@ class CircularAPIView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+
+        """
+        Expected to receive multipart/form-data if attachment is included.
+        """
         serializer = CircularSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -58,6 +65,8 @@ class CircularAPIView(APIView):
 
 
 class CircularDetailAPIView(APIView):
+    parser_classes = (MultiPartParser, FormParser)  # enable file uploads if you want to update the attachment
+
     def get(self, request, pk):
         circular = get_object_or_404(Circular, pk=pk)
         serializer = CircularSerializer(circular)
@@ -65,7 +74,7 @@ class CircularDetailAPIView(APIView):
 
     def put(self, request, pk):
         circular = get_object_or_404(Circular, pk=pk)
-        serializer = CircularSerializer(circular, data=request.data)
+        serializer = CircularSerializer(circular, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
