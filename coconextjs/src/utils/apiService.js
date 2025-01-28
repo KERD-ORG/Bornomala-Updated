@@ -75,6 +75,47 @@ export const fetchDivisionList = async (
   }
 };
 
+export const fetchCircularCategory = async (
+  token,
+  locale,
+  setGlobalError,
+  setSuccessMessage,
+  setCircularCategory
+) => {
+  try {
+    const response = await executeAjaxOperationStandard({
+      url: process.env.NEXT_PUBLIC_API_ENDPOINT_CIRCULAR_CATEGORY,
+      method: "get",
+      token,
+      locale: locale || "en", // Include country_code in params for state list
+    });
+
+    if (
+      response.status >=
+        parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START, 10) &&
+      response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END, 10)
+    ) {
+      if (response.data) {
+        const circularCategoriesArray = response.data;
+        const circularCategoriesOptions = circularCategoriesArray.map(
+          (circularCategoriesArrayEach) => ({
+            label: circularCategoriesArrayEach.name,
+            value: circularCategoriesArrayEach.id,
+          })
+        );
+        setCircularCategory(circularCategoriesOptions);
+      } else {
+        setCircularCategory([]);
+      }
+    } else {
+      setGlobalError("Failed to fetch circular categories list");
+    }
+  } catch (error) {
+    console.error("Error fetching circular categories options list:", error);
+    setGlobalError("Error fetching circular categories list");
+  }
+};
+
 export const fetchOrganizationCategoryList = async (
   token,
   locale,

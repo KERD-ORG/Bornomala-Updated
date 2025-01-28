@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import { getToken, useTranslation } from "../../../utils/commonImports";
 import useCommonForm from "../../../hooks/useCommonForm";
 import {
+  fetchCircularCategory,
   fetchDivisionList,
   fetchOrganizationCategoryList,
 } from "../../../utils/apiService";
@@ -45,56 +46,53 @@ const CircularForm = forwardRef(
 
     const schema = yup
       .object()
-      .shape({
-        title: yup.string().required(t("Title is required")),
-        category_id: yup
-          .number()
-          .typeError(t("Category is required"))
-          .required(t("Category is required")),
-        description: yup.string().required(t("Description is required")),
-        organization: yup
-          .number()
-          .typeError(t("Organization is required"))
-          .required(t("Organization is required")),
-        publication_date: yup
-          .date()
-          .typeError(t("Invalid publication date"))
-          .required(t("Publication date is required")),
-        deadline: yup
-          .date()
-          .typeError(t("Invalid deadline"))
-          .required(t("Deadline is required")),
-        start_date: yup
-          .date()
-          .typeError(t("Invalid start date"))
-          .nullable()
-          .notRequired(),
-        end_date: yup
-          .date()
-          .typeError(t("Invalid end date"))
-          .nullable()
-          .notRequired(),
-        location: yup.string().nullable(),
-        eligibility_criteria: yup.string().nullable(),
-        status: yup
-          .string()
-          .oneOf(["Open", "Closed", "Upcoming"], t("Invalid status"))
-          .required(t("Status is required")),
-        link_to_circular: yup
-          .string()
-          .url(t("Invalid URL"))
-          .nullable()
-          .notRequired(),
-        attachment: yup
-          .mixed()
-          .test(
-            "fileSize",
-            t("File too large"),
-            // Example file size limit = 2MB
-            (value) => !value || (value && value.size <= 2 * 1024 * 1024)
-          )
-          .nullable(),
-      })
+      // .shape({
+      //   title: yup.string().required(t("Title is required")),
+      //   category_id: yup
+      //     .number()
+      //     .typeError(t("Category is required"))
+      //     .required(t("Category is required")),
+      //   description: yup.string().required(t("Description is required")),
+      //   organization: yup
+      //     .number()
+      //     .typeError(t("Organization is required"))
+      //     .required(t("Organization is required")),
+      //   publication_date: yup
+      //     .date()
+      //     .typeError(t("Invalid publication date"))
+      //     .required(t("Publication date is required")),
+      //   deadline: yup
+      //     .date()
+      //     .typeError(t("Invalid deadline"))
+      //     .required(t("Deadline is required")),
+      //   start_date: yup
+      //     .date()
+      //     .typeError(t("Invalid start date"))
+      //     .required(t("Start date is required")),
+      //   end_date: yup
+      //     .date()
+      //     .typeError(t("Invalid end date"))
+      //     .required(t("End date is required")),
+      //   location: yup.string().required(t("Location is required")),
+      //   eligibility_criteria: yup.string().required(t("Eligibility Criteria is required")),
+      //   status: yup
+      //     .string()
+      //     .oneOf(["Open", "Closed", "Upcoming"], t("Invalid status"))
+      //     .required(t("Status is required")),
+      //   link_to_circular: yup
+      //     .string()
+      //     .url(t("Invalid URL"))
+      //     .required(t("Link to circular is required.")),
+      //   attachment: yup
+      //     .mixed()
+      //     .test(
+      //       "fileSize",
+      //       t("File too large"),
+      //       // Example file size limit = 2MB
+      //       (value) => !value || (value && value.size <= 2 * 1024 * 1024)
+      //     )
+      //     .nullable(),
+      // })
       // Custom test to ensure start_date <= end_date if both exist
       .test(
         "startDateBeforeEndDate",
@@ -160,11 +158,19 @@ const CircularForm = forwardRef(
           setSuccessMessage,
           setOrganizationList
         );
+        fetchCircularCategory(
+          token,
+          router.locale || "en",
+          setGlobalError,
+          setSuccessMessage,
+          setCategoryList
+        );
       }
     }, [token]);
 
     useEffect(() => {
       if (initialData) {
+        console.log(initialData)
         const newFormData = {
           title: initialData.title || "",
           category_id: initialData.category_id || "",
@@ -195,6 +201,81 @@ const CircularForm = forwardRef(
 
     const onSubmitForm = async (data) => {
       console.log(data);
+      // return
+      // setLoading(true);
+
+      try {
+        let url = `${process.env.NEXT_PUBLIC_API_ENDPOINT_CIRCULARS}`;
+        let method = "POST";
+        if (formMode === "edit" && initialData && initialData.id) {
+          url = `${process.env.NEXT_PUBLIC_API_ENDPOINT_CIRCULARS}${initialData.id}/`;
+          method = "PUT";
+        }
+
+        // Build FormData for file upload
+        const formDataObj = new FormData();
+        // Move all fields into FormData
+        Object.entries(data).forEach(([key, value]) => {
+          if (key === "attachment") {
+            // Only append if user selected a file
+            if (value && value[0] instanceof File) {
+              formDataObj.append("attachment", value[0]);
+            }
+          } else {
+            // For the rest, just append as text
+            formDataObj.append(key, value);
+          }
+        });
+
+        const response = await executeAjaxOperationStandard({
+          url,
+          method,
+          token,
+          formData: formDataObj, // pass the FormData
+          locale: router.locale || "en",
+        });
+
+        if (
+          response.status >=
+            parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_START) &&
+          response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END)
+        ) {
+          if (formMode === "edit") {
+            deleteRow(response.data.id);
+          }
+          addRow(response.data);
+
+          handleCancelClick();
+          onSubmit(
+            response.data.message || t("Form submitted successfully."),
+            true
+          );
+        } else {
+          if (response.details) {
+            Object.keys(response.details).forEach((field) => {
+              setError(field, {
+                type: "server",
+                message: response.details[field][0],
+              });
+            });
+          }
+          //setGlobalError(response.message);
+          setSuccessMessage("");
+        }
+      } catch (error) {
+        let errorMessage = t("An error occurred while submitting the form.");
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.error
+        ) {
+          errorMessage = error.response.data.error;
+        }
+        setGlobalError(errorMessage);
+        setSuccessMessage("");
+      } finally {
+        setLoading(false);
+      }
     };
 
     const handleCancelClick = () => {
@@ -279,11 +360,11 @@ const CircularForm = forwardRef(
                   }}
                 >
                   <option value="">{t("Select Category")}</option>
-                  {/* {organizationCategories.map((category) => (
+                  {categoryList.map((category) => (
                     <option key={category.value} value={category.value}>
                       {category.label}
                     </option>
-                  ))} */}
+                  ))}
                 </select>
               )}
             />
@@ -312,8 +393,8 @@ const CircularForm = forwardRef(
                 >
                   <option value="">{t("Select Organization")}</option>
                   {organizationList.map((org) => (
-                    <option key={org.id} value={org.id}>
-                      {org.name}
+                    <option key={org.value} value={org.value}>
+                      {org.label}
                     </option>
                   ))}
                 </select>

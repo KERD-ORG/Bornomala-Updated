@@ -19,17 +19,6 @@ import {
   fetchOrganizationCategoryList,
 } from "../../../utils/apiService";
 
-const DIVISIONS = [
-  { value: 1, label: "Dhaka" },
-  { value: 2, label: "Chattogram" },
-  { value: 3, label: "Khulna" },
-  { value: 4, label: "Rajshahi" },
-  { value: 5, label: "Barishal" },
-  { value: 6, label: "Sylhet" },
-  { value: 7, label: "Rangpur" },
-  { value: 8, label: "Mymensingh" },
-];
-
 const UniversityForm = forwardRef(
   (
     {
@@ -404,10 +393,7 @@ const UniversityForm = forwardRef(
                 >
                   <option value="">{t("Select Division")}</option>
                   {divisions.map((country) => (
-                    <option
-                      key={`${country.id}`}
-                      value={country.id}
-                    >
+                    <option key={`${country.id}`} value={country.id}>
                       {country.name}
                     </option>
                   ))}

@@ -44,48 +44,6 @@ const CircularColumns = ({
     });
   };
 
-  const handleLogoClick = (row) => {
-    const imageUrl = row.logo_url
-      ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${row.logo_url}`
-      : defaultThumbnail;
-    Swal.fire({
-      imageUrl: imageUrl,
-      imageAlt: "University Logo",
-      showCloseButton: true,
-      confirmButtonText: t("OK"),
-      customClass: {
-        popup: "my-swal-image-popup",
-        image: "my-swal-image",
-        confirmButton: "my-swal-confirm-button",
-      },
-    });
-  };
-
-  const defaultThumbnail = process.env.NEXT_PUBLIC_LOGO_DEFAULT_THUMBNAIL;
-
-  const renderDocumentCell = (row) => {
-    const imageUrl = row.logo_url
-      ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${row.logo_url}`
-      : defaultThumbnail;
-    return (
-      <img
-        src={imageUrl}
-        alt="University Logo"
-        onError={(e) => {
-          e.target.src = defaultThumbnail;
-        }}
-        onClick={() => handleLogoClick(row)}
-        style={{
-          width: "50px",
-          height: "30px",
-          borderRadius: "2px",
-          border: "1px solid #000000",
-          cursor: "pointer",
-        }}
-      />
-    );
-  };
-
   const formatDate = (dateString) => {
     const dateObject = new Date(dateString);
     const year = dateObject.getFullYear();
@@ -116,97 +74,94 @@ const CircularColumns = ({
         const { row } = props;
         return <span>{formatDate(row.updated_at)}</span>;
       },
-      renderSummaryCell({ row }) {
-        return `${row.totalCount} records`;
-      },
     },
-    // {
-    //   key: "document_name",
-    //   name: t("Logo"),
-    //   width: "80px",
-    //   resizable: true,
-    //   frozen: true,
-    //   renderCell(props) {
-    //     const { row } = props;
-    //     return (
-    //       <span style={{ padding: "5px" }}>{renderDocumentCell(row)}</span>
-    //     );
-    //   },
-    // },
     {
-      key: "name",
-      name: t("Name"),
+      key: "title",
+      name: t("Title"),
       width: "130px",
       resizable: true,
       sortable: true,
     },
     {
-      key: "under_category_name",
+      key: "category",
       name: t("Category"),
       width: "95px",
       resizable: true,
       sortable: true,
+      renderCell(props) {
+        const { row } = props;
+        return <span>{row.category.name}</span>;
+      },
     },
     {
-      key: "web_address",
-      name: t("Web Address"),
+      key: "link_to_circular",
+      name: t("Circular Link"),
       width: "180px",
       resizable: true,
       sortable: true,
     },
     {
-      key: "division_name",
-      name: t("Division"),
+      key: "organization_name",
+      name: t("Organization"),
       width: "180px",
       resizable: true,
       sortable: true,
     },
-
-    // {
-    //   key: "city",
-    //   name: t("City"),
-    //   width: "100px",
-    //   resizable: true,
-    //   sortable: true,
-    // },
     {
-      key: "address_line1",
-      name: t("Address Line 1"),
+      key: "publication_date",
+      name: t("Publication Date"),
       width: "150px",
+      resizable: true,
+      sortable: true,
+      renderCell(props) {
+        const { row } = props;
+        return <span>{formatDate(row.publication_date)}</span>;
+      },
+    },
+    {
+      key: "deadline",
+      name: t("Deadline"),
+      width: "150px",
+      resizable: true,
+      sortable: true,
+      renderCell(props) {
+        const { row } = props;
+        return <span>{formatDate(row.deadline)}</span>;
+      },
+    },
+    {
+      key: "location",
+      name: t("Location"),
       resizable: true,
       sortable: true,
     },
     {
-      key: "address_line2",
-      name: t("Address Line 2"),
+      key: "start_date",
+      name: t("Start Date"),
       width: "150px",
       resizable: true,
       sortable: true,
+      renderCell(props) {
+        const { row } = props;
+        return <span>{formatDate(row.start_date)}</span>;
+      },
     },
     {
-      key: "postal_code",
-      name: t("Postal Code"),
+      key: "end_date",
+      name: t("End Date"),
+      width: "150px",
       resizable: true,
       sortable: true,
+      renderCell(props) {
+        const { row } = props;
+        return <span>{formatDate(row.end_date)}</span>;
+      },
     },
     {
       key: "status",
       name: t("Status"),
       width: "100px",
       resizable: true,
-      renderCell(props) {
-        const { row } = props;
-        return (
-          <span
-            className={`badge badge-pill ${
-              row.status ? "bg-success" : "bg-danger"
-            }`}
-            style={{ borderRadius: "2px", fontSize: "10px" }}
-          >
-            {row.status ? t("Active") : t("Inactive")}
-          </span>
-        );
-      },
       sortable: true,
     },
     {
@@ -218,7 +173,7 @@ const CircularColumns = ({
         const { row } = props;
         return (
           <>
-            {permissionsMap.permissionlist.change_educationalorganizations && (
+            {permissionsMap.permissionlist.change_circular && (
               <button
                 className="btn btn-sm btn-icon"
                 data-tooltip-id="my-tooltip"
@@ -229,7 +184,7 @@ const CircularColumns = ({
                 <i className="bx bx-edit text-warning"></i>
               </button>
             )}
-            {permissionsMap.permissionlist.add_educationalorganizations && (
+            {permissionsMap.permissionlist.add_circular && (
               <button
                 className="btn btn-icon"
                 data-tooltip-id="my-tooltip"
@@ -240,7 +195,7 @@ const CircularColumns = ({
                 <i className="bx bx-copy text-success"></i>
               </button>
             )}
-            {permissionsMap.permissionlist.view_educationalorganizations && (
+            {permissionsMap.permissionlist.view_circular && (
               <button
                 className="btn btn-icon"
                 data-tooltip-id="my-tooltip"
@@ -251,7 +206,7 @@ const CircularColumns = ({
                 <i className="bx bx-detail text-info"></i>
               </button>
             )}
-            {permissionsMap.permissionlist.delete_educationalorganizations && (
+            {permissionsMap.permissionlist.delete_circular && (
               <button
                 className="btn btn-sm btn-icon"
                 data-tooltip-id="my-tooltip"

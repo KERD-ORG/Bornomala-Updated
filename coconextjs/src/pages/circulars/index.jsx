@@ -104,7 +104,7 @@ export default function CircularList() {
     try {
       setLoading(true);
       const response = await executeAjaxOperationStandard({
-        url: `${process.env.NEXT_PUBLIC_API_ENDPOINT_EDUCATIONAL_ORAGANIZATION}${id}/`,
+        url: `${process.env.NEXT_PUBLIC_API_ENDPOINT_CIRCULARS}${id}/`,
         method: "DELETE",
         token,
         locale: router.locale || "en",
@@ -116,7 +116,7 @@ export default function CircularList() {
         response.status < parseInt(process.env.NEXT_PUBLIC_HTTP_SUCCESS_END)
       ) {
         setSuccessMessage(
-          response.data.message || t("Form submitted successfully.")
+          response.data.message || t("Record deleted successfully.")
         );
         setGlobalError("");
         handleDatagridDeleteRowFunction(id);
@@ -133,7 +133,7 @@ export default function CircularList() {
         };
       }
     } catch (error) {
-      let errorMessage = t("An error occurred while submitting the form.");
+      let errorMessage = t("An error occurred while deleting the record.");
       if (error.response && error.response.data && error.response.data.error) {
         errorMessage = error.response.data.error;
       }
@@ -209,8 +209,7 @@ export default function CircularList() {
       <div className="card">
         <div className="card-body">
           <div className="d-flex justify-content-end mb-3">
-            {/* TODO: Change permission for circular */}
-            {permissionsMap.permissionlist.add_educationalorganizations && (
+            {permissionsMap.permissionlist.add_circular && (
               <>
                 <button
                   data-tooltip-id="my-tooltip"
@@ -250,9 +249,7 @@ export default function CircularList() {
           <div className="col-sm-12">
             <DataGridComponent
               ref={dataGridRef}
-              endpoint={
-                process.env.NEXT_PUBLIC_API_ENDPOINT_EDUCATIONAL_ORAGANIZATION
-              }
+              endpoint={process.env.NEXT_PUBLIC_API_ENDPOINT_CIRCULARS}
               columns={circularColumns}
               offset={0}
               limit={parseInt(process.env.NEXT_PUBLIC_ITEM_PER_PAGE)}
@@ -265,18 +262,14 @@ export default function CircularList() {
       <CommonModal
         title={
           formMode === "create"
-            ? t("Add New Organization")
+            ? t("Add New Circular")
             : formMode === "edit"
-            ? t("Update Organization") +
+            ? t("Update Circular") +
               ": " +
-              (selectedCircular ? selectedCircular.name : "")
-            : formMode === "view"
-            ? t("View Organization") +
+              (selectedCircular ? selectedCircular.title : "")
+            : t("View Circular") +
               ": " +
-              (selectedCircular ? selectedCircular.name : "")
-            : t("Clone Organization") +
-              ": " +
-              (selectedCircular ? selectedCircular.name : "")
+              (selectedCircular ? selectedCircular.title : "")
         }
         formComponent={
           formMode === "create" ? (
@@ -304,7 +297,7 @@ export default function CircularList() {
               setLoading={setLoading} // Pass setLoading function
             />
           ) : (
-            <CircularDetails university={selectedCircular} />
+            <CircularDetails circular={selectedCircular} />
           )
         }
         showModal={showModal}
