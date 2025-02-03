@@ -1,3 +1,109 @@
+POST http://localhost:8000/api/translate/
+Content-Type: application/json
+Content-Length: 39
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+    "text": "You",
+    "lang": "bn"
+}
+
+<> 2025-02-03T205631.200.json
+
+###
+
+POST http://localhost:8000/api/translate/
+Content-Type: application/json
+Content-Length: 39
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+    "text": "You",
+    "lang": "bn"
+}
+
+<> 2025-02-03T205628.200.json
+
+###
+
+POST http://localhost:8000/api/translate/
+Content-Type: application/json
+Content-Length: 39
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+    "text": "You",
+    "lang": "bn"
+}
+
+<> 2025-02-03T205601.200.json
+
+###
+
+POST http://localhost:8000/api/translate/
+Content-Type: application/json
+Content-Length: 47
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+    "text": "Hello world",
+    "lang": "bn"
+}
+
+<> 2025-02-03T205522.200.json
+
+###
+
+POST http://localhost:8000/api/translate/
+Content-Type: application/json
+Content-Length: 47
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+    "text": "Hello world",
+    "lang": "es"
+}
+
+<> 2025-02-03T205514.200.json
+
+###
+
+POST http://localhost:8000/api/translate/
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 24
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+text=Hello+world&lang=es
+
+<> 2025-02-03T205138.403.html
+
+###
+
+POST http://localhost:8000/translate/
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 24
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+text=Hello+world&lang=es
+
+<> 2025-02-03T205112.404.html
+
+###
+
 PATCH http://127.0.0.1:8000/api/circulars/1/
 Content-Type: application/json
 Content-Length: 111
@@ -508,102 +614,6 @@ User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
 Accept-Encoding: br,deflate,gzip,x-gzip
 
 <> 2025-01-27T235751.404.json
-
-###
-
-POST http://127.0.0.1:8000/api/attachments/
-Content-Type: application/json
-Content-Length: 136
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-    "circular": 1,
-    "file_type": "PDF",
-    "file_name": "job_details.pdf",
-    "file_path": "/media/attachments/job_details.pdf"
-}
-
-<> 2025-01-27T235751-1.400.json
-
-###
-
-GET http://127.0.0.1:8000/api/attachments/?circular_id=1
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2025-01-27T235751-4.200.json
-
-###
-
-GET http://127.0.0.1:8000/api/attachments/
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2025-01-27T235751-3.200.json
-
-###
-
-PUT http://127.0.0.1:8000/api/circulars/1/
-Content-Type: application/json
-Content-Length: 111
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-    "title": "Senior Software Engineer Job",
-    "description": "We are hiring a senior software engineer."
-}
-
-<> 2025-01-27T235751.400.json
-
-###
-
-GET http://127.0.0.1:8000/api/circulars/1/
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2025-01-27T235751-2.200.json
-
-###
-
-POST http://127.0.0.1:8000/api/circulars/
-Content-Type: application/json
-Content-Length: 448
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-    "title": "Software Engineer Job",
-    "category_id": 1,
-    "description": "We are hiring a software engineer.",
-    "organization_name": "TechCorp",
-    "publication_date": "2025-01-01",
-    "deadline": "2025-01-31",
-    "start_date": "2025-02-01",
-    "end_date": "2025-03-01",
-    "location": "Remote",
-    "eligibility_criteria": "Bachelor's degree in CS",
-    "status": "Open",
-    "link_to_circular": "https://example.com/job-details"
-}
-
-<> 2025-01-27T235751.201.json
-
-###
-
-GET http://127.0.0.1:8000/api/circulars/?category_id=1
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-<> 2025-01-27T235751-1.200.json
 
 ###
 

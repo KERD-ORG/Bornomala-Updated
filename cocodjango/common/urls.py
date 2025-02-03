@@ -36,6 +36,7 @@ urlpatterns = [
     path('logs/', log_view, name='log_analysis'),
     path('custom_groups/', views.custom_groups, name='custom_groups'),
     path('user_type_list/', views.user_type_list, name='user_type_list'),
-    
+
+    path('translate/', translate_text, name='translate'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

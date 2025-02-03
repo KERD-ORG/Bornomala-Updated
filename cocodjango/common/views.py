@@ -1881,3 +1881,30 @@ def user_type_list(request):
             'details': str(e)
         })
         return JsonResponse(response_data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+from googletrans import Translator
+
+translator = Translator()
+
+
+@csrf_exempt
+def translate_text(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Only POST method is allowed.'}, status=405)
+
+    try:
+        # Expecting JSON in the request body
+        data = json.loads(request.body)
+        text = data.get('text')
+        target_lang = data.get('lang')  # e.g., 'es' for Spanish
+
+        if not text or not target_lang:
+            return JsonResponse({'error': 'Please provide both text and target language.'}, status=400)
+
+        result = translator.translate(text, dest=target_lang)
+        translated_text = result.text
+
+        return JsonResponse({'translated_text': translated_text})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
