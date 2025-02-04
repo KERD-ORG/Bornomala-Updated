@@ -64,10 +64,10 @@ const CircularDetails = ({ circular }) => {
               <li className="list-group-item">
                 <strong>{t("Attachment")}:</strong>{" "}
                 <a
-                  href={circular.attachment_url}
+                  href={`${process.env.NEXT_PUBLIC_API_BASE_URL}${circular.attachment_url}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{textDecoration: "underline", fontWeight: "600"}}
+                  style={{ textDecoration: "underline", fontWeight: "600" }}
                 >
                   Click to see the Attachment
                 </a>

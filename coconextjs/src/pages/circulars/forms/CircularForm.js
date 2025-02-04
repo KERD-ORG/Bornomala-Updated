@@ -100,12 +100,12 @@ const CircularForm = forwardRef(
           .required(t("Link to circular is required.")),
         attachment: yup
           .mixed()
-          .test(
-            "fileSize",
-            t("File too large"),
-            // Example file size limit = 2MB
-            (value) => !value || (value && value.size <= 2 * 1024 * 1024)
-          )
+          // .test(
+          //   "fileSize",
+          //   t("File too large"),
+          //   // Example file size limit = 2MB
+          //   (value) => !value || (value && value.size <= 2 * 1024 * 1024)
+          // )
           .nullable(),
       })
       // Custom test to ensure start_date <= end_date if both exist
