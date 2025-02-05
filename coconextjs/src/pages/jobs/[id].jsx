@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import useCommonForm from "@/hooks/useCommonForm";
 import { Container, Row, Col, Badge, Button, Spinner } from "react-bootstrap";
 import Head from "next/head";
+import Navheader from "@/components/header";
 
 export default function JobDetailPage() {
   const router = useRouter();
@@ -92,142 +93,173 @@ export default function JobDetailPage() {
     organization_name,
     updated_at,
   } = job;
-  console.log(job);
 
   // Determine if job is open or closed
   const isActive = status?.toLowerCase() === "open";
 
   return (
-    <Container className="py-4">
-      <Head>
-        <title>{title ? `${title} | Job Details` : "Job Details"}</title>
-        <meta
-          name="description"
-          content={description || "Find out more about this job opening."}
-        />
-      </Head>
-      {/* Optional "Go Back" button */}
-      <Button
-        variant="secondary"
-        className="mb-3"
-        onClick={() => router.back()}
-      >
-        &larr; Go Back
-      </Button>
+    <>
+      {/* Keep your navheader intact */}
+      <Navheader />
 
-      <Row className="justify-content-center">
-        <Col md={10} lg={8}>
-          {/* Title & Status Badge */}
-          <h1 className="mb-2">{title}</h1>
-          <div className="mb-4">
-            <Badge bg={isActive ? "success" : "danger"}>
-              {isActive ? "Open" : "Closed"}
-            </Badge>
-          </div>
+      {/* Light-gray background to match your screenshot style */}
+      <div style={{ backgroundColor: "#f6f7f9", minHeight: "100vh" }}>
+        <Head>
+          <title>{title ? `${title} | Job Details` : "Job Details"}</title>
+          <meta
+            name="description"
+            content={description || "Find out more about this job opening."}
+          />
+        </Head>
 
-          {/* Meta info row, simulating blog post metadata */}
-          <div className="d-flex flex-wrap align-items-center mb-4 text-secondary">
-            {category?.name && (
-              <span className="me-3">
-                <strong>Category: </strong>
-                {category.name}
-              </span>
-            )}
-            {location && (
-              <span className="me-3">
-                <strong>Location: </strong>
-                {location}
-              </span>
-            )}
-            {publication_date && (
-              <span className="me-3">
-                <strong>Published: </strong>
-                {publication_date}
-              </span>
-            )}
-            {deadline && (
-              <span className="me-3">
-                <strong>Deadline: </strong>
-                {deadline}
-              </span>
-            )}
-          </div>
+        {/* Main container, offset from top so it appears below navheader */}
+        <Container className="py-4" style={{ marginTop: "80px" }}>
+          {/* Optional "Go Back" button */}
+          <Button
+            variant="light"
+            className="mb-4"
+            onClick={() => router.back()}
+            style={{
+              border: "1px solid #ddd",
+              boxShadow: "none",
+            }}
+          >
+            &larr; Go Back
+          </Button>
 
-          {/* "Body" of the job, like a blog post */}
-          <section className="mb-4">
-            {/* Description */}
-            <h4 className="mb-2">Description</h4>
-            <p style={{ whiteSpace: "pre-wrap" }}>
-              {description || "No description provided."}
-            </p>
-          </section>
+          <Row className="justify-content-center">
+            <Col md={10} lg={8}>
+              {/* Title & Status Badge */}
+              <h1 className="mb-2" style={{ fontWeight: "600" }}>
+                {title}
+              </h1>
+              <div className="mb-3">
+                <Badge
+                  bg={isActive ? "success" : "danger"}
+                  style={{ fontSize: "0.9rem", padding: "0.5em 0.75em" }}
+                >
+                  {isActive ? "OPEN" : "CLOSED"}
+                </Badge>
+              </div>
 
-          {/* Another section for eligibility */}
-          <section className="mb-4">
-            <h4 className="mb-2">Eligibility Criteria</h4>
-            <p style={{ whiteSpace: "pre-wrap" }}>
-              {eligibility_criteria || "Not specified."}
-            </p>
-          </section>
-
-          {/* Additional meta fields in a smaller text block */}
-          <section className="mb-4 text-secondary">
-            {start_date && (
-              <p className="mb-1">
-                <strong>Start Date:</strong> {start_date}
-              </p>
-            )}
-            {end_date && (
-              <p className="mb-1">
-                <strong>End Date:</strong> {end_date}
-              </p>
-            )}
-            {organization_name && (
-              <p className="mb-1">
-                <strong>Organization:</strong> {organization_name}
-              </p>
-            )}
-            {updated_at && (
-              <p className="mb-1">
-                <strong>Last Updated:</strong>{" "}
-                {new Date(updated_at).toLocaleString()}
-              </p>
-            )}
-          </section>
-
-          {/* Footer area for links, attachments, external resources */}
-          <hr />
-          <section className="d-flex flex-column flex-sm-row align-items-start mt-3">
-            {/* Link to Circular (if any) */}
-            {link_to_circular && (
-              <Button
-                as="a"
-                href={link_to_circular}
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="primary"
-                className="me-2 mb-2"
+              {/* Meta info row - Category, Location, Published, Deadline */}
+              <div
+                className="d-flex flex-wrap align-items-center mb-4"
+                style={{ color: "#6c757d" }}
               >
-                Go to Circular
-              </Button>
-            )}
+                {category?.name && (
+                  <span className="me-3">
+                    <strong>Category:</strong> {category.name}
+                  </span>
+                )}
+                {location && (
+                  <span className="me-3">
+                    <strong>Location:</strong> {location}
+                  </span>
+                )}
+                {publication_date && (
+                  <span className="me-3">
+                    <strong>Published:</strong> {publication_date}
+                  </span>
+                )}
+                {deadline && (
+                  <span className="me-3">
+                    <strong>Deadline:</strong> {deadline}
+                  </span>
+                )}
+              </div>
 
-            {/* Attachment Link (if any) */}
-            {attachment_url && (
-              <Button
-                as="a"
-                href={attachment_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="outline-secondary"
-                className="mb-2"
-              >
-                View Attachment
-              </Button>
-            )}
-          </section>
-        </Col>
-      </Row>
-    </Container>
+              {/* Description - styled like a "blog post" section */}
+              <section className="mb-4">
+                <h5 style={{ fontWeight: "500" }}>Description</h5>
+                <p
+                  style={{
+                    whiteSpace: "pre-wrap",
+                    marginBottom: "1rem",
+                    lineHeight: "1.5",
+                  }}
+                >
+                  {description || "No description provided."}
+                </p>
+              </section>
+
+              {/* Eligibility Criteria */}
+              <section className="mb-4">
+                <h5 style={{ fontWeight: "500" }}>Eligibility Criteria</h5>
+                <p
+                  style={{
+                    whiteSpace: "pre-wrap",
+                    marginBottom: "1rem",
+                    lineHeight: "1.5",
+                  }}
+                >
+                  {eligibility_criteria || "Not specified."}
+                </p>
+              </section>
+
+              {/* Additional meta fields */}
+              <section className="mb-4" style={{ color: "#6c757d" }}>
+                {start_date && (
+                  <p className="mb-1">
+                    <strong>Start Date:</strong> {start_date}
+                  </p>
+                )}
+                {end_date && (
+                  <p className="mb-1">
+                    <strong>End Date:</strong> {end_date}
+                  </p>
+                )}
+                {organization_name && (
+                  <p className="mb-1">
+                    <strong>Organization:</strong> {organization_name}
+                  </p>
+                )}
+                {updated_at && (
+                  <p className="mb-1">
+                    <strong>Last Updated:</strong>{" "}
+                    {new Date(updated_at).toLocaleString()}
+                  </p>
+                )}
+              </section>
+
+              <hr />
+
+              {/* Footer area for external links */}
+              <section className="d-flex flex-column flex-sm-row align-items-start mt-3">
+                {/* Link to Circular (if any) */}
+                {link_to_circular && (
+                  <Button
+                    as="a"
+                    href={link_to_circular}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="primary"
+                    className="me-2 mb-2"
+                    style={{ minWidth: "140px" }}
+                  >
+                    Go to Circular
+                  </Button>
+                )}
+
+                {/* Attachment Link (if any) */}
+                {attachment_url && (
+                  <Button
+                    as="a"
+                    href={attachment_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="outline-secondary"
+                    className="mb-2"
+                    style={{ minWidth: "140px" }}
+                  >
+                    View Attachment
+                  </Button>
+                )}
+              </section>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    </>
   );
 }

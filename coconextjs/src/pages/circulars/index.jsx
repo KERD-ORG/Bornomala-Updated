@@ -19,7 +19,6 @@ import CircularDetails from "./CircularDetails";
 import DataGridComponent from "../../components/DataGridComponent";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
-import ImportData from "@/components/ImportData";
 
 export default function CircularList() {
   const dataGridRef = useRef();
