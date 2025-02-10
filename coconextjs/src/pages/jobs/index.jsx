@@ -4,6 +4,7 @@ import { Card, Button, Row, Col, Form, Spinner } from "react-bootstrap";
 import useCommonForm from "@/hooks/useCommonForm";
 import Head from "next/head";
 import Navheader from "@/components/header";
+import Layout from "@/components/layout";
 
 export default function JobsList() {
   const { token } = useCommonForm();
@@ -105,9 +106,8 @@ export default function JobsList() {
 
   // MAIN RENDER
   return (
-    <div>
-      <Navheader />
-      <div className="p-4" style={{marginTop: '100px'}}>
+    <Layout>
+      <div className="p-4">
         <Head>
           <title>Available Jobs | Job Portal</title>
           <meta
@@ -210,6 +210,6 @@ export default function JobsList() {
           <div className="mt-4">No matching jobs found.</div>
         )}
       </div>
-    </div>
+    </Layout>
   );
 }

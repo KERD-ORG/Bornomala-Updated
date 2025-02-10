@@ -16,7 +16,13 @@ function Menu() {
     permission.codename.includes("question")
   );
 
-  const isActive = (pathname) => router.pathname === pathname;
+  const canViewCircular = permissions.some((permission) =>
+    permission.codename.includes("circular")
+  );
+
+  const isActive = (pathname) => {
+    return router.pathname.includes(pathname);
+  }
 
   const { locale } = router;
   const { t } = useTranslation("common");
@@ -155,7 +161,7 @@ function Menu() {
             </a>
           </li>
         )}
-        {canViewQuestion && (
+        {canViewCircular && (
           <li className={`menu-item ${isActive("/circulars") ? "active" : ""}`}>
             <a href={localizedPath("/circulars")} className="menu-link">
               <i className="menu-icon tf-icons bx bx-clipboard" />
@@ -163,6 +169,18 @@ function Menu() {
             </a>
           </li>
         )}
+        <li className={`menu-item ${isActive("/jobs") ? "active" : ""}`}>
+          <a href={localizedPath("/jobs")} className="menu-link">
+            <i className="menu-icon tf-icons bx bx-clipboard" />
+            <div>{t("Jobs")}</div>
+          </a>
+        </li>
+        <li className={`menu-item ${isActive("/quizzes") ? "active" : ""}`}>
+          <a href={localizedPath("/quizzes")} className="menu-link">
+            <i className="menu-icon tf-icons bx bx-clipboard" />
+            <div>{t("Quizzes")}</div>
+          </a>
+        </li>
       </ul>
     </aside>
   );

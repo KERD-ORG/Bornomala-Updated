@@ -4,6 +4,7 @@ import useCommonForm from "@/hooks/useCommonForm";
 import { Container, Row, Col, Badge, Button, Spinner } from "react-bootstrap";
 import Head from "next/head";
 import Navheader from "@/components/header";
+import Layout from "@/components/layout";
 
 export default function JobDetailPage() {
   const router = useRouter();
@@ -98,12 +99,12 @@ export default function JobDetailPage() {
   const isActive = status?.toLowerCase() === "open";
 
   return (
-    <>
+    <Layout>
       {/* Keep your navheader intact */}
-      <Navheader />
+      {/* <Navheader /> */}
 
       {/* Light-gray background to match your screenshot style */}
-      <div style={{ backgroundColor: "#f6f7f9", minHeight: "100vh" }}>
+      <div style={{ backgroundColor: "#f6f7f9" }}>
         <Head>
           <title>{title ? `${title} | Job Details` : "Job Details"}</title>
           <meta
@@ -113,7 +114,7 @@ export default function JobDetailPage() {
         </Head>
 
         {/* Main container, offset from top so it appears below navheader */}
-        <Container className="py-4" style={{ marginTop: "80px" }}>
+        <Container className="pb-4">
           {/* Optional "Go Back" button */}
           <Button
             variant="light"
@@ -260,6 +261,6 @@ export default function JobDetailPage() {
           </Row>
         </Container>
       </div>
-    </>
+    </Layout>
   );
 }
