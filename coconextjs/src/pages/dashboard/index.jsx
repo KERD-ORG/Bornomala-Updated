@@ -3,7 +3,6 @@ import Head from "next/head";
 import Layout from "../../components/layout";
 import { isLoggedIn } from "../../utils/auth";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import InstituteOverview from "@/pages/dashboard/Overview/InstituteOverview";
 import useCommonForm from "@/hooks/useCommonForm";
 import { executeAjaxOperationStandard } from "@/utils/fetcher";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -16,22 +15,6 @@ import { useUserPermissions } from "../../utils/commonImports";
 const Dashboard = () => {
   const { permissions } = useUserPermissions();
 
-  const canViewCampusOverviewWidget = permissions.some(
-    (permission) => permission.codename === "view_campus_overview_widget"
-  );
-  const canViewDepartmentOverviewWidget = permissions.some(
-    (permission) => permission.codename === "view_department_overview_widget"
-  );
-  const canViewOrganizationOverviewWidget = permissions.some(
-    (permission) => permission.codename === "view_organization_overview_widget"
-  );
-  const canViewUserRegistrationOverviewWidget = permissions.some(
-    (permission) =>
-      permission.codename === "view_user_registration_overview_widget"
-  );
-  const canViewMailingOverviewWidget = permissions.some(
-    (permission) => permission.codename === "view_mailing_overview_widget"
-  );
   const canViewServerHealthWidget = permissions.some(
     (permission) => permission.codename === "view_server_health_widget"
   );
@@ -62,16 +45,6 @@ const Dashboard = () => {
     localStorage.clear();
     if (permissions.length > 0) {
       const componentConfig = [
-        ...(canViewOrganizationOverviewWidget
-          ? [
-              {
-                id: "institute",
-                label: t("Institution"),
-                component: InstituteOverview,
-              },
-            ]
-          : []),
-
         ...(canViewServerHealthWidget
           ? [
               {
