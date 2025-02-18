@@ -1,3 +1,7 @@
+Below is the modified setup guide with an added command for dumping all data to a JSON file.
+
+---
+
 # Django Project Setup Guide
 
 This guide provides instructions on how to set up the Django project on your local development environment.
@@ -14,74 +18,90 @@ Before you begin, ensure you have the following installed:
 
 First, clone the project repository to your local machine and navigate to the project directory:
 
-bash
+```bash
 git clone <Repository-URL>
 cd <Project-Directory>
+```
 
+## 2. Set Up a Virtual Environment for Python version 3.10
 
-## 2. Set Up a Virtual Environment for python version 3.10
-
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
-
+```
 
 ## 3. Install Project Dependencies
 
+```bash
 pip install -r requirements.txt
-
+```
 
 ## 4. Set Up Environment Variables
 
-Create a .env file in the project root directory. Populate it with the necessary environment variables as described in the project documentation or .env.example file, if provided.
-
+Create a `.env` file in the project root directory. Populate it with the necessary environment variables as described in the project documentation or `.env.example` file, if provided.
 
 ## 5. Run Database Migrations
 
+```bash
 python manage.py migrate
+```
 
 ## 6. Load Initial Data (Optional)
 
-python manage.py loaddata data.json
+```bash
+python manage.py loaddata all_data.json
+```
 
-python manage.py loaddata state_data.json
+## 7. Dump All Data to JSON (Optional)
 
-python manage.py loaddata language_data.json
+To export all your database data to a JSON file, run:
 
-## 7. Create a Superuser (Optional)
+```bash
+python manage.py dumpdata --indent 2 > all_data_v1.json
+```
 
+This command dumps the complete data from your database into `all_data.json` with pretty indentation.
+
+## 8. Create a Superuser (Optional)
+
+```bash
 python manage.py createsuperuser
+```
 
-## 8. Add .env file
-   Create a `.env` file in the root of the project with the following content. The URL (`http://localhost:3000`) can be changed based on your Django project URL:
-   
-   Copy contents from .env.example file.
+## 9. Add .env File
 
-## 9. Install Redis
+Create a `.env` file in the root of the project with the following content. The URL (`http://localhost:3000`) can be changed based on your Django project URL.  
+Copy contents from the `.env.example` file.
 
+## 10. Install Redis
+
+```bash
 brew install redis
+```
 
-## 10. Run Redis
+## 11. Run Redis
 
+```bash
 redis-server
+```
 
-## 11. Run the Development Server
+## 12. Run the Development Server
 
+```bash
 python manage.py runserver
+```
 
-## 12. If need to update translation file we can use:
+## 13. Update Translation File (If Needed)
 
-https://www.ajexperience.com/po-translator/
+Visit [PO Translator](https://www.ajexperience.com/po-translator/) for translation updates.
 
-
-
-
-
+---
 
 Below is a PowerShell-friendly approach for removing your migration files and ignoring them in Git.
 
 ---
 
-## 1. Remove all `.py` files under `migrations` folders (except `__init__.py`)
+## 1. Remove All `.py` Files Under `migrations` Folders (Except `__init__.py`)
 
 Open PowerShell in your project’s root directory and run:
 
@@ -111,3 +131,5 @@ Get-ChildItem -Path . -Recurse -Include *.pyc `
 ```
 
 ---
+
+This guide now includes a step to dump all the data into `all_data.json`. Let me know if you need further modifications!

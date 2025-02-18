@@ -1,0 +1,748 @@
+[
+  {
+    "model": "common.language",
+    "pk": 1,
+    "fields": {
+      "key": "en",
+      "properties_name": "English",
+      "properties_charset": "UTF-8"
+    }
+  },
+  {
+    "model": "common.countries",
+    "pk": 1,
+    "fields": {
+      "country_name": "United States",
+      "country_code": "US",
+      "deleted_at": null,
+      "updated_at": "2025-02-16T00:00:00Z",
+      "created_at": "2025-02-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "common.geoadmin1",
+    "pk": 1,
+    "fields": {
+      "country": 1,
+      "geo_admin_1_code": "CA",
+      "geo_admin_1_name": "California",
+      "deleted_at": null,
+      "updated_at": "2025-02-16T00:00:00Z",
+      "created_at": "2025-02-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "common.geoadmin2",
+    "pk": 1,
+    "fields": {
+      "country": 1,
+      "geo_admin_1": 1,
+      "geo_admin_2_code": "LA",
+      "geo_admin_2_name": "Los Angeles County",
+      "deleted_at": null,
+      "updated_at": "2025-02-16T00:00:00Z",
+      "created_at": "2025-02-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "common.document",
+    "pk": 1,
+    "fields": {
+      "image": "",
+      "type": "pdf",
+      "user": 1,
+      "file_name": "sample.pdf",
+      "file_name_system": "sample_1.pdf",
+      "deleted_at": null,
+      "updated_at": "2025-02-16T00:00:00Z",
+      "created_at": "2025-02-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "common.userdocument",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "document": 1,
+      "use": "resume",
+      "deleted_at": null,
+      "updated_at": "2025-02-16T00:00:00Z",
+      "created_at": "2025-02-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "common.researchinterestoptions",
+    "pk": 1,
+    "fields": {
+      "user_id": 1,
+      "topic": "Artificial Intelligence",
+      "deleted_at": null,
+      "updated_at": "2025-02-16T00:00:00Z",
+      "created_at": "2025-02-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "common.skilloptions",
+    "pk": 1,
+    "fields": {
+      "user_id": 1,
+      "skill_name": "Python",
+      "deleted_at": null,
+      "updated_at": "2025-02-16T00:00:00Z",
+      "created_at": "2025-02-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "common.state",
+    "pk": 1,
+    "fields": {
+      "name": "California",
+      "country_id": 1,
+      "country_code": "US",
+      "fips_code": "06",
+      "iso2": "CA",
+      "type": "State",
+      "latitude": "36.778259",
+      "longitude": "-119.417931",
+      "created_at": "2025-02-16T00:00:00Z",
+      "updated_at": "2025-02-16T00:00:00Z",
+      "flag": true,
+      "wikiDataId": "Q99"
+    }
+  },
+  {
+    "model": "educational_organizations_app.division",
+    "pk": 1,
+    "fields": {
+      "name": "Dhaka",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+    "model": "educational_organizations_app.division",
+    "pk": 2,
+    "fields": {
+      "name": "Chattogram",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z",
+      "deleted_at": null
+    }
+  },
+  {
+  "model": "educational_organizations_app.educationalorganizations",
+  "pk": 1,
+  "fields": {
+    "name": "Sample Educational Organization",
+    "under_category": null,
+    "web_address": "http://example.org",
+    "statement": "Sample organization for testing.",
+    "document": 1,
+    "status": true,
+    "address_line1": "123 Main St",
+    "address_line2": "",
+    "division": null,
+    "district": "Dhaka",
+    "postal_code": "1000",
+    "first_name": "John",
+    "middle_name": "",
+    "last_name": "Smith",
+    "email": "contact@example.org",
+    "created_by": 1,
+    "updated_by": 1,
+    "created_at": "2025-02-01T00:00:00Z",
+    "updated_at": "2025-02-01T00:00:00Z"
+  }
+},
+  {
+    "model": "questions.questionlevel",
+    "pk": 1,
+    "fields": {
+      "name": "Primary School"
+    }
+  },
+  {
+    "model": "questions.targetgroup",
+    "pk": 1,
+    "fields": {
+      "name": "Science"
+    }
+  },
+  {
+    "model": "questions.subject",
+    "pk": 1,
+    "fields": {
+      "name": "Mathematics"
+    }
+  },
+  {
+    "model": "questions.questiontype",
+    "pk": 1,
+    "fields": {
+      "name": "MCQ_SINGLE"
+    }
+  },
+  {
+    "model": "questions.questiontype",
+    "pk": 2,
+    "fields": {
+      "name": "MCQ_MULTI"
+    }
+  },
+  {
+    "model": "questions.questiontype",
+    "pk": 3,
+    "fields": {
+      "name": "FILL_BLANK"
+    }
+  },
+  {
+    "model": "questions.questiontype",
+    "pk": 4,
+    "fields": {
+      "name": "TRUE_FALSE"
+    }
+  },
+  {
+    "model": "questions.questiontype",
+    "pk": 5,
+    "fields": {
+      "name": "MATCHING"
+    }
+  },
+  {
+    "model": "questions.questiontype",
+    "pk": 6,
+    "fields": {
+      "name": "ORDERING"
+    }
+  },
+  {
+    "model": "questions.questiontype",
+    "pk": 7,
+    "fields": {
+      "name": "NUMERICAL"
+    }
+  },
+  {
+    "model": "questions.questiontype",
+    "pk": 8,
+    "fields": {
+      "name": "IMAGE"
+    }
+  },
+  {
+    "model": "questions.questiontype",
+    "pk": 9,
+    "fields": {
+      "name": "AUDIO_VIDEO"
+    }
+  },
+  {
+    "model": "questions.questiontype",
+    "pk": 10,
+    "fields": {
+      "name": "CASE_STUDY"
+    }
+  },
+  {
+    "model": "questions.questiontype",
+    "pk": 11,
+    "fields": {
+      "name": "DIAGRAM"
+    }
+  },
+  {
+    "model": "questions.questiontype",
+    "pk": 12,
+    "fields": {
+      "name": "CODE"
+    }
+  },
+  {
+    "model": "questions.questiontype",
+    "pk": 13,
+    "fields": {
+      "name": "DRAG_DROP"
+    }
+  },
+  {
+    "model": "questions.questiontype",
+    "pk": 14,
+    "fields": {
+      "name": "ASSERTION_REASON"
+    }
+  },
+  {
+    "model": "questions.topic",
+    "pk": 1,
+    "fields": {
+      "name": "Algebra"
+    }
+  },
+  {
+    "model": "questions.subtopic",
+    "pk": 1,
+    "fields": {
+      "name": "Linear Equations",
+      "topic": 1
+    }
+  },
+  {
+    "model": "questions.subsubtopic",
+    "pk": 1,
+    "fields": {
+      "name": "Solving Equations",
+      "sub_topic": 1
+    }
+  },
+  {
+    "model": "questions.subsubtopic",
+    "pk": 2,
+    "fields": {
+      "name": "Graphical Solutions",
+      "sub_topic": 1
+    }
+  },
+  {
+    "model": "questions.difficultylevel",
+    "pk": 1,
+    "fields": {
+      "name": "Easy"
+    }
+  },
+  {
+    "model": "questions.questionstatus",
+    "pk": 1,
+    "fields": {
+      "name": "New"
+    }
+  },
+  {
+    "model": "questions.examreference",
+    "pk": 1,
+    "fields": {
+      "reference_name": "Dhaka University",
+      "year_of_exam": "2023"
+    }
+  },
+  {
+    "model": "questions.explanation",
+    "pk": 1,
+    "fields": {
+      "level": "Preliminary",
+      "text": "This is a preliminary explanation.",
+      "video_url": ""
+    }
+  },
+  {
+    "model": "questions.mcqsinglequestion",
+    "pk": 1,
+    "fields": {
+      "target_organization": 1,
+      "question_level": 1,
+      "target_group": 1,
+      "target_subject": 1,
+      "question_type": 1,
+      "topic": 1,
+      "sub_topic": 1,
+      "difficulty_level": 1,
+      "question_status": 1,
+      "created_at": "2025-02-01T12:00:00Z",
+      "updated_at": "2025-02-01T12:00:00Z",
+      "created_by": 1,
+      "sub_sub_topic": [1, 2],
+      "exam_references": [1],
+      "explanations": [1],
+      "question_text": "What is 2+2?",
+      "options": ["1", "2", "4", "3"],
+      "correct_answer": 2
+    }
+  },
+  {
+    "model": "questions.mcqmultiquestion",
+    "pk": 2,
+    "fields": {
+      "target_organization": 1,
+      "question_level": 1,
+      "target_group": 1,
+      "target_subject": 1,
+      "question_type": 2,
+      "topic": 1,
+      "sub_topic": 1,
+      "difficulty_level": 1,
+      "question_status": 1,
+      "created_at": "2025-02-01T12:05:00Z",
+      "updated_at": "2025-02-01T12:05:00Z",
+      "created_by": 1,
+      "sub_sub_topic": [1],
+      "exam_references": [1],
+      "explanations": [1],
+      "question_text": "Select the prime numbers.",
+      "options": ["2", "3", "4", "6"],
+      "correct_answer": [0, 1]
+    }
+  },
+  {
+    "model": "questions.fillintheblanksquestion",
+    "pk": 3,
+    "fields": {
+      "target_organization": 1,
+      "question_level": 1,
+      "target_group": 1,
+      "target_subject": 1,
+      "question_type": 3,
+      "topic": 1,
+      "sub_topic": 1,
+      "difficulty_level": 1,
+      "question_status": 1,
+      "created_at": "2025-02-01T12:10:00Z",
+      "updated_at": "2025-02-01T12:10:00Z",
+      "created_by": 1,
+      "sub_sub_topic": [1],
+      "exam_references": [1],
+      "explanations": [1],
+      "question_text": "The capital of Bangladesh is ____.",
+      "correct_answer": "Dhaka"
+    }
+  },
+  {
+    "model": "questions.truefalsequestion",
+    "pk": 4,
+    "fields": {
+      "target_organization": 1,
+      "question_level": 1,
+      "target_group": 1,
+      "target_subject": 1,
+      "question_type": 4,
+      "topic": 1,
+      "sub_topic": 1,
+      "difficulty_level": 1,
+      "question_status": 1,
+      "created_at": "2025-02-01T12:15:00Z",
+      "updated_at": "2025-02-01T12:15:00Z",
+      "created_by": 1,
+      "sub_sub_topic": [1],
+      "exam_references": [1],
+      "explanations": [1],
+      "question_text": "The earth is flat.",
+      "correct_answer": false
+    }
+  },
+  {
+    "model": "questions.matchingquestion",
+    "pk": 5,
+    "fields": {
+      "target_organization": 1,
+      "question_level": 1,
+      "target_group": 1,
+      "target_subject": 1,
+      "question_type": 5,
+      "topic": 1,
+      "sub_topic": 1,
+      "difficulty_level": 1,
+      "question_status": 1,
+      "created_at": "2025-02-01T12:20:00Z",
+      "updated_at": "2025-02-01T12:20:00Z",
+      "created_by": 1,
+      "sub_sub_topic": [1],
+      "exam_references": [1],
+      "explanations": [1],
+      "question_text": "Match the countries with their capitals.",
+      "options_column_a": ["Bangladesh", "France"],
+      "options_column_b": ["Dhaka", "Paris"],
+      "correct_answer": "Bangladesh-Dhaka,France-Paris"
+    }
+  },
+  {
+    "model": "questions.orderingquestion",
+    "pk": 6,
+    "fields": {
+      "target_organization": 1,
+      "question_level": 1,
+      "target_group": 1,
+      "target_subject": 1,
+      "question_type": 6,
+      "topic": 1,
+      "sub_topic": 1,
+      "difficulty_level": 1,
+      "question_status": 1,
+      "created_at": "2025-02-01T12:25:00Z",
+      "updated_at": "2025-02-01T12:25:00Z",
+      "created_by": 1,
+      "sub_sub_topic": [1],
+      "exam_references": [1],
+      "explanations": [1],
+      "question_text": "Arrange the numbers in ascending order.",
+      "ordering_sequence": ["1", "2", "3", "4"]
+    }
+  },
+  {
+    "model": "questions.numericalquestion",
+    "pk": 7,
+    "fields": {
+      "target_organization": 1,
+      "question_level": 1,
+      "target_group": 1,
+      "target_subject": 1,
+      "question_type": 7,
+      "topic": 1,
+      "sub_topic": 1,
+      "difficulty_level": 1,
+      "question_status": 1,
+      "created_at": "2025-02-01T12:30:00Z",
+      "updated_at": "2025-02-01T12:30:00Z",
+      "created_by": 1,
+      "sub_sub_topic": [1],
+      "exam_references": [1],
+      "explanations": [1],
+      "question_text": "Calculate the value of 3.14 * 2.",
+      "correct_answer": 6.28
+    }
+  },
+  {
+    "model": "questions.imagebasedquestion",
+    "pk": 8,
+    "fields": {
+      "target_organization": 1,
+      "question_level": 1,
+      "target_group": 1,
+      "target_subject": 1,
+      "question_type": 8,
+      "topic": 1,
+      "sub_topic": 1,
+      "difficulty_level": 1,
+      "question_status": 1,
+      "created_at": "2025-02-01T12:35:00Z",
+      "updated_at": "2025-02-01T12:35:00Z",
+      "created_by": 1,
+      "sub_sub_topic": [1],
+      "exam_references": [1],
+      "explanations": [1],
+      "question_text": "Identify the object in the image.",
+      "image_url": "http://example.com/image.jpg",
+      "correct_answer": "A cat"
+    }
+  },
+  {
+    "model": "questions.audiovideoquestion",
+    "pk": 9,
+    "fields": {
+      "target_organization": 1,
+      "question_level": 1,
+      "target_group": 1,
+      "target_subject": 1,
+      "question_type": 9,
+      "topic": 1,
+      "sub_topic": 1,
+      "difficulty_level": 1,
+      "question_status": 1,
+      "created_at": "2025-02-01T12:40:00Z",
+      "updated_at": "2025-02-01T12:40:00Z",
+      "created_by": 1,
+      "sub_sub_topic": [1],
+      "exam_references": [1],
+      "explanations": [1],
+      "question_text": "Listen and identify the instrument.",
+      "audio_url": "http://example.com/audio.mp3",
+      "video_url": "http://example.com/video.mp4",
+      "correct_answer": "Guitar"
+    }
+  },
+  {
+    "model": "questions.casestudyquestion",
+    "pk": 10,
+    "fields": {
+      "target_organization": 1,
+      "question_level": 1,
+      "target_group": 1,
+      "target_subject": 1,
+      "question_type": 10,
+      "topic": 1,
+      "sub_topic": 1,
+      "difficulty_level": 1,
+      "question_status": 1,
+      "created_at": "2025-02-01T12:45:00Z",
+      "updated_at": "2025-02-01T12:45:00Z",
+      "created_by": 1,
+      "sub_sub_topic": [1],
+      "exam_references": [1],
+      "explanations": [1],
+      "question_text": "Analyze the given case study and provide a solution.",
+      "correct_answer": "Sample solution explanation."
+    }
+  },
+  {
+    "model": "questions.diagramlabelingquestion",
+    "pk": 11,
+    "fields": {
+      "target_organization": 1,
+      "question_level": 1,
+      "target_group": 1,
+      "target_subject": 1,
+      "question_type": 11,
+      "topic": 1,
+      "sub_topic": 1,
+      "difficulty_level": 1,
+      "question_status": 1,
+      "created_at": "2025-02-01T12:50:00Z",
+      "updated_at": "2025-02-01T12:50:00Z",
+      "created_by": 1,
+      "sub_sub_topic": [1],
+      "exam_references": [1],
+      "explanations": [1],
+      "question_text": "Label the parts of the diagram.",
+      "diagram_url": "http://example.com/diagram.jpg",
+      "correct_answer": {"label1": "Value1", "label2": "Value2"}
+    }
+  },
+  {
+    "model": "questions.codeprogrammingquestion",
+    "pk": 12,
+    "fields": {
+      "target_organization": 1,
+      "question_level": 1,
+      "target_group": 1,
+      "target_subject": 1,
+      "question_type": 12,
+      "topic": 1,
+      "sub_topic": 1,
+      "difficulty_level": 1,
+      "question_status": 1,
+      "created_at": "2025-02-01T12:55:00Z",
+      "updated_at": "2025-02-01T12:55:00Z",
+      "created_by": 1,
+      "sub_sub_topic": [1],
+      "exam_references": [1],
+      "explanations": [1],
+      "question_text": "Write a function to reverse a string.",
+      "correct_answer": "def reverse_string(s): return s[::-1]"
+    }
+  },
+  {
+    "model": "questions.draganddropquestion",
+    "pk": 13,
+    "fields": {
+      "target_organization": 1,
+      "question_level": 1,
+      "target_group": 1,
+      "target_subject": 1,
+      "question_type": 13,
+      "topic": 1,
+      "sub_topic": 1,
+      "difficulty_level": 1,
+      "question_status": 1,
+      "created_at": "2025-02-01T13:00:00Z",
+      "updated_at": "2025-02-01T13:00:00Z",
+      "created_by": 1,
+      "sub_sub_topic": [1],
+      "exam_references": [1],
+      "explanations": [1],
+      "question_text": "Drag and drop the items to match the pairs.",
+      "options_column_a": ["Item A", "Item B"],
+      "options_column_b": ["Pair 1", "Pair 2"],
+      "correct_answer": ["A->1", "B->2"]
+    }
+  },
+  {
+    "model": "questions.assertionreasonquestion",
+    "pk": 14,
+    "fields": {
+      "target_organization": 1,
+      "question_level": 1,
+      "target_group": 1,
+      "target_subject": 1,
+      "question_type": 14,
+      "topic": 1,
+      "sub_topic": 1,
+      "difficulty_level": 1,
+      "question_status": 1,
+      "created_at": "2025-02-01T13:05:00Z",
+      "updated_at": "2025-02-01T13:05:00Z",
+      "created_by": 1,
+      "sub_sub_topic": [1],
+      "exam_references": [1],
+      "explanations": [1],
+      "question_text": "Assertion: The Earth is round. Reason: Gravity pulls objects into a sphere.",
+      "correct_answer": "Both are correct and related."
+    }
+  },
+  {
+    "model": "circular.circularcategory",
+    "pk": 1,
+    "fields": {
+      "name": "General Announcement",
+      "description": "General circulars for all.",
+      "parent_category": null
+    }
+  },
+  {
+    "model": "circular.circularcategory",
+    "pk": 2,
+    "fields": {
+      "name": "Job Circulars",
+      "description": "Job related announcements.",
+      "parent_category": 1
+    }
+  },
+  {
+    "model": "circular.circular",
+    "pk": 1,
+    "fields": {
+      "title": "Hiring for Software Engineers",
+      "category": 2,
+      "description": "We are hiring software engineers for our tech department.",
+      "organization": 1,
+      "publication_date": "2025-03-01",
+      "deadline": "2025-03-31",
+      "start_date": "2025-04-05",
+      "end_date": "2025-04-30",
+      "location": "Dhaka",
+      "eligibility_criteria": "Bachelor's in Computer Science or related field.",
+      "status": "Open",
+      "link_to_circular": "http://example.org/circulars/1",
+      "attachment": "",
+      "created_at": "2025-03-01T08:00:00Z",
+      "updated_at": "2025-03-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "circular.subscription",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "category": 1,
+      "subscribed_date": "2025-03-02T09:00:00Z"
+    }
+  },
+  {
+    "model": "circular.notification",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "circular": 1,
+      "notification_text": "A new circular has been posted: Hiring for Software Engineers",
+      "sent_date": "2025-03-01T09:00:00Z",
+      "read_status": false
+    }
+  },
+  {
+    "model": "circular.tag",
+    "pk": 1,
+    "fields": {
+      "name": "Hiring",
+      "circular": 1
+    }
+  },
+  {
+    "model": "circular.analytics",
+    "pk": 1,
+    "fields": {
+      "circular": 1,
+      "views_count": 0,
+      "applications_count": 0,
+      "last_viewed": null
+    }
+  }
+]
